@@ -1,0 +1,74 @@
+version: '3.9'
+
+services:
+
+  web-server:
+    build:
+      dockerfile: php.Dockerfile
+      context: .
+    restart: always
+    volumes:
+      - ./html/:/var/www/html/
+    ports:
+      - "8080:80"
+      
+  mysql-server:    
+    image: mysql:8.0
+    restart: always
+    environment:
+        MYSQL_ROOT_PASSWORD: General_2035_
+        MYSQL_DATABASE: upsilon_one
+        MYSQL_USER: upsilon_one
+        MYSQL_PASSWORD: showmethemoney   
+    volumes:
+        - ./db:/var/lib/mysql
+    ports:
+        - "3306:3306"
+    networks:
+        - default
+        
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    depends_on:
+        - mysql-server
+    links: 
+      - mysql-server:db
+    ports:
+        - '5000:80'
+    environment:
+        PMA_HOST: mysql-server
+
+
+networks:
+  default:
+    driver: bridge
+    
+volumes:
+  db:
+  
+  #php:
+    #container_name: php
+    #image: php:7.4.3-apache  
+    #restart: unless-stopped
+    #ports:
+      #- 80:80
+    #volumes:
+      #- ./src:/var/www/html
+      #- ./php/:/usr/local/etc/php
+    #networks:
+        #- default
+        
+  #apache:
+    #container_name: apache
+    #image: httpd:2.4
+    #restart: always
+    #depends_on:
+        #- php
+    #ports:
+        #- 80:80
+        #- 443:443
+    #volumes:
+        #- ./src:/var/www/html
+        #- ./httpd/httpd.conf:/usr/local/apache2/conf.d/default.conf
+    #networks:
+        #- default

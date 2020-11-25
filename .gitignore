@@ -1,0 +1,17 @@
+.idea/
+__pycache__/
+**/logs
+**/*env
+**/logs/
+**/*venv/
+**/*env/
+**/*.session
+**/*.sqlite3
+**/db
+**/db/
+default.session
+upsilon_bot_scraper
+upsilon_bot_scraper.py
+**/upsilon_bot_scraper
+**/upsilon_bot_scraper.py
+/telegram/default.session_parsed_users

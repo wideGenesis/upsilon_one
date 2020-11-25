@@ -1,0 +1,177 @@
+PATHS:
+  HOLDINGS: 'quotes/holdings/'
+  YAHOO_PATH: 'quotes/yahoo_data/'
+  COINS_DATA: 'quotes/coins/'
+  COMMON_IMG_PATH: 'img/'
+  RESULTS_PATH: 'results/'
+  IMAGES_OUT_PATH: 'results/img_out/'
+  SQLITE3_PATH: 'telegram/'
+  LOGS: 'logs/'
+  WEBDRIVER: 'webdriver/'
+
+
+TELEGRAM:
+  API_KEY: '1606389'
+  API_HASH: '1df2a687294d0003275a394b52296186'
+  TELETHON_DB_NAME: 'telethon_upsilon_db'
+  TEST_IP: '149.154.167.40:443'
+  PROD_IP: '149.154.167.50:443'
+  UPSILON: '1417206041:AAHqQK99vhYOqJpMZLDybUkC6aDaS4qsEsQ'
+  OWNER: '379634398'
+  SERVICE_CHAT: '-1001262211476'
+  PAYMENT_TOKEN: '18c09e066f974297975b8191a8994da7'
+  PAYMENT_SUCCESS_LISTEN: '0.0.0.0'
+  PAYMENT_SUCCESS_LISTEN_PORT: '8443'
+  TARIFF_IMAGES: 'results/tariff_images/'
+
+SQL:
+  DB_NAME: 'upsilon_db'
+  DB_USER: 'upsilon_user'
+  DB_PASSWORD: 'RAPture1735'
+  DB_HOST: 'localhost'
+  DB_PORT: '3306'
+
+DIALOGFLOW:
+  PROJECT_ID: 'common-bot-1'
+
+COINMARKETCAP:
+  KEY: 'c9547ad5-593a-4cb0-88a4-8189d9b3807e'
+
+ALPHA_VANTAGE:
+  API_KEY: 'AX1VBUUUR1KTB5K7'
+
+CREDENTIALS:
+  BTC: '__BTC:__ 185eQAq1oNiyt7NkVkVirnwztWfFAqLpwS'
+  ETH: '__ETH:__ 0xd1937B37A820C7e2edf0ee11cEf057796c15d87D'
+
+ETF_FOR_INDEX: [
+    'QQQ',
+    'MTUM',
+    'MGK',
+    'FDN',
+    'FBT',
+    'ITA',
+    'IWY',
+    'FPX',
+    'PKW',
+    'ARKW',
+    'ARKK',
+    'ARKF',
+    'QCLN'
+
+]
+
+WORLD_MEGA_CAPS: [
+    'BABA',
+    'TSM',
+    'NVS',
+    'JD',
+    'SAP',
+    'ASML',
+    'ACN',
+    'UN',
+    'AZN',
+    'BHP',
+    'LIN',
+    'SHOP',
+    'GSK',
+    'RIO',
+    'RY',
+    'TD',
+    'BP',
+    'NTES',
+    'ENB',
+    'TAK',
+    'SPOT',
+    'MELI',
+    'TAL',
+    'AON',
+    'UBS',
+    'INFY',
+    'BIDU',
+    'VOD',
+    'LULU',
+    'ETN',
+    'NXPI',
+    'INFO',
+    'ZTO',
+
+    'ALC',
+    'TEL',
+    'CS',
+    'JCI',
+    'MRVL',
+    'EDU',
+    'TT',
+    'LBTYA',
+    'STX',
+    'QGEN',
+    'LBTYK',
+    'CRSP',
+    'ALV',
+    'SU',
+]
+#    'PDD',
+#    'SAP',
+#    'TCOM',
+#    'BAYN'
+
+
+TOP_RP_ASSETS: [
+    'TLT',
+    'VIXM',
+    'VXX',
+    'BKNG',
+    'TMUS',
+    'ADP',
+    'ORLY',
+    'CTAS',
+    'MSFT',
+    'ADBE',
+    'INTU',
+    'NVDA',
+    'INTC',
+    'AVGO',
+    'QCOM',
+    'TXN',
+    'AMD',
+    'MU',
+    'AMAT',
+    'LRCX',
+    'SBUX',
+    'CSX',
+    'KHC',
+    'ISRG',
+    'AMZN',
+    'JD',
+    'EBAY',
+    'GOOGL',
+    'FB',
+    'NTES',
+    'BIDU',
+    'FISV',
+    'NFLX',
+    'CMCSA',
+    'CHTR',
+    'ATVI',
+    'EA',
+    'AMGN',
+    'GILD',
+    'BIIB',
+    'COST',
+    'ILMN',
+    'PYPL',
+    'AAPL',
+    'MDLZ',
+    'CSCO',
+    'VRTX',
+    'REGN',
+    'PEP',
+    'MNST',
+    'TSLA',
+    'LULU',
+    'ROST'
+]
+
+
+CRYPTO_ASSETS: ['TUSD', 'BTC']

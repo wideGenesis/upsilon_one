@@ -1,0 +1,29 @@
+,Ticker,Company,Sector,Industry,Country,Market Cap
+0,UNP,Union Pacific Corporation,Industrials,Railroads,USA,135.1
+1,LLY,Eli Lilly and Company,Healthcare,Drug Manufacturers - General,USA,134.91
+2,CHTR,"Charter Communications, Inc.",Communication Services,Entertainment,USA,127.51
+3,ZM,"Zoom Video Communications, Inc.",Communication Services,Telecom Services,USA,121.91
+4,LMT,Lockheed Martin Corporation,Industrials,Aerospace & Defense,USA,102.93
+5,BA,The Boeing Company,Industrials,Aerospace & Defense,USA,99.76
+6,NOW,"ServiceNow, Inc.",Technology,Software - Application,USA,99.46
+7,AMD,"Advanced Micro Devices, Inc.",Technology,Semiconductors,USA,98.43
+8,RTX,Raytheon Technologies Corporation,Industrials,Aerospace & Defense,USA,97.18
+9,CAT,Caterpillar Inc.,Industrials,Farm & Heavy Construction Machinery,USA,91.88
+10,FIS,"Fidelity National Information Services, Inc.",Technology,Information Technology Services,USA,88.22
+11,UBER,"Uber Technologies, Inc.",Technology,Software - Application,USA,81.84
+12,SQ,"Square, Inc.",Technology,Software - Infrastructure,USA,80.5
+13,BKNG,Booking Holdings Inc.,Consumer Cyclical,Travel Services,USA,80.39
+14,OTIS,Otis Worldwide Corporation,Industrials,Specialty Industrial Machinery,USA,28.59
+15,ANSS,"ANSYS, Inc.",Technology,Software - Application,USA,27.8
+16,ALXN,"Alexion Pharmaceuticals, Inc.",Healthcare,Biotechnology,USA,27.49
+17,TDOC,"Teladoc Health, Inc.",Healthcare,Health Information Services,USA,27.11
+18,AME,"AMETEK, Inc.",Industrials,Specialty Industrial Machinery,USA,26.56
+19,CTVA,"Corteva, Inc.",Basic Materials,Agricultural Inputs,USA,26.12
+20,CHWY,"Chewy, Inc.",Consumer Cyclical,Internet Retail,USA,26.09
+21,HPQ,HP Inc.,Technology,Computer Hardware,USA,26.0
+22,VRSN,"VeriSign, Inc.",Technology,Software - Infrastructure,USA,22.7
+23,ANET,"Arista Networks, Inc.",Technology,Computer Hardware,USA,20.21
+24,DDD,3D Systems Corporation,Technology,Computer Hardware,USA,914.9
+25,SSYS,Stratasys Ltd.,Technology,Computer Hardware,USA,779.79
+26,SYRS,"Syros Pharmaceuticals, Inc.",Healthcare,Biotechnology,USA,401.77
+27,XONE,The ExOne Company,Industrials,Specialty Industrial Machinery,USA,201.06
