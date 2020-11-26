@@ -26,13 +26,13 @@ class AlchemyMySQLCoreSession(AlchemyCoreSession):
         t = self.Entity.__table__
         with self.engine.begin() as conn:
             for row in rows:
-                values = dict(hash=row[1], username=row[2], phone=row[3], name=row[4],
+                values = dict(hash=row[1], username=row[2], phone=row[3], name=row[4]
                 #               user_status=row[5], profile_lang=row[6], balance=row[7],
                 #               referral=row[8], subscribe_level=row[9], expired=row[10], reserved_1=row[11],
                 #               reserved_2=row[12]
                               )  #TODO ADD FIELDS
                 conn.execute(insert(t)
-                             .values(session_id=self.session_id, id=row[0], **values)
+                             .values(session_id=self.session_id, id=row[0], **values) # WTF
                              .on_duplicate_key_update(**values))
 
     def cache_file(self, md5_digest: str, file_size: int,

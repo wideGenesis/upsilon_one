@@ -92,17 +92,17 @@ class AlchemySession(MemorySession):
         self._db_query(self.SentFile).delete()
         self._db_query(self.UpdateState).delete()
 
-    def _entity_values_to_row(self, id: int, hash: int, username: str, phone: str, name: str,
+    def _entity_values_to_row(self, id: int, hash: int, username: str, phone: str, name: str
                               # user_status: str, profile_lang: str, balance: float, referral: int,
                               # subscribe_level: enumerate, expired: str, reserved_1: int,
                               # reserved_2: str
                               ) -> Any:
         return self.Entity(session_id=self.session_id, id=id, hash=hash, 
-                           # username=username, phone=phone, name=name,
+                           username=username, phone=phone, name=name)
                            # user_status=user_status, profile_lang=profile_lang, balance=balance,
                            # referral=referral, subscribe_level=subscribe_level, expired=expired,
                            # reserved_1=reserved_1, reserved_2=reserved_2)
-        )#TODO ADD FIELDS
+        #TODO ADD FIELDS
 
     def process_entities(self, tlo: Any) -> None:
         rows = self._entities_to_rows(tlo)

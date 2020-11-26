@@ -100,6 +100,29 @@ class AlchemySessionContainer:
                                                                 self.server_address, self.port,
                                                                 self.auth_key)
 
+        # class Entity(base):
+        #     query = qp
+        #     __tablename__ = '{prefix}entities'.format(prefix=prefix)
+        #
+        #     session_id = Column(String(255), primary_key=True, nullable=False)
+        #     id = Column(BigInteger, primary_key=True, nullable=False)
+        #     hash = Column(BigInteger, nullable=False)
+        #     username = Column(String(255), nullable=True)
+        #     phone = Column(BigInteger, nullable=True)
+        #     name = Column(String(255), nullable=True)
+        #     user_status = Column(String(100),  nullable=True) # blank=True,
+        #     profile_lang = Column(String(32), nullable=True) # blank=True,
+        #     balance = Column(Numeric(10),  default=0) # precision=5
+        #     referral = Column(Integer, default=0)
+        #     subscribe_level = Column(Enum('Free', 'Newbie', 'Advanced', 'Premium'), default='Free') # blank=True,
+        #     expired = Column(Date, nullable=True) # blank=True,
+        #     reserved_1 = Column(Integer, nullable=True) # blank=True,
+        #     reserved_2 = Column(String(255), nullable=True) # blank=True,
+        #     def __str__(self):
+        #         return "Entity('{}', {}, {}, '{}', '{}', '{}', '{}', '{}', '{}', '{}', '{}', '{}', '{}', '{}')".format(
+        #             self.session_id, self.id, self.hash, self.username, self.phone, self.name, self.user_status, self.profile_lang,
+        #             self.balance, self.referral, self.subscribe_level, self.expired, self.reserved_1, self.reserved_2)
+
         class Entity(base):
             query = qp
             __tablename__ = '{prefix}entities'.format(prefix=prefix)
@@ -110,23 +133,14 @@ class AlchemySessionContainer:
             username = Column(String(255), nullable=True)
             phone = Column(BigInteger, nullable=True)
             name = Column(String(255), nullable=True)
-            user_status = Column(String(100),  nullable=True) # blank=True,
-            profile_lang = Column(String(32), nullable=True) # blank=True,
-            balance = Column(Numeric(10),  default=0) # precision=5
-            referral = Column(Integer, default=0)
-            subscribe_level = Column(Enum('Free', 'Newbie', 'Advanced', 'Premium'), default='Free') # blank=True,
-            expired = Column(Date, nullable=True) # blank=True,
-            reserved_1 = Column(Integer, nullable=True) # blank=True,
-            reserved_2 = Column(String(255), nullable=True) # blank=True,
+
             def __str__(self):
-                return "Entity('{}', {}, {}, '{}', '{}', '{}', '{}', '{}', '{}', '{}', '{}', '{}', '{}', '{}')".format(
-                    self.session_id, self.id, self.hash, self.username, self.phone, self.name, self.user_status, self.profile_lang,
-                    self.balance, self.referral, self.subscribe_level, self.expired, self.reserved_1, self.reserved_2)
+                return "Entity('{}', {}, {}, '{}', '{}', '{}')".format(
+                    self.session_id, self.id, self.hash, self.username, self.phone, self.name)
 
         class SentFile(base):
             query = qp
             __tablename__ = '{prefix}sent_files'.format(prefix=prefix)
-            # __table_args__ = (PrimaryKeyConstraint('session_id', 'md5_digest(255)', 'file_size', 'type',),)
             session_id = Column(String(255), primary_key=True)
             md5_digest = Column(LargeBinary, nullable=False)
             file_size = Column(Integer, primary_key=True)
