@@ -1,16 +1,19 @@
 #!/usr/bin/env python3
+
+import os
+import sys
+from pathlib import Path
+import yaml
 import csv
 import logging
-import os
 import random
-import sys
 import time
 import uuid
 import base64
 import rsa
 import asyncio
 import dialogflow_v2 as dialogflow
-import yaml
+
 from alchemysession import AlchemySessionContainer
 from telethon import events, TelegramClient
 from telethon.tl.custom import Button
@@ -20,19 +23,23 @@ from payments.payagregator import PaymentAgregator
 
 
 # ============================== Environment Setup ======================
-conf = yaml.safe_load(open(os.path.abspath('config/settings.yaml')))
+
+
 PYTHON_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir))
 sys.path.append(PYTHON_PATH)
+ABS_OF_PARENT_DIR = Path(__file__).resolve().parent
+
+conf = yaml.safe_load(open(os.path.abspath('config/settings.yaml')))
+
 os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "config/Common Bot 1-43c490d227df.json"
 os.environ["PYTHONUNBUFFERED"] = "1"
-
 
 PAYMENT_TOKEN = conf['TELEGRAM']['PAYMENT_TOKEN']
 PAYMENT_SUCCESS_LISTEN = conf['TELEGRAM']['PAYMENT_SUCCESS_LISTEN']
 PAYMENT_SUCCESS_LISTEN_PORT = conf['TELEGRAM']['PAYMENT_SUCCESS_LISTEN_PORT']
-g_order_map = dict()
-g_pubkey = None
-g_payment_agregator = None
+ORDER_MAP = {}
+PUBKEY = None
+PAYMENT_AGGREGATOR = None
 app = web.Application()
 
 logging.basicConfig(
@@ -40,6 +47,7 @@ logging.basicConfig(
     format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
     level=logging.INFO)
 logging.getLogger('telethon').setLevel(level=logging.INFO)
+
 # telegram_handler = logging.Handler()
 # file_handler = logging.FileHandler('logs/error.log')
 # formats = logging.Formatter('[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s')
@@ -84,9 +92,9 @@ Base = declarative_base(metadata=meta)
 db = Session()
 
 
-SQL_USER = config['DEFAULT']['SQL_USER']
-SQL_PASSWORD = config['DEFAULT']['SQL_PASSWORD']
-
+SQL_DB_NAME = conf['SQL']['DB_NAME']
+SQL_USER = conf['SQL']['DB_USER']
+SQL_PASSWORD = conf['SQL']['DB_PASSWORD']
 
 SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://{}:{}@localhost/david_bot'.format(SQL_USER, SQL_PASSWORD)
 FILE_STORAGE = os.path.join(BASE_DIR, 'downloads')
@@ -105,17 +113,17 @@ async def handle(request):
         data = ":" + order_id + ":" + summ + ":"
         sign = base64.b64decode(str(request_json['sign']))
 
-        if g_pubkey is None:
+        if PUBKEY is None:
             return web.Response(status=403)
 
         try:
-            rsa.verify(data.encode(), sign, g_pubkey)
+            rsa.verify(data.encode(), sign, PUBKEY)
         except:
             print("Verification failed")
             return web.Response(status=403)
 
-        global g_order_map
-        value = g_order_map.get(order_id)
+        global ORDER_MAP
+        value = ORDER_MAP.get(order_id)
         if value is not None:
             print("Send message \"payment is ok\"")
             sender, entity, message = value
@@ -131,7 +139,7 @@ async def handle(request):
                                       + '__Ордер: ' + order_id + '__\n'
                                       + '__Сумма: ' + summ + '__\n'
                                       + '**Спасибо, что пользуетесь моими услугами!**')
-            g_order_map.pop(order_id)
+            ORDER_MAP.pop(order_id)
             return web.Response(status=200)
         else:
             print("Global SenderID is None")
@@ -1016,14 +1024,14 @@ async def callback(event):
     #   TODO добавить таблицу сравнения подписок
     #   TODO добавить кнопку "Назад"
     elif event.data == b'kss1' or event.data == b'kss2' or event.data == b'kss3' or event.data == b'kss4':
-        global g_payment_agregator
-        if g_payment_agregator is None:
-            g_payment_agregator = PaymentAgregator()
-            g_payment_agregator.creator('Free Kassa')
-        agregator_status = g_payment_agregator.get_status()
+        global PAYMENT_AGGREGATOR
+        if PAYMENT_AGGREGATOR is None:
+            PAYMENT_AGGREGATOR = PaymentAgregator()
+            PAYMENT_AGGREGATOR.creator('Free Kassa')
+        agregator_status = PAYMENT_AGGREGATOR.get_status()
         # print(agregator_status)
         if agregator_status == 'error':
-            # print("Error description:" + g_payment_agregator.get_last_error())
+            # print("Error description:" + PAYMENT_AGGREGATOR.get_last_error())
             await client.send_message(event.input_sender, 'Упс. Что-то пошло не так.',
                                       buttons=keyboard_subscription_start)
             await event.edit()
@@ -1047,7 +1055,7 @@ async def callback(event):
                 kbd_label = "Оплатить ($40)"
 
             print("Summ:" + summ)
-            payment_link = g_payment_agregator.get_payment_link(order_id, summ)
+            payment_link = PAYMENT_AGGREGATOR.get_payment_link(order_id, summ)
             print(payment_link)
             keyboard_subscr_start_inst = [
                 [
@@ -1062,8 +1070,8 @@ async def callback(event):
                                                buttons=keyboard_subscr_start_inst)
             await event.edit()
             sender = event.input_sender
-            global g_order_map
-            g_order_map[order_id] = (sender, entity, paymsg)
+            global ORDER_MAP
+            ORDER_MAP[order_id] = (sender, entity, paymsg)
 
     # ============================== END Subscriptions  =============================
 
@@ -1115,8 +1123,8 @@ def main():
     # Подгружаем публичный ключ для проверки подписи данных об успешных платежах
     with open('/home/gene/projects/upsilon/config/key.pub', mode='rb') as public_file:
         key_data = public_file.read()
-        global g_pubkey
-        g_pubkey = rsa.PublicKey.load_pkcs1_openssl_pem(key_data)
+        global PUBKEY
+        PUBKEY = rsa.PublicKey.load_pkcs1_openssl_pem(key_data)
 
     # Стартуем веб сервер с отдельным event loop
     print("__Try start web server__")
