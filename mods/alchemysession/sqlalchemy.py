@@ -2,7 +2,7 @@ from typing import Optional, Tuple, Any, Union
 
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm.scoping import scoped_session
-from sqlalchemy import Column, String, Integer, BigInteger, LargeBinary, Numeric, Enum, Date, orm, func, select, BLOB, PrimaryKeyConstraint, and_
+from sqlalchemy import Column, String, Integer, BigInteger, LargeBinary, Numeric, Enum, Date, orm, func, select, and_
 import sqlalchemy as sql
 
 from .orm import AlchemySession
