@@ -154,16 +154,20 @@ def detect_intent_texts(project_id, session_id, text, language_code):
 @client.on(events.NewMessage(pattern='/start'))
 async def start(event):
     referral = str(event.original_update.message.message).split(' ')
+    # if len(referral) > 1:
+
+
+        # user_profile = await user_search(referral[1])
+        # inc = user_profile[13] + 1
+        # await db_save_referral(inc, referral[1])
     if len(referral) > 1:
-        user_profile = await user_search(referral[1])
-        inc = user_profile[13] + 1
-        await db_save_referral(inc, referral[1])
+        print(referral)
     else:
         pass
     sender_id = event.original_update.message.peer_id.user_id
     entity = await client.get_input_entity(sender_id)
     lang = await client.get_entity(PeerUser(sender_id))
-    await db_save_lang(str(lang.lang_code), sender_id)
+    # await db_save_lang(str(lang.lang_code), sender_id)
     keyboard_start = [
         [Button.text('Главное меню', resize=True), Button.text('Профиль', resize=True)]
         # [Button.text('Помощь', resize=True), Button.text('Donate', resize=True)]
@@ -1070,21 +1074,21 @@ async def callback(event):
 
 async def user_search(identifier):
     with connection.cursor() as cursor:
-        cursor.execute("SELECT * FROM django_telethon_session_telethonentity WHERE identifier = %s", [identifier])
+        cursor.execute("SELECT * FROM  entities WHERE identifier = %s", [id])
         row = cursor.fetchone()
     return row
 
 
-async def db_save_lang(value, identifier):
-    with connection.cursor() as cursor:
-        cursor.execute("UPDATE django_telethon_session_telethonentity SET profile_lang = %s WHERE identifier = %s",
-                       [value, identifier])
-
-
-async def db_save_referral(value, identifier):
-    with connection.cursor() as cursor:
-        cursor.execute("UPDATE django_telethon_session_telethonentity SET referral = %s WHERE identifier = %s",
-                       [value, identifier])
+# async def db_save_lang(value, identifier):
+#     with connection.cursor() as cursor:
+#         cursor.execute("UPDATE entities SET profile_lang = %s WHERE identifier = %s",
+#                        [value, id])
+#
+#
+# async def db_save_referral(value, identifier):
+#     with connection.cursor() as cursor:
+#         cursor.execute("UPDATE entities SET referral = %s WHERE identifier = %s",
+#                        [value, id])
 
 
 # Стартуем вебсервер для прослушки приходящих событий об успешных платежах
