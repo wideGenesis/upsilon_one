@@ -110,6 +110,7 @@ class AlchemySessionContainer:
             username = Column(String(32))
             phone = Column(BigInteger)
             name = Column(String(255))
+            user_status = Column(String(100), blank=True, nullable=True)
             profile_lang = Column(String(32), blank=False, nullable=True)
             balance = Column(Numeric(10), precision=5, default=0)
             referral = Column(Integer, default=0)
