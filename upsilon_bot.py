@@ -70,7 +70,7 @@ SERVICE_CHAT = conf['TELEGRAM']['SERVICE_CHAT']
 SQL_DB_NAME = conf['SQL']['DB_NAME']
 SQL_USER = conf['SQL']['DB_USER']
 SQL_PASSWORD = conf['SQL']['DB_PASSWORD']
-SQL_URI = 'mysql+pymysql://{}:{}@localhost/{}?charset=utf8'.format(SQL_USER, SQL_PASSWORD, SQL_DB_NAME)
+SQL_URI = 'mysql+pymysql://{}:{}@localhost/{}'.format(SQL_USER, SQL_PASSWORD, SQL_DB_NAME)
 
 engine = create_engine(SQL_URI, pool_recycle=3600)
 container = AlchemySessionContainer(engine=engine)
@@ -1098,7 +1098,7 @@ async def webserver_starter():
 
 def main():
     # Подгружаем публичный ключ для проверки подписи данных об успешных платежах
-    with open('/home/gene/projects/upsilon/config/key.pub', mode='rb') as public_file:
+    with open('config/key.pub', mode='rb') as public_file:
         key_data = public_file.read()
         global PUBKEY
         PUBKEY = rsa.PublicKey.load_pkcs1_openssl_pem(key_data)

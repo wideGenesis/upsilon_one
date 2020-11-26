@@ -118,6 +118,7 @@ class AlchemySessionContainer:
             expired = Column(Date, nullable=True) # blank=True,
             reserved_1 = Column(Integer, nullable=True) # blank=True,
             reserved_2 = Column(String(255), nullable=True) # blank=True,
+
             def __str__(self):
                 return "Entity('{}', {}, {}, '{}', '{}', '{}', '{}', '{}', '{}', '{}', '{}', '{}', '{}', '{}')".format(
                     self.session_id, self.id, self.hash, self.username, self.phone, self.name, self.user_status, self.profile_lang,

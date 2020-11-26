@@ -6,7 +6,11 @@ from sqlalchemy import orm
 from telethon.sessions.memory import MemorySession, _SentFileType
 from telethon import utils
 from telethon.crypto import AuthKey
-from telethon.tl.types import InputPhoto, InputDocument, PeerUser, PeerChat, PeerChannel, updates
+from telethon.tl.types import (
+    InputPhoto, InputDocument, PeerUser, PeerChat, PeerChannel, updates,
+    InputPeerUser, InputPeerChat, InputPeerChannel
+)
+from telethon.tl import TLObject
 
 if TYPE_CHECKING:
     from .sqlalchemy import AlchemySessionContainer
@@ -93,16 +97,74 @@ class AlchemySession(MemorySession):
         self._db_query(self.UpdateState).delete()
 
     def _entity_values_to_row(self, id: int, hash: int, username: str, phone: str, name: str,
-                              # user_status: str, profile_lang: str, balance: float, referral: int,
-                              # subscribe_level: enumerate, expired: str, reserved_1: int,
-                              # reserved_2: str
+                              user_status: str, profile_lang: str, balance: float, referral: int,
+                              subscribe_level: enumerate, expired: str, reserved_1: int,
+                              reserved_2: str
                               ) -> Any:
-        return self.Entity(session_id=self.session_id, id=id, hash=hash, 
-                           # username=username, phone=phone, name=name,
-                           # user_status=user_status, profile_lang=profile_lang, balance=balance,
-                           # referral=referral, subscribe_level=subscribe_level, expired=expired,
-                           # reserved_1=reserved_1, reserved_2=reserved_2)
+        return self.Entity(session_id=self.session_id, id=id, hash=hash,
+                           username=username, phone=phone, name=name,
+                           user_status=user_status, profile_lang=profile_lang, balance=balance,
+                           referral=referral, subscribe_level=subscribe_level, expired=expired,
+                           reserved_1=reserved_1, reserved_2=reserved_2
         )#TODO ADD FIELDS
+
+    def _entities_to_rows(self, tlo):
+        if not isinstance(tlo, TLObject) and utils.is_list_like(tlo):
+            # This may be a list of users already for instance
+            entities = tlo
+        else:
+            entities = []
+            if hasattr(tlo, 'user'):
+                entities.append(tlo.user)
+            if hasattr(tlo, 'chats') and utils.is_list_like(tlo.chats):
+                entities.extend(tlo.chats)
+            if hasattr(tlo, 'users') and utils.is_list_like(tlo.users):
+                entities.extend(tlo.users)
+
+        rows = []  # Rows to add (id, hash, username, phone, name)
+        for e in entities:
+            row = self._entity_to_row(e)
+            if row:
+                rows.append(row)
+        return rows
+
+    def _entity_to_row(self, e):
+        if not isinstance(e, TLObject):
+            return
+        try:
+            p = utils.get_input_peer(e, allow_self=False)
+            marked_id = utils.get_peer_id(p)
+        except TypeError:
+            # Note: `get_input_peer` already checks for non-zero `access_hash`.
+            #        See issues #354 and #392. It also checks that the entity
+            #        is not `min`, because its `access_hash` cannot be used
+            #        anywhere (since layer 102, there are two access hashes).
+            return
+
+        if isinstance(p, (InputPeerUser, InputPeerChannel)):
+            p_hash = p.access_hash
+        elif isinstance(p, InputPeerChat):
+            p_hash = 0
+        else:
+            return
+
+        username = getattr(e, 'username', None) or None
+        if username is not None:
+            username = username.lower()
+        phone = getattr(e, 'phone', None)
+        name = utils.get_display_name(e) or None
+        user_status = getattr(e, 'user_status', None)
+        profile_lang = getattr(e, 'profile_lang', None)
+        balance = getattr(e, 'balance', None)
+        referral = getattr(e, 'referral', None)
+        subscribe_level = getattr(e, 'subscribe_level', None)
+        expired = getattr(e, 'expired', None)
+        reserved_1 = getattr(e, 'reserved_1', None)
+        reserved_2 = getattr(e, 'reserved_2', None)
+        return self._entity_values_to_row(
+            marked_id, p_hash, username, phone, name, user_status, profile_lang, balance, referral,
+            subscribe_level, expired, reserved_1, reserved_2
+        )
 
     def process_entities(self, tlo: Any) -> None:
         rows = self._entities_to_rows(tlo)

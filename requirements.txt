@@ -5,7 +5,7 @@ beautifulsoup4==4.9.3
 bs4==0.0.1
 cachetools==4.1.1
 certifi==2020.11.8
-cffi==1.14.4
+cffi
 chardet==3.0.4
 cryptography==3.2.1
 cssselect==1.1.0

@@ -89,9 +89,21 @@ class AlchemyCoreSession(AlchemySession):
         with self.engine.begin() as conn:
             conn.execute(t.delete().where(and_(t.c.session_id == self.session_id,
                                                t.c.id.in_([row[0] for row in rows]))))
-            conn.execute(t.insert(), [dict(session_id=self.session_id, id=row[0], hash=row[1],
-                                           username=row[2], phone=row[3], name=row[4]) #TODO ADD FIELDS
+            conn.execute(t.insert(), [dict(session_id=self.session_id, id=row[0], hash=row[1], username=row[2], phone=row[3], name=row[4],
+                              user_status=row[5], profile_lang=row[6], balance=row[7],
+                              referral=row[8], subscribe_level=row[9], expired=row[10], reserved_1=row[11],
+                              reserved_2=row[12]) #TODO ADD FIELDS
                                       for row in rows])
+
+            # values = dict(session_id=self.session_id, id=row[0], hash=row[1], username=row[2], phone=row[3], name=row[4],
+            #       user_status=row[5], profile_lang=row[6], balance=row[7],
+            #       referral=row[8], subscribe_level=row[9], expired=row[10], reserved_1=row[11],
+            #       reserved_2=row[12]
+            #       )  # TODO ADD FIELDS
+            #
+            # conn.execute(t.insert()
+            #      .values(session_id=self.session_id, id=row[0], **values)
+            #      .on_duplicate_key_update(**values))
 
     def get_entity_rows_by_phone(self, key: str) -> Optional[Tuple[int, int]]:
         return self._get_entity_rows_by_condition(self.Entity.__table__.c.phone == key)
