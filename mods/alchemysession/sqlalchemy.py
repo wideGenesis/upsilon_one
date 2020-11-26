@@ -2,7 +2,7 @@ from typing import Optional, Tuple, Any, Union
 
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm.scoping import scoped_session
-from sqlalchemy import Column, String, Integer, BigInteger, LargeBinary, orm, func, select, and_
+from sqlalchemy import Column, String, Integer, BigInteger, LargeBinary, Numeric, Enum, Date, orm, func, select, and_
 import sqlalchemy as sql
 
 from .orm import AlchemySession
@@ -110,18 +110,17 @@ class AlchemySessionContainer:
             username = Column(String(32))
             phone = Column(BigInteger)
             name = Column(String(255))
-            user_status = Column(String(100), blank=True, nullable=True)
-            profile_lang = Column(String(32), blank=False, nullable=True)
-            balance = Column(Numeric(10), precision=5, default=0)
+            user_status = Column(String(100),  nullable=True) # blank=True,
+            profile_lang = Column(String(32), nullable=True) # blank=True,
+            balance = Column(Numeric(10),  default=0) # precision=5
             referral = Column(Integer, default=0)
-            subscribe_level = Column(Enum('Free', 'Newbie', 'Advanced', 'Premium'),
-                                     blank=False, choices=subscribe_level_selector, default='Free')
-            expired = Column(Date, blank=True, nullable=True)
-            reserved_1 = Column(Integer,blank=True, nullable=True)
-            reserved_2 = Column(String(255), blank=True, nullable=True)
+            subscribe_level = Column(Enum('Free', 'Newbie', 'Advanced', 'Premium'), default='Free') # blank=True,
+            expired = Column(Date, nullable=True) # blank=True,
+            reserved_1 = Column(Integer, nullable=True) # blank=True,
+            reserved_2 = Column(String(255), nullable=True) # blank=True,
             def __str__(self):
-                return "Entity('{}', {}, {}, '{}', '{}', '{}', '{}', '{}', '{}', '{}', '{}', '{}', '{}')".format(
-                    self.session_id, self.id, self.hash, self.username, self.phone, self.name, self.profile_lang,
+                return "Entity('{}', {}, {}, '{}', '{}', '{}', '{}', '{}', '{}', '{}', '{}', '{}', '{}', '{}')".format(
+                    self.session_id, self.id, self.hash, self.username, self.phone, self.name, self.user_status, self.profile_lang,
                     self.balance, self.referral, self.subscribe_level, self.expired, self.reserved_1, self.reserved_2)
 
         class SentFile(base):
