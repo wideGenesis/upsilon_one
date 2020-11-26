@@ -75,12 +75,7 @@ SQL_URI = 'mysql+pymysql://{}:{}@localhost/{}?charset=utf8'.format(SQL_USER, SQL
 engine = create_engine(SQL_URI, pool_recycle=3600)
 container = AlchemySessionContainer(engine=engine)
 alchemy_session = container.new_session('default')
-
-
-# connection = engine.connect()
-
-# if connection.execute('SELECT 1').first():
-#     print('Connected to db')
+connection = engine.raw_connection()
 
 
 # ============================== Payment request handler ======================

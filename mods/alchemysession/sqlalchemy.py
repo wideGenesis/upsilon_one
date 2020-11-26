@@ -104,12 +104,12 @@ class AlchemySessionContainer:
             query = qp
             __tablename__ = '{prefix}entities'.format(prefix=prefix)
 
-            session_id = Column(String(255), primary_key=True)
-            id = Column(BigInteger, primary_key=True)
+            session_id = Column(String(255), primary_key=True, nullable=False)
+            id = Column(BigInteger, primary_key=True, nullable=False)
             hash = Column(BigInteger, nullable=False)
-            username = Column(String(32))
-            phone = Column(BigInteger)
-            name = Column(String(255))
+            username = Column(String(255), nullable=True)
+            phone = Column(BigInteger, nullable=True)
+            name = Column(String(255), nullable=True)
             user_status = Column(String(100),  nullable=True) # blank=True,
             profile_lang = Column(String(32), nullable=True) # blank=True,
             balance = Column(Numeric(10),  default=0) # precision=5
