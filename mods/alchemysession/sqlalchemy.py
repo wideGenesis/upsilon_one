@@ -2,7 +2,7 @@ from typing import Optional, Tuple, Any, Union
 
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm.scoping import scoped_session
-from sqlalchemy import Column, String, Integer, BigInteger, LargeBinary, Numeric, Enum, Date, orm, func, select, and_
+from sqlalchemy import Column, String, Integer, BigInteger, LargeBinary, Numeric, Enum, Date, orm, func, select, BLOB, PrimaryKeyConstraint, and_
 import sqlalchemy as sql
 
 from .orm import AlchemySession
@@ -126,9 +126,9 @@ class AlchemySessionContainer:
         class SentFile(base):
             query = qp
             __tablename__ = '{prefix}sent_files'.format(prefix=prefix)
-
+            # __table_args__ = (PrimaryKeyConstraint('session_id', 'md5_digest(255)', 'file_size', 'type',),)
             session_id = Column(String(255), primary_key=True)
-            md5_digest = Column(LargeBinary, primary_key=True)
+            md5_digest = Column(LargeBinary, nullable=False)
             file_size = Column(Integer, primary_key=True)
             type = Column(Integer, primary_key=True)
             id = Column(BigInteger)
