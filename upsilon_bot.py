@@ -14,25 +14,37 @@ import rsa
 import asyncio
 import dialogflow_v2 as dialogflow
 
+from sqlalchemy import create_engine
 from alchemysession import AlchemySessionContainer
+
 from telethon import events, TelegramClient
 from telethon.tl.custom import Button
 from telethon.tl.types import PeerUser
+
 from aiohttp import web
 from payments.payagregator import PaymentAgregator
 
 
 # ============================== Environment Setup ======================
 
-
 PYTHON_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir))
 sys.path.append(PYTHON_PATH)
-ABS_OF_PARENT_DIR = Path(__file__).resolve().parent
+ABS_ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
 
-conf = yaml.safe_load(open(os.path.abspath('config/settings.yaml')))
+conf = yaml.safe_load(open('config/settings.yaml'))
 
 os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "config/Common Bot 1-43c490d227df.json"
 os.environ["PYTHONUNBUFFERED"] = "1"
+
+# ============================== Logging Setup ======================
+logging.basicConfig(
+    filemode='w',
+    filename=os.path.abspath('logs/error.log'),
+    format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
+    level=logging.INFO)
+logging.getLogger('telethon').setLevel(level=logging.INFO)
+
+# ============================== Credentials and GLOBALS ======================
 
 PAYMENT_TOKEN = conf['TELEGRAM']['PAYMENT_TOKEN']
 PAYMENT_SUCCESS_LISTEN = conf['TELEGRAM']['PAYMENT_SUCCESS_LISTEN']
@@ -41,19 +53,6 @@ ORDER_MAP = {}
 PUBKEY = None
 PAYMENT_AGGREGATOR = None
 app = web.Application()
-
-logging.basicConfig(
-    filemode='w',
-    format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
-    level=logging.INFO)
-logging.getLogger('telethon').setLevel(level=logging.INFO)
-
-# telegram_handler = logging.Handler()
-# file_handler = logging.FileHandler('logs/error.log')
-# formats = logging.Formatter('[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s')
-# telegram_handler.setFormatter(formats)
-# file_handler.setFormatter(formats)
-
 
 YAHOO_PATH = conf['PATHS']['YAHOO_PATH']
 IMAGES_OUT_PATH = conf['PATHS']['IMAGES_OUT_PATH']
@@ -66,42 +65,24 @@ UPSILON = conf['TELEGRAM']['UPSILON']
 OWNER = conf['TELEGRAM']['OWNER']
 SERVICE_CHAT = conf['TELEGRAM']['SERVICE_CHAT']
 
-from sqlalchemy import create_engine
-container = AlchemySessionContainer('postgres://user:pass@localhost/telethon')
-engine = create_engine('mysql+pymysql://scott:tiger@localhost/foo')
-
-
-container = AlchemySessionContainer(engine=my_sqlalchemy_engine)
-session = container.new_session('some session id')
-client = TelegramClient(session)
-
-
-from sqlalchemy import create_engine, MetaData
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import sessionmaker
-
-engine = create_engine(SQLALCHEMY_DATABASE_URI, pool_recycle=3600)
-connection = engine.connect()
-
-if connection.execute('SELECT 1').first():
-    print('Connected to db')
-
-Session = sessionmaker(bind=engine)
-meta = MetaData()
-Base = declarative_base(metadata=meta)
-db = Session()
-
+# ============================== SQL Connect ======================
 
 SQL_DB_NAME = conf['SQL']['DB_NAME']
 SQL_USER = conf['SQL']['DB_USER']
 SQL_PASSWORD = conf['SQL']['DB_PASSWORD']
+SQL_URI = 'mysql+pymysql://{}:{}@localhost/{}?charset=utf8'.format(SQL_USER, SQL_PASSWORD, SQL_DB_NAME)
 
-SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://{}:{}@localhost/david_bot'.format(SQL_USER, SQL_PASSWORD)
-FILE_STORAGE = os.path.join(BASE_DIR, 'downloads')
+engine = create_engine(SQL_URI, pool_recycle=3600)
+container = AlchemySessionContainer(engine=engine)
+alchemy_session = container.new_session('default')
 
 
-def init_db():
-    Base.metadata.create_all(engine)
+# connection = engine.connect()
+
+# if connection.execute('SELECT 1').first():
+#     print('Connected to db')
+
+
 # ============================== Payment request handler ======================
 # process only requests with correct payment token
 async def handle(request):
@@ -153,8 +134,9 @@ app.router.add_post("/{token}/", handle)
 
 # ============================== Environment Setup ======================
 # ============================== Init ===================================
-
-client = TelegramClient(DjangoSession(), API_KEY, API_HASH).start(bot_token=UPSILON)
+print('Before start')
+client = TelegramClient(alchemy_session, API_KEY, API_HASH).start(bot_token=UPSILON)
+print('After start')
 
 
 # ============================== Init ===================================

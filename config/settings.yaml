@@ -25,9 +25,9 @@ TELEGRAM:
   TARIFF_IMAGES: 'results/tariff_images/'
 
 SQL:
-  DB_NAME: 'upsilon_db'
-  DB_USER: 'upsilon_user'
-  DB_PASSWORD: 'RAPture1735'
+  DB_NAME: 'upsilon_one'
+  DB_USER: 'upsilon_one'
+  DB_PASSWORD: 'showmethemoney'
   DB_HOST: 'localhost'
   DB_PORT: '3306'
 
