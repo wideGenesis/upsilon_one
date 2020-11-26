@@ -136,7 +136,7 @@ app.router.add_post("/{token}/", handle)
 # ============================== Init ===================================
 print('Before start')
 client = TelegramClient(alchemy_session, API_KEY, API_HASH).start(bot_token=UPSILON)
-print('After start')
+print(client)
 
 
 # ============================== Init ===================================
