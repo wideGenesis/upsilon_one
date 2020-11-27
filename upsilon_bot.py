@@ -11,7 +11,6 @@ import uuid
 import base64
 import rsa
 import asyncio
-import dialogflow_v2 as dialogflow
 
 from sqlalchemy import create_engine
 from alchemysession import AlchemySessionContainer
@@ -24,6 +23,7 @@ from aiohttp import web
 from payments.payagregator import PaymentAgregator
 
 from telegram import buttons
+from telegram import dialogflow
 # ============================== Environment Setup ======================
 
 PYTHON_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir))
@@ -130,21 +130,8 @@ app.router.add_post("/{token}/", handle)
 # ============================== Init ===================================
 client = TelegramClient(alchemy_session, API_KEY, API_HASH).start(bot_token=UPSILON)
 
-# ============================== Dialogflow =============================
-
-
-def detect_intent_texts(project_id, session_id, text, language_code):
-    session_client_d = dialogflow.SessionsClient()
-    session = session_client_d.session_path(project_id, session_id)
-    text_input = dialogflow.types.TextInput(text=text, language_code=language_code)
-    query_input = dialogflow.types.QueryInput(text=text_input)
-    response = session_client_d.detect_intent(session=session, query_input=query_input)
-    return response.query_result.fulfillment_text
-
 
 # ============================== Commands ===============================
-
-
 @client.on(events.NewMessage(pattern='/start'))
 async def start(event):
     referral = str(event.original_update.message.message).split(' ')
@@ -303,7 +290,7 @@ async def dialog_flow(event):
         user_message = event.text
         project_id = 'common-bot-1'
         try:
-            dialogflow_answer = detect_intent_texts(project_id, sender_id.user_id, user_message, 'ru-RU')
+            dialogflow_answer = dialogflow.detect_intent_texts(project_id, sender_id.user_id, user_message, 'ru-RU')
             await client.send_message(sender_id, dialogflow_answer)
             await client.send_message(-1001262211476, str(sender_id.user_id) +
                                       '  \n' + str(event.text) +

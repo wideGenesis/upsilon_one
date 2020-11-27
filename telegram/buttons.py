@@ -269,4 +269,5 @@ keyboard_subscription_professional = [
         Button.inline('\U0001F3E6  ' + '$40', b'kss4')
     ]
 ]
+
 # TODO поменять иконки кнопок
