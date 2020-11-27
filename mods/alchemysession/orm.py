@@ -153,8 +153,8 @@ class AlchemySession(MemorySession):
             username = username.lower()
         phone = getattr(e, 'phone', None)
         name = utils.get_display_name(e) or None
-        user_status = getattr(e, 'user_status', None)
-        profile_lang = getattr(e, 'profile_lang', None)
+        user_status = str(getattr(e, 'status', None))
+        profile_lang = getattr(e, 'lang_code', None)
         balance = getattr(e, 'balance', None)
         referral = getattr(e, 'referral', None)
         subscribe_level = getattr(e, 'subscribe_level', None)

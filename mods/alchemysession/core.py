@@ -78,7 +78,7 @@ class AlchemyCoreSession(AlchemySession):
 
     def _entity_values_to_row(self, id: int, hash: int, username: str, phone: str, name: str
                               ) -> Any:
-        return id, hash, username, phone, name #TODO ADD FIELDS
+        return id, hash, username, phone, name
 
     def process_entities(self, tlo: Any) -> None:
         rows = self._entities_to_rows(tlo)
