@@ -23,7 +23,7 @@ from telethon.tl.types import PeerUser
 from aiohttp import web
 from payments.payagregator import PaymentAgregator
 
-
+from telegram import buttons
 # ============================== Environment Setup ======================
 
 PYTHON_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir))
@@ -196,7 +196,7 @@ async def start(event):
 
 @client.on(events.NewMessage(pattern='Главное меню'))
 async def tools(event):
-    await client.send_message(event.input_sender, 'Главное меню', buttons=keyboard_0)
+    await client.send_message(event.input_sender, 'Главное меню', buttons=buttons.keyboard_0)
 
 
 @client.on(events.NewMessage(pattern='Профиль'))
@@ -340,278 +340,7 @@ async def get_participants_from_chat(event):
 
 
 # ============================== Service Commands =======================
-# ============================== CallbackQuery ==========================
 
-
-keyboard_0 = [
-    [
-        Button.inline('\U0001F52C   ' + 'Анализ рынков', b'a1')
-    ],
-    [
-        Button.inline('\U0001F9EC   ' + 'Конструктор стратегий', b'a2')
-    ],
-    [
-        Button.inline('\U0001F321  ' + 'Калькуляторы', b'a3')
-    ],
-    [
-        Button.inline('\U0001F9BE  ' + 'Управление', b'a4')
-    ],
-    [
-        Button.inline('\U0001F691  ' + 'Инструкции', b'a5')
-    ],
-    [
-        Button.inline('\U0001F393  ' + 'Образование', b'a6')
-    ],
-    [
-        Button.inline('\U0001F92C  ' + 'Налоги', b'a7')
-    ],
-    [
-        Button.inline('\U0001F5C3  ' + 'Агрегатор новостей', b'a8')
-    ]
-]
-
-keyboard_a1 = [
-    [
-        Button.inline('\U0001F5FD  ' + 'Рынок США', b'a1a1')
-    ],
-    [
-        Button.inline('\U0001F513  ' + 'Рынок криптовалют', b'a1a2')
-    ],
-    [
-        Button.inline('\U0001F43B  ' + 'Рынок РФ', b'a1a3')
-    ],
-    [
-        Button.inline('\U0001F504  ' + 'ETF потоки', b'a1a4')
-    ],
-    [
-        Button.inline('\U0001F30D  ' + 'Мировые рынки в картах', b'a1a5')
-    ],
-    [
-        Button.inline('\U0001F9ED   ' + 'Основные макро индикаторы', b'a1a6')
-    ],
-    [
-        Button.inline('\U0001F519  ' + 'Назад', b'main')
-    ]
-]
-
-keyboard_a1_back = [
-    [
-        Button.inline('\U0001F519  ' + 'Назад', b'a1a-1')
-    ]
-]
-
-keyboard_a2 = [
-    [
-        Button.inline('\U0001F4BC   ' + 'Твой профиль риска', b'a2a1')
-    ],
-    [
-        Button.inline('\U0001F4BC  ' + 'Оценка/аудит портфеля', b'a2a2')
-    ],
-    [
-        Button.inline('\U0001F4BC  ' + '"Парковочный" портфель без риска', b'a2a3')
-    ],
-    [
-        Button.inline('\U0001F4BC  ' + 'Всепогодный портфель', b'a2a4')
-    ],
-    [
-        Button.inline('\U0001F4BC  ' + 'Сбалансированный портфель', b'a2a5')
-    ],
-    [
-        Button.inline('\U0001F4BC  ' + 'Агрессивный портфель', b'a2a6')
-    ],
-    [
-        Button.inline('\U0001F4BC  ' + 'Крипто портфель', b'a2a7')
-    ],
-    [
-        Button.inline('\U0001F4BC  ' + 'Трейдинг/Дневные стратегии', b'a2a8')
-    ],
-    [
-        Button.inline('\U0001F519  ' + 'Назад', b'main')
-    ]
-]
-
-keyboard_a2_back = [
-    [
-        Button.inline('\U0001F519  ' + 'Назад', b'a2a-1')
-    ]
-]
-keyboard_a3 = [
-    [
-        Button.inline('\U0001F50E  ' + 'Рассчет количества акций для портфеля', b'a3a1')
-    ],
-    [
-        Button.inline('\U0001F50E  ' + 'Симуляция 10 летней доходности', b'a3a2')
-    ],
-    [
-        Button.inline('\U0001F50E  ' + 'Рассчет оптимального размера взносов', b'a3a3')
-    ],
-    [
-        Button.inline('\U0001F50E  ' + 'Рассчет безопасного размера вывода средств', b'a3a4')
-    ],
-    [
-        Button.inline('\U0001F50E  ' + 'Сложный процент', b'a3a5')
-    ],
-    [
-        Button.inline('\U0001F519  ' + 'Назад', b'main')
-    ]
-]
-
-keyboard_a3_back = [
-    [
-        Button.inline('\U0001F519  ' + 'Назад', b'a3a-1')
-    ]
-]
-keyboard_a4 = [
-    [
-        Button.inline('\U0001F4A1 ' + 'Маркетплейс управляющих', b'a4a1')
-    ],
-    [
-        Button.inline('\U0001F6E1   ' + 'Стать управляющим', b'a4a2')
-    ],
-    [
-        Button.inline('\U0001F519  ' + 'Назад', b'main')
-    ]
-]
-
-keyboard_a4_back = [
-    [
-        Button.inline('\U0001F519  ' + 'Назад', b'a4a-1')
-    ]
-]
-
-keyboard_a5 = [
-    [
-        Button.inline('\U0001F50D   ' + 'Как ... /instruction01', b'a5a1')
-    ],
-    [
-        Button.inline('\U0001F50D   ' + 'Что ... /instruction02', b'a5a2')
-    ],
-    [
-        Button.inline('\U0001F519  ' + 'Назад', b'main')
-    ]
-]
-
-keyboard_a5_back = [
-    [
-        Button.inline('\U0001F519  ' + 'Назад', b'a5a-1')
-    ]
-]
-
-keyboard_a6 = [
-    [
-        Button.inline('\U0001F476   ' + 'Основы инвестирования', b'a6a1')
-    ],
-    [
-        Button.inline('\U0001F468  ' + 'Как собрать свой первый портфель', b'a6a2')
-    ],
-    [
-        Button.inline('\U0001F9D4  ' + 'Профессиональные решения', b'a6a3')
-    ],
-    [
-        Button.inline('\U0001F519  ' + 'Назад', b'main')
-    ]
-]
-
-keyboard_a6_back = [
-    [
-        Button.inline('\U0001F519  ' + 'Назад', b'a6a-1')
-    ]
-]
-
-keyboard_a7 = [
-    [
-        Button.inline('\U0001F5DC  ' + 'Оптимизация налогов', b'a7a1')
-    ],
-    [
-        Button.inline('\U0001F46E  ' + 'Подготовка налоговых деклараций', b'a7a2')
-    ],
-    [
-        Button.inline('\U0001F519  ' + 'Назад', b'main')
-    ]
-]
-
-keyboard_a7_back = [
-    [
-        Button.inline('\U0001F519  ' + 'Назад', b'a7a-1')
-    ]
-]
-
-keyboard_a8 = [
-    [
-        Button.inline('\U0001F5DE  ' + 'Поставщики новостей', b'a9a1')
-    ],
-    [
-        Button.inline('\U0001F4B1   ' + 'Тикеры', b'a9a2')
-    ]
-]
-
-keyboard_a8_back = [
-    [
-        Button.inline('\U0001F519  ' + 'Назад', b'a8a-1')
-    ]
-]
-
-keyboard_core_macro = [
-    [
-        Button.inline('\U0001F3E6  ' + 'Interest Rates', b'cm1')
-    ],
-    [
-        Button.inline('\U0001F321	  ' + 'Inflation Rates', b'cm2')
-    ],
-    [
-        Button.inline('\U0001F525  ' + 'Unemployment Rates', b'cm3')
-    ],
-    [
-        Button.inline('\U0001F3E2  ' + 'Composite PMI', b'cm4')
-    ],
-    [
-        Button.inline('\U0001F519  ' + 'Назад', b'cm-2')
-    ]
-]
-
-keyboard_core_macro_back = [
-    [
-        Button.inline('\U0001F519  ' + 'Назад', b'cm-1')
-    ]
-]
-
-# ============================== Кнопки подписок =============================
-keyboard_core_subscriptions = [
-    [
-        Button.inline('\U0001F3E6  ' + 'Старт', b'kcs1')
-    ],
-    [
-        Button.inline('\U0001F321	  ' + 'Базовый', b'kcs2')
-    ],
-    [
-        Button.inline('\U0001F525  ' + 'Продвинутый', b'kcs3')
-    ],
-    [
-        Button.inline('\U0001F3E2  ' + 'Профессиональный', b'kcs4')
-    ]
-]
-
-keyboard_subscription_start = [
-    [
-        Button.inline('\U0001F3E6  ' + '$15', b'kss1')
-    ]
-]
-keyboard_subscription_base = [
-    [
-        Button.inline('\U0001F3E6  ' + '$25', b'kss2')
-    ]
-]
-keyboard_subscription_advanced = [
-    [
-        Button.inline('\U0001F3E6  ' + '$30', b'kss3')
-    ]
-]
-keyboard_subscription_professional = [
-    [
-        Button.inline('\U0001F3E6  ' + '$40', b'kss4')
-    ]
-]
-# TODO поменять иконки кнопок
 
 
 @client.on(events.CallbackQuery)
@@ -621,31 +350,31 @@ async def callback(event):
 
     # ============================== Главное меню 1 уровень=============================
     if event.data == b'a1':
-        await client.send_message(event.input_sender, 'Анализ рынков', buttons=keyboard_a1)
+        await client.send_message(event.input_sender, 'Анализ рынков', buttons=buttons.keyboard_a1)
         await event.edit()
     elif event.data == b'a2':
-        await client.send_message(event.input_sender, 'Конструктор портфелей', buttons=keyboard_a2)
+        await client.send_message(event.input_sender, 'Конструктор портфелей', buttons=buttons.keyboard_a2)
         await event.edit()
     elif event.data == b'a3':
-        await client.send_message(event.input_sender, 'Калькуляторы', buttons=keyboard_a3)
+        await client.send_message(event.input_sender, 'Калькуляторы', buttons=buttons.keyboard_a3)
         await event.edit()
     elif event.data == b'a4':
-        await client.send_message(event.input_sender, 'Управление', buttons=keyboard_a4)
+        await client.send_message(event.input_sender, 'Управление', buttons=buttons.keyboard_a4)
         await event.edit()
     elif event.data == b'a5':
-        await client.send_message(event.input_sender, 'Инструкции', buttons=keyboard_a5)
+        await client.send_message(event.input_sender, 'Инструкции', buttons=buttons.keyboard_a5)
         await event.edit()
     elif event.data == b'a6':
-        await client.send_message(event.input_sender, 'Образование', buttons=keyboard_a6)
+        await client.send_message(event.input_sender, 'Образование', buttons=buttons.keyboard_a6)
         await event.edit()
     elif event.data == b'a7':
-        await client.send_message(event.input_sender, 'Налоги', buttons=keyboard_a7)
+        await client.send_message(event.input_sender, 'Налоги', buttons=buttons.keyboard_a7)
         await event.edit()
     elif event.data == b'a8':
-        await client.send_message(event.input_sender, 'Агрегатор новостей', buttons=keyboard_a8)
+        await client.send_message(event.input_sender, 'Агрегатор новостей', buttons=buttons.keyboard_a8)
         await event.edit()
     elif event.data == b'main':
-        await client.send_message(event.input_sender, 'Главное меню', buttons=keyboard_0)
+        await client.send_message(event.input_sender, 'Главное меню', buttons=buttons.keyboard_0)
         await event.edit()
 
     # ============================== Анализ рынков 2 уровень=============================
@@ -666,7 +395,7 @@ async def callback(event):
         await client.edit_message(message, 'Анализ рынка США')
         await event.edit()
         await client.send_message(event.input_sender, 'Как интерпритировать графики выше? /instruction01',
-                                  buttons=keyboard_a1_back)
+                                  buttons=buttons.keyboard_a1_back)
     elif event.data == b'a1a2':
         message = await client.send_message(entity=entity, message='Загрузка...')
         await client.send_message(event.input_sender, 'Общая картина')
@@ -676,7 +405,7 @@ async def callback(event):
         await client.edit_message(message, 'Рынок криптовалют')
         await event.edit()
         await client.send_message(event.input_sender, 'Как интерпритировать графики выше? /instruction01',
-                                  buttons=keyboard_a1_back)
+                                  buttons=buttons.keyboard_a1_back)
     elif event.data == b'a1a3':
         message = await client.send_message(entity=entity, message='Загрузка...')
         await client.send_message(event.input_sender, 'Общая картина')
@@ -684,7 +413,7 @@ async def callback(event):
         await client.edit_message(message, 'Рынок РФ')
         await event.edit()
         await client.send_message(event.input_sender, 'Как интерпритировать графики выше? /instruction01',
-                                  buttons=keyboard_a1_back)
+                                  buttons=buttons.keyboard_a1_back)
     elif event.data == b'a1a4':
         message = await client.send_message(entity=entity, message='Загрузка...')
         await client.send_message(entity=entity, message='Денежные потоки в миллионах USD')
@@ -709,7 +438,7 @@ async def callback(event):
         await client.edit_message(message, 'Ежедневные денежные потоки основных ETF за месяц')
         await event.edit()
         await client.send_message(event.input_sender, 'Как интерпритировать денежные потоки? /instruction02',
-                                  buttons=keyboard_a1_back)
+                                  buttons=buttons.keyboard_a1_back)
     elif event.data == b'a1a5':
         message = await client.send_message(entity=entity, message='Загрузка...')
         await client.send_message(event.input_sender, 'Общая картина 1-day performance')
@@ -719,12 +448,12 @@ async def callback(event):
         await client.edit_message(message, 'Мировые рынки в картах')
         await event.edit()
         await client.send_message(event.input_sender, 'Как ? /instruction02',
-                                  buttons=keyboard_a1_back)
+                                  buttons=buttons.keyboard_a1_back)
     elif event.data == b'a1a6':
-        await client.send_message(event.input_sender, 'Основные макро индикаторы', buttons=keyboard_core_macro)
+        await client.send_message(event.input_sender, 'Основные макро индикаторы', buttons=buttons.keyboard_core_macro)
         await event.edit()
     elif event.data == b'a1a-1':
-        await client.send_message(event.input_sender, 'Анализ рынков', buttons=keyboard_a1)
+        await client.send_message(event.input_sender, 'Анализ рынков', buttons=buttons.keyboard_a1)
         await event.edit()
 
     # ============================== Конструктор стратегий =============================
@@ -733,51 +462,51 @@ async def callback(event):
         await client.edit_message(message, 'Твой профиль риска')
         await event.edit()
         await client.send_message(event.input_sender, 'Зачем нужно знать свой профиль риска? /instruction03',
-                                  buttons=keyboard_a2_back)
+                                  buttons=buttons.keyboard_a2_back)
     elif event.data == b'a2a2':
         message = await client.send_message(entity=entity, message='Загрузка...')
         await client.edit_message(message, 'Оценка/аудит портфеля')
         await event.edit()
         await client.send_message(event.input_sender, 'Зачем проводить аудит своего портфеля? /instruction04',
-                                  buttons=keyboard_a2_back)
+                                  buttons=buttons.keyboard_a2_back)
     elif event.data == b'a2a3':
         message = await client.send_message(entity=entity, message='Загрузка...')
         await client.edit_message(message, '"Парковочный" портфель без риска')
         await event.edit()
         await client.send_message(event.input_sender, 'Кому и когда покупать парковочный портфель? /instruction05',
-                                  buttons=keyboard_a2_back)
+                                  buttons=buttons.keyboard_a2_back)
     elif event.data == b'a2a4':
         message = await client.send_message(entity=entity, message='Загрузка...')
         await client.edit_message(message, 'Всепогодный портфель')
         await event.edit()
         await client.send_message(event.input_sender, 'Кому и когда покупать всепогодный портфель? /instruction06',
-                                  buttons=keyboard_a2_back)
+                                  buttons=buttons.keyboard_a2_back)
     elif event.data == b'a2a5':
         message = await client.send_message(entity=entity, message='Загрузка...')
         await client.edit_message(message, 'Сбалансированный портфель')
         await event.edit()
         await client.send_message(event.input_sender, 'Кому и когда покупать сбалансированный портфель? /instruction07',
-                                  buttons=keyboard_a2_back)
+                                  buttons=buttons.keyboard_a2_back)
     elif event.data == b'a2a6':
         message = await client.send_message(entity=entity, message='Загрузка...')
         await client.edit_message(message, 'Агрессивный портфель')
         await event.edit()
         await client.send_message(event.input_sender, 'Кому и когда покупать агрессивный портфель? /instruction08',
-                                  buttons=keyboard_a2_back)
+                                  buttons=buttons.keyboard_a2_back)
     elif event.data == b'a2a7':
         message = await client.send_message(entity=entity, message='Загрузка...')
         await client.edit_message(message, 'Крипто портфель')
         await event.edit()
         await client.send_message(event.input_sender, 'Кому и когда покупать крипто портфель? /instruction09',
-                                  buttons=keyboard_a2_back)
+                                  buttons=buttons.keyboard_a2_back)
     elif event.data == b'a2a8':
         message = await client.send_message(entity=entity, message='Загрузка...')
         await client.edit_message(message, 'Трейдинг/Дневные стратегии')
         await event.edit()
         await client.send_message(event.input_sender, 'Подходит ли вам трейдинг? /instruction10',
-                                  buttons=keyboard_a2_back)
+                                  buttons=buttons.keyboard_a2_back)
     elif event.data == b'a2a-1':
-        await client.send_message(event.input_sender, 'Конструктор стратегий', buttons=keyboard_a2)
+        await client.send_message(event.input_sender, 'Конструктор стратегий', buttons=buttons.keyboard_a2)
         await event.edit()
 
     # ============================== Калькуляторы =============================
@@ -786,34 +515,34 @@ async def callback(event):
         await client.edit_message(message, 'Рассчет количества акций для портфеля')
         await event.edit()
         await client.send_message(event.input_sender, 'Конвертация весов в количество? /instruction11',
-                                  buttons=keyboard_a3_back)
+                                  buttons=buttons.keyboard_a3_back)
     elif event.data == b'a3a2':
         message = await client.send_message(entity=entity, message='Загрузка...')
         await client.edit_message(message, 'Симуляция 10 летней доходности')
         await event.edit()
         await client.send_message(event.input_sender,
                                   'Что ожидать от текущего портфеля в ближайшую декаду? /instruction12',
-                                  buttons=keyboard_a3_back)
+                                  buttons=buttons.keyboard_a3_back)
     elif event.data == b'a3a3':
         message = await client.send_message(entity=entity, message='Загрузка...')
         await client.edit_message(message, 'Рассчет оптимального размера взносов')
         await event.edit()
         await client.send_message(event.input_sender, 'Почему взносы необходимы? /instruction13',
-                                  buttons=keyboard_a3_back)
+                                  buttons=buttons.keyboard_a3_back)
     elif event.data == b'a3a4':
         message = await client.send_message(entity=entity, message='Загрузка...')
         await client.edit_message(message, 'Рассчет безопасного размера вывода средств')
         await event.edit()
         await client.send_message(event.input_sender, 'Сколько можно выводить средств? /instruction14',
-                                  buttons=keyboard_a3_back)
+                                  buttons=buttons.keyboard_a3_back)
     elif event.data == b'a3a5':
         message = await client.send_message(entity=entity, message='Загрузка...')
         await client.edit_message(message, 'Сложный процент')
         await event.edit()
         await client.send_message(event.input_sender, 'Сложный процент в действии. /instruction15',
-                                  buttons=keyboard_a3_back)
+                                  buttons=buttons.keyboard_a3_back)
     elif event.data == b'a3a-1':
-        await client.send_message(event.input_sender, 'Калькуляторы', buttons=keyboard_a3)
+        await client.send_message(event.input_sender, 'Калькуляторы', buttons=buttons.keyboard_a3)
         await event.edit()
 
     # ============================== Управление =============================
@@ -822,15 +551,15 @@ async def callback(event):
         await client.edit_message(message, 'Маркетплейс управляющих')
         await event.edit()
         await client.send_message(event.input_sender, 'Все об управлени активами. /instruction16',
-                                  buttons=keyboard_a4_back)
+                                  buttons=buttons.keyboard_a4_back)
     elif event.data == b'a4a2':
         message = await client.send_message(entity=entity, message='Загрузка...')
         await client.edit_message(message, 'Стать управляющим')
         await event.edit()
         await client.send_message(event.input_sender, 'Стать управляющим',
-                                  buttons=keyboard_a4_back)
+                                  buttons=buttons.keyboard_a4_back)
     elif event.data == b'a4a-1':
-        await client.send_message(event.input_sender, 'Управление', buttons=keyboard_a4)
+        await client.send_message(event.input_sender, 'Управление', buttons=buttons.keyboard_a4)
         await event.edit()
 
     # ============================== Инструкции =============================
@@ -839,15 +568,15 @@ async def callback(event):
         await client.edit_message(message, 'Как ... /instruction01')
         await event.edit()
         await client.send_message(event.input_sender, 'Как ... /instruction01',
-                                  buttons=keyboard_a5_back)
+                                  buttons=buttons.keyboard_a5_back)
     elif event.data == b'a5a2':
         message = await client.send_message(entity=entity, message='Загрузка...')
         await client.edit_message(message, 'Что ... /instruction02')
         await event.edit()
         await client.send_message(event.input_sender, 'Что ... /instruction02',
-                                  buttons=keyboard_a5_back)
+                                  buttons=buttons.keyboard_a5_back)
     elif event.data == b'a5a-1':
-        await client.send_message(event.input_sender, 'Инструкции', buttons=keyboard_a5)
+        await client.send_message(event.input_sender, 'Инструкции', buttons=buttons.keyboard_a5)
         await event.edit()
 
     # ============================== Образовательные программы =============================
@@ -856,21 +585,21 @@ async def callback(event):
         await client.edit_message(message, 'Основы инвестирования')
         await event.edit()
         await client.send_message(event.input_sender, 'Основы инвестирования /instruction20',
-                                  buttons=keyboard_a6_back)
+                                  buttons=buttons.keyboard_a6_back)
     elif event.data == b'a6a2':
         message = await client.send_message(entity=entity, message='Загрузка...')
         await client.edit_message(message, 'Как собрать свой первый портфель')
         await event.edit()
         await client.send_message(event.input_sender, 'Как собрать свой первый портфель /instruction21',
-                                  buttons=keyboard_a6_back)
+                                  buttons=buttons.keyboard_a6_back)
     elif event.data == b'a6a3':
         message = await client.send_message(entity=entity, message='Загрузка...')
         await client.edit_message(message, 'Профессиональные решения')
         await event.edit()
         await client.send_message(event.input_sender, 'Профессиональные решения /instruction22',
-                                  buttons=keyboard_a6_back)
+                                  buttons=buttons.keyboard_a6_back)
     elif event.data == b'a6a-1':
-        await client.send_message(event.input_sender, 'Образование', buttons=keyboard_a6)
+        await client.send_message(event.input_sender, 'Образование', buttons=buttons.keyboard_a6)
         await event.edit()
 
     # ============================== Налоги =============================
@@ -879,15 +608,15 @@ async def callback(event):
         await client.edit_message(message, 'Оптимизация налогов')
         await event.edit()
         await client.send_message(event.input_sender, 'Оптимизация налогов /instruction30',
-                                  buttons=keyboard_a7_back)
+                                  buttons=buttons.keyboard_a7_back)
     elif event.data == b'a7a2':
         message = await client.send_message(entity=entity, message='Загрузка...')
         await client.edit_message(message, 'Подготовка налоговых деклараций')
         await event.edit()
         await client.send_message(event.input_sender, 'Подготовка налоговых деклараций /instruction30',
-                                  buttons=keyboard_a7_back)
+                                  buttons=buttons.keyboard_a7_back)
     elif event.data == b'a7a-1':
-        await client.send_message(event.input_sender, 'Налоги', buttons=keyboard_a7)
+        await client.send_message(event.input_sender, 'Налоги', buttons=buttons.keyboard_a7)
         await event.edit()
 
     # ============================== Агрегатор новостей =============================
@@ -896,15 +625,15 @@ async def callback(event):
         await client.edit_message(message, 'Поставщики новостей')
         await event.edit()
         await client.send_message(event.input_sender, 'Поставщики новостей',
-                                  buttons=keyboard_a8_back)
+                                  buttons=buttons.keyboard_a8_back)
     elif event.data == b'a8a2':
         message = await client.send_message(entity=entity, message='Загрузка...')
         await client.edit_message(message, 'Тикеры')
         await event.edit()
         await client.send_message(event.input_sender, 'Тикеры',
-                                  buttons=keyboard_a8_back)
+                                  buttons=buttons.keyboard_a8_back)
     elif event.data == b'a8a-1':
-        await client.send_message(event.input_sender, 'Агрегатор новостей', buttons=keyboard_a8)
+        await client.send_message(event.input_sender, 'Агрегатор новостей', buttons=buttons.keyboard_a8)
         await event.edit()
 
     # elif event.data == b'a4a1':
@@ -930,7 +659,7 @@ async def callback(event):
                     new_row = ',  '.join(row)
                     await client.send_message(entity=entity, message=f'{new_row}')
         await event.edit()
-        await client.send_message(event.input_sender, '________________________', buttons=keyboard_core_macro)
+        await client.send_message(event.input_sender, '________________________', buttons=buttons.keyboard_core_macro)
     elif event.data == b'cm2':
         await client.send_message(entity=entity, message='Interest Rates')
         await client.send_message(entity=entity, message='Data, Country, Last, Previous, Reference, Unit')
@@ -942,7 +671,7 @@ async def callback(event):
                     new_row = ',  '.join(row)
                     await client.send_message(entity=entity, message=f'{new_row}')
         await event.edit()
-        await client.send_message(event.input_sender, '________________________', buttons=keyboard_core_macro)
+        await client.send_message(event.input_sender, '________________________', buttons=buttons.keyboard_core_macro)
     elif event.data == b'cm3':
         await client.send_message(entity=entity, message='Interest Rates')
         await client.send_message(entity=entity, message='Data, Country, Last, Previous, Reference, Unit')
@@ -954,7 +683,7 @@ async def callback(event):
                     new_row = ',  '.join(row)
                     await client.send_message(entity=entity, message=f'{new_row}')
         await event.edit()
-        await client.send_message(event.input_sender, '________________________', buttons=keyboard_core_macro)
+        await client.send_message(event.input_sender, '________________________', buttons=buttons.keyboard_core_macro)
     elif event.data == b'cm4':
         await client.send_message(entity=entity, message='Interest Rates')
         await client.send_message(entity=entity, message='Data, Country, Last, Previous, Reference, Unit')
@@ -966,34 +695,34 @@ async def callback(event):
                     new_row = ',  '.join(row)
                     await client.send_message(entity=entity, message=f'{new_row}')
         await event.edit()
-        await client.send_message(event.input_sender, '________________________', buttons=keyboard_core_macro)
+        await client.send_message(event.input_sender, '________________________', buttons=buttons.keyboard_core_macro)
     elif event.data == b'cm-1':
-        await client.send_message(event.input_sender, 'Назад', buttons=keyboard_core_macro_back)
+        await client.send_message(event.input_sender, 'Назад', buttons=buttons.keyboard_core_macro_back)
         await event.edit()
     elif event.data == b'cm-2':
-        await client.send_message(event.input_sender, 'Назад', buttons=keyboard_a1)
+        await client.send_message(event.input_sender, 'Назад', buttons=buttons.keyboard_a1)
         await event.edit()
 
     # ============================== Subscriptions =============================
     elif event.data == b'z1':
-        await client.send_message(event.input_sender, 'Уровень подписок', buttons=keyboard_core_subscriptions)
+        await client.send_message(event.input_sender, 'Уровень подписок', buttons=buttons.keyboard_core_subscriptions)
         await event.edit()
     elif event.data == b'kcs1':
         await client.send_file(event.input_sender, TARIFF_IMAGES + 'tariff_start.jpg')
-        await client.send_message(event.input_sender, 'Тут описание тарифа Старт', buttons=keyboard_subscription_start)
+        await client.send_message(event.input_sender, 'Тут описание тарифа Старт', buttons=buttons.keyboard_subscription_start)
         await event.edit()
     elif event.data == b'kcs2':
         await client.send_file(event.input_sender, TARIFF_IMAGES + '/tariff_base.png')
         await client.send_message(event.input_sender, 'Тут описание тарифа Базовый',
-                                  buttons=keyboard_subscription_base)
+                                  buttons=buttons.keyboard_subscription_base)
     elif event.data == b'kcs3':
         await client.send_file(event.input_sender, TARIFF_IMAGES + '/tariff_advanced.png')
         await client.send_message(event.input_sender, 'Тут описание тарифа Продвинутый',
-                                  buttons=keyboard_subscription_advanced)
+                                  buttons=buttons.keyboard_subscription_advanced)
     elif event.data == b'kcs4':
         await client.send_file(event.input_sender, TARIFF_IMAGES + '/tariff_professional.jpg')
         await client.send_message(event.input_sender, 'Тут описание тарифа Профессиональный',
-                                  buttons=keyboard_subscription_professional)
+                                  buttons=buttons.keyboard_subscription_professional)
     #   TODO добавить описание подписок
     #   TODO добавить таблицу сравнения подписок
     #   TODO добавить кнопку "Назад"
@@ -1007,7 +736,7 @@ async def callback(event):
         if agregator_status == 'error':
             # print("Error description:" + PAYMENT_AGGREGATOR.get_last_error())
             await client.send_message(event.input_sender, 'Упс. Что-то пошло не так.',
-                                      buttons=keyboard_subscription_start)
+                                      buttons=buttons.keyboard_subscription_start)
             await event.edit()
         else:
             # print("user_id=" + str(sender_id.user_id))
