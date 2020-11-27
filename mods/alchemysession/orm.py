@@ -155,12 +155,14 @@ class AlchemySession(MemorySession):
         name = utils.get_display_name(e) or None
         user_status = str(getattr(e, 'status', None))
         profile_lang = getattr(e, 'lang_code', None)
-        balance = getattr(e, 'balance', None)
-        referral = getattr(e, 'referral', None)
-        subscribe_level = getattr(e, 'subscribe_level', None)
-        expired = getattr(e, 'expired', None)
-        reserved_1 = getattr(e, 'reserved_1', None)
-        reserved_2 = getattr(e, 'reserved_2', None)
+
+        ext_rows = self.get_entity_ext_rows_by_id(marked_id)
+        balance = ext_rows[0] if ext_rows else  0
+        referral = ext_rows[1] if ext_rows else  0
+        subscribe_level = ext_rows[2] if ext_rows else 'Free'
+        expired = ext_rows[3] if ext_rows else None
+        reserved_1 = ext_rows[4] if ext_rows else None
+        reserved_2 = ext_rows[5] if ext_rows else None
         return self._entity_values_to_row(
             marked_id, p_hash, username, phone, name, user_status, profile_lang, balance, referral,
             subscribe_level, expired, reserved_1, reserved_2
@@ -203,6 +205,22 @@ class AlchemySession(MemorySession):
 
         row = query.one_or_none()
         return (row.id, row.hash) if row else None
+
+    def get_entity_ext_rows_by_id(self, key: int, exact: bool = True) -> Optional[Tuple[int, int]]:
+        if exact:
+            query = self._db_query(self.Entity, self.Entity.id == key)
+        else:
+            ids = (
+                utils.get_peer_id(PeerUser(key)),
+                utils.get_peer_id(PeerChat(key)),
+                utils.get_peer_id(PeerChannel(key))
+            )
+            query = self._db_query(self.Entity, self.Entity.id.in_(ids))
+
+        row = query.one_or_none()
+        return (row.balance, row.referral, row.subscribe_level,
+                row.expired, row.reserved_1, row.reserved_2
+                ) if row else None
 
     def get_file(self, md5_digest: str, file_size: int, cls: Any) -> Optional[Tuple[int, int]]:
         row = self._db_query(self.SentFile,
