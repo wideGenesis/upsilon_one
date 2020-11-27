@@ -150,7 +150,6 @@ async def start(event):
     referral = str(event.original_update.message.message).split(' ')
     # if len(referral) > 1:
 
-
         # user_profile = await user_search(referral[1])
         # inc = user_profile[13] + 1
         # await db_save_referral(inc, referral[1])
