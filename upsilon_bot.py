@@ -2,7 +2,6 @@
 
 import os
 import sys
-from pathlib import Path
 import yaml
 import csv
 import logging
@@ -127,14 +126,10 @@ async def handle(request):
 
 app.router.add_post("/{token}/", handle)
 
-# ============================== Environment Setup ======================
+
 # ============================== Init ===================================
-print('Before start')
 client = TelegramClient(alchemy_session, API_KEY, API_HASH).start(bot_token=UPSILON)
-print(client)
 
-
-# ============================== Init ===================================
 # ============================== Dialogflow =============================
 
 
@@ -147,7 +142,6 @@ def detect_intent_texts(project_id, session_id, text, language_code):
     return response.query_result.fulfillment_text
 
 
-# ============================== Dialogflow =============================
 # ============================== Commands ===============================
 
 
@@ -1097,7 +1091,6 @@ async def webserver_starter():
     await runner.setup()
     site = web.TCPSite(runner, PAYMENT_SUCCESS_LISTEN, PAYMENT_SUCCESS_LISTEN_PORT)
     await site.start()
-    print("Web Server was started!")
 
 
 def main():
@@ -1108,20 +1101,19 @@ def main():
         PUBKEY = rsa.PublicKey.load_pkcs1_openssl_pem(key_data)
 
     # Стартуем веб сервер с отдельным event loop
-    print("__Try start web server__")
+    print("_____Running web server_____", '\n')
     loop = asyncio.get_event_loop()
     loop.run_until_complete(webserver_starter())
-    print("__Try start tlethon client__")
+    print("__Running telethon client__", '\n')
 
     # Старт клиента Телетон
     client.run_until_disconnected()
 
-    # if not os.path.exists(results_path):
-    #     os.makedirs(results_path)
-
 
 if __name__ == '__main__':
-    print("Starting sequence")
-    print(sys.path)
+    print("__Ignition sequence start__", '\n')
+    # print(sys.path)
     main()
+
+
 
