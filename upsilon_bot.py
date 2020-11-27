@@ -204,7 +204,7 @@ async def profile(event):
 @client.on(events.NewMessage(pattern='Помощь'))
 async def helper(event):
     await client.send_message(event.input_sender,
-                              '**Задавайте вопросы прямо или воспользуйтесь меню**' + '\n' +
+                              '** Задавайте вопросы прямо или воспользуйтесь меню **' + '\n' +
                               '\n' +
                               '**Я умею:**' + '\n' +
                               '\n' +
