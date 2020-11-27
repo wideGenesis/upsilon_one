@@ -23,7 +23,7 @@ from aiohttp import web
 from payments.payagregator import PaymentAgregator
 
 from telegram import buttons
-from telegram import dialogflow
+from telegram import ai
 # ============================== Environment Setup ======================
 
 PYTHON_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir))
@@ -290,7 +290,7 @@ async def dialog_flow(event):
         user_message = event.text
         project_id = 'common-bot-1'
         try:
-            dialogflow_answer = dialogflow.detect_intent_texts(project_id, sender_id.user_id, user_message, 'ru-RU')
+            dialogflow_answer = ai.detect_intent_texts(project_id, sender_id.user_id, user_message, 'ru-RU')
             await client.send_message(sender_id, dialogflow_answer)
             await client.send_message(-1001262211476, str(sender_id.user_id) +
                                       '  \n' + str(event.text) +
