@@ -135,14 +135,18 @@ client = TelegramClient(alchemy_session, API_KEY, API_HASH).start(bot_token=UPSI
 @client.on(events.NewMessage(pattern='/start'))
 async def start(event):
     referral = str(event.original_update.message.message).split(' ')
+    # if len(referral) > 1:
+
+        # user_profile = await user_search(referral[1])
+        # inc = user_profile[13] + 1
+        # await db_save_referral(inc, referral[1])
     if len(referral) > 1:
-        user_profile = await user_search(referral[1])
-        inc = user_profile[13] + 1
-        await db_save_referral(inc, referral[1])
+        print(referral)
+    else:
+        pass
     sender_id = event.original_update.message.peer_id.user_id
     entity = await client.get_input_entity(sender_id)
-    # TODO Если бот будет двуязычным, то нужно будет сделать возможность выбора языка и сохранение его в базу
-    # lang = await client.get_entity(PeerUser(sender_id))
+    lang = await client.get_entity(PeerUser(sender_id))
     # await db_save_lang(str(lang.lang_code), sender_id)
     keyboard_start = [
         [Button.text('Главное меню', resize=True), Button.text('Профиль', resize=True)]
@@ -192,13 +196,13 @@ async def profile(event):
     await client.get_input_entity(sender_id)
     user_profile = await user_search(sender_id.user_id)
     await client.send_message(event.input_sender,
-                              f'\U0001F464 : {user_profile[3]}' + '\n' +
-                              f'Имя: {user_profile[5]}' + '\n' +
+                              f'\U0001F464 : {user_profile[4]}' + '\n' +
+                              f'Имя: {user_profile[6]}' + '\n' +
                               '\n' +
-                              f'баланс: {user_profile[8]}' + '\n' +
-                              f'Подписка действительна до: {user_profile[11]}' + '\n' +
-                              f'Приглашено: {user_profile[9]}' + '\n' +
-                              f'Уровень подписки: {user_profile[10]}', buttons=keyboard_z1)
+                              f'баланс: {user_profile[7]}' + '\n' +
+                              f'Подписка действительна до: {user_profile[8]}' + '\n' +
+                              f'Приглашено: {user_profile[12]}' + '\n' +
+                              f'Уровень подписки: {user_profile[13]}', buttons=keyboard_z1)
 
 
 @client.on(events.NewMessage(pattern='Помощь'))
@@ -779,21 +783,21 @@ async def callback(event):
 
 async def user_search(identifier):
     with connection.cursor() as cursor:
-        cursor.execute("SELECT * FROM  entities WHERE id = %s", [identifier])
+        cursor.execute("SELECT * FROM  entities WHERE identifier = %s", [id])
         row = cursor.fetchone()
     return row
 
 
-async def db_save_lang(value, identifier):
-    with connection.cursor() as cursor:
-        cursor.execute("UPDATE entities SET profile_lang = %s WHERE id = %s",
-                       [value, identifier])
-
-
-async def db_save_referral(value, identifier):
-    with connection.cursor() as cursor:
-        cursor.execute("UPDATE entities SET referral = %s WHERE id = %s",
-                       [value, identifier])
+# async def db_save_lang(value, identifier):
+#     with connection.cursor() as cursor:
+#         cursor.execute("UPDATE entities SET profile_lang = %s WHERE identifier = %s",
+#                        [value, id])
+#
+#
+# async def db_save_referral(value, identifier):
+#     with connection.cursor() as cursor:
+#         cursor.execute("UPDATE entities SET referral = %s WHERE identifier = %s",
+#                        [value, id])
 
 
 # Стартуем вебсервер для прослушки приходящих событий об успешных платежах
