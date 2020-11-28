@@ -7,12 +7,13 @@ import csv
 import logging
 import random
 import uuid
-import base64
 import rsa
 import asyncio
 
 from sqlalchemy import create_engine
 from alchemysession import AlchemySessionContainer
+
+from telethon import utils
 
 from telethon import events, TelegramClient
 from telethon.tl.custom import Button
@@ -25,6 +26,9 @@ from telegram import buttons
 from telegram import ai
 from telegram import menu
 from telegram import sql_queries as sql
+from telegram import handlers
+
+
 # ============================== Environment Setup ======================
 
 PYTHON_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir))
@@ -52,7 +56,6 @@ PAYMENT_SUCCESS_LISTEN_PORT = conf['TELEGRAM']['PAYMENT_SUCCESS_LISTEN_PORT']
 ORDER_MAP = {}
 PUBKEY = None
 PAYMENT_AGGREGATOR = None
-app = web.Application()
 
 YAHOO_PATH = conf['PATHS']['YAHOO_PATH']
 IMAGES_OUT_PATH = conf['PATHS']['IMAGES_OUT_PATH']
@@ -76,64 +79,14 @@ engine = create_engine(SQL_URI, pool_recycle=3600)
 container = AlchemySessionContainer(engine=engine)
 alchemy_session = container.new_session('default')
 
-
-# ============================== Payment request handler ======================
-# process only requests with correct payment token
-async def handle(request):
-    if request.match_info.get("token") == PAYMENT_TOKEN:
-        request_json = await request.json()
-        # print("JSON:" + str(request_json))
-        order_id = str(request_json['order_id'])
-        summ = str(request_json['summ'])
-        data = ":" + order_id + ":" + summ + ":"
-        sign = base64.b64decode(str(request_json['sign']))
-
-        if PUBKEY is None:
-            return web.Response(status=403)
-
-        try:
-            rsa.verify(data.encode(), sign, PUBKEY)
-        except:
-            print("Verification failed")
-            return web.Response(status=403)
-
-        global ORDER_MAP
-        value = ORDER_MAP.get(order_id)
-        if value is not None:
-            print("Send message \"payment is ok\"")
-            sender, entity, message = value
-            await client.delete_messages(entity, message)
-            tarif_str = ""
-            if summ == "15":
-                tarif_str = '__Тариф: Старт__\n'
-            elif summ == "25":
-                tarif_str = '__Тариф: Базовый__\n'
-            await client.send_message(sender,
-                                      'Оплата прошла успешно:\n'
-                                      + tarif_str
-                                      + '__Ордер: ' + order_id + '__\n'
-                                      + '__Сумма: ' + summ + '__\n'
-                                      + '**Спасибо, что пользуетесь моими услугами!**')
-            ORDER_MAP.pop(order_id)
-            return web.Response(status=200)
-        else:
-            print("Global SenderID is None")
-            return web.Response(status=403)
-
-    else:
-        return web.Response(status=403)
-
-
-app.router.add_post("/{token}/", handle)
-
-
 # ============================== Init ===================================
 client = TelegramClient(alchemy_session, API_KEY, API_HASH).start(bot_token=UPSILON)
 
 
+app = web.Application()
+
+
 # ============================== Commands ===============================
-
-
 @client.on(events.NewMessage(pattern='/start'))
 async def start(event):
     await menu.start_menu(event, client, engine=engine)
@@ -244,7 +197,6 @@ async def get_participants_from_chat(event):
 
 
 # ============================== Service Commands =======================
-
 
 
 @client.on(events.CallbackQuery)
@@ -613,7 +565,8 @@ async def callback(event):
         await event.edit()
     elif event.data == b'kcs1':
         await client.send_file(event.input_sender, TARIFF_IMAGES + 'tariff_start.jpg')
-        await client.send_message(event.input_sender, 'Тут описание тарифа Старт', buttons=buttons.keyboard_subscription_start)
+        await client.send_message(event.input_sender, 'Тут описание тарифа Старт',
+                                  buttons=buttons.keyboard_subscription_start)
         await event.edit()
     elif event.data == b'kcs2':
         await client.send_file(event.input_sender, TARIFF_IMAGES + '/tariff_base.png')
@@ -635,9 +588,9 @@ async def callback(event):
         if PAYMENT_AGGREGATOR is None:
             PAYMENT_AGGREGATOR = PaymentAgregator()
             PAYMENT_AGGREGATOR.creator('Free Kassa')
-        agregator_status = PAYMENT_AGGREGATOR.get_status()
-        # print(agregator_status)
-        if agregator_status == 'error':
+        aggregator_status = PAYMENT_AGGREGATOR.get_status()
+        # print(aggregator_status)
+        if aggregator_status == 'error':
             # print("Error description:" + PAYMENT_AGGREGATOR.get_last_error())
             await client.send_message(event.input_sender, 'Упс. Что-то пошло не так.',
                                       buttons=buttons.keyboard_subscription_start)
@@ -646,23 +599,23 @@ async def callback(event):
             # print("user_id=" + str(sender_id.user_id))
             order_id = uuid.uuid4().__str__().replace('-', '')
             print("OrderId:" + order_id)
-            summ = ""
+            summa = ""
             kbd_label = ""
             if event.data == b'kss1':
-                summ = "15.00"
+                summa = "15.00"
                 kbd_label = "Оплатить ($15)"
             elif event.data == b'kss2':
-                summ = "25.00"
+                summa = "25.00"
                 kbd_label = "Оплатить ($25)"
             elif event.data == b'kss3':
-                summ = "30.00"
+                summa = "30.00"
                 kbd_label = "Оплатить ($30)"
             elif event.data == b'kss2':
-                summ = "40.00"
+                summa = "40.00"
                 kbd_label = "Оплатить ($40)"
 
-            print("Summ:" + summ)
-            payment_link = PAYMENT_AGGREGATOR.get_payment_link(order_id, summ)
+            print("Summa:" + summa)
+            payment_link = PAYMENT_AGGREGATOR.get_payment_link(order_id, summa)
             print(payment_link)
             keyboard_subscr_start_inst = [
                 [
@@ -677,8 +630,10 @@ async def callback(event):
                                                buttons=keyboard_subscr_start_inst)
             await event.edit()
             sender = event.input_sender
+            msg_id = utils.get_message_id(paymsg)
             global ORDER_MAP
-            ORDER_MAP[order_id] = (sender, entity, paymsg)
+            ORDER_MAP[order_id] = (sender_id, msg_id)
+            await sql.insert_into_payment_message(order_id, sender_id, msg_id, engine)
 
     # ============================== END Subscriptions  =============================
 
@@ -722,6 +677,10 @@ async def webserver_starter():
     await site.start()
 
 
+async def init_db():
+    await sql.create_payment_message_table(engine)
+
+
 def main():
     # Подгружаем публичный ключ для проверки подписи данных об успешных платежах
     with open('config/key.pub', mode='rb') as public_file:
@@ -729,7 +688,12 @@ def main():
         global PUBKEY
         PUBKEY = rsa.PublicKey.load_pkcs1_openssl_pem(key_data)
 
+    handlers.set_route(app)
+
     # Стартуем веб сервер с отдельным event loop
+    print("_____Running db init_____", '\n')
+    loop_db = asyncio.get_event_loop()
+    loop_db.run_until_complete(init_db())
     print("_____Running web server_____", '\n')
     loop = asyncio.get_event_loop()
     loop.run_until_complete(webserver_starter())
@@ -743,6 +707,3 @@ if __name__ == '__main__':
     print("__Ignition sequence start__", '\n')
     # print(sys.path)
     main()
-
-
-

@@ -6,6 +6,8 @@ from telegram import buttons
 
 async def start_menu(event, client, engine=None):
     referral = str(event.original_update.message.message).split(' ')
+    user_profile = await sql.user_search(event.original_update.message.peer_id.user_id, engine)
+    print("User_profile:" + str(user_profile))
     if len(referral) > 1:
         user_profile = await sql.user_search(referral[1], engine)
         inc = user_profile[13] + 1
