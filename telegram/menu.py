@@ -4,12 +4,12 @@ from telethon.tl.custom import Button
 from telegram import buttons
 
 
-async def start_menu(event, client, connection=None):
+async def start_menu(event, client, engine=None):
     referral = str(event.original_update.message.message).split(' ')
     if len(referral) > 1:
-        user_profile = await sql.user_search(referral[1], connection)
+        user_profile = await sql.user_search(referral[1], engine)
         inc = user_profile[13] + 1
-        await sql.db_save_referral(inc, referral[1], connection)
+        await sql.db_save_referral(inc, referral[1], engine)
     sender_id = event.original_update.message.peer_id.user_id
     entity = await client.get_input_entity(sender_id)
     # TODO Если бот будет двуязычным, то нужно будет сделать возможность выбора языка и сохранение его в базу
@@ -52,14 +52,14 @@ async def tools_menu(event, client):
     await client.send_message(event.input_sender, 'Главное меню', buttons=buttons.keyboard_0)
 
 
-async def profile_menu(event, client, connection=None):
+async def profile_menu(event, client, engine=None):
     keyboard_z1 = [
         [Button.inline('\U0001F516	  ' + 'Подписки', b'z1')],
         [Button.inline('\U0001F91D	  ' + 'Пригласить друга', b'z2')]
     ]
     sender_id = event.input_sender
     await client.get_input_entity(sender_id)
-    user_profile = await sql.user_search(sender_id.user_id, connection)
+    user_profile = await sql.user_search(sender_id.user_id, engine)
     await client.send_message(event.input_sender,
                               f'\U0001F464 : {user_profile[3]}' + '\n' +
                               f'Имя: {user_profile[5]}' + '\n' +

@@ -24,6 +24,7 @@ from payments.payagregator import PaymentAgregator
 from telegram import buttons
 from telegram import ai
 from telegram import menu
+from telegram import sql_queries as sql
 # ============================== Environment Setup ======================
 
 PYTHON_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir))
@@ -74,7 +75,6 @@ SQL_URI = 'mysql+pymysql://{}:{}@localhost/{}'.format(SQL_USER, SQL_PASSWORD, SQ
 engine = create_engine(SQL_URI, pool_recycle=3600)
 container = AlchemySessionContainer(engine=engine)
 alchemy_session = container.new_session('default')
-connection = engine.raw_connection()
 
 
 # ============================== Payment request handler ======================
@@ -136,7 +136,7 @@ client = TelegramClient(alchemy_session, API_KEY, API_HASH).start(bot_token=UPSI
 
 @client.on(events.NewMessage(pattern='/start'))
 async def start(event):
-    await menu.start_menu(event, client, connection=connection)
+    await menu.start_menu(event, client, engine=engine)
 
 
 @client.on(events.NewMessage(pattern='Главное меню'))
@@ -146,7 +146,7 @@ async def tools(event):
 
 @client.on(events.NewMessage(pattern='Профиль'))
 async def profile(event):
-    await menu.profile_menu(event, client, connection=connection)
+    await menu.profile_menu(event, client, engine=engine)
 
 
 @client.on(events.NewMessage(pattern='Помощь'))
@@ -159,7 +159,7 @@ async def donate(event):
     await menu.donate_menu(event, client)
 
 
-@client.on(events.NewMessage(pattern='/to'))  # TODO Сделакть блокирующую функцию для ДФ
+@client.on(events.NewMessage(pattern='/to'))  # TODO Сделать блокирующую функцию для ДФ
 async def send_to(event):
     parse = str(event.text).split('_')
     try:
