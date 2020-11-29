@@ -199,6 +199,9 @@ keyboard_a8 = [
     ],
     [
         Button.inline('\U0001F4B1   ' + 'Тикеры', b'a9a2')
+    ],
+    [
+        Button.inline('\U0001F519  ' + 'Назад', b'main')
     ]
 ]
 
