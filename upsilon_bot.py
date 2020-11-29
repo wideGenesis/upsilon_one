@@ -10,6 +10,7 @@ import uuid
 import rsa
 import asyncio
 
+from datetime import timedelta, datetime
 from sqlalchemy import create_engine
 from alchemysession import AlchemySessionContainer
 
@@ -633,7 +634,9 @@ async def callback(event):
             msg_id = utils.get_message_id(paymsg)
             global ORDER_MAP
             ORDER_MAP[order_id] = (sender_id, msg_id)
-            await sql.insert_into_payment_message(order_id, sender_id, msg_id, engine)
+            dt = datetime.now()
+            dt_int = datetime2int(dt)
+            await sql.insert_into_payment_message(order_id, sender_id, msg_id, dt_int, engine)
 
     # ============================== END Subscriptions  =============================
 
@@ -678,7 +681,26 @@ async def webserver_starter():
 
 
 async def init_db():
+    # Создаем таблицу с данными по платежным сообщениям
+    # Таблица будет создаваться только если ее нет
     await sql.create_payment_message_table(engine)
+
+    # Забираем данные из таблицы по платежным сообщениям
+    # Если бот перезапускался, то будем знать какие сообщения
+    # нужно удалить из истории
+    rows = await sql.get_all_payment_message(engine)
+    # print("rows=" + str(rows))
+    global ORDER_MAP
+    for row in rows:
+        ORDER_MAP[row[0]] = (row[1], row[2], row[3])
+
+
+def datetime2int(dt):
+    return int(dt.strftime("%Y%m%d%H%M%S"))
+
+
+def int2datetime(dt_int):
+    return datetime.strptime(str(dt_int), "%Y%m%d%H%M%S")
 
 
 def main():

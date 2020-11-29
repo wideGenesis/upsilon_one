@@ -24,6 +24,7 @@ async def create_payment_message_table(engine=None):
                                "order_id VARCHAR(255) NOT NULL, "
                                "user_id BIGINT NOT NULL, "
                                "msg_id BIGINT NOT NULL, "
+                               "create_dt BIGINT NOT NULL, "
                                "PRIMARY KEY(order_id, user_id, msg_id)"
                                ")")
             connection.execute("commit")
@@ -35,11 +36,18 @@ async def delete_from_payment_message(order_id, engine=None):
         connection.execute("commit")
 
 
-async def insert_into_payment_message(order_id, sender_id, msg_id, engine=None):
+async def insert_into_payment_message(order_id, sender_id, msg_id, dt_int, engine=None):
     with engine.connect() as connection:
-        connection.execute("INSERT INTO payment_message_hist(order_id, user_id, msg_id) "
-                           "VALUES( %s, %s, %s )", [order_id, sender_id, msg_id])
+        connection.execute("INSERT INTO payment_message_hist(order_id, user_id, msg_id, create_dt) "
+                           "VALUES( %s, %s, %s, %s )", [order_id, sender_id, msg_id, dt_int])
         connection.execute("commit")
+
+
+async def get_all_payment_message(engine=None):
+    with engine.connect() as connection:
+        result = connection.execute("SELECT order_id, user_id, msg_id, create_dt FROM  payment_message_hist")
+        rows = result.cursor.fetchall()
+        return rows
 
 
 async def is_table_exist(table_name, engine=None) -> bool:
