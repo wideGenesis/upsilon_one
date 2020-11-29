@@ -5,7 +5,6 @@ import sys
 import yaml
 import csv
 import logging
-import random
 import uuid
 import rsa
 import asyncio
@@ -24,7 +23,6 @@ from aiohttp import web
 from payments.payagregator import PaymentAgregator
 
 from telegram import buttons
-from telegram import ai
 from telegram import menu
 from telegram import sql_queries as sql
 from telegram import handlers
@@ -66,7 +64,7 @@ ETH = conf['CREDENTIALS']['ETH']
 API_KEY = conf['TELEGRAM']['API_KEY']
 API_HASH = conf['TELEGRAM']['API_HASH']
 UPSILON = conf['TELEGRAM']['UPSILON']
-OWNER = conf['TELEGRAM']['OWNER']
+OWNER = conf['TELEGRAM']['OWNER']  # TODO Сделать пару владельцев для коммуникации
 SERVICE_CHAT = conf['TELEGRAM']['SERVICE_CHAT']
 
 # ============================== SQL Connect ======================
@@ -87,7 +85,7 @@ client = TelegramClient(alchemy_session, API_KEY, API_HASH).start(bot_token=UPSI
 app = web.Application()
 
 
-# ============================== Commands ===============================
+# ============================== Main Menu ===============================
 @client.on(events.NewMessage(pattern='/start'))
 async def start(event):
     await menu.start_menu(event, client, engine=engine)
@@ -113,93 +111,23 @@ async def donate(event):
     await menu.donate_menu(event, client)
 
 
+# ============================== Commands ===============================
 @client.on(events.NewMessage(pattern='/to'))  # TODO Сделать блокирующую функцию для ДФ
 async def send_to(event):
-    parse = str(event.text).split('_')
-    try:
-        sender_id = event.input_sender
-    except ValueError as e:
-        sender_id = await event.get_input_sender()
-        logging.exception(e, 'Making network request to find the input sender')
-    try:
-        if int(sender_id.user_id) == int(OWNER):
-            entity = await client.get_entity(int(parse[1]))
-            await client.send_message(entity, parse[2])
-        else:
-            await client.send_message(sender_id, 'Order dismissed!')
-    except ValueError as e:
-        logging.exception(e, 'Some errors from send_to()')
+    await handlers.send_to_handler(event, client, owner=OWNER)
 
 
 @client.on(events.NewMessage(pattern='/publish_to'))
 async def publish_to(event):
-    parse = str(event.text).split('|')
-    try:
-        channel = await client.get_entity('https://t.me/' + str(parse[1]))
-    except ValueError as e:
-        logging.exception(e, 'Can\'t get channel entity')
-    try:
-        if int(event.input_sender.user_id) == int(OWNER):
-            await client.send_message(channel, parse[2])
-        else:
-            await client.send_message(event.input_sender, 'Order dismissed!')
-    except ValueError as e:
-        logging.exception(e, 'Some errors from publish_to()')
+    await handlers.publish_to_handler(event, client, owner=OWNER)
 
 
 @client.on(events.NewMessage())
 async def dialog_flow(event):
-    no_match = ['\U0001F9D0', '\U0001F633', 'Ясно', 'Мы должны подумать над этим']
-    fallback = random.choice(no_match)
-    try:
-        sender_id = event.input_sender
-    except ValueError as e:
-        sender_id = await event.get_input_sender()
-        logging.exception(e, 'Making network request to find the input sender')
-    if not any(value in event.text for value in
-               ('/start', '/help', '/publish_to', '/to', 'Главное меню', 'Профиль', 'Помощь', 'Donate')):
-        user_message = event.text
-        project_id = 'common-bot-1'
-        try:
-            dialogflow_answer = ai.detect_intent_texts(project_id, sender_id.user_id, user_message, 'ru-RU')
-            await client.send_message(sender_id, dialogflow_answer)
-            await client.send_message(-1001262211476, str(sender_id.user_id) +
-                                      '  \n' + str(event.text) +
-                                      '  \n' + dialogflow_answer)
-            # TODO Внимание! изменить айди чата при деплое
-        except ValueError as e:
-            logging.exception(e, 'Dialogflow response failure')
-            await client.send_message(sender_id, fallback)
+    await handlers.dialog_flow_handler(event, client)
 
 
-# ============================== Commands ===============================
-# ============================== Service Commands =======================
-
-
-@client.on(events.ChatAction)
-async def get_participants_from_chat(event):
-    if event.user_joined or event.user_added:
-        # print(event.action_message.to_id, '1XXXXXXXXXX')
-        # print(event.action_message.to_id.chat_id, '3XXXXXXXXXX')
-        # entity = await client.get_entity(event.action_message.to_id)
-        # chat = await event.get_input_chat()
-        # print(chat, '1dgggdg')
-        try:
-            participants = await client.get_participants(event.action_message.to_id)
-        except AttributeError as e:
-            logging.exception(e,
-                              'NoneType object has no attribute to_id ' + '\n' + 'Probably bot was added to some chat')
-        for user in participants:
-            if user.id is not None:
-                entity = await client.get_entity(PeerUser(user.id))
-                print('Dump complete!')
-                # print(user.access_hash, user.id, user.username, user.first_name, user.last_name, entity)
-                # TODO Добавить в модели поля bot=True, scam=False
-
-
-# ============================== Service Commands =======================
-
-
+# ============================== Callbacks =======================
 @client.on(events.CallbackQuery)
 async def callback(event):
     sender_id = event.original_update.user_id
@@ -651,27 +579,7 @@ async def callback(event):
         await event.edit()
 
 
-# ============================== CallbackQuery ==========================
-
-# async def user_search(identifier):
-#     with connection.cursor() as cursor:
-#         cursor.execute("SELECT * FROM  entities WHERE id = %s", [identifier])
-#         row = cursor.fetchone()
-#     return row
-#
-#
-# async def db_save_lang(value, identifier):
-#     with connection.cursor() as cursor:
-#         cursor.execute("UPDATE entities SET profile_lang = %s WHERE id = %s",
-#                        [value, identifier])
-#
-#
-# async def db_save_referral(value, identifier):
-#     with connection.cursor() as cursor:
-#         cursor.execute("UPDATE entities SET referral = %s WHERE id = %s",
-#                        [value, identifier])
-
-
+# ============================== Main  =============================
 # Стартуем вебсервер для прослушки приходящих событий об успешных платежах
 async def webserver_starter():
     runner = web.AppRunner(app)
