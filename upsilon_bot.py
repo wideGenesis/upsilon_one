@@ -8,6 +8,7 @@ import logging
 import uuid
 import rsa
 import asyncio
+import time
 
 from datetime import timedelta, datetime
 from sqlalchemy import create_engine
@@ -26,7 +27,6 @@ from telegram import buttons
 from telegram import menu
 from telegram import sql_queries as sql
 from telegram import handlers
-
 
 # ============================== Environment Setup ======================
 
@@ -55,6 +55,7 @@ PAYMENT_SUCCESS_LISTEN_PORT = conf['TELEGRAM']['PAYMENT_SUCCESS_LISTEN_PORT']
 ORDER_MAP = {}
 PUBKEY = None
 PAYMENT_AGGREGATOR = None
+PAYMENT_AGGREGATOR_TIMER = None
 
 YAHOO_PATH = conf['PATHS']['YAHOO_PATH']
 IMAGES_OUT_PATH = conf['PATHS']['IMAGES_OUT_PATH']
@@ -80,7 +81,6 @@ alchemy_session = container.new_session('default')
 
 # ============================== Init ===================================
 client = TelegramClient(alchemy_session, API_KEY, API_HASH).start(bot_token=UPSILON)
-
 
 app = web.Application()
 
@@ -492,6 +492,9 @@ async def callback(event):
     elif event.data == b'z1':
         await client.send_message(event.input_sender, 'Уровень подписок', buttons=buttons.keyboard_core_subscriptions)
         await event.edit()
+    elif event.data == b'kcs0':
+        await client.send_file(event.input_sender, TARIFF_IMAGES + 'tariff_compare.jpg')
+        await event.edit()
     elif event.data == b'kcs1':
         await client.send_file(event.input_sender, TARIFF_IMAGES + 'tariff_start.jpg')
         await client.send_message(event.input_sender, 'Тут описание тарифа Старт',
@@ -509,15 +512,27 @@ async def callback(event):
         await client.send_file(event.input_sender, TARIFF_IMAGES + '/tariff_professional.jpg')
         await client.send_message(event.input_sender, 'Тут описание тарифа Профессиональный',
                                   buttons=buttons.keyboard_subscription_professional)
+    elif event.data == b'kcs-1':
+        await menu.profile_menu(event, client, engine)
     #   TODO добавить описание подписок
     #   TODO добавить таблицу сравнения подписок
-    #   TODO добавить кнопку "Назад"
     elif event.data == b'kss1' or event.data == b'kss2' or event.data == b'kss3' or event.data == b'kss4':
         global PAYMENT_AGGREGATOR
         if PAYMENT_AGGREGATOR is None:
             PAYMENT_AGGREGATOR = PaymentAgregator()
             PAYMENT_AGGREGATOR.creator('Free Kassa')
         aggregator_status = PAYMENT_AGGREGATOR.get_status()
+        global PAYMENT_AGGREGATOR_TIMER
+        if PAYMENT_AGGREGATOR_TIMER is not None:
+            delta = time.time() - PAYMENT_AGGREGATOR_TIMER
+            if delta >= 10:
+                aggregator_status = PAYMENT_AGGREGATOR.get_status()
+            else:
+                time.sleep(10 - delta)
+                aggregator_status = PAYMENT_AGGREGATOR.get_status()
+        else:
+            PAYMENT_AGGREGATOR_TIMER = time.time()
+            aggregator_status = PAYMENT_AGGREGATOR.get_status()
         # print(aggregator_status)
         if aggregator_status == 'error':
             # print("Error description:" + PAYMENT_AGGREGATOR.get_last_error())
@@ -526,7 +541,7 @@ async def callback(event):
             await event.edit()
         else:
             # print("user_id=" + str(sender_id.user_id))
-            order_id = uuid.uuid4().__str__().replace('-', '')
+            order_id = str(uuid.uuid4()).replace('-', '')
             print("OrderId:" + order_id)
             summa = ""
             kbd_label = ""
@@ -618,7 +633,7 @@ def main():
         global PUBKEY
         PUBKEY = rsa.PublicKey.load_pkcs1_openssl_pem(key_data)
 
-    handlers.set_route(app)
+    handlers.set_route(app, PAYMENT_TOKEN, PUBKEY, client, engine)
 
     # Стартуем веб сервер с отдельным event loop
     print("_____Running db init_____", '\n')

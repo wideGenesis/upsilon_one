@@ -236,6 +236,9 @@ keyboard_core_macro_back = [
 # ============================== Кнопки подписок =============================
 keyboard_core_subscriptions = [
     [
+        Button.inline('\U0001F46E  ' + 'Сравнение тарифов', b'kcs0')
+    ],
+    [
         Button.inline('\U0001F3E6  ' + 'Старт', b'kcs1')
     ],
     [
@@ -246,6 +249,16 @@ keyboard_core_subscriptions = [
     ],
     [
         Button.inline('\U0001F3E2  ' + 'Профессиональный', b'kcs4')
+    ],
+    [
+        Button.inline('\U0001F519  ' + 'Назад', b'kcs-1')
+    ]
+]
+
+
+keyboard_subscription_back = [
+    [
+        Button.inline('\U0001F519  ' + 'Назад', b'kcs-1')
     ]
 ]
 
