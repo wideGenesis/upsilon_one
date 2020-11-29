@@ -1,10 +1,10 @@
 import base64
 import rsa
 import random
-from upsilon_bot import ORDER_MAP
 from aiohttp import web
 from telegram import sql_queries as sql
 from telegram import ai
+from telegram import shared
 
 
 class WebHandler:
@@ -35,7 +35,7 @@ class WebHandler:
                 print("Verification failed")
                 return web.Response(status=403)
 
-            value = ORDER_MAP.get(order_id)
+            value = shared.ORDER_MAP.get(order_id)
             if value is not None:
                 print("Send message \"payment is ok\"")
                 sender_id, message_id = value
@@ -55,7 +55,7 @@ class WebHandler:
                                                + '__Ордер: ' + order_id + '__\n'
                                                + '__Сумма: ' + summa + '__\n'
                                                + '**Спасибо, что пользуетесь моими услугами!**')
-                ORDER_MAP.pop(order_id)
+                shared.ORDER_MAP.pop(order_id)
                 await sql.delete_from_payment_message(order_id, self.engine)
                 return web.Response(status=200)
             else:

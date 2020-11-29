@@ -1,11 +1,26 @@
 import os
 import csv
+import datetime
+import time
+import uuid
+
+from datetime import timedelta, datetime
+from telethon import utils
+
 from telegram import buttons
+from telegram import sql_queries as sql
+from telegram import menu
+from telegram import shared
+from payments.payagregator import PaymentAgregator
+
+
+PAYMENT_AGGREGATOR = None
+PAYMENT_AGGREGATOR_TIMER = None
 
 
 # ============================== Callbacks =======================
 
-async def callback_handler(event, client, img_path=None, yahoo_path=None):
+async def callback_handler(event, client, img_path=None, yahoo_path=None, tariff_img_path=None, engine=None):
     sender_id = event.original_update.user_id
     entity = await client.get_input_entity(sender_id)
 
@@ -373,3 +388,94 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None):
                                   f'(https://t.me/UpsilonBot?start={sender_id})')
         # TODO Изменить на оригинал
         await event.edit()
+
+    # ============================== Subscriptions =============================
+    elif event.data == b'z1':
+        await client.send_message(event.input_sender, 'Уровень подписок', buttons=buttons.keyboard_core_subscriptions)
+        await event.edit()
+    elif event.data == b'kcs0':
+        await client.send_file(event.input_sender, tariff_img_path + 'tariff_compare.jpg')
+        await event.edit()
+    elif event.data == b'kcs1':
+        await client.send_file(event.input_sender, tariff_img_path + 'tariff_start.jpg')
+        await client.send_message(event.input_sender, 'Тут описание тарифа Старт',
+                                  buttons=buttons.keyboard_subscription_start)
+        await event.edit()
+    elif event.data == b'kcs2':
+        await client.send_file(event.input_sender, tariff_img_path + '/tariff_base.png')
+        await client.send_message(event.input_sender, 'Тут описание тарифа Базовый',
+                                  buttons=buttons.keyboard_subscription_base)
+    elif event.data == b'kcs3':
+        await client.send_file(event.input_sender, tariff_img_path + '/tariff_advanced.png')
+        await client.send_message(event.input_sender, 'Тут описание тарифа Продвинутый',
+                                  buttons=buttons.keyboard_subscription_advanced)
+    elif event.data == b'kcs4':
+        await client.send_file(event.input_sender, tariff_img_path + '/tariff_professional.jpg')
+        await client.send_message(event.input_sender, 'Тут описание тарифа Профессиональный',
+                                  buttons=buttons.keyboard_subscription_professional)
+    elif event.data == b'kcs-1':
+        await menu.profile_menu(event, client, engine)
+    #   TODO добавить описание подписок
+    #   TODO добавить таблицу сравнения подписок
+    elif event.data == b'kss1' or event.data == b'kss2' or event.data == b'kss3' or event.data == b'kss4':
+        global PAYMENT_AGGREGATOR
+        if PAYMENT_AGGREGATOR is None:
+            PAYMENT_AGGREGATOR = PaymentAgregator()
+            PAYMENT_AGGREGATOR.creator('Free Kassa')
+        aggregator_status = None
+        global PAYMENT_AGGREGATOR_TIMER
+        if PAYMENT_AGGREGATOR_TIMER is not None:
+            delta = time.time() - PAYMENT_AGGREGATOR_TIMER
+            if delta >= 10:
+                aggregator_status = PAYMENT_AGGREGATOR.get_status()
+            else:
+                time.sleep(10 - delta)
+                aggregator_status = PAYMENT_AGGREGATOR.get_status()
+        else:
+            PAYMENT_AGGREGATOR_TIMER = time.time()
+            aggregator_status = PAYMENT_AGGREGATOR.get_status()
+        # print(aggregator_status)
+        if aggregator_status == 'error':
+            # print("Error description:" + PAYMENT_AGGREGATOR.get_last_error())
+            await client.send_message(event.input_sender, 'Упс. Что-то пошло не так.',
+                                      buttons=buttons.keyboard_subscription_start)
+            await event.edit()
+        else:
+            # print("user_id=" + str(sender_id.user_id))
+            order_id = str(uuid.uuid4()).replace('-', '')
+            print("OrderId:" + order_id)
+            summa = ""
+            kbd_label = ""
+            if event.data == b'kss1':
+                summa = "15.00"
+                kbd_label = "Оплатить ($15)"
+            elif event.data == b'kss2':
+                summa = "25.00"
+                kbd_label = "Оплатить ($25)"
+            elif event.data == b'kss3':
+                summa = "30.00"
+                kbd_label = "Оплатить ($30)"
+            elif event.data == b'kss2':
+                summa = "40.00"
+                kbd_label = "Оплатить ($40)"
+
+            print("Summa:" + summa)
+            payment_link = PAYMENT_AGGREGATOR.get_payment_link(order_id, summa)
+            print(payment_link)
+            kbd_payment_button = buttons.generate_payment_button(kbd_label, payment_link)
+
+            paymsg = await client.send_message(event.input_sender,
+                                               'Для оплаты тарифа Start нажмите кнопку Оплатить\n'
+                                               '(Инструкция по оплате [тут](https://telegra.ph/Rrrtt-10-13)! )',
+                                               link_preview=True,
+                                               buttons=kbd_payment_button)
+            await event.edit()
+            sender = event.input_sender
+            msg_id = utils.get_message_id(paymsg)
+            shared.ORDER_MAP[order_id] = (sender_id, msg_id)
+            dt = datetime.now()
+            dt_int = shared.datetime2int(dt)
+            await sql.insert_into_payment_message(order_id, sender_id, msg_id, dt_int, engine)
+
+
+

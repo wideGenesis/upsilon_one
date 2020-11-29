@@ -1,6 +1,5 @@
 from telethon.tl.custom import Button
 
-
 keyboard_0 = [
     [
         Button.inline('\U0001F52C   ' + 'Анализ рынков', b'a1')
@@ -255,7 +254,6 @@ keyboard_core_subscriptions = [
     ]
 ]
 
-
 keyboard_subscription_back = [
     [
         Button.inline('\U0001F519  ' + 'Назад', b'kcs-1')
@@ -282,5 +280,14 @@ keyboard_subscription_professional = [
         Button.inline('\U0001F3E6  ' + '$40', b'kss4')
     ]
 ]
+
+
+def generate_payment_button(kbd_label=None, payment_link=None):
+    keyboard_subscr_start_inst = [
+        [
+            Button.url('\U0001F3E6  ' + kbd_label, payment_link)
+        ]
+    ]
+    return keyboard_subscr_start_inst
 
 # TODO поменять иконки кнопок
