@@ -29,6 +29,7 @@ services:
         
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
+    restart: always
     depends_on:
         - mysql-server
     links: 
