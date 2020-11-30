@@ -22,7 +22,7 @@ from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
-
+from pyvirtualdisplay import Display
 import schedule
 from get_quotes_data import index_calc
 from yahoo_downloader import download_yahoo, load_csv
@@ -48,7 +48,7 @@ logging.basicConfig(
     filemode='w',
     format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
     level=logging.INFO)
-logging.getLogger('crypto_wsj').setLevel(level=logging.INFO)
+logging.getLogger('crypto_wsj').setLevel(level=logging.WARNING)
 
 
 # ============================== Functions ======================
@@ -362,20 +362,20 @@ def get_sma50():
     print('sma50 complete')
 
 
-def get_etf_flows():
-    driver = firefox_init()
-    etfs = ['SPY', 'VTI', 'VEA', 'VWO', 'QQQ', 'VXX', 'TLT', 'SHY', 'LQD', 'VCIT']
-
-    with driver:
-        for etf in etfs:
-            img_path = os.path.join(IMAGES_OUT_PATH, f'inflows_{etf}' + '.png')
-            driver.get(f'https://etfdb.com/etf/{etf}/#fund-flows')
-            sleep(7)
-            driver.save_screenshot(img_path)
-            infl = os.path.join(IMAGES_OUT_PATH, f'inflows_{etf}' + '.png')
-            crop(infl, infl, 570, 390, 725, 350)
-    driver.quit()
-    print('get_etf_flows complete' + '\n')
+# def get_etf_flows():
+#     driver = firefox_init()
+#     etfs = ['SPY', 'VTI', 'VEA', 'VWO', 'QQQ', 'VXX', 'TLT', 'SHY', 'LQD', 'VCIT']
+#
+#     with driver:
+#         for etf in etfs:
+#             img_path = os.path.join(IMAGES_OUT_PATH, f'inflows_{etf}' + '.png')
+#             driver.get(f'https://etfdb.com/etf/{etf}/#fund-flows')
+#             sleep(7)
+#             driver.save_screenshot(img_path)
+#             infl = os.path.join(IMAGES_OUT_PATH, f'inflows_{etf}' + '.png')
+#             crop(infl, infl, 570, 390, 725, 350)
+#     driver.quit()
+#     print('get_etf_flows complete' + '\n')
 
 # ============================== Inflows GET ================================
 
