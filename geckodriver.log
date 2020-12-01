@@ -119,3 +119,73 @@ interaction.flushEventLoop@chrome://marionette/content/interaction.js:418:10
 webdriverClickElement@chrome://marionette/content/interaction.js:179:31
 1606856289316	Marionette	INFO	Stopped listening on port 40071
 JavaScript error: resource://gre/modules/ConduitsChild.jsm, line 108: Error: sendRemoveListener on closed conduit jid1-NIfFY2CA8fy1tg@jetpack.274877907087
+1606860041641	geckodriver	INFO	Listening on 127.0.0.1:35691
+1606860041645	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "-window-size=1980,1080" "-headless" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofilexDRFk3"
+*** You are running in headless mode.
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
+1606860043292	Marionette	INFO	Listening on port 40071
+1606860043377	Marionette	WARN	TLS certificate errors will be ignored for this session
+JavaScript warning: moz-extension://cc6f21e3-95b6-4357-9b3a-37790491ce87/lib/adblockplus.js, line 0: Successfully compiled asm.js code (total compilation time 1ms)
+JavaScript error: undefined, line 0: Error: frame.state is undefined
+1606860051439	Marionette	INFO	Stopped listening on port 40071
+JavaScript error: resource://gre/modules/ConduitsChild.jsm, line 108: Error: sendRemoveListener on closed conduit jid1-NIfFY2CA8fy1tg@jetpack.274877907087
+1606860214769	geckodriver	INFO	Listening on 127.0.0.1:33591
+1606860214773	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "-window-size=1980,1080" "-headless" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofilenDYTmE"
+*** You are running in headless mode.
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
+1606860216514	Marionette	INFO	Listening on port 39371
+1606860216644	Marionette	WARN	TLS certificate errors will be ignored for this session
+JavaScript warning: moz-extension://67c04ed6-30e0-4f25-9295-21bed1469eba/lib/adblockplus.js, line 0: Successfully compiled asm.js code (total compilation time 1ms)
+JavaScript error: undefined, line 0: Error: frame.state is undefined
+1606860224728	Marionette	INFO	Stopped listening on port 39371
+JavaScript error: resource://gre/modules/ConduitsChild.jsm, line 108: Error: sendRemoveListener on closed conduit jid1-NIfFY2CA8fy1tg@jetpack.274877907087
+1606860285065	geckodriver	INFO	Listening on 127.0.0.1:59313
+1606860285069	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "-window-size=1980,1080" "-headless" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofileUdjKTd"
+*** You are running in headless mode.
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
+1606860286891	Marionette	INFO	Listening on port 32971
+1606860286998	Marionette	WARN	TLS certificate errors will be ignored for this session
+JavaScript warning: moz-extension://b54b2f18-c421-4235-91fd-81293d8ff758/lib/adblockplus.js, line 0: Successfully compiled asm.js code (total compilation time 1ms)
+JavaScript error: undefined, line 0: Error: frame.state is undefined
+1606860308220	Marionette	INFO	Stopped listening on port 32971
+JavaScript error: resource://gre/modules/ConduitsChild.jsm, line 108: Error: sendRemoveListener on closed conduit jid1-NIfFY2CA8fy1tg@jetpack.274877907087
+1606860835669	geckodriver	INFO	Listening on 127.0.0.1:58415
+1606860835674	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "-window-size=1980,1080" "-headless" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofileTRUF3c"
+*** You are running in headless mode.
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
+1606860837456	Marionette	INFO	Listening on port 36437
+1606860837502	Marionette	WARN	TLS certificate errors will be ignored for this session
+JavaScript warning: moz-extension://d1ab2050-bc3d-4478-b39d-f37c6869b8b2/lib/adblockplus.js, line 0: Successfully compiled asm.js code (total compilation time 1ms)
+JavaScript error: undefined, line 0: Error: frame.state is undefined
+1606860859675	Marionette	INFO	Stopped listening on port 36437
+JavaScript error: resource://gre/modules/ConduitsChild.jsm, line 108: Error: sendRemoveListener on closed conduit jid1-NIfFY2CA8fy1tg@jetpack.274877907087
+1606860947508	geckodriver	INFO	Listening on 127.0.0.1:38545
+1606860947513	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "-window-size=1980,1080" "-headless" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofile1WCVOB"
+*** You are running in headless mode.
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
+1606860949282	Marionette	INFO	Listening on port 45135
+1606860949350	Marionette	WARN	TLS certificate errors will be ignored for this session
+JavaScript warning: moz-extension://d52bfa44-afba-4a60-b23d-ef0177cc9e3b/lib/adblockplus.js, line 0: Successfully compiled asm.js code (total compilation time 1ms)
+JavaScript error: undefined, line 0: Error: frame.state is undefined
+1606860970790	Marionette	INFO	Stopped listening on port 45135
+JavaScript error: resource://gre/modules/ConduitsChild.jsm, line 108: Error: sendRemoveListener on closed conduit jid1-NIfFY2CA8fy1tg@jetpack.274877907087
+1606861033501	geckodriver	INFO	Listening on 127.0.0.1:46825
+1606861033505	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "-window-size=1980,1080" "-headless" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofilewWS2Lw"
+*** You are running in headless mode.
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
+1606861035461	Marionette	INFO	Listening on port 42469
+1606861035540	Marionette	WARN	TLS certificate errors will be ignored for this session
+JavaScript warning: moz-extension://a41cf980-00fb-4e7e-ab51-9f4a5a897941/lib/adblockplus.js, line 0: Successfully compiled asm.js code (total compilation time 1ms)
+JavaScript error: undefined, line 0: Error: frame.state is undefined
+1606861057775	Marionette	INFO	Stopped listening on port 42469
+JavaScript error: resource://gre/modules/ConduitsChild.jsm, line 108: Error: sendRemoveListener on closed conduit jid1-NIfFY2CA8fy1tg@jetpack.274877907087
+1606861148378	geckodriver	INFO	Listening on 127.0.0.1:43561
+1606861148382	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "-window-size=1980,1080" "-headless" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofileDvf6Ve"
+*** You are running in headless mode.
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
+1606861150252	Marionette	INFO	Listening on port 32883
+1606861150311	Marionette	WARN	TLS certificate errors will be ignored for this session
+JavaScript warning: moz-extension://b998ff8c-dd60-4aca-9acc-9e085e57f9b6/lib/adblockplus.js, line 0: Successfully compiled asm.js code (total compilation time 1ms)
+JavaScript error: undefined, line 0: Error: frame.state is undefined
+1606861172833	Marionette	INFO	Stopped listening on port 32883
+JavaScript error: resource://gre/modules/ConduitsChild.jsm, line 108: Error: sendRemoveListener on closed conduit jid1-NIfFY2CA8fy1tg@jetpack.274877907087

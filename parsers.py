@@ -11,6 +11,7 @@ from selenium import webdriver
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
+from pyvirtualdisplay import Display
 from PIL import Image, ImageFilter
 from quotes.parsers_env import firefox_init, agents
 
@@ -98,34 +99,37 @@ def advance_decline(ag=None):
 
 
 # ============================== FINVIZ TREEMAP GET ================================
-def get_finviz_us_treemaps(url_, filename, driver=None):
-    # display = Display(visible=0, size=(1920, 1080))
-    # display.start()
-    # driver = firefox_init()
+def get_finviz_treemaps(driver=None, img_out_path_=None):
+    display = Display(visible=0, size=(1920, 1080))
+    display.start()
+    treemaps = {
+        'treemap_1d': 'https://finviz.com/map.ashx?t=sec_all',
+        'treemap_ytd': 'https://finviz.com/map.ashx?t=sec_all&st=ytd',
+        'global_treemap': 'https://finviz.com/map.ashx?t=geo',
+        'global_treemap_ytd': 'https://finviz.com/map.ashx?t=geo&st=ytd',
+    }
     with driver:
-        img_path = os.path.join(IMAGES_OUT_PATH, filename + '.png')
-        driver.get(url_)
-        sleep(5)
-        elem = driver.find_element_by_id('body')
-        location = elem.location
-        size = elem.size
-        driver.save_screenshot(img_path)
-        x = location['x']
-        y = location['y']
-        width = location['x'] + size['width']
-        height = location['y'] + size['height']
-        im = Image.open(img_path)
-        im = im.crop((int(x), int(y), int(width)+20, int(height)+16))
-        im.save(img_path)
-    # display.stop()
+        for k, v in treemaps.items():
+            img_path = os.path.join(img_out_path_, k + '.png')
+            driver.get(v)
+            sleep(3)
+            elem = driver.find_element_by_id('body')
+            # elem = driver.find_element_by_class_name('chart')
+            location = elem.location
+            size = elem.size
+            driver.save_screenshot(img_path)
+            x = location['x']
+            y = location['y']
+            width = location['x'] + size['width']
+            height = location['y'] + size['height']
+            im = Image.open(img_path)
+            im = im.crop((int(x), int(y), int(width)+20, int(height)+16))
+            # im = im.crop((int(x), int(y), int(width), int(height)))
+            im.save(img_path)
+    display.stop()
     print('Get Finviz Treemap complete' + '\n')
 
 
-def get_finviz():
-    get_finviz_us_treemaps('https://finviz.com/map.ashx?t=sec_all', 'treemap_1d')
-    get_finviz_us_treemaps('https://finviz.com/map.ashx?t=sec_all&st=ytd', 'treemap_ytd')
-    get_finviz_us_treemaps('https://finviz.com/map.ashx?t=geo', 'global_treemap')
-    get_finviz_us_treemaps('https://finviz.com/map.ashx?t=geo&st=ytd', 'global_treemap_ytd')
 
 # # ============================== COIN360 TREEMAP GET ================================
 # def get_coins360_treemaps():
@@ -309,3 +313,4 @@ def get_finviz():
 # Call
 # get_flows(driver=firefox_init(webdriver_path=WEBDRIVER, agent_rotation=agents()), img_out_path_=IMAGES_OUT_PATH)
 # advance_decline(ag=None)
+get_finviz_treemaps(driver=firefox_init(webdriver_path=WEBDRIVER, agent_rotation=agents()), img_out_path_=IMAGES_OUT_PATH)
