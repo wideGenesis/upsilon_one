@@ -11,28 +11,29 @@ services:
       - ./html/:/var/www/html/
     ports:
       - "8080:80"
-      
-  mysql-server:    
+      - "80:80"
+
+  mysql-server:
     image: mysql:8.0
     restart: always
     environment:
         MYSQL_ROOT_PASSWORD: General_2035_
         MYSQL_DATABASE: upsilon_one
         MYSQL_USER: upsilon_one
-        MYSQL_PASSWORD: showmethemoney   
+        MYSQL_PASSWORD: showmethemoney
     volumes:
         - ./db:/var/lib/mysql
     ports:
         - "3306:3306"
     networks:
         - default
-        
+
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
     restart: always
     depends_on:
         - mysql-server
-    links: 
+    links:
       - mysql-server:db
     ports:
         - '5000:80'
