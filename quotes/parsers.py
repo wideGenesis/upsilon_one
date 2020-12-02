@@ -83,6 +83,8 @@ def get_flows2(driver=None, img_out_path_=None):
     with driver:
         driver.get('https://www.etf.com/etfanalytics/etf-fund-flows-tool')
         sleep(10)
+        html = driver.page_source
+        print(html)
         # for i in range(0, 20):
         while True:
             try:
