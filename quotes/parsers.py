@@ -24,10 +24,12 @@ def get_flows(driver=None, img_out_path_=None):
         sleep(10)
         try:
             elem = driver.find_element_by_xpath(".//*[@id='edit-tickers']")
+            print('elem 1 has been located')
         except Exception as e0:
             print('Try to re-run the scraper', e0)
-            exit()
+            return None
         elem.send_keys("GLD, SPY, VTI, VEA, VWO, QQQ, VXX, TLT, SHY, LQD, VCIT")
+        print('keys has been send')
         sleep(0.7)
         today = date.today()
         day7 = timedelta(days=7)  # TODO Меняется ли размер окна от колва дней?
@@ -43,15 +45,18 @@ def get_flows(driver=None, img_out_path_=None):
         try:
             WebDriverWait(driver, 20).until(
                 EC.element_to_be_clickable((By.XPATH, ".//*[@id='edit-submitbutton']"))).click()
+            print('Button has been clicked')
         except Exception as e1:
             print('Try to re-run the scraper', e1)
-            exit()
+            return None
         sleep(10)
         try:
             elem = driver.find_element_by_xpath(".//*[@id='fundFlowsTitles']")
+            print('elem 2-Titles has been located')
+
         except Exception as e2:
             print('Try to re-run the scraper', e2)
-            exit()
+            return None
         webdriver.ActionChains(driver).move_to_element(elem).perform()
         driver.execute_script("return arguments[0].scrollIntoView();", elem)
         sleep(1)
@@ -94,7 +99,7 @@ def advance_decline(ag=None):
                 info = entries_tuple
             items_.append(info)
     del items_[5:8]
-    with open(os.path.join('../results', 'img_out', 'adv.csv'), 'w+') as f:
+    with open(os.path.join('results', 'img_out', 'adv.csv'), 'w+') as f:
         for rows_ in items_:
             write = csv.writer(f)
             write.writerow(rows_)
@@ -256,7 +261,7 @@ def get_sma50(ag=None):
     items_.pop('NasdA')
     items_.pop('SPXT')
     items_.pop('SPXA')
-    with open(os.path.join('../results', 'img_out', 'sma50.csv'), 'w+') as f:
+    with open(os.path.join('results', 'img_out', 'sma50.csv'), 'w+') as f:
         write = csv.DictWriter(f, items_.keys())
         write.writeheader()
         write.writerow(items_)

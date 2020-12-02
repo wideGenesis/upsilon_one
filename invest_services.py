@@ -32,7 +32,12 @@ logging.getLogger('scrapers').setLevel(level=logging.WARNING)
 
 # ============================== Main  =============================
 def main():
-    get_flows(driver=firefox_init(webdriver_path=WEBDRIVER, agent_rotation=agents()), img_out_path_=IMAGES_OUT_PATH)
+    if get_flows(driver=firefox_init(webdriver_path=WEBDRIVER,
+                                     agent_rotation=agents()), img_out_path_=IMAGES_OUT_PATH) is None:
+        get_flows(driver=firefox_init(webdriver_path=WEBDRIVER,
+                                      agent_rotation=agents()), img_out_path_=IMAGES_OUT_PATH)
+    else:
+        return
     advance_decline(ag=agents())
     get_finviz_treemaps(driver=firefox_init(webdriver_path=WEBDRIVER, agent_rotation=agents()),
                         img_out_path_=IMAGES_OUT_PATH)
