@@ -1,9 +1,6 @@
-#!/usr/bin/env python3
-
 import os
-import yaml
 from time import sleep
-from datetime import date, datetime, timedelta
+from datetime import date, timedelta
 import csv
 import numpy as np
 import pandas as pd
@@ -14,12 +11,6 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from PIL import Image
-
-
-conf = yaml.safe_load(open('config/settings.yaml'))
-LOGS = conf['PATHS']['LOGS']
-WEBDRIVER = conf['PATHS']['WEBDRIVER']
-IMAGES_OUT_PATH = conf['PATHS']['IMAGES_OUT_PATH']
 
 
 # ============================== Inflows GET ================================
@@ -43,7 +34,8 @@ def get_flows(driver=None, img_out_path_=None):
         elem.send_keys(end_d)
         sleep(0.5)
         try:
-            WebDriverWait(driver, 20).until(EC.element_to_be_clickable((By.XPATH, ".//*[@id='edit-submitbutton']"))).click()
+            WebDriverWait(driver, 20).until(
+                EC.element_to_be_clickable((By.XPATH, ".//*[@id='edit-submitbutton']"))).click()
         except Exception as e1:
             print('Try to re-run the scraper', e1)
             exit()
@@ -90,7 +82,7 @@ def advance_decline(ag=None):
                 info = entries_tuple
             items_.append(info)
     del items_[5:8]
-    with open(os.path.join('results', 'img_out', 'adv.csv'), 'w+') as f:
+    with open(os.path.join('../results', 'img_out', 'adv.csv'), 'w+') as f:
         for rows_ in items_:
             write = csv.writer(f)
             write.writerow(rows_)
@@ -135,7 +127,7 @@ def get_coins360_treemaps(driver=None, img_out_path_=None):
         width = location['x'] + size['width']
         height = location['y'] + size['height']
         im = Image.open(img_path)
-        im = im.crop((int(x), int(y+80), int(width), int(height-25)))
+        im = im.crop((int(x), int(y+80), int(width), int(height-20)))
         im.save(img_path, quality=100, subsampling=0)
     print('Get coin360 Treemap complete' + '\n')
 
@@ -199,7 +191,8 @@ def get_tw_charts(driver=None, img_out_path_=None):
             driver.execute_script("return arguments[0].scrollIntoView();", elem)
             sleep(5)
             try:
-                close_button1 = driver.find_element_by_class_name('tv-dialog__close close-d1KI_uC8 dialog-close-3phLlAHH js-dialog__close')
+                close_button1 = driver.find_element_by_class_name(
+                    'tv-dialog__close close-d1KI_uC8 dialog-close-3phLlAHH js-dialog__close')
                 driver.execute_script("arguments[0].click();", close_button1)
             except Exception as e1:
                 print(e1)
@@ -224,7 +217,7 @@ def get_sma50(ag=None):
     calc
     csv save
     csv load last value
-    future - chart
+    future - chart # TODO Реализовать историю и графики
     """
     headers = {'User-Agent': ag}
     urls_d = {
@@ -251,9 +244,8 @@ def get_sma50(ag=None):
     items_.pop('NasdA')
     items_.pop('SPXT')
     items_.pop('SPXA')
-    with open(os.path.join('results', 'img_out', 'sma50.csv'), 'w+') as f:
+    with open(os.path.join('../results', 'img_out', 'sma50.csv'), 'w+') as f:
         write = csv.DictWriter(f, items_.keys())
         write.writeheader()
         write.writerow(items_)
     print('sma50 complete')
-

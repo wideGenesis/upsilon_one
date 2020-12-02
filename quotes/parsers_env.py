@@ -4,7 +4,6 @@ from time import sleep
 from random import choice
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
-from PIL import Image, ImageFilter
 
 
 def firefox_init(webdriver_path, agent_rotation):
@@ -21,7 +20,6 @@ def firefox_init(webdriver_path, agent_rotation):
     p = str(pathlib.Path('adblock_for_firefox-4.24.1-fx.xpi').parent.absolute()) + \
         '/webdriver/adblock_for_firefox-4.24.1-fx.xpi'
     driver.install_addon(str(os.path.abspath(p)), temporary=True)
-    # driver.set_window_size(1600, 1200)
     driver.maximize_window()
     sleep(1)
     print(driver.execute_script("return navigator.userAgent"))
@@ -38,7 +36,7 @@ def chrome_init(webdriver_path, agent_rotation):
     chrome_options.add_argument("--headless")
     chrome_options.add_argument('--disable-dev-shm-usage')
     chrome_options.add_argument('--ignore-certificate-errors')
-    chrome_options.add_argument(f'user-agent=f{agent_rotation}')
+    chrome_options.add_argument(f'user-agent={agent_rotation}')
     chrome_options.add_argument("--enable-javascript")
     chrome_options.add_argument("--no-sandbox")
     driver_path = os.path.join(webdriver_path, 'chromedriver_86')
