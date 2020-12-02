@@ -116,8 +116,8 @@ def get_flows2(driver=None, img_out_path_=None):
             print('Button click error. Try to re-run the scraper', e1)
             return None
         sleep(10)
-        # html = driver.page_source
-        # print(html)
+        html = driver.page_source
+        print(html)
         # if html:
         #     soup = BeautifulSoup(html, 'html.parser')
 
