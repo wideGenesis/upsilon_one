@@ -48,19 +48,19 @@ def get_flows(driver=None, img_out_path_=None):
                 EC.element_to_be_clickable((By.XPATH, ".//*[@id='edit-submitbutton']"))).click()
             print('Button has been clicked')
         except Exception as e1:
-            print('Try to re-run the scraper', e1)
+            print('Button click error. Try to re-run the scraper', e1)
             return None
         sleep(10)
-        try:
-            elem = driver.find_element_by_xpath(".//*[@id='fundFlowsTitles']")
-            print('elem 2-Titles has been located')
-
-        except Exception as e2:
-            print('Try to re-run the scraper', e2)
-            return None
-        webdriver.ActionChains(driver).move_to_element(elem).perform()
-        driver.execute_script("return arguments[0].scrollIntoView();", elem)
-        sleep(1)
+        # try:
+        #     elem = driver.find_element_by_xpath(".//*[@id='fundFlowsTitles']")
+        #     print('elem 2-Titles has been located')
+        #
+        # except Exception as e2:
+        #     print('Titles elem error. Try to re-run the scraper', e2)
+        #     return None
+        # webdriver.ActionChains(driver).move_to_element(elem).perform()
+        # driver.execute_script("return arguments[0].scrollIntoView();", elem)
+        # sleep(1)
 
         for etf in etfs:
             sleep(2)
