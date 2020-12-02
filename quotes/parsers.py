@@ -24,10 +24,11 @@ def get_flows(driver=None, img_out_path_=None):
         sleep(10)
         try:
             elem = driver.find_element_by_xpath(".//*[@id='edit-tickers']")
+            print(elem)
             print('elem 1 has been located')
         except Exception as e0:
-            print('Try to re-run the scraper', e0)
-            return None
+            print('Trying to reload the page', e0)
+            driver.refresh()
         elem.send_keys("GLD, SPY, VTI, VEA, VWO, QQQ, VXX, TLT, SHY, LQD, VCIT")
         print('keys has been send')
         sleep(0.7)
