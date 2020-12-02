@@ -122,9 +122,9 @@ def get_flows2(driver=None, img_out_path_=None):
         #     soup = BeautifulSoup(html, 'html.parser')
 
         try:
-            elem = driver.find_element_by_xpath(".//*[@id='fundFlowsTablesWrapper']")
+            # elem = driver.find_element_by_xpath(".//*[@id='fundFlowsTablesWrapper']")
+            elem = driver.find_element_by_class_name("top_fund_flows_tables")
             print('elem 2-Titles has been located')
-
         except Exception as e2:
             print('Titles elem error. Try to re-run the scraper', e2)
             return None
