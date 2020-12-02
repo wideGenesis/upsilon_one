@@ -46,8 +46,12 @@ def get_flows(driver=None, img_out_path_=None):
         except Exception as e1:
             print('Try to re-run the scraper', e1)
             exit()
-        sleep(5)
-        elem = driver.find_element_by_xpath(".//*[@id='fundFlowsTitles']")
+        sleep(10)
+        try:
+            elem = driver.find_element_by_xpath(".//*[@id='fundFlowsTitles']")
+        except Exception as e2:
+            print('Try to re-run the scraper', e2)
+            exit()
         webdriver.ActionChains(driver).move_to_element(elem).perform()
         driver.execute_script("return arguments[0].scrollIntoView();", elem)
         sleep(1)
