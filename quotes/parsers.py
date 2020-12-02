@@ -21,8 +21,12 @@ def get_flows(driver=None, img_out_path_=None):
     etfs = ['VCIT', 'SPY', 'VTI', 'VEA', 'VWO', 'QQQ', 'VXX', 'TLT', 'SHY', 'LQD']
     with driver:
         driver.get('https://www.etf.com/etfanalytics/etf-fund-flows-tool')
-        sleep(8)
-        elem = driver.find_element_by_xpath(".//*[@id='edit-tickers']")
+        sleep(10)
+        try:
+            elem = driver.find_element_by_xpath(".//*[@id='edit-tickers']")
+        except Exception as e0:
+            print('Try to re-run the scraper', e0)
+            exit()
         elem.send_keys("GLD, SPY, VTI, VEA, VWO, QQQ, VXX, TLT, SHY, LQD, VCIT")
         sleep(0.7)
         today = date.today()
