@@ -16,8 +16,8 @@ from PIL import Image
 
 # ============================== Inflows GET ================================
 def get_flows(driver=None, img_out_path_=None):
-    display = Display(visible=0, size=(1920, 1080))
-    display.start()
+    # display = Display(visible=0, size=(1920, 1080))
+    # display.start()
     etfs = ['VCIT', 'SPY', 'VTI', 'VEA', 'VWO', 'QQQ', 'VXX', 'TLT', 'SHY', 'LQD']
     with driver:
         driver.get('https://www.etf.com/etfanalytics/etf-fund-flows-tool')
@@ -77,7 +77,7 @@ def get_flows(driver=None, img_out_path_=None):
             img = Image.open(os.path.join(img_out_path_, f'inflows_{etf}.png'))
             img_crop = img.crop((360, 367, 995, 665))
             img_crop.save(os.path.join(img_out_path_, f'inflows_{etf}.png'), quality=100, subsampling=0)
-    display.stop()
+    # display.stop()
     print('Get Fund Flows complete' + '\n')
 
 
