@@ -3,6 +3,7 @@ import pathlib
 from time import sleep
 from random import choice
 from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
 from PIL import Image, ImageFilter
 
 
@@ -27,6 +28,26 @@ def firefox_init(webdriver_path, agent_rotation):
     return driver
 
 
+def chrome_init(webdriver_path, agent_rotation):
+    chrome_options = Options()
+    chrome_options.add_argument("--window-size=1920,1080")
+    chrome_options.add_argument("--disable-gpu")
+    chrome_options.add_argument("--proxy-server=direct://")
+    chrome_options.add_argument("--proxy-bypass-list=*")
+    chrome_options.add_argument("--start-maximized")
+    chrome_options.add_argument("--headless")
+    chrome_options.add_argument('--disable-dev-shm-usage')
+    chrome_options.add_argument('--ignore-certificate-errors')
+    chrome_options.add_argument(f'user-agent=f{agent_rotation}')
+    chrome_options.add_argument("--enable-javascript")
+    chrome_options.add_argument("--no-sandbox")
+    driver_path = os.path.join(webdriver_path, 'chromedriver_86')
+    driver = webdriver.Chrome(driver_path, options=chrome_options)
+    print(driver.execute_script("return navigator.userAgent"))
+    sleep(1)
+    return driver
+
+
 def agents():
     ua = [
         'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:77.0) Gecko/20100101 Firefox/77.0',
@@ -41,15 +62,3 @@ def agents():
     ]
     return choice(ua)
 
-
-def crop(img_path, img_path_save, a, b, c, d):
-    # 56 pixels from the left
-    # 44 pixels from the top
-    # 320 pixels from the right
-    # 43 pixels from the bottom
-    img = Image.open(img_path)
-    img = img.filter(ImageFilter.DETAIL)
-    width, height = img.size
-    print(width, height)
-    cropped = img.crop((a, b, width - c, height - d))
-    cropped.save(img_path_save, quality=100, subsampling=0)

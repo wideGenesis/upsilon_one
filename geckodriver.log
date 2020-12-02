@@ -403,3 +403,290 @@ JavaScript warning: moz-extension://df6daa47-bb95-4d18-8389-263f5116c97e/lib/adb
 JavaScript error: undefined, line 0: Error: frame.state is undefined
 1606894405003	Marionette	INFO	Stopped listening on port 37981
 JavaScript error: resource://gre/modules/ConduitsChild.jsm, line 108: Error: sendRemoveListener on closed conduit jid1-NIfFY2CA8fy1tg@jetpack.274877907087
+1606896600797	geckodriver	INFO	Listening on 127.0.0.1:34843
+1606896600806	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "-window-size=1980,1080" "-headless" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofileTRulfv"
+*** You are running in headless mode.
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
+1606896602502	Marionette	INFO	Listening on port 40441
+1606896602537	Marionette	WARN	TLS certificate errors will be ignored for this session
+JavaScript warning: moz-extension://88bdcf5c-bde1-46c5-8d81-7c7ecb824009/lib/adblockplus.js, line 0: Successfully compiled asm.js code (total compilation time 1ms)
+JavaScript error: undefined, line 0: Error: frame.state is undefined
+1606896631345	Marionette	INFO	Stopped listening on port 40441
+JavaScript error: resource://gre/modules/ConduitsChild.jsm, line 108: Error: sendRemoveListener on closed conduit jid1-NIfFY2CA8fy1tg@jetpack.274877907087
+1606896811326	geckodriver	INFO	Listening on 127.0.0.1:46843
+1606896811335	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "-window-size=1980,1080" "-headless" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofileU0zDhg"
+*** You are running in headless mode.
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
+1606896812907	Marionette	INFO	Listening on port 36831
+1606896812966	Marionette	WARN	TLS certificate errors will be ignored for this session
+JavaScript warning: moz-extension://1be137ce-a056-4bb4-9f51-a46453a49a7f/lib/adblockplus.js, line 0: Successfully compiled asm.js code (total compilation time 1ms)
+JavaScript error: undefined, line 0: Error: frame.state is undefined
+1606896927269	Marionette	INFO	Stopped listening on port 36831
+JavaScript error: resource://gre/modules/ConduitsChild.jsm, line 108: Error: sendRemoveListener on closed conduit jid1-NIfFY2CA8fy1tg@jetpack.274877907087
+1606897358049	geckodriver	INFO	Listening on 127.0.0.1:46305
+1606897358056	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "-window-size=1980,1080" "-headless" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofileXKsE1a"
+*** You are running in headless mode.
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
+1606897359807	Marionette	INFO	Listening on port 46515
+1606897359891	Marionette	WARN	TLS certificate errors will be ignored for this session
+JavaScript warning: moz-extension://24728ceb-d593-4ff2-92fa-8a93611b66de/lib/adblockplus.js, line 0: Successfully compiled asm.js code (total compilation time 1ms)
+JavaScript error: undefined, line 0: Error: frame.state is undefined
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+1606897450889	geckodriver	INFO	Listening on 127.0.0.1:51603
+1606897450898	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "-window-size=1980,1080" "-headless" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofilenwKX5N"
+*** You are running in headless mode.
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
+1606897452423	Marionette	INFO	Listening on port 38573
+1606897452530	Marionette	WARN	TLS certificate errors will be ignored for this session
+JavaScript warning: moz-extension://e0c548ae-d6a8-4ef9-a5e9-c54c9bb884f2/lib/adblockplus.js, line 0: Successfully compiled asm.js code (total compilation time 1ms)
+JavaScript error: undefined, line 0: Error: frame.state is undefined
+1606897498854	Marionette	WARN	TimedPromise timed out after 500 ms: stacktrace:
+TimedPromise/<@chrome://marionette/content/sync.js:228:19
+TimedPromise@chrome://marionette/content/sync.js:213:10
+interaction.flushEventLoop@chrome://marionette/content/interaction.js:418:10
+webdriverClickElement@chrome://marionette/content/interaction.js:179:31
+1606897541815	Marionette	WARN	TimedPromise timed out after 500 ms: stacktrace:
+TimedPromise/<@chrome://marionette/content/sync.js:228:19
+TimedPromise@chrome://marionette/content/sync.js:213:10
+interaction.flushEventLoop@chrome://marionette/content/interaction.js:418:10
+webdriverClickElement@chrome://marionette/content/interaction.js:179:31
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+1606897600304	geckodriver	INFO	Listening on 127.0.0.1:32921
+1606897600313	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "-window-size=1980,1080" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofileWMCGvF"
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
+1606897602644	Marionette	INFO	Listening on port 35445
+1606897602742	Marionette	WARN	TLS certificate errors will be ignored for this session
+JavaScript warning: moz-extension://3f261031-c15c-4c4e-9d3a-5a70b76c72d2/lib/adblockplus.js, line 0: Successfully compiled asm.js code (total compilation time 1ms)
+JavaScript error: undefined, line 0: Error: frame.state is undefined
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+1606897758515	geckodriver	INFO	Listening on 127.0.0.1:51345
+1606897758524	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "-window-size=1980,1080" "-headless" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofileHVdpdk"
+*** You are running in headless mode.
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
+1606897760186	Marionette	INFO	Listening on port 44507
+1606897760310	Marionette	WARN	TLS certificate errors will be ignored for this session
+JavaScript warning: moz-extension://777db330-b64b-48e5-ac41-3751291ab81b/lib/adblockplus.js, line 0: Successfully compiled asm.js code (total compilation time 1ms)
+JavaScript error: undefined, line 0: Error: frame.state is undefined
+1606899793538	geckodriver	INFO	Listening on 127.0.0.1:45705
+1606899793546	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "-window-size=1980,1080" "-headless" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofileNqjjtX"
+*** You are running in headless mode.
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
+1606899795372	Marionette	INFO	Listening on port 39903
+1606899795476	Marionette	WARN	TLS certificate errors will be ignored for this session
+JavaScript warning: moz-extension://8d0ca9f9-80d1-45ff-b701-3ca92d736897/lib/adblockplus.js, line 0: Successfully compiled asm.js code (total compilation time 1ms)
+JavaScript error: undefined, line 0: Error: frame.state is undefined
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+1606899853834	geckodriver	INFO	Listening on 127.0.0.1:38139
+1606899853843	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "-window-size=1980,1080" "-headless" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofilenx0uLl"
+*** You are running in headless mode.
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
+1606899855554	Marionette	INFO	Listening on port 40877
+1606899855675	Marionette	WARN	TLS certificate errors will be ignored for this session
+JavaScript warning: moz-extension://7174025e-a856-4214-b7cd-41898dcdfa35/lib/adblockplus.js, line 0: Successfully compiled asm.js code (total compilation time 1ms)
+JavaScript error: undefined, line 0: Error: frame.state is undefined
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+1606899917446	geckodriver	INFO	Listening on 127.0.0.1:40123
+1606899917452	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "-window-size=1980,1080" "-headless" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofilexNuHZS"
+*** You are running in headless mode.
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
+1606899919305	Marionette	INFO	Listening on port 44055
+1606899919388	Marionette	WARN	TLS certificate errors will be ignored for this session
+JavaScript warning: moz-extension://3b568114-2831-4efa-bbd6-9cc8ffa76c88/lib/adblockplus.js, line 0: Successfully compiled asm.js code (total compilation time 1ms)
+JavaScript error: undefined, line 0: Error: frame.state is undefined
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+1606900171011	geckodriver	INFO	Listening on 127.0.0.1:38027
+1606900171020	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "-window-size=1980,1080" "-headless" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofileAiKu1i"
+*** You are running in headless mode.
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
+1606900172811	Marionette	INFO	Listening on port 39995
+1606900172855	Marionette	WARN	TLS certificate errors will be ignored for this session
+JavaScript warning: moz-extension://c982982b-59ab-4b04-938c-0cc705be76a4/lib/adblockplus.js, line 0: Successfully compiled asm.js code (total compilation time 1ms)
+JavaScript error: undefined, line 0: Error: frame.state is undefined
+1606900258270	geckodriver	INFO	Listening on 127.0.0.1:53093
+1606900258279	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "-window-size=1980,1080" "-headless" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofileS6WbJg"
+*** You are running in headless mode.
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
+1606900259997	Marionette	INFO	Listening on port 39889
+1606900260106	Marionette	WARN	TLS certificate errors will be ignored for this session
+JavaScript warning: moz-extension://13dfb55c-f607-46f9-9cb9-d97b501a500d/lib/adblockplus.js, line 0: Successfully compiled asm.js code (total compilation time 1ms)
+JavaScript error: undefined, line 0: Error: frame.state is undefined
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+1606900356594	geckodriver	INFO	Listening on 127.0.0.1:54113
+1606900356603	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "-window-size=1980,1080" "-headless" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofilebAYr6j"
+*** You are running in headless mode.
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
+1606900358309	Marionette	INFO	Listening on port 42833
+1606900358436	Marionette	WARN	TLS certificate errors will be ignored for this session
+JavaScript warning: moz-extension://f28df87d-8e08-4b2b-95e1-af38f2cbf7cd/lib/adblockplus.js, line 0: Successfully compiled asm.js code (total compilation time 1ms)
+JavaScript error: undefined, line 0: Error: frame.state is undefined
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+1606900411716	geckodriver	INFO	Listening on 127.0.0.1:59635
+1606900411725	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "-window-size=1980,1080" "-headless" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofileutUNls"
+*** You are running in headless mode.
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
+1606900413501	Marionette	INFO	Listening on port 32807
+1606900413564	Marionette	WARN	TLS certificate errors will be ignored for this session
+JavaScript warning: moz-extension://7edd2b5e-fea7-4aa3-af94-7243e05b9a57/lib/adblockplus.js, line 0: Successfully compiled asm.js code (total compilation time 1ms)
+JavaScript error: undefined, line 0: Error: frame.state is undefined
+1606900674909	geckodriver	INFO	Listening on 127.0.0.1:55445
+1606900674910	geckodriver	INFO	Listening on 127.0.0.1:54499
+1606900674910	geckodriver	INFO	Listening on 127.0.0.1:45397
+1606900674910	geckodriver	INFO	Listening on 127.0.0.1:57809
+1606900674918	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "-window-size=1980,1080" "-headless" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofilecKG3yd"
+1606900674920	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "-window-size=1980,1080" "-headless" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofileppuETK"
+1606900674920	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "-window-size=1980,1080" "-headless" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofile5rpIhA"
+1606900674920	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "-window-size=1980,1080" "-headless" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofilehs52Kv"
+*** You are running in headless mode.
+*** You are running in headless mode.
+*** You are running in headless mode.
+*** You are running in headless mode.
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
+1606900676940	Marionette	INFO	Listening on port 43791
+1606900676970	Marionette	INFO	Listening on port 38259
+1606900676987	Marionette	INFO	Listening on port 39421
+1606900677036	Marionette	INFO	Listening on port 44437
+1606900677049	Marionette	WARN	TLS certificate errors will be ignored for this session
+1606900677053	Marionette	WARN	TLS certificate errors will be ignored for this session
+1606900677058	Marionette	WARN	TLS certificate errors will be ignored for this session
+1606900677147	Marionette	WARN	TLS certificate errors will be ignored for this session
+1606900845700	geckodriver	INFO	Listening on 127.0.0.1:59351
+1606900845700	geckodriver	INFO	Listening on 127.0.0.1:51765
+1606900845700	geckodriver	INFO	Listening on 127.0.0.1:40579
+1606900845701	geckodriver	INFO	Listening on 127.0.0.1:55983
+1606900845708	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "-window-size=1980,1080" "-headless" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofileFASYO6"
+1606900845708	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "-window-size=1980,1080" "-headless" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofileSRfkfM"
+1606900845709	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "-window-size=1980,1080" "-headless" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofileuVAk6Z"
+1606900845710	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "-window-size=1980,1080" "-headless" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofile7YIBFL"
+*** You are running in headless mode.
+*** You are running in headless mode.
+*** You are running in headless mode.
+*** You are running in headless mode.
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
+1606900847742	Marionette	INFO	Listening on port 35761
+1606900847794	Marionette	INFO	Listening on port 36699
+1606900847811	Marionette	INFO	Listening on port 36069
+1606900847843	Marionette	WARN	TLS certificate errors will be ignored for this session
+1606900847845	Marionette	WARN	TLS certificate errors will be ignored for this session
+1606900847847	Marionette	WARN	TLS certificate errors will be ignored for this session
+1606900847862	Marionette	INFO	Listening on port 39591
+1606900847946	Marionette	WARN	TLS certificate errors will be ignored for this session
+1606900868956	geckodriver	INFO	Listening on 127.0.0.1:48923
+1606900868956	geckodriver	INFO	Listening on 127.0.0.1:38937
+1606900868956	geckodriver	INFO	Listening on 127.0.0.1:41085
+1606900868956	geckodriver	INFO	Listening on 127.0.0.1:39609
+1606900868965	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "-window-size=1980,1080" "-headless" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofile1om6mF"
+1606900868965	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "-window-size=1980,1080" "-headless" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofileE2j5Ga"
+1606900868966	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "-window-size=1980,1080" "-headless" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofilekxBhTs"
+1606900868966	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "-window-size=1980,1080" "-headless" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofileS5vRSk"
+*** You are running in headless mode.
+*** You are running in headless mode.
+*** You are running in headless mode.
+*** You are running in headless mode.
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
+1606900870747	Marionette	INFO	Listening on port 39077
+1606900870837	Marionette	WARN	TLS certificate errors will be ignored for this session
+1606900870936	Marionette	INFO	Listening on port 45311
+1606900870998	Marionette	WARN	TLS certificate errors will be ignored for this session
+1606900871097	Marionette	INFO	Listening on port 33673
+1606900871108	Marionette	INFO	Listening on port 36867
+1606900871199	Marionette	WARN	TLS certificate errors will be ignored for this session
+1606900871206	Marionette	WARN	TLS certificate errors will be ignored for this session
+JavaScript warning: moz-extension://c37e44c2-0eed-4b14-8fa5-2566f9347a8c/lib/adblockplus.js, line 0: Successfully compiled asm.js code (total compilation time 1ms)
+JavaScript error: undefined, line 0: Error: frame.state is undefined
+JavaScript warning: moz-extension://a3eed94e-77a7-4b33-ab27-c9babe206af4/lib/adblockplus.js, line 0: Successfully compiled asm.js code (total compilation time 1ms)
+JavaScript error: undefined, line 0: Error: frame.state is undefined
+JavaScript warning: moz-extension://c540f270-db8f-4adb-a8f2-6b6c99141118/lib/adblockplus.js, line 0: Successfully compiled asm.js code (total compilation time 1ms)
+JavaScript warning: moz-extension://9e1f77e8-ad3d-4936-9e26-8fd89ee5a547/lib/adblockplus.js, line 0: Successfully compiled asm.js code (total compilation time 1ms)
+JavaScript error: undefined, line 0: Error: frame.state is undefined
+JavaScript error: undefined, line 0: Error: frame.state is undefined
+1606900900078	Marionette	INFO	Stopped listening on port 39077
+JavaScript error: resource://gre/modules/ConduitsChild.jsm, line 108: Error: sendRemoveListener on closed conduit jid1-NIfFY2CA8fy1tg@jetpack.274877907087
+1606900900743	Marionette	INFO	Stopped listening on port 36867
+JavaScript error: resource://gre/modules/ConduitsChild.jsm, line 108: Error: sendRemoveListener on closed conduit jid1-NIfFY2CA8fy1tg@jetpack.274877907087
+1606900900986	Marionette	INFO	Stopped listening on port 33673
+JavaScript error: resource://gre/modules/ConduitsChild.jsm, line 108: Error: sendRemoveListener on closed conduit jid1-NIfFY2CA8fy1tg@jetpack.274877907087
+1606900901103	Marionette	INFO	Stopped listening on port 45311
+JavaScript error: resource://gre/modules/ConduitsChild.jsm, line 108: Error: sendRemoveListener on closed conduit jid1-NIfFY2CA8fy1tg@jetpack.274877907087
+1606901405347	geckodriver	INFO	Listening on 127.0.0.1:38891
+1606901405356	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "-window-size=1980,1080" "-headless" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofileAlxJxM"
+*** You are running in headless mode.
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
+1606901407100	Marionette	INFO	Listening on port 45145
+1606901407250	Marionette	WARN	TLS certificate errors will be ignored for this session
+JavaScript warning: moz-extension://60eea8f4-033a-4540-8a0c-11e32ce96643/lib/adblockplus.js, line 0: Successfully compiled asm.js code (total compilation time 1ms)
+JavaScript error: undefined, line 0: Error: frame.state is undefined
+1606901423260	Marionette	INFO	Stopped listening on port 45145
+JavaScript error: resource://gre/modules/ConduitsChild.jsm, line 108: Error: sendRemoveListener on closed conduit jid1-NIfFY2CA8fy1tg@jetpack.274877907087
+1606901542217	geckodriver	INFO	Listening on 127.0.0.1:48055
+1606901542226	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "-window-size=1980,1080" "-headless" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofileL1wkwm"
+*** You are running in headless mode.
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
+1606901543961	Marionette	INFO	Listening on port 44149
+1606901544051	Marionette	WARN	TLS certificate errors will be ignored for this session
+JavaScript warning: moz-extension://489c5081-230f-47dd-9b2f-d3e1c7b96566/lib/adblockplus.js, line 0: Successfully compiled asm.js code (total compilation time 1ms)
+JavaScript error: undefined, line 0: Error: frame.state is undefined
+1606901598612	Marionette	INFO	Stopped listening on port 44149
+JavaScript error: resource://gre/modules/ConduitsChild.jsm, line 108: Error: sendRemoveListener on closed conduit jid1-NIfFY2CA8fy1tg@jetpack.274877907087
+1606902683183	geckodriver	INFO	Listening on 127.0.0.1:44611
+1606902683192	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "-window-size=1980,1080" "-headless" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofilerZm1sy"
+*** You are running in headless mode.
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
+1606902684875	Marionette	INFO	Listening on port 41053
+1606902684959	Marionette	WARN	TLS certificate errors will be ignored for this session
+JavaScript warning: moz-extension://98a67149-5625-480b-9613-2016b110c003/lib/adblockplus.js, line 0: Successfully compiled asm.js code (total compilation time 1ms)
+JavaScript error: undefined, line 0: Error: frame.state is undefined
+1606902769197	Marionette	INFO	Stopped listening on port 41053
+JavaScript error: resource://gre/modules/ConduitsChild.jsm, line 108: Error: sendRemoveListener on closed conduit jid1-NIfFY2CA8fy1tg@jetpack.274877907087
+1606902771972	geckodriver	INFO	Listening on 127.0.0.1:43729
+1606902771981	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "-window-size=1980,1080" "-headless" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofilerI7uAL"
+*** You are running in headless mode.
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
+1606902773539	Marionette	INFO	Listening on port 33231
+1606902773612	Marionette	WARN	TLS certificate errors will be ignored for this session
+JavaScript warning: moz-extension://0497c4d2-6c14-4a07-a070-4868edef35af/lib/adblockplus.js, line 0: Successfully compiled asm.js code (total compilation time 1ms)
+JavaScript error: undefined, line 0: Error: frame.state is undefined
+1606902795943	Marionette	INFO	Stopped listening on port 33231
+JavaScript error: resource://gre/modules/ConduitsChild.jsm, line 108: Error: sendRemoveListener on closed conduit jid1-NIfFY2CA8fy1tg@jetpack.274877907087
+1606902796361	geckodriver	INFO	Listening on 127.0.0.1:49347
+1606902796367	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "-window-size=1980,1080" "-headless" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofileZ9UzhG"
+*** You are running in headless mode.
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
+1606902798088	Marionette	INFO	Listening on port 44303
+1606902798212	Marionette	WARN	TLS certificate errors will be ignored for this session
+JavaScript warning: moz-extension://e9d60e0c-fdbc-4c78-abb2-38d07d8bc963/lib/adblockplus.js, line 0: Successfully compiled asm.js code (total compilation time 1ms)
+JavaScript error: undefined, line 0: Error: frame.state is undefined
+1606902807557	Marionette	INFO	Stopped listening on port 44303
+JavaScript error: resource://gre/modules/ConduitsChild.jsm, line 108: Error: sendRemoveListener on closed conduit jid1-NIfFY2CA8fy1tg@jetpack.274877907087

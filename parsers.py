@@ -5,17 +5,15 @@ import yaml
 from time import sleep
 from datetime import date, datetime, timedelta
 import csv
+import numpy as np
+import pandas as pd
 import requests
 from bs4 import BeautifulSoup
 from selenium import webdriver
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
-import numpy as np
-import pandas as pd
-from PIL import Image, ImageFilter
-from quotes.parsers_env import firefox_init, agents
-
+from PIL import Image
 
 
 conf = yaml.safe_load(open('config/settings.yaml'))
@@ -117,7 +115,7 @@ def get_finviz_treemaps(driver=None, img_out_path_=None):
             driver.save_screenshot(img_path)
             im = Image.open(img_path)
             im = im.crop((210, 0, 1330, 625))
-            im.save(img_path)
+            im.save(img_path, quality=100, subsampling=0)
     print('Get Finviz Treemap complete' + '\n')
 
 
@@ -138,7 +136,7 @@ def get_coins360_treemaps(driver=None, img_out_path_=None):
         height = location['y'] + size['height']
         im = Image.open(img_path)
         im = im.crop((int(x), int(y+80), int(width), int(height-25)))
-        im.save(img_path)
+        im.save(img_path, quality=100, subsampling=0)
     print('Get coin360 Treemap complete' + '\n')
 
 
@@ -190,44 +188,32 @@ def get_tw_charts(driver=None, img_out_path_=None):
         'crypto': 'https://www.tradingview.com/chart/HHWJel9w/',
         'rtsi': 'https://www.tradingview.com/chart/PV8hXeeD/',
     }
+
     with driver:
         for k, v in treemaps.items():
-            img_path = os.path.join(img_out_path_, k + '.png')
+            im_path = os.path.join(img_out_path_, k + '.png')
             driver.get(v)
-            sleep(23)
+            sleep(15)
+            elem = driver.find_element_by_class_name("chart-container-border")
+            webdriver.ActionChains(driver).move_to_element(elem).perform()
+            driver.execute_script("return arguments[0].scrollIntoView();", elem)
+            sleep(5)
             try:
-                close_button = driver.find_element_by_class_name('tv-dialog__close close-d1KI_uC8 dialog-close-3phLlAHH js-dialog__close')
-                driver.execute_script("arguments[0].click();", close_button)
-            except Exception as e:
-                print(e)
-            # try:
-            #     driver.find_element_by_xpath("//button[@class='close-button-7uy97o5_']").click()
-            #     sleep(3)
-            # except Exception as e:
-            #     print(e)
-            img_path = os.path.join(IMAGES_OUT_PATH, k + '.png')
-            driver.get_screenshot_as_file(img_path)
-            driver.quit()
-
-    #
-    #         tag = ".//*[@id=\'" + f'{etf}' + "_nf']"
-    #         tag2 = ".//*[@id=\'container_" + f'{etf}' + "'" + "]"
-    #         icon = driver.find_element_by_xpath(tag)  # ".//*[@id='{etf}_nf']"
-    #         driver.execute_script("arguments[0].click();", icon)
-    #
-    # img1 = os.path.join(IMAGES_OUT_PATH, '8ql9Y9yV.png')
-    # spdr = os.path.join(IMAGES_OUT_PATH, 'sectors.png')
-    # img2 = os.path.join(IMAGES_OUT_PATH, 'Z9Sidx11.png')
-    # vola = os.path.join(IMAGES_OUT_PATH, 'volatility.png')
-    # img3 = os.path.join(IMAGES_OUT_PATH, 'HHWJel9w.png')
-    # crpt = os.path.join(IMAGES_OUT_PATH, 'crypto.png')
-    # img4 = os.path.join(IMAGES_OUT_PATH, 'PV8hXeeD.png')
-    # rtsi = os.path.join(IMAGES_OUT_PATH, 'rtsi.png')
-    #
-    # crop(img1, spdr, 56, 44, 320, 43)
-    # crop(img2, vola, 56, 44, 320, 43)
-    # crop(img3, crpt, 56, 44, 320, 43)
-    # crop(img4, rtsi, 56, 44, 320, 43)
+                close_button1 = driver.find_element_by_class_name('tv-dialog__close close-d1KI_uC8 dialog-close-3phLlAHH js-dialog__close')
+                driver.execute_script("arguments[0].click();", close_button1)
+            except Exception as e1:
+                print(e1)
+            try:
+                close_button2 = driver.find_element_by_xpath("//button[@class='close-button-7uy97o5_']").click()
+                driver.execute_script("arguments[0].click();", close_button2)
+                sleep(3)
+            except Exception as e2:
+                print(e2)
+            driver.get_screenshot_as_file(im_path)
+            im = Image.open(im_path)
+            width, height = im.size
+            cropped = im.crop((56, 44, width - 320, height - 43))
+            cropped.save(im_path, quality=100, subsampling=0)
     print('Get TW Charts complete' + '\n')
 
 
@@ -270,15 +256,4 @@ def get_sma50(ag=None):
         write.writeheader()
         write.writerow(items_)
     print('sma50 complete')
-
-# Call
-# get_flows(driver=firefox_init(webdriver_path=WEBDRIVER, agent_rotation=agents()), img_out_path_=IMAGES_OUT_PATH)
-# advance_decline(ag=agents())
-# get_finviz_treemaps(driver=firefox_init(webdriver_path=WEBDRIVER, agent_rotation=agents()), img_out_path_=IMAGES_OUT_PATH)
-# get_coins360_treemaps(driver=firefox_init(webdriver_path=WEBDRIVER, agent_rotation=agents()), img_out_path_=IMAGES_OUT_PATH)
-# get_economics(ag=agents(), img_out_path_=IMAGES_OUT_PATH)
-# get_sma50(ag=agents())
-get_tw_charts(driver=firefox_init(webdriver_path=WEBDRIVER, agent_rotation=agents()), img_out_path_=IMAGES_OUT_PATH)
-
-
 
