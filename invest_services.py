@@ -24,7 +24,7 @@ IMAGES_OUT_PATH = conf['PATHS']['IMAGES_OUT_PATH']
 # ============================== Logging Setup ======================
 logging.basicConfig(
     filemode='w',
-    # filename=os.path.abspath('logs/error.log'),
+    filename=os.path.abspath('logs/invest_services.log'),
     format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
     level=logging.WARNING)
 logging.getLogger('scrapers').setLevel(level=logging.WARNING)

@@ -1,8 +1,8 @@
 .idea/
 __pycache__/
-**/logs
 **/*env
-**/logs/
+*.log
+.log
 **/*venv/
 **/*env/
 **/*.session
