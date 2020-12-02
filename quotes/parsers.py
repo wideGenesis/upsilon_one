@@ -16,8 +16,8 @@ from PIL import Image
 
 # ============================== Inflows GET ================================
 def get_flows(driver=None, img_out_path_=None):
-    display = Display(visible=0, size=(1920, 1080))
-    display.start()
+    # display = Display(visible=0, size=(1920, 1080))
+    # display.start()
     etfs = ['VCIT', 'SPY', 'VTI', 'VEA', 'VWO', 'QQQ', 'VXX', 'TLT', 'SHY', 'LQD']
     with driver:
         driver.get('https://www.etf.com/etfanalytics/etf-fund-flows-tool')
@@ -48,19 +48,19 @@ def get_flows(driver=None, img_out_path_=None):
                 EC.element_to_be_clickable((By.XPATH, ".//*[@id='edit-submitbutton']"))).click()
             print('Button has been clicked')
         except Exception as e1:
-            print('Try to re-run the scraper', e1)
+            print('Button click error. Try to re-run the scraper', e1)
             return None
         sleep(10)
-        try:
-            elem = driver.find_element_by_xpath(".//*[@id='fundFlowsTitles']")
-            print('elem 2-Titles has been located')
-
-        except Exception as e2:
-            print('Try to re-run the scraper', e2)
-            return None
-        webdriver.ActionChains(driver).move_to_element(elem).perform()
-        driver.execute_script("return arguments[0].scrollIntoView();", elem)
-        sleep(1)
+        # try:
+        #     elem = driver.find_element_by_xpath(".//*[@id='fundFlowsTitles']")
+        #     print('elem 2-Titles has been located')
+        #
+        # except Exception as e2:
+        #     print('Titles elem error. Try to re-run the scraper', e2)
+        #     return None
+        # webdriver.ActionChains(driver).move_to_element(elem).perform()
+        # driver.execute_script("return arguments[0].scrollIntoView();", elem)
+        # sleep(1)
 
         for etf in etfs:
             sleep(2)
@@ -77,7 +77,7 @@ def get_flows(driver=None, img_out_path_=None):
             img = Image.open(os.path.join(img_out_path_, f'inflows_{etf}.png'))
             img_crop = img.crop((360, 367, 995, 665))
             img_crop.save(os.path.join(img_out_path_, f'inflows_{etf}.png'), quality=100, subsampling=0)
-    display.stop()
+    # display.stop()
     print('Get Fund Flows complete' + '\n')
 
 
