@@ -115,7 +115,9 @@ def get_flows2(driver=None, img_out_path_=None):
         except Exception as e1:
             print('Button click error. Try to re-run the scraper', e1)
             return None
+        print(11111111111111)
         sleep(10)
+        print(22222222222222)
         html = driver.page_source
         print(html)
         # if html:
