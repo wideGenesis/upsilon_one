@@ -67,7 +67,9 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, tariff
         await client.send_message(event.input_sender, 'Волатильность и барометр жадности/страха')
         await client.send_file(entity, img_path + 'volatility.png')
         await client.send_message(event.input_sender, 'Тепловая карта 1-day performance')
-        await client.send_file(entity, img_path + 'treemap.png')
+        await client.send_file(entity, img_path + 'treemap_1d.png')
+        await client.send_message(event.input_sender, 'Тепловая карта YtD performance')
+        await client.send_file(entity, img_path + 'treemap_ytd.png')
         await client.edit_message(message, 'Анализ рынка США')
         await event.edit()
         await client.send_message(event.input_sender, 'Как интерпритировать графики выше? /instruction01',
@@ -118,9 +120,9 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, tariff
     elif event.data == b'a1a5':
         message = await client.send_message(entity=entity, message='Загрузка...')
         await client.send_message(event.input_sender, 'Общая картина 1-day performance')
-        await client.send_file(entity, img_path + 'global_treemap.png')
+        await client.send_file(entity, img_path + 'global_treemap_1d.png')
         await client.send_message(event.input_sender, 'Общая картина YTD performance')
-        await client.send_message(event.input_sender, 'Общая картина bubble map')
+        await client.send_file(entity, img_path + 'global_treemap_ytd.png')
         await client.edit_message(message, 'Мировые рынки в картах')
         await event.edit()
         await client.send_message(event.input_sender, 'Как ? /instruction02',

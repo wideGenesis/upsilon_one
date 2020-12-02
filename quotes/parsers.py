@@ -111,7 +111,7 @@ def get_finviz_treemaps(driver=None, img_out_path_=None):
     treemaps = {
         'treemap_1d': 'https://finviz.com/map.ashx?t=sec_all',
         'treemap_ytd': 'https://finviz.com/map.ashx?t=sec_all&st=ytd',
-        'global_treemap': 'https://finviz.com/map.ashx?t=geo',
+        'global_treemap_1d': 'https://finviz.com/map.ashx?t=geo',
         'global_treemap_ytd': 'https://finviz.com/map.ashx?t=geo&st=ytd',
     }
     with driver:
