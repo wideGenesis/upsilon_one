@@ -32,7 +32,7 @@ logging.getLogger('scrapers').setLevel(level=logging.WARNING)
 
 # ============================== Main  =============================
 def main():
-    get_flows2(driver=firefox_init(webdriver_path=WEBDRIVER,
+    get_flows2(driver=chrome_init(webdriver_path=WEBDRIVER,
                                   agent_rotation=agents()), img_out_path_=IMAGES_OUT_PATH)
     advance_decline(ag=agents())
     get_finviz_treemaps(driver=firefox_init(webdriver_path=WEBDRIVER, agent_rotation=agents()),
