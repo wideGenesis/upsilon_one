@@ -62,6 +62,7 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, tariff
             data = csv.reader(f, delimiter=',')
             for row in data:
                 await client.send_message(entity=entity, message=f'{row}')
+        time.sleep(2)
         await client.send_message(event.input_sender, 'Общая картина')
         await client.send_file(entity, img_path + 'sectors.png')
         await client.send_message(event.input_sender, 'Волатильность и барометр жадности/страха')
