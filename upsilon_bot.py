@@ -16,7 +16,6 @@ from telegram import handlers
 from telegram import callbacks
 from telegram import shared
 
-
 # ============================== Environment Setup ======================
 PYTHON_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir))
 sys.path.append(PYTHON_PATH)
@@ -35,6 +34,9 @@ logging.basicConfig(
     level=logging.WARNING)
 logging.getLogger('telethon').setLevel(level=logging.WARNING)
 
+orig_stdout = sys.stdout
+f = open('logs/stdout.log', 'w')
+sys.stdout = f
 # ============================== Credentials and GLOBALS ======================
 
 PAYMENT_TOKEN = conf['TELEGRAM']['PAYMENT_TOKEN']
@@ -143,25 +145,29 @@ async def init_db():
 
 
 def main():
-    # Подгружаем публичный ключ для проверки подписи данных об успешных платежах
-    with open('config/key.pub', mode='rb') as public_file:
-        key_data = public_file.read()
-        global PUBKEY
-        PUBKEY = rsa.PublicKey.load_pkcs1_openssl_pem(key_data)
+    try:
+        # Подгружаем публичный ключ для проверки подписи данных об успешных платежах
+        with open('config/key.pub', mode='rb') as public_file:
+            key_data = public_file.read()
+            global PUBKEY
+            PUBKEY = rsa.PublicKey.load_pkcs1_openssl_pem(key_data)
 
-    handlers.set_route(app, PAYMENT_TOKEN, PUBKEY, client, engine)
+        handlers.set_route(app, PAYMENT_TOKEN, PUBKEY, client, engine)
 
-    # Стартуем веб сервер с отдельным event loop
-    print("_____Running db init_____", '\n')
-    loop_db = asyncio.get_event_loop()
-    loop_db.run_until_complete(init_db())
-    print("_____Running web server_____", '\n')
-    loop = asyncio.get_event_loop()
-    loop.run_until_complete(webserver_starter())
-    print("__Running telethon client__", '\n')
+        # Стартуем веб сервер с отдельным event loop
+        print("_____Running db init_____", '\n')
+        loop_db = asyncio.get_event_loop()
+        loop_db.run_until_complete(init_db())
+        print("_____Running web server_____", '\n')
+        loop = asyncio.get_event_loop()
+        loop.run_until_complete(webserver_starter())
+        print("__Running telethon client__", '\n')
 
-    # Старт клиента Телетон
-    client.run_until_disconnected()
+        # Старт клиента Телетон
+        client.run_until_disconnected()
+    finally:
+        sys.stdout = orig_stdout
+        f.close()
 
 
 if __name__ == '__main__':
