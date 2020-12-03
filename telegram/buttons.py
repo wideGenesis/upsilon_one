@@ -8,22 +8,22 @@ keyboard_0 = [
         Button.inline('\U0001F9EC   ' + 'Конструктор стратегий', b'a2')
     ],
     [
-        Button.inline('\U0001F321  ' + 'Калькуляторы', b'a3')
+        Button.inline('\U0001F9F0   ' + 'Калькуляторы', b'a3')
     ],
     [
-        Button.inline('\U0001F9BE  ' + 'Управление', b'a4')
+        Button.inline('\U0001F9BE   ' + 'Управление', b'a4')
     ],
     [
-        Button.inline('\U0001F691  ' + 'Инструкции', b'a5')
+        Button.inline('\U000026D1   ' + 'Инструкции', b'a5')
     ],
     [
-        Button.inline('\U0001F393  ' + 'Образование', b'a6')
+        Button.inline('\U0001F393   ' + 'Образование', b'a6')
     ],
     [
-        Button.inline('\U0001F92C  ' + 'Налоги', b'a7')
+        Button.inline('\U0001F92F   ' + 'Налоги', b'a7')
     ],
     [
-        Button.inline('\U0001F5C3  ' + 'Агрегатор новостей', b'a8')
+        Button.inline('\U0001F5C3   ' + 'Агрегатор новостей', b'a8')
     ]
 ]
 
@@ -38,7 +38,7 @@ keyboard_a1 = [
         Button.inline('\U0001F43B  ' + 'Рынок РФ', b'a1a3')
     ],
     [
-        Button.inline('\U0001F504  ' + 'ETF потоки', b'a1a4')
+        Button.inline('\U0001F504  ' + 'ETF сантимент', b'a1a4')
     ],
     [
         Button.inline('\U0001F30D  ' + 'Мировые рынки в картах', b'a1a5')
@@ -216,22 +216,49 @@ keyboard_core_macro = [
         Button.inline('\U0001F3E6  ' + 'Interest Rates', b'cm1')
     ],
     [
-        Button.inline('\U0001F321	  ' + 'Inflation Rates', b'cm2')
+        Button.inline('\U0001F321   ' + 'Inflation Rates', b'cm2')
     ],
     [
-        Button.inline('\U0001F525  ' + 'Unemployment Rates', b'cm3')
+        Button.inline('\U0001F525   ' + 'Unemployment Rates', b'cm3')
     ],
     [
-        Button.inline('\U0001F3E2  ' + 'Composite PMI', b'cm4')
+        Button.inline('\U0001F3E2   ' + 'Composite PMI', b'cm4')
+    ],
+    [
+        Button.inline('\U0001F519   ' + 'Назад', b'cm-2')
+    ]
+]
+
+keyboard_core_macro_back = [
+    [
+        Button.inline('\U0001F519   ' + 'Назад', b'cm-1')
+    ]
+]
+
+keyboard_us_market = [
+    [
+        Button.inline('\U0001F503   ' + 'Статистика роста/падения', b'us1')
+    ],
+    [
+        Button.inline('\U0001F5BC   ' + 'Общая картина', b'us2')
+    ],
+    [
+        Button.inline('\U0001F3A8   ' + 'Тепловые карты', b'us3')
+    ],
+    [
+        Button.inline('\U0001F4C8   ' + 'Кривая доходности и дивиденды', b'us4')
+    ],
+    [
+        Button.inline('\U0001F4C9   ' + 'Кривая волатильности', b'us5')
     ],
     [
         Button.inline('\U0001F519  ' + 'Назад', b'cm-2')
     ]
 ]
 
-keyboard_core_macro_back = [
+keyboard_us_market_back = [
     [
-        Button.inline('\U0001F519  ' + 'Назад', b'cm-1')
+        Button.inline('\U0001F519  ' + 'Назад', b'cm-3')
     ]
 ]
 

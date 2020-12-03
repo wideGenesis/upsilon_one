@@ -56,6 +56,7 @@ async def tools_menu(event, client):
 
 async def profile_menu(event, client, engine=None):
     keyboard_z1 = [
+        [Button.inline('\U0001F305	  ' + 'Мои цели', b'z10')],
         [Button.inline('\U0001F516	  ' + 'Подписки', b'z1')],
         [Button.inline('\U0001F91D	  ' + 'Пригласить друга', b'z2')],
         [Button.inline('\U0001F519    ' + 'В главное меню', b'main')]

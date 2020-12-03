@@ -55,27 +55,8 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, tariff
 
     # ============================== Анализ рынков 2 уровень=============================
     elif event.data == b'a1a1':
-        message = await client.send_message(entity=entity, message='Загрузка...')
-        await client.send_message(event.input_sender, 'Количество растущих/падающих акций и объёмы за сегодня')
-        filename = os.path.join(img_path, 'adv.csv')
-        with open(filename, newline='') as f:
-            data = csv.reader(f, delimiter=',')
-            for row in data:
-                await client.send_message(entity=entity, message=f'{row}')
-        time.sleep(2)
-        await client.send_message(event.input_sender, 'Общая картина')
-        await client.send_file(entity, img_path + 'sectors.png')
-        await client.send_message(event.input_sender, 'Волатильность и барометр жадности/страха')
-        await client.send_file(entity, img_path + 'volatility.png')
-        time.sleep(1)
-        await client.send_message(event.input_sender, 'Тепловая карта 1-day performance')
-        await client.send_file(entity, img_path + 'treemap_1d.png')
-        await client.send_message(event.input_sender, 'Тепловая карта YtD performance')
-        await client.send_file(entity, img_path + 'treemap_ytd.png')
-        await client.edit_message(message, 'Анализ рынка США')
+        await client.send_message(event.input_sender, 'Рынок США', buttons=buttons.keyboard_us_market)
         await event.edit()
-        await client.send_message(event.input_sender, 'Как интерпритировать графики выше? /instruction01',
-                                  buttons=buttons.keyboard_a1_back)
     elif event.data == b'a1a2':
         message = await client.send_message(entity=entity, message='Загрузка...')
         await client.send_message(event.input_sender, 'Общая картина')
@@ -138,6 +119,51 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, tariff
     elif event.data == b'a1a-1':
         await client.send_message(event.input_sender, 'Анализ рынков', buttons=buttons.keyboard_a1)
         await event.edit()
+
+    # ============================== Анализ рынков уровень 3 =============================
+    elif event.data == b'us1':
+        message = await client.send_message(entity=entity, message='Загрузка...')
+        filename1 = os.path.join(img_path, 'adv.csv')
+        with open(filename1, newline='') as f1:
+            data1 = csv.reader(f1, delimiter=',')
+            for row1 in data1:
+                await client.send_message(entity=entity, message=f'{row1}')
+        await client.edit_message(message, 'Количество растущих/падающих акций и объёмы за сегодня')
+        await client.send_message(event.input_sender, 'Как ? /instruction02', buttons=buttons.keyboard_us_market_back)
+        await event.edit()
+    elif event.data == b'us2':
+        message = await client.send_message(entity=entity, message='Загрузка...')
+        await client.send_file(entity, img_path + 'sectors.png')
+        await client.send_message(event.input_sender, 'Волатильность и барометр жадности/страха')
+        await client.send_file(entity, img_path + 'volatility.png')
+        await client.edit_message(message, 'Общая картина рынка')
+        await event.edit()
+        await client.send_message(event.input_sender, 'Как интерпритировать графики выше? /instruction02',
+                                  buttons=buttons.keyboard_us_market_back)
+    elif event.data == b'us3':
+        message = await client.send_message(entity=entity, message='Загрузка...')
+        await client.send_message(event.input_sender, 'Тепловая карта 1-day performance')
+        await client.send_file(entity, img_path + 'treemap_1d.png')
+        await client.send_message(event.input_sender, 'Тепловая карта YtD performance')
+        await client.send_file(entity, img_path + 'treemap_ytd.png')
+        await client.edit_message(message, 'Тепловые карты')
+        await event.edit()
+        await client.send_message(event.input_sender, 'Как интерпритировать карты? /instruction02',
+                                  buttons=buttons.keyboard_us_market_back)
+    elif event.data == b'us4':
+        message = await client.send_message(entity=entity, message='Загрузка...')
+        await client.send_file(entity, img_path + 'treemap_1d.png')
+        await client.edit_message(message, 'Кривая доходности и дивиденды')
+        await event.edit()
+        await client.send_message(event.input_sender, 'Как интерпритировать кривую доходности? /instruction02',
+                                  buttons=buttons.keyboard_us_market_back)
+    elif event.data == b'us5':
+        message = await client.send_message(entity=entity, message='Загрузка...')
+        await client.send_file(entity, img_path + 'treemap_1d.png')
+        await client.edit_message(message, 'Кривая волатильности')
+        await event.edit()
+        await client.send_message(event.input_sender, 'Как интерпритировать кривую волатильности? /instruction02',
+                                  buttons=buttons.keyboard_us_market_back)
 
     # ============================== Конструктор стратегий =============================
     elif event.data == b'a2a1':
@@ -384,6 +410,9 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, tariff
         await event.edit()
     elif event.data == b'cm-2':
         await client.send_message(event.input_sender, 'Назад', buttons=buttons.keyboard_a1)
+        await event.edit()
+    elif event.data == b'cm-3':
+        await client.send_message(event.input_sender, 'Назад', buttons=buttons.keyboard_us_market)
         await event.edit()
 
     elif event.data == b'z2':
