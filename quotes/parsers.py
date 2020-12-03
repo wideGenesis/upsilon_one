@@ -12,6 +12,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from PIL import Image
+import quandl
 
 
 # ============================== Inflows GET ================================
@@ -150,6 +151,8 @@ def get_flows2(driver=None, img_out_path_=None):
             img_crop = img.crop((360, 367, 995, 665))
             img_crop.save(os.path.join(img_out_path_, f'inflows_{etf}.png'), quality=100, subsampling=0)
     print('Get Fund Flows complete' + '\n')
+
+
 # ============================== ADVANCE/DECLINE GET ================================
 def advance_decline(ag=None):
     headers = {'User-Agent': ag}
@@ -336,3 +339,44 @@ def get_sma50(ag=None):
         write.writeheader()
         write.writerow(items_)
     print('sma50 complete')
+
+
+# ============================== Treasury Curve and Div Yield GET ================================
+def t_curve(ag=None):
+    headers = {'User-Agent': ag}
+    xml = 'https://data.treasury.gov/feed.svc/DailyTreasuryYieldCurveRateData?$filter=month(NEW_DATE)%20eq%2012%20and%20year(NEW_DATE)%20eq%202020'
+    html = requests.get(xml, headers=headers).text
+    soup = BeautifulSoup(html, "xml")
+    _date = soup.findAll('NEW_DATE')[1].text.split('T')[0]
+    _1m = soup.findAll('BC_1MONTH')[1].text
+    _2m = soup.findAll('BC_2MONTH')[1].text
+    _3m = soup.findAll('BC_3MONTH')[1].text
+    _6m = soup.findAll('BC_6MONTH')[1].text
+    _1y = soup.findAll('BC_1YEAR')[1].text
+    _2y = soup.findAll('BC_2YEAR')[1].text
+    _3y = soup.findAll('BC_3YEAR')[1].text
+    _5y = soup.findAll('BC_5YEAR')[1].text
+    _7y = soup.findAll('BC_7YEAR')[1].text
+    _10y = soup.findAll('BC_10YEAR')[1].text
+    _20y = soup.findAll('BC_20YEAR')[1].text
+    _30y = soup.findAll('BC_30YEAR')[1].text
+    msg1 = '1Mo -' + _1m + '\n' + '2Mo -' + _2m + '\n' + '3Mo -' + _3m + '\n' + '6Mo -' + _6m + '\n' + '1Yr -' + _1y + '\n'
+    msg2 = '2Yr -' + _2y + '\n' + '3Yr -' + _3y + '\n' + '5Yr -' + _5y + '\n' + '7Yr -' + _7y + '\n' + '10Yr -' + _10y + '\n'
+    msg3 = '20Yr -' + _20y + '\n' + '30Yr -' + _30y + '\n'
+    return _date, msg1, msg2, msg3
+
+
+# def curve():
+#     y = quandl.get("USTREASURY/YIELD", authtoken="gWq5SV_V-yFkXVMgrwwy", rows=1)
+#     print(x.loc['Value'])
+#     x = str(x)
+#     return x
+
+
+def spx_yield():
+    x = quandl.get("MULTPL/SP500_DIV_YIELD_MONTH", authtoken="gWq5SV_V-yFkXVMgrwwy", rows=1)
+    y = x['Value'].to_list()
+    y = str(y).strip('[]')
+    z = x[x['Value'] > 0].index.values
+    z = str(z).strip('[]').split('T')[0]
+    return z, y

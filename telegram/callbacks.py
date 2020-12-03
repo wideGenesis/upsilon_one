@@ -12,7 +12,8 @@ from telegram import sql_queries as sql
 from telegram import menu
 from telegram import shared
 from payments.payagregator import PaymentAgregator
-
+from quotes.parsers import t_curve, spx_yield
+from quotes.parsers_env import agents
 
 PAYMENT_AGGREGATOR = None
 PAYMENT_AGGREGATOR_TIMER = None
@@ -152,7 +153,10 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, tariff
                                   buttons=buttons.keyboard_us_market_back)
     elif event.data == b'us4':
         message = await client.send_message(entity=entity, message='Загрузка...')
-        await client.send_file(entity, img_path + 'treemap_1d.png')
+        msg1 = t_curve(ag=agents())
+        msg2 = spx_yield()
+        await client.send_message(entity=entity, message=msg1[0] + '\n' + msg1[1] + '\n' + msg1[2] + '\n' + msg1[3])
+        await client.send_message(entity=entity, message='SP500_DIV_YIELD' + '\n' + msg2[0] + '\n' + msg2[1])
         await client.edit_message(message, 'Кривая доходности и дивиденды')
         await event.edit()
         await client.send_message(event.input_sender, 'Как интерпритировать кривую доходности? /instruction02',
