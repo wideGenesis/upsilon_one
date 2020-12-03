@@ -360,9 +360,9 @@ def t_curve(ag=None):
     _10y = soup.findAll('BC_10YEAR')[1].text
     _20y = soup.findAll('BC_20YEAR')[1].text
     _30y = soup.findAll('BC_30YEAR')[1].text
-    msg1 = '1Mo -' + _1m + '\n' + '2Mo -' + _2m + '\n' + '3Mo -' + _3m + '\n' + '6Mo -' + _6m + '\n' + '1Yr -' + _1y + '\n'
-    msg2 = '2Yr -' + _2y + '\n' + '3Yr -' + _3y + '\n' + '5Yr -' + _5y + '\n' + '7Yr -' + _7y + '\n' + '10Yr -' + _10y + '\n'
-    msg3 = '20Yr -' + _20y + '\n' + '30Yr -' + _30y + '\n'
+    msg1 = '1M ' + _1m + '\n' + '2M ' + _2m + '\n' + '3M ' + _3m + '\n' + '6M ' + _6m + '\n' + '1Y ' + _1y + '\n'
+    msg2 = '2Y ' + _2y + '\n' + '3Y ' + _3y + '\n' + '5Y ' + _5y + '\n' + '7Y ' + _7y + '\n' + '10Y ' + _10y + '\n'
+    msg3 = '20Y ' + _20y + '\n' + '30Y ' + _30y + '\n'
     return _date, msg1, msg2, msg3
 
 
@@ -378,5 +378,5 @@ def spx_yield():
     y = x['Value'].to_list()
     y = str(y).strip('[]')
     z = x[x['Value'] > 0].index.values
-    z = str(z).strip('[]').split('T')[0]
+    z = str(z).strip("'[]").split('T')[0]
     return z, y
