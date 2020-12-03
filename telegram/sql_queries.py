@@ -32,7 +32,7 @@ async def create_payment_message_table(engine=None):
 
 async def delete_from_payment_message(order_id, engine=None):
     with engine.connect() as connection:
-        connection.execute("DELETE from payment_message_hist WHERE id = %s", order_id)
+        connection.execute("DELETE from payment_message_hist WHERE order_id = %s", order_id)
         connection.execute("commit")
 
 
