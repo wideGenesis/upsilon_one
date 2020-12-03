@@ -28,19 +28,22 @@ def firefox_init(webdriver_path, agent_rotation):
 
 def chrome_init(webdriver_path, agent_rotation):
     chrome_options = Options()
+    chrome_options.add_argument("--disable-blink-features=AutomationControlled")
     chrome_options.add_argument("--window-size=1920,1080")
     chrome_options.add_argument("--disable-gpu")
     chrome_options.add_argument("--proxy-server=direct://")
     chrome_options.add_argument("--proxy-bypass-list=*")
     chrome_options.add_argument("--start-maximized")
     chrome_options.add_argument("--headless")
+    chrome_options.add_argument("--incognito")
     chrome_options.add_argument('--disable-dev-shm-usage')
     chrome_options.add_argument('--ignore-certificate-errors')
     chrome_options.add_argument(f'user-agent={agent_rotation}')
     chrome_options.add_argument("--enable-javascript")
     chrome_options.add_argument("--no-sandbox")
-    driver_path = os.path.join(webdriver_path, 'chromedriver_86')
+    driver_path = os.path.join(webdriver_path, 'chromedriver_87')
     driver = webdriver.Chrome(driver_path, options=chrome_options)
+    driver.execute_cdp_cmd('Network.setUserAgentOverride', {"userAgent": f'{agent_rotation}'})
     print(driver.execute_script("return navigator.userAgent"))
     sleep(1)
     return driver
