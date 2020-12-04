@@ -6,7 +6,7 @@ import yaml
 import logging
 from quotes.parsers_env import firefox_init, chrome_init, agents
 from quotes.parsers import get_flows2, advance_decline, get_finviz_treemaps,\
-    get_coins360_treemaps, get_economics, get_sma50, get_tw_charts
+    get_coins360_treemaps, get_economics, get_sma50, get_tw_charts, vix_curve, vix_cont
 import schedule
 from time import sleep
 
@@ -42,7 +42,10 @@ def main():
     get_economics(ag=agents(), img_out_path_=IMAGES_OUT_PATH)
     get_sma50(ag=agents())
     get_tw_charts(driver=chrome_init(webdriver_path=WEBDRIVER, agent_rotation=agents()), img_out_path_=IMAGES_OUT_PATH)
+    vix_curve(driver=chrome_init(webdriver_path=WEBDRIVER, agent_rotation=agents()),
+              img_out_path_=IMAGES_OUT_PATH)
 
+    vix_cont()
     # schedule.every(720).minutes.do(lambda: get_flows2(driver=firefox_init(webdriver_path=WEBDRIVER,
     #                                                                      agent_rotation=agents()),
     #                                                  img_out_path_=IMAGES_OUT_PATH))
@@ -58,6 +61,9 @@ def main():
     schedule.every(30).minutes.do(lambda: get_tw_charts(driver=chrome_init(webdriver_path=WEBDRIVER,
                                                                            agent_rotation=agents()),
                                                         img_out_path_=IMAGES_OUT_PATH))
+    # schedule.every().monday.do(lambda: vix_curve(driver=chrome_init(webdriver_path=WEBDRIVER, agent_rotation=agents()),
+    #                                              img_out_path_=IMAGES_OUT_PATH))
+    schedule.every().monday.do(lambda: vix_cont())
 
     while True:
         schedule.run_pending()

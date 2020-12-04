@@ -243,6 +243,9 @@ keyboard_us_market = [
         Button.inline('\U0001F5BC   ' + 'Общая картина', b'us2')
     ],
     [
+        Button.inline('\U00002197   ' + 'Моментум в акциях', b'us6')
+    ],
+    [
         Button.inline('\U0001F3A8   ' + 'Тепловые карты', b'us3')
     ],
     [

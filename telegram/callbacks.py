@@ -128,7 +128,8 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, tariff
         with open(filename1, newline='') as f1:
             data1 = csv.reader(f1, delimiter=',')
             for row1 in data1:
-                await client.send_message(entity=entity, message=f'{row1}')
+                r1 = str(row1).strip("[']")
+                await client.send_message(entity=entity, message=f'{r1}')
         await client.edit_message(message, 'Количество растущих/падающих акций и объёмы за сегодня')
         await client.send_message(event.input_sender, 'Как ? /instruction02', buttons=buttons.keyboard_us_market_back)
         await event.edit()
@@ -141,6 +142,19 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, tariff
         await event.edit()
         await client.send_message(event.input_sender, 'Как интерпритировать графики выше? /instruction02',
                                   buttons=buttons.keyboard_us_market_back)
+    elif event.data == b'us6':
+        message = await client.send_message(entity=entity, message='Загрузка...')
+        filename2 = os.path.join(img_path, 'sma50.csv')
+        with open(filename2, newline='') as f2:
+            data2 = csv.reader(f2, delimiter=',')
+            for row2 in data2:
+                r2 = str(row2).strip("[']")
+                await client.send_message(entity=entity, message=f'{r2}')
+        await client.edit_message(message, 'Моментум в акциях')
+        await event.edit()
+        await client.send_message(event.input_sender, 'Как интерпритировать моментум? /instruction02',
+                                  buttons=buttons.keyboard_us_market_back)
+
     elif event.data == b'us3':
         message = await client.send_message(entity=entity, message='Загрузка...')
         await client.send_message(event.input_sender, 'Тепловая карта 1-day performance')

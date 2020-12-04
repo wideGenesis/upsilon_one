@@ -6,7 +6,6 @@ import numpy as np
 import pandas as pd
 import requests
 from bs4 import BeautifulSoup
-from pyvirtualdisplay import Display
 from selenium import webdriver
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.by import By
@@ -363,6 +362,10 @@ def t_curve(ag=None):
     msg1 = '1M ' + _1m + '\n' + '2M ' + _2m + '\n' + '3M ' + _3m + '\n' + '6M ' + _6m + '\n' + '1Y ' + _1y + '\n'
     msg2 = '2Y ' + _2y + '\n' + '3Y ' + _3y + '\n' + '5Y ' + _5y + '\n' + '7Y ' + _7y + '\n' + '10Y ' + _10y + '\n'
     msg3 = '20Y ' + _20y + '\n' + '30Y ' + _30y + '\n'
+    # with open(os.path.join('results', 'img_out', 't_curve.csv'), 'w+') as f:
+    #     write = csv.DictWriter(f, items_.keys())
+    #     write.writeheader()
+    #     write.writerow(items_)
     return _date, msg1, msg2, msg3
 
 
@@ -380,3 +383,41 @@ def spx_yield():
     z = x[x['Value'] > 0].index.values
     z = str(z).strip("'[]").split('T')[0]
     return z, y
+
+#
+# def vix_curve(driver=None, img_out_path_=None):
+#     url_ = 'http://vixcentral.com/'
+#     with driver:
+#         img_curve = os.path.join(img_out_path_, 'vix_curve' + '.png')
+#
+#         driver.get(url_)
+#         sleep(3)
+#         WebDriverWait(driver, 20).until(EC.element_to_be_clickable((By.XPATH, "//*[text()='VIX Index']"))).click()
+#         print('Vix disabled, button has been clicked')
+#         sleep(4)
+#         WebDriverWait(driver, 20).until(
+#             EC.element_to_be_clickable((By.CLASS_NAME, "highcharts-button-symbol"))).click()
+#         print('Menu button has been clicked')
+#         sleep(5)
+#         WebDriverWait(driver, 20).until(
+#             EC.element_to_be_clickable((By.XPATH, "//li[contains(text(),'Download PNG image')]"))).click()
+#         print('PNG has been clicked')
+#         sleep(5)
+# # im = Image.open(img_path)
+#         # im = im.crop((int(x), int(y+80), int(width), int(height-20)))
+#         # im.save(img_path, quality=100, subsampling=0)
+#     # print('Get coin360 Treemap complete' + '\n')
+
+
+def vix_cont():
+    vx1 = quandl.get("CHRIS/CBOE_VX1.4", authtoken="gWq5SV_V-yFkXVMgrwwy", rows=1)
+    vx2 = quandl.get("CHRIS/CBOE_VX2.4", authtoken="gWq5SV_V-yFkXVMgrwwy", rows=1)
+    vx1_c = vx1['Close'].to_list()
+    vx1_c = str(vx1_c).strip('[]')
+    vx2_c = vx2['Close'].to_list()
+    vx2_c = str(vx2_c).strip('[]')
+    diff = float(vx2_c) - float(vx1_c)
+    if diff > 0:
+        return 'Contango'
+    else:
+        return 'Backwordation'
