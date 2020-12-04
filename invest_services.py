@@ -34,18 +34,17 @@ logging.getLogger('scrapers').setLevel(level=logging.WARNING)
 def main():
     # get_flows2(driver=chrome_init(webdriver_path=WEBDRIVER,
     #                               agent_rotation=agents()), img_out_path_=IMAGES_OUT_PATH)
-    # advance_decline(ag=agents())
-    # get_finviz_treemaps(driver=firefox_init(webdriver_path=WEBDRIVER, agent_rotation=agents()),
-    #                     img_out_path_=IMAGES_OUT_PATH)
-    # get_coins360_treemaps(driver=firefox_init(webdriver_path=WEBDRIVER, agent_rotation=agents()),
-    #                       img_out_path_=IMAGES_OUT_PATH)
-    # get_economics(ag=agents(), img_out_path_=IMAGES_OUT_PATH)
-    # get_sma50(ag=agents())
-    # get_tw_charts(driver=chrome_init(webdriver_path=WEBDRIVER, agent_rotation=agents()), img_out_path_=IMAGES_OUT_PATH)
+    advance_decline(ag=agents())
+    get_finviz_treemaps(driver=firefox_init(webdriver_path=WEBDRIVER, agent_rotation=agents()),
+                        img_out_path_=IMAGES_OUT_PATH)
+    get_coins360_treemaps(driver=firefox_init(webdriver_path=WEBDRIVER, agent_rotation=agents()),
+                          img_out_path_=IMAGES_OUT_PATH)
+    get_economics(ag=agents(), img_out_path_=IMAGES_OUT_PATH)
+    get_sma50(ag=agents())
+    get_tw_charts(driver=chrome_init(webdriver_path=WEBDRIVER, agent_rotation=agents()), img_out_path_=IMAGES_OUT_PATH)
     vix_curve(driver=chrome_init(webdriver_path=WEBDRIVER, agent_rotation=agents()),
               img_out_path_=IMAGES_OUT_PATH)
 
-    vix_cont()
     # schedule.every(720).minutes.do(lambda: get_flows2(driver=firefox_init(webdriver_path=WEBDRIVER,
     #                                                                      agent_rotation=agents()),
     #                                                  img_out_path_=IMAGES_OUT_PATH))
@@ -61,8 +60,8 @@ def main():
     schedule.every(30).minutes.do(lambda: get_tw_charts(driver=chrome_init(webdriver_path=WEBDRIVER,
                                                                            agent_rotation=agents()),
                                                         img_out_path_=IMAGES_OUT_PATH))
-    # schedule.every().monday.do(lambda: vix_curve(driver=chrome_init(webdriver_path=WEBDRIVER, agent_rotation=agents()),
-    #                                              img_out_path_=IMAGES_OUT_PATH))
+    schedule.every().monday.do(lambda: vix_curve(driver=chrome_init(webdriver_path=WEBDRIVER, agent_rotation=agents()),
+                                                 img_out_path_=IMAGES_OUT_PATH))
     schedule.every().monday.do(lambda: vix_cont())
 
     while True:
