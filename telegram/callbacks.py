@@ -12,7 +12,7 @@ from telegram import sql_queries as sql
 from telegram import menu
 from telegram import shared
 from payments.payagregator import PaymentAgregator
-from quotes.parsers import t_curve, spx_yield
+from quotes.parsers import t_curve, spx_yield, vix_cont
 from quotes.parsers_env import agents
 
 PAYMENT_AGGREGATOR = None
@@ -177,7 +177,9 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, tariff
                                   buttons=buttons.keyboard_us_market_back)
     elif event.data == b'us5':
         message = await client.send_message(entity=entity, message='Загрузка...')
-        await client.send_file(entity, img_path + 'treemap_1d.png')
+        msg10 = vix_cont()
+        await client.send_file(entity, img_path + 'vix_curve.png')
+        await client.send_message(entity=entity, message=msg10)
         await client.edit_message(message, 'Кривая волатильности')
         await event.edit()
         await client.send_message(event.input_sender, 'Как интерпритировать кривую волатильности? /instruction02',
