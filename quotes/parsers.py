@@ -362,34 +362,6 @@ def get_sma50(ag=None):
 
 
 # ============================== Treasury Curve and Div Yield GET ================================
-def t_curve(ag=None):
-    headers = {'User-Agent': ag}
-    xml = 'https://data.treasury.gov/feed.svc/DailyTreasuryYieldCurveRateData?$filter=month(NEW_DATE)%20eq%2012%20and%20year(NEW_DATE)%20eq%202020'
-    html = requests.get(xml, headers=headers).text
-    soup = BeautifulSoup(html, "xml")
-    _date = soup.findAll('NEW_DATE')[1].text.split('T')[0]
-    _1m = soup.findAll('BC_1MONTH')[1].text
-    _2m = soup.findAll('BC_2MONTH')[1].text
-    _3m = soup.findAll('BC_3MONTH')[1].text
-    _6m = soup.findAll('BC_6MONTH')[1].text
-    _1y = soup.findAll('BC_1YEAR')[1].text
-    _2y = soup.findAll('BC_2YEAR')[1].text
-    _3y = soup.findAll('BC_3YEAR')[1].text
-    _5y = soup.findAll('BC_5YEAR')[1].text
-    _7y = soup.findAll('BC_7YEAR')[1].text
-    _10y = soup.findAll('BC_10YEAR')[1].text
-    _20y = soup.findAll('BC_20YEAR')[1].text
-    _30y = soup.findAll('BC_30YEAR')[1].text
-    msg1 = '1M ' + _1m + '\n' + '2M ' + _2m + '\n' + '3M ' + _3m + '\n' + '6M ' + _6m + '\n' + '1Y ' + _1y + '\n'
-    msg2 = '2Y ' + _2y + '\n' + '3Y ' + _3y + '\n' + '5Y ' + _5y + '\n' + '7Y ' + _7y + '\n' + '10Y ' + _10y + '\n'
-    msg3 = '20Y ' + _20y + '\n' + '30Y ' + _30y + '\n'
-    # with open(os.path.join('results', 'img_out', 't_curve.csv'), 'w+') as f:
-    #     write = csv.DictWriter(f, items_.keys())
-    #     write.writeheader()
-    #     write.writerow(items_)
-    return _date, msg1, msg2, msg3
-
-
 def qt_curve():
     x = quandl.get("USTREASURY/YIELD", authtoken="gWq5SV_V-yFkXVMgrwwy", rows=1)
     x = str(x)
@@ -408,7 +380,6 @@ def vix_curve(driver=None, img_out_path_=None):
     url_ = 'http://vixcentral.com/'
     img_curve = os.path.join(img_out_path_, 'vix_curve' + '.png')
     with driver:
-
         driver.get(url_)
         sleep(3)
         WebDriverWait(driver, 20).until(EC.element_to_be_clickable((By.XPATH, "//*[text()='VIX Index']"))).click()
@@ -423,7 +394,7 @@ def vix_curve(driver=None, img_out_path_=None):
         print('PNG has been clicked')
         sleep(5)
     im = Image.open('vix-futures-term-structu.png')
-    im = im.crop((0, 120, 1200, 1140))
+    im = im.crop((0, 120, 1200, 750))
     im.save(img_curve, quality=100, subsampling=0)
     print('Vix_curve complete' + '\n')
 
