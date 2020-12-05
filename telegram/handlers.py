@@ -50,19 +50,19 @@ class WebHandler:
                 if summa == "15":
                     tariff_str = '__Тариф: ' + shared.SUBSCRIBES[shared.TARIFF_START_ID].get_name() + '__\n'
                     td = timedelta(days=shared.SUBSCRIBES[shared.TARIFF_START_ID].get_duration())
-                    subscribe_level = shared.SUBSCRIBES[shared.TARIFF_START_ID].get_name()
+                    subscribe_level = shared.SUBSCRIBES[shared.TARIFF_START_ID].get_level()
                 elif summa == "25":
                     tariff_str = '__Тариф: ' + shared.SUBSCRIBES[shared.TARIFF_BASE_ID].get_name() + '__\n'
                     td = timedelta(days=shared.SUBSCRIBES[shared.TARIFF_BASE_ID].get_duration())
-                    subscribe_level = shared.SUBSCRIBES[shared.TARIFF_BASE_ID].get_name()
+                    subscribe_level = shared.SUBSCRIBES[shared.TARIFF_BASE_ID].get_level()
                 elif summa == "30":
                     tariff_str = '__Тариф: ' + shared.SUBSCRIBES[shared.TARIFF_ADVANCED_ID].get_name() + '__\n'
                     td = timedelta(days=shared.SUBSCRIBES[shared.TARIFF_ADVANCED_ID].get_duration())
-                    subscribe_level = shared.SUBSCRIBES[shared.TARIFF_ADVANCED_ID].get_name()
+                    subscribe_level = shared.SUBSCRIBES[shared.TARIFF_ADVANCED_ID].get_level()
                 elif summa == "40":
                     tariff_str = '__Тариф: ' + shared.SUBSCRIBES[shared.TARIFF_PROFESSIONAL_ID].get_name() + '__\n'
                     td = timedelta(days=shared.SUBSCRIBES[shared.TARIFF_PROFESSIONAL_ID].get_duration())
-                    subscribe_level = shared.SUBSCRIBES[shared.TARIFF_PROFESSIONAL_ID].get_name()
+                    subscribe_level = shared.SUBSCRIBES[shared.TARIFF_PROFESSIONAL_ID].get_level()
                 await self.client.send_message(sender_id,
                                                'Оплата прошла успешно:\n'
                                                + tariff_str

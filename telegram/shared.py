@@ -14,8 +14,9 @@ def int2datetime(dt_int):
 
 
 class Subscribe(object):
-    def __init__(self, name="", cost=0.0, describe="", duration=30.0, img_path=""):
+    def __init__(self, name="", level="Free", cost=0.0, describe="", duration=30.0, img_path=""):
         self.name = name
+        self.level = level
         self.cost = cost
         self.describe = describe
         self.duration = duration
@@ -23,6 +24,9 @@ class Subscribe(object):
 
     def get_name(self) -> str:
         return self.name
+
+    def get_level(self) -> str:
+        return self.level
 
     def get_cost(self) -> float:
         return self.cost
@@ -57,24 +61,28 @@ def create_subscribes(tariff_img_path):
     # Тариф Старт
     imgpath = tariff_img_path + '/tariff_start.jpg'
     tstart = Subscribe(name="Старт",
+                       level="Start",
                        cost=15.00,
                        describe="Тут большое описание тарифа Старт. В нем доступны такие то функции. и т.д. и т.п.",
                        img_path=imgpath)
     # Тариф Базовый
     imgpath = tariff_img_path + '/tariff_base.png'
     tbase = Subscribe(name="Базовый",
+                      level="Base",
                       cost=25.00,
                       describe="Тут большое описание тарифа Базовый. В нем доступны такие то функции. и т.д. и т.п.",
                       img_path=imgpath)
     # Тариф Продвинутый
     imgpath = tariff_img_path + '/tariff_advanced.png'
     tadv = Subscribe(name="Продвинутый",
+                     level="Advanced",
                      cost=30.00,
                      describe="Тут большое описание тарифа Продвинутый. В нем доступны такие то функции. и т.д. и т.п.",
                      img_path=imgpath)
     # Тариф Профессиональный
     imgpath = tariff_img_path + '/tariff_professional.jpg'
     tprof = Subscribe(name="Профессиональный",
+                      level="Professional",
                       cost=40.00,
                       describe="Тут большое описание тарифа Профессиональный. В нем доступны такие то функции. и т.д. "
                                "и т.п.",

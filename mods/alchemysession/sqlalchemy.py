@@ -110,18 +110,20 @@ class AlchemySessionContainer:
             username = Column(String(255), nullable=True)
             phone = Column(BigInteger, nullable=True)
             name = Column(String(255), nullable=True)
-            user_status = Column(String(100),  nullable=True) # blank=True,
-            profile_lang = Column(String(32), nullable=True) # blank=True,
-            balance = Column(Numeric(10),  default=0) # precision=5
+            user_status = Column(String(100), nullable=True)  # blank=True,
+            profile_lang = Column(String(32), nullable=True)  # blank=True,
+            balance = Column(Numeric(10), default=0)  # precision=5
             referral = Column(Integer, default=0)
-            subscribe_level = Column(Enum('Free', 'Newbie', 'Advanced', 'Premium'), default='Free') # blank=True,
-            expired = Column(Date, nullable=True) # blank=True,
-            reserved_1 = Column(Integer, nullable=True) # blank=True,
-            reserved_2 = Column(String(255), nullable=True) # blank=True,
+            subscribe_level = Column(Enum('Free', 'Start', 'Base', 'Advanced', 'Professional'),
+                                     default='Free')  # blank=True,
+            expired = Column(Date, nullable=True)  # blank=True,
+            reserved_1 = Column(Integer, nullable=True)  # blank=True,
+            reserved_2 = Column(String(255), nullable=True)  # blank=True,
 
             def __str__(self):
                 return "Entity('{}', {}, {}, '{}', '{}', '{}', '{}', '{}', '{}', '{}', '{}', '{}', '{}', '{}')".format(
-                    self.session_id, self.id, self.hash, self.username, self.phone, self.name, self.user_status, self.profile_lang,
+                    self.session_id, self.id, self.hash, self.username, self.phone, self.name, self.user_status,
+                    self.profile_lang,
                     self.balance, self.referral, self.subscribe_level, self.expired, self.reserved_1, self.reserved_2)
 
         class SentFile(base):
