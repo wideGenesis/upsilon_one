@@ -115,7 +115,7 @@ async def dialog_flow(event):
 @client.on(events.CallbackQuery)
 async def callback(event):
     await callbacks.callback_handler(event, client, img_path=IMAGES_OUT_PATH, yahoo_path=YAHOO_PATH,
-                                     tariff_img_path=TARIFF_IMAGES, engine=engine)
+                                     engine=engine)
 
 
 # ============================== Main  =============================
