@@ -73,7 +73,7 @@ async def profile_menu(event, client, engine=None):
                               '\n' +
                               f'Баланс: __{user_profile[8]}__' + '\n' +
                               f'Подписка действительна до: __'
-                              f'{datetime.strftime(datetime.fromisoformat(user_profile[11]), "DD.MM.YYYY")}__' + '\n' +
+                              f'{datetime.strftime(datetime.fromisoformat(str(user_profile[11])), "DD.MM.YYYY")}__' + '\n' +
                               f'Приглашено: __{user_profile[9]}__' + '\n' +
                               f'Уровень подписки: __{user_profile[10]}__' + '\n' +
                               f'Пользователей бота __{int(users_count())}__', buttons=keyboard_z1)
