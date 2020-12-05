@@ -12,8 +12,7 @@ from telegram import sql_queries as sql
 from telegram import menu
 from telegram import shared
 from payments.payagregator import PaymentAgregator
-from quotes.parsers import t_curve, spx_yield
-from quotes.parsers_env import agents
+from quotes.parsers import vix_cont
 
 PAYMENT_AGGREGATOR = None
 PAYMENT_AGGREGATOR_TIMER = None
@@ -125,10 +124,12 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
     elif event.data == b'us1':
         message = await client.send_message(entity=entity, message='Загрузка...')
         filename1 = os.path.join(img_path, 'adv.csv')
+        await client.send_message(entity=entity, message='NYSE, NASDAQ')
         with open(filename1, newline='') as f1:
             data1 = csv.reader(f1, delimiter=',')
             for row1 in data1:
-                await client.send_message(entity=entity, message=f'{row1}')
+                r1 = str(row1).strip("['']").replace("'", "")
+                await client.send_message(entity=entity, message=f'{r1}')
         await client.edit_message(message, 'Количество растущих/падающих акций и объёмы за сегодня')
         await client.send_message(event.input_sender, 'Как ? /instruction02', buttons=buttons.keyboard_us_market_back)
         await event.edit()
@@ -141,6 +142,19 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
         await event.edit()
         await client.send_message(event.input_sender, 'Как интерпритировать графики выше? /instruction02',
                                   buttons=buttons.keyboard_us_market_back)
+    elif event.data == b'us6':
+        message = await client.send_message(entity=entity, message='Загрузка...')
+        filename2 = os.path.join(img_path, 'sma50.csv')
+        with open(filename2, newline='') as f2:
+            data2 = csv.reader(f2, delimiter=',')
+            for row2 in data2:
+                r2 = str(row2).strip("['']").replace("'", "")
+                await client.send_message(entity=entity, message=f'{r2}')
+        await client.edit_message(message, 'Моментум в акциях')
+        await event.edit()
+        await client.send_message(event.input_sender, 'Как интерпритировать моментум? /instruction02',
+                                  buttons=buttons.keyboard_us_market_back)
+
     elif event.data == b'us3':
         message = await client.send_message(entity=entity, message='Загрузка...')
         await client.send_message(event.input_sender, 'Тепловая карта 1-day performance')
@@ -153,17 +167,43 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
                                   buttons=buttons.keyboard_us_market_back)
     elif event.data == b'us4':
         message = await client.send_message(entity=entity, message='Загрузка...')
-        msg1 = t_curve(ag=agents())
-        msg2 = spx_yield()
-        await client.send_message(entity=entity, message=msg1[0] + '\n' + msg1[1] + '\n' + msg1[2] + '\n' + msg1[3])
-        await client.send_message(entity=entity, message='SP500_DIV_YIELD' + '\n' + msg2[0] + '\n' + msg2[1])
+        msg0 = 'Date 1M 2M 3M 6M 1Y 2Y 3Y 5Y 7Y 10Y 20Y 30Y'
+        await client.send_message(entity=entity, message=msg0)
+        filename4 = os.path.join(img_path, 'treasury_curve.csv')
+        with open(filename4, newline='') as f4:
+            data4 = csv.reader(f4, delimiter=',')
+            for row4 in data4:
+                if row4 == 0:
+                    continue
+            else:
+                row4 = str(row4).strip("[']")
+                await client.send_message(entity=entity, message=f'{row4}')
+
+        msg01 = 'Date SP500_DIV_YIELD'
+        await client.send_message(entity=entity, message=msg01)
+        filename5 = os.path.join(img_path, 'spx_yield.csv')
+        with open(filename5, newline='') as f5:
+            data5 = csv.reader(f5, delimiter=',')
+            for row5 in data5:
+                print(row5)
+                if row5 == 0:
+                    continue
+            else:
+                row5 = str(row5).strip("[']")
+                await client.send_message(entity=entity, message=f'{row5}')
         await client.edit_message(message, 'Кривая доходности и дивиденды')
         await event.edit()
         await client.send_message(event.input_sender, 'Как интерпритировать кривую доходности? /instruction02',
                                   buttons=buttons.keyboard_us_market_back)
     elif event.data == b'us5':
         message = await client.send_message(entity=entity, message='Загрузка...')
-        await client.send_file(entity, img_path + 'treemap_1d.png')
+        filename6 = os.path.join(img_path, 'vix_cont.csv')
+        with open(filename6, newline='') as f6:
+            data6 = csv.reader(f6, delimiter=',')
+            for row6 in data6:
+                row6 = str(row6).strip("[']")
+                await client.send_message(entity=entity, message=f'{row6}')
+        await client.send_file(entity, img_path + 'vix_curve.png')
         await client.edit_message(message, 'Кривая волатильности')
         await event.edit()
         await client.send_message(event.input_sender, 'Как интерпритировать кривую волатильности? /instruction02',

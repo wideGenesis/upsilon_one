@@ -2,6 +2,7 @@ from time import sleep
 from telegram import sql_queries as sql
 from telethon.tl.custom import Button
 from telegram import buttons
+from quotes.parsers import users_count
 
 
 async def start_menu(event, client, engine=None):
@@ -72,7 +73,9 @@ async def profile_menu(event, client, engine=None):
                               f'баланс: {user_profile[8]}' + '\n' +
                               f'Подписка действительна до: {user_profile[11]}' + '\n' +
                               f'Приглашено: {user_profile[9]}' + '\n' +
-                              f'Уровень подписки: {user_profile[10]}', buttons=keyboard_z1)
+                              f'Уровень подписки: {user_profile[10]}' + '\n' +
+                              f'Пользователей бота {int(users_count())}', buttons=keyboard_z1)
+
 
 
 async def helper_menu(event, client):
