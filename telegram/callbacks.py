@@ -12,8 +12,7 @@ from telegram import sql_queries as sql
 from telegram import menu
 from telegram import shared
 from payments.payagregator import PaymentAgregator
-from quotes.parsers import t_curve, spx_yield, vix_cont
-from quotes.parsers_env import agents
+from quotes.parsers import vix_cont
 
 PAYMENT_AGGREGATOR = None
 PAYMENT_AGGREGATOR_TIMER = None
@@ -168,19 +167,43 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, tariff
                                   buttons=buttons.keyboard_us_market_back)
     elif event.data == b'us4':
         message = await client.send_message(entity=entity, message='Загрузка...')
-        msg1 = t_curve(ag=agents())
-        msg2 = spx_yield()
-        await client.send_message(entity=entity, message=msg1[0] + '\n' + msg1[1] + '\n' + msg1[2] + '\n' + msg1[3])
-        await client.send_message(entity=entity, message='SP500_DIV_YIELD' + '\n' + msg2[0] + '\n' + msg2[1])
+        msg0 = 'Date 1M 2M 3M 6M 1Y 2Y 3Y 5Y 7Y 10Y 20Y 30Y'
+        await client.send_message(entity=entity, message=msg0)
+        filename4 = os.path.join(img_path, 'treasury_curve.csv')
+        with open(filename4, newline='') as f4:
+            data4 = csv.reader(f4, delimiter=',')
+            for row4 in data4:
+                if row4 == 0:
+                    continue
+            else:
+                row4 = str(row4).strip("[']")
+                await client.send_message(entity=entity, message=f'{row4}')
+
+        msg01 = 'Date SP500_DIV_YIELD'
+        await client.send_message(entity=entity, message=msg01)
+        filename5 = os.path.join(img_path, 'spx_yield.csv')
+        with open(filename5, newline='') as f5:
+            data5 = csv.reader(f5, delimiter=',')
+            for row5 in data5:
+                print(row5)
+                if row5 == 0:
+                    continue
+            else:
+                row5 = str(row5).strip("[']")
+                await client.send_message(entity=entity, message=f'{row5}')
         await client.edit_message(message, 'Кривая доходности и дивиденды')
         await event.edit()
         await client.send_message(event.input_sender, 'Как интерпритировать кривую доходности? /instruction02',
                                   buttons=buttons.keyboard_us_market_back)
     elif event.data == b'us5':
         message = await client.send_message(entity=entity, message='Загрузка...')
-        msg10 = vix_cont()
+        filename6 = os.path.join(img_path, 'vix_cont.csv')
+        with open(filename6, newline='') as f6:
+            data6 = csv.reader(f6, delimiter=',')
+            for row6 in data6:
+                row6 = str(row6).strip("[']")
+                await client.send_message(entity=entity, message=f'{row6}')
         await client.send_file(entity, img_path + 'vix_curve.png')
-        await client.send_message(entity=entity, message=msg10)
         await client.edit_message(message, 'Кривая волатильности')
         await event.edit()
         await client.send_message(event.input_sender, 'Как интерпритировать кривую волатильности? /instruction02',

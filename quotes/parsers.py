@@ -391,19 +391,17 @@ def t_curve(ag=None):
 
 
 def qt_curve():
-    y = quandl.get("USTREASURY/YIELD", authtoken="gWq5SV_V-yFkXVMgrwwy", rows=1)
-    print(x.loc['Value'])
+    x = quandl.get("USTREASURY/YIELD", authtoken="gWq5SV_V-yFkXVMgrwwy", rows=1)
     x = str(x)
-    return x
+    with open(os.path.join('results', 'img_out', 'treasury_curve.csv'), 'w+') as f:
+        f.write(f'{x}')
 
 
 def spx_yield():
     x = quandl.get("MULTPL/SP500_DIV_YIELD_MONTH", authtoken="gWq5SV_V-yFkXVMgrwwy", rows=1)
-    y = x['Value'].to_list()
-    y = str(y).strip('[]')
-    z = x[x['Value'] > 0].index.values
-    z = str(z).strip("'[]").split('T')[0]
-    return z, y
+    x = str(x)
+    with open(os.path.join('results', 'img_out', 'spx_yield.csv'), 'w+') as f:
+        f.write(f'{x}')
 
 
 def vix_curve(driver=None, img_out_path_=None):
@@ -439,9 +437,11 @@ def vix_cont():
     vx2_c = str(vx2_c).strip('[]')
     diff = float(vx2_c) - float(vx1_c)
     if diff > 0:
-        return 'Contango'
+        vix = 'Contango'
     else:
-        return 'Backwordation'
+        vix = 'Backwordation'
+    with open(os.path.join('results', 'img_out', 'vix_cont.csv'), 'w+') as f:
+        f.write(f'{vix}')
 
 
 def users_count():
