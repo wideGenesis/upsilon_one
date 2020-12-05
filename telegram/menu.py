@@ -1,4 +1,5 @@
 from time import sleep
+from datetime import datetime
 from telegram import sql_queries as sql
 from telethon.tl.custom import Button
 from telegram import buttons
@@ -70,11 +71,12 @@ async def profile_menu(event, client, engine=None):
                               f'\U0001F464 : {user_profile[3]}' + '\n' +
                               f'Имя: {user_profile[5]}' + '\n' +
                               '\n' +
-                              f'Баланс: {user_profile[8]}' + '\n' +
-                              f'Подписка действительна до: {user_profile[11]}' + '\n' +
-                              f'Приглашено: {user_profile[9]}' + '\n' +
-                              f'Уровень подписки: {user_profile[10]}' + '\n' +
-                              f'Пользователей бота {int(users_count())}', buttons=keyboard_z1)
+                              f'Баланс: __{user_profile[8]}__' + '\n' +
+                              f'Подписка действительна до: __'
+                              f'{datetime.strftime(datetime.fromisoformat(user_profile[11]),"DD.MM.YYYY")}__' + '\n' +
+                              f'Приглашено: __{user_profile[9]}__' + '\n' +
+                              f'Уровень подписки: __{user_profile[10]}__' + '\n' +
+                              f'Пользователей бота __{int(users_count())}__', buttons=keyboard_z1)
 
 
 
