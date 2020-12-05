@@ -67,13 +67,21 @@ async def profile_menu(event, client, engine=None):
     sender_id = event.input_sender
     await client.get_input_entity(sender_id)
     user_profile = await sql.user_search(sender_id.user_id, engine)
+    expired_date = ""
+    if user_profile[11] is None :
+        print("None")
+        expired_date = "None"
+    else:
+        print( "In user_profile = " + str(user_profile[11]))
+        expired_date = datetime.strftime(datetime.fromisoformat(str(user_profile[11])), "DD.MM.YYYY")
+        print("expired_date=" + expired_date)
+    print(str(user_profile[11]))
     await client.send_message(event.input_sender,
                               f'\U0001F464 : {user_profile[3]}' + '\n' +
                               f'Имя: {user_profile[5]}' + '\n' +
                               '\n' +
                               f'Баланс: __{user_profile[8]}__' + '\n' +
-                              f'Подписка действительна до: __'
-                              f'{datetime.strftime(datetime.fromisoformat(str(user_profile[11])), "DD.MM.YYYY")}__' + '\n' +
+                              f'Подписка действительна до: __' + expired_date + '__' + '\n' +
                               f'Приглашено: __{user_profile[9]}__' + '\n' +
                               f'Уровень подписки: __{user_profile[10]}__' + '\n' +
                               f'Пользователей бота __{int(users_count())}__', buttons=keyboard_z1)

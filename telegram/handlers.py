@@ -74,7 +74,7 @@ class WebHandler:
                 await sql.delete_from_payment_message(order_id, self.engine)
 
                 # добавляем запись в базу о том  когда закончится подписка
-                expired_data = (datetime.now() + td).isoformat()
+                expired_data = (datetime.now() + td).isoformat(timespec='minutes')
                 await sql.db_save_expired_data(expired_data, subscribe_level, sender_id, self.engine)
                 return web.Response(status=200)
             else:
