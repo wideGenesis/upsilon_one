@@ -1,5 +1,6 @@
 import datetime
 import sys
+from typing import Any
 
 ORDER_MAP = {}
 
@@ -12,11 +13,82 @@ def int2datetime(dt_int):
     return datetime.strptime(str(dt_int), "%Y%m%d%H%M%S")
 
 
-class PrintLogger(object):
-    def __init__(self, filename="Default.log"):
-        self.terminal = sys.stdout
-        self.log = open(filename, "a")
+class Subscribe(object):
+    def __init__(self, name="", cost=0.0, describe="", duration=30.0, img_path=""):
+        self.name = name
+        self.cost = cost
+        self.describe = describe
+        self.duration = duration
+        self.img_path = img_path
 
-    def write(self, message):
-        self.terminal.write(message)
-        self.log.write(message)
+    def get_name(self) -> str:
+        return self.name
+
+    def get_cost(self) -> float:
+        return self.cost
+
+    def get_describe(self) -> str:
+        return self.describe
+
+    def get_duration(self) -> float:
+        return self.duration
+
+    def get_img_path(self) -> str:
+        return self.img_path
+
+    def __str__(self) -> str:
+        return "Name: " + self.name + '\n' \
+               + "Cost: " + str(self.cost) + '\n' \
+               + "Duration: " + str(self.duration) + '\n' \
+               + "Describe: " + self.describe + '\n' \
+               + "Image path: " + self.img_path + '\n'
+
+
+TARIFF_START_ID = 0
+TARIFF_BASE_ID = 1
+TARIFF_ADVANCED_ID = 2
+TARIFF_PROFESSIONAL_ID = 3
+TARIFF_COMPARE_ID = 4
+
+SUBSCRIBES = {}
+
+
+def create_subscribes(tariff_img_path):
+    # Тариф Старт
+    imgpath = tariff_img_path + '/tariff_start.jpg'
+    tstart = Subscribe(name="Старт",
+                       cost=15.00,
+                       describe="Тут большое описание тарифа Старт. В нем доступны такие то функции. и т.д. и т.п.",
+                       img_path=imgpath)
+    # Тариф Базовый
+    imgpath = tariff_img_path + '/tariff_base.png'
+    tbase = Subscribe(name="Базовый",
+                      cost=25.00,
+                      describe="Тут большое описание тарифа Базовый. В нем доступны такие то функции. и т.д. и т.п.",
+                      img_path=imgpath)
+    # Тариф Продвинутый
+    imgpath = tariff_img_path + '/tariff_advanced.png'
+    tadv = Subscribe(name="Продвинутый",
+                     cost=30.00,
+                     describe="Тут большое описание тарифа Продвинутый. В нем доступны такие то функции. и т.д. и т.п.",
+                     img_path=imgpath)
+    # Тариф Профессиональный
+    imgpath = tariff_img_path + '/tariff_professional.jpg'
+    tprof = Subscribe(name="Профессиональный",
+                      cost=40.00,
+                      describe="Тут большое описание тарифа Профессиональный. В нем доступны такие то функции. и т.д. "
+                               "и т.п.",
+                      img_path=imgpath)
+
+    SUBSCRIBES[TARIFF_START_ID] = tstart
+    SUBSCRIBES[TARIFF_BASE_ID] = tbase
+    SUBSCRIBES[TARIFF_ADVANCED_ID] = tadv
+    SUBSCRIBES[TARIFF_PROFESSIONAL_ID] = tprof
+
+    # Таблица сравнения тарифов
+    imgpath = tariff_img_path + '/tariff_compare.jpg'
+    tcompare = Subscribe(name="Сравнение тарифов",
+                         cost=0.0,
+                         describe="Тут можно текстом описать чемже отличаются тарифы ",
+                         img_path=imgpath)
+    SUBSCRIBES[TARIFF_COMPARE_ID] = tprof

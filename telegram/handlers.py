@@ -1,6 +1,8 @@
 import base64
 import rsa
 import random
+import datetime
+from datetime import timedelta, datetime
 from aiohttp import web
 from telegram import sql_queries as sql
 from telegram import ai
@@ -39,24 +41,36 @@ class WebHandler:
             if value is not None:
                 print("Send message \"payment is ok\"")
                 sender_id, message_id = value
+                # удаляем платежное сообщение в чате, чтобы клиент не нажимал на него еще
                 await self.client.delete_messages(sender_id, message_id)
+                # сообщаем клиенту об успешном платеже
                 tariff_str = ""
+                td = ""
                 if summa == "15":
-                    tariff_str = '__Тариф: Старт__\n'
+                    tariff_str = '__Тариф: ' + shared.SUBSCRIBES[shared.TARIFF_START_ID].get_name() + '__\n'
+                    td = timedelta(days=shared.SUBSCRIBES[shared.TARIFF_START_ID].get_duration())
                 elif summa == "25":
-                    tariff_str = '__Тариф: Базовый__\n'
+                    tariff_str = '__Тариф: ' + shared.SUBSCRIBES[shared.TARIFF_BASE_ID].get_name() + '__\n'
+                    td = timedelta(days=shared.SUBSCRIBES[shared.TARIFF_BASE_ID].get_duration())
                 elif summa == "30":
-                    tariff_str = '__Тариф: Продвинутый__\n'
+                    tariff_str = '__Тариф: ' + shared.SUBSCRIBES[shared.TARIFF_ADVANCED_ID].get_name() + '__\n'
+                    td = timedelta(days=shared.SUBSCRIBES[shared.TARIFF_ADVANCED_ID].get_duration())
                 elif summa == "40":
-                    tariff_str = '__Тариф: Профессиональный__\n'
+                    tariff_str = '__Тариф: ' + shared.SUBSCRIBES[shared.TARIFF_PROFESSIONAL_ID].get_name() + '__\n'
+                    td = timedelta(days=shared.SUBSCRIBES[shared.TARIFF_PROFESSIONAL_ID].get_duration())
                 await self.client.send_message(sender_id,
                                                'Оплата прошла успешно:\n'
                                                + tariff_str
                                                + '__Ордер: ' + order_id + '__\n'
                                                + '__Сумма: ' + summa + '__\n'
                                                + '**Спасибо, что пользуетесь моими услугами!**')
+                # удаляем данные о платеже из памяти и из базы, они нам больше не нужны
                 shared.ORDER_MAP.pop(order_id)
                 await sql.delete_from_payment_message(order_id, self.engine)
+
+                # добавляем запись в базу о том  когда закончится подписка
+                expired_data = (datetime.now() + td).isoformat()
+                await sql.db_save_expired_data(expired_data, sender_id, self.engine)
                 return web.Response(status=200)
             else:
                 print("Global SenderID is None")
