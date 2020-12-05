@@ -125,10 +125,11 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, tariff
     elif event.data == b'us1':
         message = await client.send_message(entity=entity, message='Загрузка...')
         filename1 = os.path.join(img_path, 'adv.csv')
+        await client.send_message(entity=entity, message='NYSE, NASDAQ')
         with open(filename1, newline='') as f1:
             data1 = csv.reader(f1, delimiter=',')
             for row1 in data1:
-                r1 = str(row1).strip("[']")
+                r1 = str(row1).strip("['']").replace("'", "")
                 await client.send_message(entity=entity, message=f'{r1}')
         await client.edit_message(message, 'Количество растущих/падающих акций и объёмы за сегодня')
         await client.send_message(event.input_sender, 'Как ? /instruction02', buttons=buttons.keyboard_us_market_back)
@@ -148,7 +149,7 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, tariff
         with open(filename2, newline='') as f2:
             data2 = csv.reader(f2, delimiter=',')
             for row2 in data2:
-                r2 = str(row2).strip("[']")
+                r2 = str(row2).strip("['']").replace("'", "")
                 await client.send_message(entity=entity, message=f'{r2}')
         await client.edit_message(message, 'Моментум в акциях')
         await event.edit()

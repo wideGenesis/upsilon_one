@@ -6,7 +6,7 @@ import yaml
 import logging
 from quotes.parsers_env import firefox_init, chrome_init, agents
 from quotes.parsers import get_flows2, advance_decline, get_finviz_treemaps,\
-    get_coins360_treemaps, get_economics, get_sma50, get_tw_charts, vix_curve, vix_cont
+    get_coins360_treemaps, get_economics, get_sma50, get_tw_charts, vix_curve, vix_cont, qt_curve
 import schedule
 from time import sleep
 
@@ -32,18 +32,22 @@ logging.getLogger('scrapers').setLevel(level=logging.WARNING)
 
 # ============================== Main  =============================
 def main():
+    qt_curve()
     # get_flows2(driver=chrome_init(webdriver_path=WEBDRIVER,
     #                               agent_rotation=agents()), img_out_path_=IMAGES_OUT_PATH)
-    advance_decline(ag=agents())
-    get_finviz_treemaps(driver=firefox_init(webdriver_path=WEBDRIVER, agent_rotation=agents()),
-                        img_out_path_=IMAGES_OUT_PATH)
-    get_coins360_treemaps(driver=firefox_init(webdriver_path=WEBDRIVER, agent_rotation=agents()),
-                          img_out_path_=IMAGES_OUT_PATH)
-    get_economics(ag=agents(), img_out_path_=IMAGES_OUT_PATH)
-    get_sma50(ag=agents())
-    get_tw_charts(driver=chrome_init(webdriver_path=WEBDRIVER, agent_rotation=agents()), img_out_path_=IMAGES_OUT_PATH)
-    vix_curve(driver=chrome_init(webdriver_path=WEBDRIVER, agent_rotation=agents()),
-              img_out_path_=IMAGES_OUT_PATH)
+    # advance_decline(ag=agents())
+    # get_sma50(ag=agents())
+    # get_economics(ag=agents(), img_out_path_=IMAGES_OUT_PATH)
+
+    # get_finviz_treemaps(driver=firefox_init(webdriver_path=WEBDRIVER, agent_rotation=agents()),
+    #                     img_out_path_=IMAGES_OUT_PATH)
+    # get_coins360_treemaps(driver=firefox_init(webdriver_path=WEBDRIVER, agent_rotation=agents()),
+    #                       img_out_path_=IMAGES_OUT_PATH)
+    #
+    #
+    # get_tw_charts(driver=chrome_init(webdriver_path=WEBDRIVER, agent_rotation=agents()), img_out_path_=IMAGES_OUT_PATH)
+    # vix_curve(driver=chrome_init(webdriver_path=WEBDRIVER, agent_rotation=agents()),
+    #           img_out_path_=IMAGES_OUT_PATH)
 
     # schedule.every(720).minutes.do(lambda: get_flows2(driver=firefox_init(webdriver_path=WEBDRIVER,
     #                                                                      agent_rotation=agents()),
