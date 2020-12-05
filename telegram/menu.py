@@ -70,7 +70,7 @@ async def profile_menu(event, client, engine=None):
                               f'\U0001F464 : {user_profile[3]}' + '\n' +
                               f'Имя: {user_profile[5]}' + '\n' +
                               '\n' +
-                              f'баланс: {user_profile[8]}' + '\n' +
+                              f'Баланс: {user_profile[8]}' + '\n' +
                               f'Подписка действительна до: {user_profile[11]}' + '\n' +
                               f'Приглашено: {user_profile[9]}' + '\n' +
                               f'Уровень подписки: {user_profile[10]}' + '\n' +
