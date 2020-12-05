@@ -46,18 +46,23 @@ class WebHandler:
                 # сообщаем клиенту об успешном платеже
                 tariff_str = ""
                 td = ""
+                subscribe_level = ""
                 if summa == "15":
                     tariff_str = '__Тариф: ' + shared.SUBSCRIBES[shared.TARIFF_START_ID].get_name() + '__\n'
                     td = timedelta(days=shared.SUBSCRIBES[shared.TARIFF_START_ID].get_duration())
+                    subscribe_level = shared.SUBSCRIBES[shared.TARIFF_START_ID].get_name()
                 elif summa == "25":
                     tariff_str = '__Тариф: ' + shared.SUBSCRIBES[shared.TARIFF_BASE_ID].get_name() + '__\n'
                     td = timedelta(days=shared.SUBSCRIBES[shared.TARIFF_BASE_ID].get_duration())
+                    subscribe_level = shared.SUBSCRIBES[shared.TARIFF_BASE_ID].get_name()
                 elif summa == "30":
                     tariff_str = '__Тариф: ' + shared.SUBSCRIBES[shared.TARIFF_ADVANCED_ID].get_name() + '__\n'
                     td = timedelta(days=shared.SUBSCRIBES[shared.TARIFF_ADVANCED_ID].get_duration())
+                    subscribe_level = shared.SUBSCRIBES[shared.TARIFF_ADVANCED_ID].get_name()
                 elif summa == "40":
                     tariff_str = '__Тариф: ' + shared.SUBSCRIBES[shared.TARIFF_PROFESSIONAL_ID].get_name() + '__\n'
                     td = timedelta(days=shared.SUBSCRIBES[shared.TARIFF_PROFESSIONAL_ID].get_duration())
+                    subscribe_level = shared.SUBSCRIBES[shared.TARIFF_PROFESSIONAL_ID].get_name()
                 await self.client.send_message(sender_id,
                                                'Оплата прошла успешно:\n'
                                                + tariff_str
@@ -70,7 +75,7 @@ class WebHandler:
 
                 # добавляем запись в базу о том  когда закончится подписка
                 expired_data = (datetime.now() + td).isoformat()
-                await sql.db_save_expired_data(expired_data, sender_id, self.engine)
+                await sql.db_save_expired_data(expired_data, subscribe_level, sender_id, self.engine)
                 return web.Response(status=200)
             else:
                 print("Global SenderID is None")

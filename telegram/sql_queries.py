@@ -10,9 +10,10 @@ async def db_save_lang(value, identifier, engine=None):
         return result.cursor.fetchone()
 
 
-async def db_save_expired_data(value, identifier, engine=None):
+async def db_save_expired_data(expired, level, identifier, engine=None):
     with engine.connect() as connection:
-        result = connection.execute("UPDATE entities SET expired = %s WHERE id = %s", [value, identifier])
+        result = connection.execute("UPDATE entities SET expired = %s, subscribe_level = %s WHERE id = %s",
+                                    [expired, level, identifier])
         return result.cursor.fetchone()
 
 
