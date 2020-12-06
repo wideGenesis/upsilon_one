@@ -1,8 +1,10 @@
 import pandas as pd
 import cmath
 import os
+import sql_queries as sql
 from yahoofinancials import YahooFinancials
 from datetime import datetime
+
 
 
 # Формат даты в сторку
@@ -151,6 +153,35 @@ def load_csv(ticker: str, data_dir) -> pd.DataFrame:
     return file
 
 
+# *************** Download to DataBase ***************
+# Скачиваем данные из яху (цены и дивиденды)
+def download_quotes_to_db(ticker, start_date, end_date, tablename, is_update, engine):
+    try:
+        yf = YahooFinancials(ticker)
+        data = yf.get_historical_price_data(dt_to_str(start_date), dt_to_str(end_date), 'daily')
+    except Exception as err:
+        print(f'Unable to read data for {ticker}: {err}')
+        return pd.DataFrame({})
 
+    if data.get(ticker) is None or data[ticker].get('prices') is None or \
+            data[ticker].get('timeZone') is None or len(data[ticker]['prices']) == 0:
+        print(f'Yahoo: no data for {ticker}')
+        return pd.DataFrame({})
 
+    prices = {}
+    for rec in sorted(data[ticker]['prices'], key=lambda r: r['date']):
+        date = datetime.strptime(rec['formatted_date'], '%Y-%m-%d')
+        dic_with_prices(prices, ticker, date, rec['open'], rec['high'], rec['low'], rec['close'], rec['volume'])
 
+    if 'dividends' in data[ticker]['eventsData']:
+        for date, rec in sorted(data[ticker]['eventsData']['dividends'].items(), key=lambda r: r[0]):
+            date = datetime.strptime(date, '%Y-%m-%d')
+            dic_with_div(prices, ticker, date, rec['amount'])
+
+    if 'splits' in data[ticker]['eventsData']:
+        for date, rec in sorted(data[ticker]['eventsData']['splits'].items(), key=lambda r: r[0]):
+            date = datetime.strptime(date, '%Y-%m-%d')
+            print(f"{ticker} has split {rec['splitRatio']} for {date}")
+
+    print("PRICES:" + str(prices))
+    sql.insert_quotes(ticker, prices, tablename, is_update, engine)

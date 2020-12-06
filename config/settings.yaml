@@ -30,6 +30,7 @@ SQL:
   DB_PASSWORD: 'showmethemoney'
   DB_HOST: 'localhost'
   DB_PORT: '3306'
+  DEFAULT_START_QUOTES_DATE: '2019-01-01'
 
 DIALOGFLOW:
   PROJECT_ID: 'common-bot-1'
