@@ -68,7 +68,7 @@ def chrome_init(webdriver_path, agent_rotation):
     chrome_options.add_argument(f"user-data-dir=f{config}")
     z = os.path.pardir
     x = str(os.path.abspath(z))
-    y = os.path.join(os.path.join(z, '..'))
+    y = os.path.join(os.path.join(z, x))
     print(z)
     print(x)
     print(y)
