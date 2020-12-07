@@ -64,11 +64,12 @@ def chrome_init(webdriver_path, agent_rotation):
     chrome_options.add_argument(f'user-agent={agent_rotation}')
     chrome_options.add_argument("--enable-javascript")
     chrome_options.add_argument("--no-sandbox")
-    config = '/home/upsilonsfather/.config/google-chrome/'
+    y = os.path.expanduser("~")
+    z = './config/google-chrome/'
+    y = os.path.join(y, z)
+    config = os.path.abspath(y)
+    print(config)
     chrome_options.add_argument(f"user-data-dir=f{config}")
-    z = os.path.pardir
-    print(z)
-
     driver_path = os.path.join(webdriver_path, 'chromedriver_87')
     driver = webdriver.Chrome(driver_path, options=chrome_options)
     driver.execute_cdp_cmd('Network.setUserAgentOverride', {"userAgent": f'{agent_rotation}'})
