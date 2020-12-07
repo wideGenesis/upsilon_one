@@ -2,9 +2,9 @@ import os
 import pathlib
 from time import sleep
 from random import choice
-from bs4 import BeautifulSoup
-from mitmproxy import ctx
-from mitmproxy import http
+# from bs4 import BeautifulSoup
+# from mitmproxy import ctx
+# from mitmproxy import http
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 
