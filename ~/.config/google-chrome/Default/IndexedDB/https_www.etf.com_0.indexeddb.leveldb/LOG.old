@@ -1,8 +1,0 @@
-2020/12/07-22:15:41.235 3f24 Reusing MANIFEST /home/gene/projects/upsilon_one/~/.config/google-chrome/Default/IndexedDB/https_www.etf.com_0.indexeddb.leveldb/MANIFEST-000001
-2020/12/07-22:15:41.236 3f24 Recovering log #4
-2020/12/07-22:15:41.236 3f24 Reusing old log /home/gene/projects/upsilon_one/~/.config/google-chrome/Default/IndexedDB/https_www.etf.com_0.indexeddb.leveldb/000004.log 
-2020/12/07-22:15:49.181 3f24 Level-0 table #8: started
-2020/12/07-22:15:49.181 3f24 Level-0 table #8: 0 bytes OK
-2020/12/07-22:15:49.183 3f24 Delete type=0 #4
-2020/12/07-22:15:49.183 3f24 Manual compaction at level-0 from (begin) .. (end); will stop at (end)
-2020/12/07-22:15:49.183 3f24 Manual compaction at level-1 from (begin) .. (end); will stop at (end)
