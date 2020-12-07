@@ -15,10 +15,12 @@ import io
 import quandl
 from scipy.stats import norm
 import random
+from pyvirtualdisplay import Display
 
 
 # ============================== Inflows GET ================================
 def get_flows(driver=None, img_out_path_=None):
+    Display(visible=0, size=(1920, 1080)).start()
     etfs = ['VCIT', 'SPY', 'VTI', 'VEA', 'VWO', 'QQQ', 'VXX', 'TLT', 'SHY', 'LQD']
     with driver:
         print('Hi')
@@ -80,6 +82,7 @@ def get_flows(driver=None, img_out_path_=None):
             imageStream = io.BytesIO(image)
             im = Image.open(imageStream)
             im.save(os.path.join(img_out_path_, f'inflows_{etf}.png'))
+    Display.stop()
     print('Get Fund Flows complete' + '\n')
 
 

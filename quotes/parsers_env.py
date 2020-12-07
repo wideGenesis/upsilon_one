@@ -44,7 +44,7 @@ def agents():
     return choice(ua)
 
 
-def chrome_init(webdriver_path, agent_rotation):
+def chrome_init(webdriver_path, agent_rotation, headless=True):
     chrome_options = Options()
 
     chrome_options.add_argument("--disable-blink-features=AutomationControlled")
@@ -57,7 +57,10 @@ def chrome_init(webdriver_path, agent_rotation):
     chrome_options.add_argument("--proxy-server=direct://")
     # chrome_options.add_argument("--proxy-bypass-list=*")
     chrome_options.add_argument("--start-maximized")
-    chrome_options.add_argument("--headless")
+    if headless:
+        chrome_options.add_argument("--headless")
+    else:
+        pass
     # chrome_options.add_argument("--incognito")
     chrome_options.add_argument('--disable-dev-shm-usage')
     chrome_options.add_argument('--ignore-certificate-errors')
