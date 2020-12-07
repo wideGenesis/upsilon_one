@@ -35,7 +35,7 @@ def main():
     # headless_check(driver=chrome_init(webdriver_path=WEBDRIVER,
     #                                   agent_rotation=agents()), img_out_path_=IMAGES_OUT_PATH)
     get_flows(driver=chrome_init(webdriver_path=WEBDRIVER,
-                                  agent_rotation=agents(), headless=False), img_out_path_=IMAGES_OUT_PATH)
+                                  agent_rotation=agents(), headless=True), img_out_path_=IMAGES_OUT_PATH)
 
     advance_decline(ag=agents())
     qt_curve()
