@@ -67,10 +67,11 @@ def chrome_init(webdriver_path, agent_rotation):
     config = '/home/upsilonsfather/.config/google-chrome/'
     chrome_options.add_argument(f"user-data-dir=f{config}")
     z = os.path.pardir
-    p = str(pathlib.Path(f'{z}').parent.parent.absolute())
-    x = str(os.path.abspath(p))
-    print(p)
+    x = str(os.path.abspath(z))
+    y = os.path.join(os.path.join(z, '..'))
+    print(z)
     print(x)
+    print(y)
     driver_path = os.path.join(webdriver_path, 'chromedriver_87')
     driver = webdriver.Chrome(driver_path, options=chrome_options)
     driver.execute_cdp_cmd('Network.setUserAgentOverride', {"userAgent": f'{agent_rotation}'})
