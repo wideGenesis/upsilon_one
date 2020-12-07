@@ -21,6 +21,8 @@ import random
 def get_flows(driver=None, img_out_path_=None):
     etfs = ['VCIT', 'SPY', 'VTI', 'VEA', 'VWO', 'QQQ', 'VXX', 'TLT', 'SHY', 'LQD']
     with driver:
+        print('Hi')
+
         driver.get('https://www.etf.com/etfanalytics/etf-fund-flows-tool')
         sleep(8)
         html = driver.page_source
