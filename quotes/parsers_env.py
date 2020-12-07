@@ -66,9 +66,10 @@ def chrome_init(webdriver_path, agent_rotation):
     chrome_options.add_argument("--no-sandbox")
     config = '/home/upsilonsfather/.config/google-chrome/'
     chrome_options.add_argument(f"user-data-dir=f{config}")
-    p = str(pathlib.Path('upsilon_one').parent.parent.absolute())
     z = os.path.pardir
-    x = str(os.path.abspath(z))
+    p = str(pathlib.Path(f'{z}').parent.parent.absolute())
+    x = str(os.path.abspath(p))
+    print(p)
     print(x)
     driver_path = os.path.join(webdriver_path, 'chromedriver_87')
     driver = webdriver.Chrome(driver_path, options=chrome_options)
