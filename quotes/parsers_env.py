@@ -57,7 +57,7 @@ def chrome_init(webdriver_path, agent_rotation):
     # chrome_options.add_argument("--proxy-bypass-list=*")
     chrome_options.add_argument("--start-maximized")
     chrome_options.add_argument("--headless")
-    chrome_options.add_argument("--incognito")
+    # chrome_options.add_argument("--incognito")
     chrome_options.add_argument('--disable-dev-shm-usage')
     chrome_options.add_argument('--ignore-certificate-errors')
     chrome_options.add_argument(f'user-agent={agent_rotation}')
@@ -67,7 +67,7 @@ def chrome_init(webdriver_path, agent_rotation):
     driver = webdriver.Chrome(driver_path, options=chrome_options)
     driver.execute_cdp_cmd('Network.setUserAgentOverride', {"userAgent": f'{agent_rotation}'})
     print(driver.execute_script("return navigator.userAgent"))
-    print('Proxy Init')
+    print('Chrome has been started')
     sleep(1)
     return driver
 
