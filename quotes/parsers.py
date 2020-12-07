@@ -11,6 +11,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from PIL import Image
+import io
 import quandl
 from scipy.stats import norm
 import random
@@ -21,43 +22,42 @@ def get_flows(driver=None, img_out_path_=None):
     etfs = ['VCIT', 'SPY', 'VTI', 'VEA', 'VWO', 'QQQ', 'VXX', 'TLT', 'SHY', 'LQD']
     with driver:
         driver.get('https://www.etf.com/etfanalytics/etf-fund-flows-tool')
-        sleep(10)
+        sleep(8)
+        html = driver.page_source
+        print(html)
         try:
             elem = driver.find_element_by_xpath(".//*[@id='edit-tickers']")
-            print(elem)
             print('elem 1 has been located')
         except Exception as e0:
-            print('Trying to reload the page', e0)
-            driver.refresh()
+            return
         elem.send_keys("GLD, SPY, VTI, VEA, VWO, QQQ, VXX, TLT, SHY, LQD, VCIT")
         print('keys has been send')
         sleep(0.7)
         today = date.today()
-        day7 = timedelta(days=7)  # TODO Меняется ли размер окна от колва дней?
+        day7 = timedelta(days=7)
         delta = today - day7
         start_d = delta.strftime("%Y-%m-%d")
         end_d = today.strftime("%Y-%m-%d")
         elem = driver.find_element_by_xpath(".//*[@id='edit-startdate-datepicker-popup-0']")
         elem.send_keys(start_d)
-        sleep(0.6)
+        sleep(1)
         elem = driver.find_element_by_xpath(".//*[@id='edit-enddate-datepicker-popup-0']")
         elem.send_keys(end_d)
-        sleep(0.5)
+        sleep(1)
         try:
-            WebDriverWait(driver, 20).until(
+            WebDriverWait(driver, 10).until(
                 EC.element_to_be_clickable((By.XPATH, ".//*[@id='edit-submitbutton']"))).click()
             print('Button has been clicked')
         except Exception as e1:
             print('Button click error. Try to re-run the scraper', e1)
-            return None
-        sleep(10)
+            return
+        sleep(8)
         try:
             elem = driver.find_element_by_xpath(".//*[@id='fundFlowsTitles']")
             print('elem 2-Titles has been located')
-
         except Exception as e2:
             print('Titles elem error. Try to re-run the scraper', e2)
-            return None
+            return
         webdriver.ActionChains(driver).move_to_element(elem).perform()
         driver.execute_script("return arguments[0].scrollIntoView();", elem)
         sleep(1)
@@ -71,86 +71,13 @@ def get_flows(driver=None, img_out_path_=None):
             driver.execute_script("arguments[0].click();", icon)
             sleep(3)
             graph = driver.find_element_by_xpath(tag2)  # ".//*[@id='container_{etf}']"
-            driver.execute_script("return arguments[0].scrollIntoView();", graph)
+            # driver.execute_script("return arguments[0].scrollIntoView();", graph)
             sleep(1)
-            driver.save_screenshot(os.path.join(img_out_path_, f'inflows_{etf}.png'))
-            img = Image.open(os.path.join(img_out_path_, f'inflows_{etf}.png'))
-            img_crop = img.crop((360, 367, 995, 665))
-            img_crop.save(os.path.join(img_out_path_, f'inflows_{etf}.png'), quality=100, subsampling=0)
-    print('Get Fund Flows complete' + '\n')
 
-
-def get_flows2(driver=None, img_out_path_=None):
-    etfs = ['VCIT', 'SPY', 'VTI', 'VEA', 'VWO', 'QQQ', 'VXX', 'TLT', 'SHY', 'LQD']
-    with driver:
-        driver.get('https://www.etf.com/etfanalytics/etf-fund-flows-tool')
-        sleep(10)
-        html = driver.page_source
-        print(html)
-        # for i in range(0, 20):
-        while True:
-            try:
-                elem = driver.find_element_by_xpath(".//*[@id='edit-tickers']")
-                print('elem 1 has been located')
-                break
-            except Exception as e10:
-                print(f'Trying to reload the page', e10)
-                driver.refresh()
-                continue
-                # break
-        elem.send_keys("GLD, SPY, VTI, VEA, VWO, QQQ, VXX, TLT, SHY, LQD, VCIT")
-        print('keys has been send')
-        sleep(0.7)
-        today = date.today()
-        day7 = timedelta(days=7)  # TODO Меняется ли размер окна от колва дней?
-        delta = today - day7
-        start_d = delta.strftime("%Y-%m-%d")
-        end_d = today.strftime("%Y-%m-%d")
-        elem = driver.find_element_by_xpath(".//*[@id='edit-startdate-datepicker-popup-0']")
-        elem.send_keys(start_d)
-        sleep(0.6)
-        elem = driver.find_element_by_xpath(".//*[@id='edit-enddate-datepicker-popup-0']")
-        elem.send_keys(end_d)
-        sleep(0.5)
-        try:
-            WebDriverWait(driver, 20).until(
-                EC.element_to_be_clickable((By.XPATH, ".//*[@id='edit-submitbutton']"))).submit()
-            print('Button has been clicked')
-        except Exception as e1:
-            print('Button click error. Try to re-run the scraper', e1)
-            return None
-        sleep(10)
-        html = driver.page_source
-        print(html)
-        # if html:
-        #     soup = BeautifulSoup(html, 'html.parser')
-
-        try:
-            # elem = driver.find_element_by_xpath(".//*[@id='fundFlowsTablesWrapper']")
-            elem = driver.find_element_by_class_name("top_fund_flows_tables")
-            print('elem 2-Titles has been located')
-        except Exception as e2:
-            print('Titles elem error. Try to re-run the scraper', e2)
-            return None
-        webdriver.ActionChains(driver).move_to_element(elem).perform()
-        driver.execute_script("return arguments[0].scrollIntoView();", elem)
-        sleep(1)
-
-        for etf in etfs:
-            sleep(2)
-            print(etf)
-            tag = ".//*[@id=\'" + f'{etf}' + "_nf']"
-            tag2 = ".//*[@id=\'container_" + f'{etf}' + "'" + "]"
-            icon = driver.find_element_by_xpath(tag)  # ".//*[@id='{etf}_nf']"
-            driver.execute_script("arguments[0].click();", icon)
-            sleep(3)
-            graph = driver.find_element_by_xpath(tag2)  # ".//*[@id='container_{etf}']"
-            driver.execute_script("return arguments[0].scrollIntoView();", graph)
-            sleep(1)
-            driver.save_screenshot(os.path.join(img_out_path_, f'inflows_{etf}.png'))
-            img = Image.open(os.path.join(img_out_path_, f'inflows_{etf}.png'))
-            img_crop = img.crop((360, 367, 995, 665))
-            img_crop.save(os.path.join(img_out_path_, f'inflows_{etf}.png'), quality=100, subsampling=0)
+            image = graph.screenshot_as_png
+            imageStream = io.BytesIO(image)
+            im = Image.open(imageStream)
+            im.save(os.path.join(img_out_path_, f'inflows_{etf}.png'))
     print('Get Fund Flows complete' + '\n')
 
 
@@ -425,3 +352,15 @@ def users_count():
         write = f.write(f'{int(users)}')
     print(int(users))
     return users
+
+
+def headless_check(driver=None, img_out_path_=None):
+    with driver:
+        img_path = os.path.join(img_out_path_, 'headless.png')
+        try:
+            driver.get('https://intoli.com/blog/making-chrome-headless-undetectable/chrome-headless-test.html')
+            sleep(3)
+            driver.save_screenshot(img_path)
+        except Exception as z:
+            print(z)
+    exit(200)

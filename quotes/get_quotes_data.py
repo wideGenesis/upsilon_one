@@ -48,7 +48,7 @@ def selenium_init(ua=None):
     chrome_options.add_argument('--disable-dev-shm-usage')
     chrome_options.add_argument('--ignore-certificate-errors')
     chrome_options.add_argument(f'user-agent={ua}')
-    driver_path = os.path.join(WEBDRIVER, 'chromedriver_86')
+    driver_path = os.path.join(WEBDRIVER, 'chromedriver_87')
     driver = webdriver.Chrome(driver_path, options=chrome_options)
     print(driver.execute_script("return navigator.userAgent"))
     return driver
