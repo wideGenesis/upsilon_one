@@ -185,7 +185,7 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
         with open(filename5, newline='') as f5:
             data5 = csv.reader(f5, delimiter=',')
             for row5 in data5:
-                if row5 == 0:
+                if row5 < 1:
                     continue
             else:
                 row5 = str(row5).strip("[']")
