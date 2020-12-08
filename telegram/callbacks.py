@@ -176,7 +176,7 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
                 if row4 == 0:
                     continue
             else:
-                row4 = str(row4).strip("[']")
+                row4 = str(row4).strip("[']ValueDate")
                 await client.send_message(entity=entity, message=f'{row4}')
 
         msg01 = 'Date SP500_DIV_YIELD'
