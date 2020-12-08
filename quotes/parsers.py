@@ -11,6 +11,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from PIL import Image
+import io
 import quandl
 from scipy.stats import norm
 import random
@@ -20,44 +21,46 @@ import random
 def get_flows(driver=None, img_out_path_=None):
     etfs = ['VCIT', 'SPY', 'VTI', 'VEA', 'VWO', 'QQQ', 'VXX', 'TLT', 'SHY', 'LQD']
     with driver:
+        print('Hi')
+
         driver.get('https://www.etf.com/etfanalytics/etf-fund-flows-tool')
+        sleep(8)
+        html = driver.page_source
+        print(html)
         sleep(10)
         try:
             elem = driver.find_element_by_xpath(".//*[@id='edit-tickers']")
-            print(elem)
             print('elem 1 has been located')
-        except Exception as e0:
-            print('Trying to reload the page', e0)
-            driver.refresh()
+        except Exception:
+            return
         elem.send_keys("GLD, SPY, VTI, VEA, VWO, QQQ, VXX, TLT, SHY, LQD, VCIT")
         print('keys has been send')
         sleep(0.7)
         today = date.today()
-        day7 = timedelta(days=7)  # TODO Меняется ли размер окна от колва дней?
+        day7 = timedelta(days=7)
         delta = today - day7
         start_d = delta.strftime("%Y-%m-%d")
         end_d = today.strftime("%Y-%m-%d")
         elem = driver.find_element_by_xpath(".//*[@id='edit-startdate-datepicker-popup-0']")
         elem.send_keys(start_d)
-        sleep(0.6)
+        sleep(1)
         elem = driver.find_element_by_xpath(".//*[@id='edit-enddate-datepicker-popup-0']")
         elem.send_keys(end_d)
-        sleep(0.5)
+        sleep(1)
         try:
-            WebDriverWait(driver, 20).until(
+            WebDriverWait(driver, 10).until(
                 EC.element_to_be_clickable((By.XPATH, ".//*[@id='edit-submitbutton']"))).click()
             print('Button has been clicked')
         except Exception as e1:
             print('Button click error. Try to re-run the scraper', e1)
-            return None
-        sleep(10)
+            return
+        sleep(8)
         try:
             elem = driver.find_element_by_xpath(".//*[@id='fundFlowsTitles']")
             print('elem 2-Titles has been located')
-
         except Exception as e2:
             print('Titles elem error. Try to re-run the scraper', e2)
-            return None
+            return
         webdriver.ActionChains(driver).move_to_element(elem).perform()
         driver.execute_script("return arguments[0].scrollIntoView();", elem)
         sleep(1)
@@ -71,86 +74,12 @@ def get_flows(driver=None, img_out_path_=None):
             driver.execute_script("arguments[0].click();", icon)
             sleep(3)
             graph = driver.find_element_by_xpath(tag2)  # ".//*[@id='container_{etf}']"
-            driver.execute_script("return arguments[0].scrollIntoView();", graph)
+            # driver.execute_script("return arguments[0].scrollIntoView();", graph)
             sleep(1)
-            driver.save_screenshot(os.path.join(img_out_path_, f'inflows_{etf}.png'))
-            img = Image.open(os.path.join(img_out_path_, f'inflows_{etf}.png'))
-            img_crop = img.crop((360, 367, 995, 665))
-            img_crop.save(os.path.join(img_out_path_, f'inflows_{etf}.png'), quality=100, subsampling=0)
-    print('Get Fund Flows complete' + '\n')
-
-
-def get_flows2(driver=None, img_out_path_=None):
-    etfs = ['VCIT', 'SPY', 'VTI', 'VEA', 'VWO', 'QQQ', 'VXX', 'TLT', 'SHY', 'LQD']
-    with driver:
-        driver.get('https://www.etf.com/etfanalytics/etf-fund-flows-tool')
-        sleep(10)
-        html = driver.page_source
-        print(html)
-        # for i in range(0, 20):
-        while True:
-            try:
-                elem = driver.find_element_by_xpath(".//*[@id='edit-tickers']")
-                print('elem 1 has been located')
-                break
-            except Exception as e10:
-                print(f'Trying to reload the page', e10)
-                driver.refresh()
-                continue
-                # break
-        elem.send_keys("GLD, SPY, VTI, VEA, VWO, QQQ, VXX, TLT, SHY, LQD, VCIT")
-        print('keys has been send')
-        sleep(0.7)
-        today = date.today()
-        day7 = timedelta(days=7)  # TODO Меняется ли размер окна от колва дней?
-        delta = today - day7
-        start_d = delta.strftime("%Y-%m-%d")
-        end_d = today.strftime("%Y-%m-%d")
-        elem = driver.find_element_by_xpath(".//*[@id='edit-startdate-datepicker-popup-0']")
-        elem.send_keys(start_d)
-        sleep(0.6)
-        elem = driver.find_element_by_xpath(".//*[@id='edit-enddate-datepicker-popup-0']")
-        elem.send_keys(end_d)
-        sleep(0.5)
-        try:
-            WebDriverWait(driver, 20).until(
-                EC.element_to_be_clickable((By.XPATH, ".//*[@id='edit-submitbutton']"))).submit()
-            print('Button has been clicked')
-        except Exception as e1:
-            print('Button click error. Try to re-run the scraper', e1)
-            return None
-        sleep(10)
-        html = driver.page_source
-        print(html)
-        # if html:
-        #     soup = BeautifulSoup(html, 'html.parser')
-
-        try:
-            # elem = driver.find_element_by_xpath(".//*[@id='fundFlowsTablesWrapper']")
-            elem = driver.find_element_by_class_name("top_fund_flows_tables")
-            print('elem 2-Titles has been located')
-        except Exception as e2:
-            print('Titles elem error. Try to re-run the scraper', e2)
-            return None
-        webdriver.ActionChains(driver).move_to_element(elem).perform()
-        driver.execute_script("return arguments[0].scrollIntoView();", elem)
-        sleep(1)
-
-        for etf in etfs:
-            sleep(2)
-            print(etf)
-            tag = ".//*[@id=\'" + f'{etf}' + "_nf']"
-            tag2 = ".//*[@id=\'container_" + f'{etf}' + "'" + "]"
-            icon = driver.find_element_by_xpath(tag)  # ".//*[@id='{etf}_nf']"
-            driver.execute_script("arguments[0].click();", icon)
-            sleep(3)
-            graph = driver.find_element_by_xpath(tag2)  # ".//*[@id='container_{etf}']"
-            driver.execute_script("return arguments[0].scrollIntoView();", graph)
-            sleep(1)
-            driver.save_screenshot(os.path.join(img_out_path_, f'inflows_{etf}.png'))
-            img = Image.open(os.path.join(img_out_path_, f'inflows_{etf}.png'))
-            img_crop = img.crop((360, 367, 995, 665))
-            img_crop.save(os.path.join(img_out_path_, f'inflows_{etf}.png'), quality=100, subsampling=0)
+            image = graph.screenshot_as_png
+            image_stream = io.BytesIO(image)
+            im = Image.open(image_stream)
+            im.save(os.path.join(img_out_path_, f'inflows_{etf}.png'))
     print('Get Fund Flows complete' + '\n')
 
 
@@ -199,12 +128,11 @@ def get_finviz_treemaps(driver=None, img_out_path_=None):
             try:
                 driver.get(v)
                 sleep(3)
-                elem = driver.find_element_by_id('body')
-                driver.execute_script("return arguments[0].scrollIntoView();", elem)
-                driver.save_screenshot(img_path)
-                im = Image.open(img_path)
-                im = im.crop((210, 0, 1330, 625))
-                im.save(img_path, quality=100, subsampling=0)
+                chart = driver.find_element_by_class_name("hover-canvas")
+                image = chart.screenshot_as_png
+                image_stream = io.BytesIO(image)
+                im = Image.open(image_stream)
+                im.save(img_path)
             except Exception as e03:
                 print(e03)
                 return
@@ -219,17 +147,11 @@ def get_coins360_treemaps(driver=None, img_out_path_=None):
         try:
             driver.get(url_)
             sleep(5)
-            elem = driver.find_element_by_id('app')
-            location = elem.location
-            size = elem.size
-            driver.save_screenshot(img_path)
-            x = location['x']
-            y = location['y']
-            width = location['x'] + size['width']
-            height = location['y'] + size['height']
-            im = Image.open(img_path)
-            im = im.crop((int(x), int(y+80), int(width), int(height-20)))
-            im.save(img_path, quality=100, subsampling=0)
+            chart = driver.find_element_by_class_name("MapBox")
+            image = chart.screenshot_as_png
+            image_stream = io.BytesIO(image)
+            im = Image.open(image_stream)
+            im.save(img_path)
         except Exception as e04:
             print(e04)
             return
@@ -292,7 +214,7 @@ def get_tw_charts(driver=None, img_out_path_=None):
             for k, v in treemaps.items():
                 im_path = os.path.join(img_out_path_, k + '.png')
                 driver.get(v)
-                sleep(15)
+                sleep(20)
                 elem = driver.find_element_by_class_name("chart-container-border")
                 webdriver.ActionChains(driver).move_to_element(elem).perform()
                 driver.execute_script("return arguments[0].scrollIntoView();", elem)
@@ -309,11 +231,16 @@ def get_tw_charts(driver=None, img_out_path_=None):
                     sleep(3)
                 except Exception as e2:
                     print(e2)
-                driver.get_screenshot_as_file(im_path)
-                im = Image.open(im_path)
-                width, height = im.size
-                cropped = im.crop((56, 44, width - 320, height - 43))
-                cropped.save(im_path, quality=100, subsampling=0)
+                chart = driver.find_element_by_class_name("layout__area--center")
+                image = chart.screenshot_as_png
+                image_stream = io.BytesIO(image)
+                im = Image.open(image_stream)
+                im.save(im_path)
+                # driver.get_screenshot_as_file(im_path)
+                # im = Image.open(im_path)
+                # width, height = im.size
+                # cropped = im.crop((56, 44, width - 320, height - 43))
+                # cropped.save(im_path, quality=100, subsampling=0)
     except Exception as e06:
         print(e06)
         return
@@ -379,23 +306,27 @@ def spx_yield():
 def vix_curve(driver=None, img_out_path_=None):
     url_ = 'http://vixcentral.com/'
     img_curve = os.path.join(img_out_path_, 'vix_curve' + '.png')
-    with driver:
-        driver.get(url_)
-        sleep(3)
-        WebDriverWait(driver, 20).until(EC.element_to_be_clickable((By.XPATH, "//*[text()='VIX Index']"))).click()
-        print('Vix disabled, button has been clicked')
-        sleep(4)
-        WebDriverWait(driver, 20).until(
-            EC.element_to_be_clickable((By.CLASS_NAME, "highcharts-button-symbol"))).click()
-        print('Menu button has been clicked')
-        sleep(5)
-        WebDriverWait(driver, 20).until(
-            EC.element_to_be_clickable((By.XPATH, "//li[contains(text(),'Download PNG image')]"))).click()
-        print('PNG has been clicked')
-        sleep(5)
-    im = Image.open('vix-futures-term-structu.png')
-    im = im.crop((0, 120, 1200, 750))
-    im.save(img_curve, quality=100, subsampling=0)
+    try:
+        with driver:
+            driver.get(url_)
+            sleep(3)
+            WebDriverWait(driver, 20).until(EC.element_to_be_clickable((By.XPATH, "//*[text()='VIX Index']"))).click()
+            print('Vix disabled, button has been clicked')
+            sleep(4)
+            WebDriverWait(driver, 20).until(
+                EC.element_to_be_clickable((By.CLASS_NAME, "highcharts-button-symbol"))).click()
+            print('Menu button has been clicked')
+            sleep(5)
+            WebDriverWait(driver, 20).until(
+                EC.element_to_be_clickable((By.XPATH, "//li[contains(text(),'Download PNG image')]"))).click()
+            print('PNG has been clicked')
+            sleep(5)
+        im = Image.open('vix-futures-term-structu.png')
+        im = im.crop((0, 120, 1200, 750))
+        im.save(img_curve, quality=100, subsampling=0)
+    except Exception as e61:
+        print(e61)
+        return
     print('Vix_curve complete' + '\n')
 
 
@@ -416,12 +347,12 @@ def vix_cont():
 
 
 def users_count():
-    with open(os.path.join('results', 'img_out', 'users.csv'), 'r') as f0:
+    with open(os.path.join('results', 'users.csv'), 'r') as f0:
         for x in f0:
             x = x.split()
     users = int(x[0]) + norm.ppf(random.uniform(0, 1), loc=2, scale=2)
 
-    with open(os.path.join('results', 'img_out', 'users.csv'), 'w+') as f:
+    with open(os.path.join('results', 'users.csv'), 'w+') as f:
         write = f.write(f'{int(users)}')
     print(int(users))
     return users

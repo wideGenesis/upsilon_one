@@ -80,7 +80,7 @@ def crop(img_path, img_path_save, a, b, c, d):
 #     chrome_options.add_argument(f'user-agent={agent_rotation()}')
 #     chrome_options.add_argument("--enable-javascript")
 #     chrome_options.add_argument("--no-sandbox")
-#     driver_path = os.path.join('/home/gene/projects/upsilon_one/webdriver', 'chromedriver_86')
+#     driver_path = os.path.join('/home/gene/projects/upsilon_one/webdriver', 'chromedriver_87')
 #     driver = webdriver.Chrome(driver_path, options=chrome_options)
 #     print(driver.execute_script("return navigator.userAgent"))
 #     sleep(1)

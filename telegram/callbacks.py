@@ -182,15 +182,13 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
         msg01 = 'Date SP500_DIV_YIELD'
         await client.send_message(entity=entity, message=msg01)
         filename5 = os.path.join(img_path, 'spx_yield.csv')
+        temp = []
         with open(filename5, newline='') as f5:
             data5 = csv.reader(f5, delimiter=',')
             for row5 in data5:
-                print(row5)
-                if row5 == 0:
-                    continue
-            else:
                 row5 = str(row5).strip("[']")
-                await client.send_message(entity=entity, message=f'{row5}')
+                temp.append(row5)
+        await client.send_message(entity=entity, message=f'{temp[2]}')
         await client.edit_message(message, 'Кривая доходности и дивиденды')
         await event.edit()
         await client.send_message(event.input_sender, 'Как интерпритировать кривую доходности? /instruction02',

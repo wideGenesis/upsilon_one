@@ -26,31 +26,6 @@ def firefox_init(webdriver_path, agent_rotation):
     return driver
 
 
-def chrome_init(webdriver_path, agent_rotation):
-    chrome_options = Options()
-    chrome_options.add_argument("--disable-blink-features=AutomationControlled")
-    chrome_options.add_argument("--window-size=1920,1080")
-    chrome_options.add_argument("--disable-gpu")
-    chrome_options.add_experimental_option("excludeSwitches", ["enable-automation"])
-    chrome_options.add_experimental_option('useAutomationExtension', False)
-    chrome_options.add_argument("--proxy-server=direct://")
-    chrome_options.add_argument("--proxy-bypass-list=*")
-    chrome_options.add_argument("--start-maximized")
-    chrome_options.add_argument("--headless")
-    chrome_options.add_argument("--incognito")
-    chrome_options.add_argument('--disable-dev-shm-usage')
-    chrome_options.add_argument('--ignore-certificate-errors')
-    chrome_options.add_argument(f'user-agent={agent_rotation}')
-    chrome_options.add_argument("--enable-javascript")
-    chrome_options.add_argument("--no-sandbox")
-    driver_path = os.path.join(webdriver_path, 'chromedriver_87')
-    driver = webdriver.Chrome(driver_path, options=chrome_options)
-    driver.execute_cdp_cmd('Network.setUserAgentOverride', {"userAgent": f'{agent_rotation}'})
-    print(driver.execute_script("return navigator.userAgent"))
-    sleep(1)
-    return driver
-
-
 def agents():
     ua = [
         'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:77.0) Gecko/20100101 Firefox/77.0',
@@ -65,3 +40,34 @@ def agents():
     ]
     return choice(ua)
 
+
+def chrome_init(webdriver_path, agent_rotation, headless=True):
+    chrome_options = Options()
+
+    chrome_options.add_argument("--disable-blink-features=AutomationControlled")
+    chrome_options.add_argument("--window-size=1920,1080")
+    chrome_options.add_argument("--disable-gpu")
+    chrome_options.add_experimental_option("excludeSwitches", ["enable-automation"])
+    chrome_options.add_experimental_option('useAutomationExtension', False)
+    # chrome_options.add_argument("--proxy-server==localhost:6969")
+    # chrome_options.add_argument("--remote-debugging-port=9222")
+    chrome_options.add_argument("--proxy-server=direct://")
+    # chrome_options.add_argument("--proxy-bypass-list=*")
+    chrome_options.add_argument("--start-maximized")
+    if headless:
+        chrome_options.add_argument("--headless")
+    else:
+        pass
+    # chrome_options.add_argument("--incognito")
+    chrome_options.add_argument('--disable-dev-shm-usage')
+    chrome_options.add_argument('--ignore-certificate-errors')
+    chrome_options.add_argument(f'user-agent={agent_rotation}')
+    chrome_options.add_argument("--enable-javascript")
+    chrome_options.add_argument("--no-sandbox")
+    driver_path = os.path.join(webdriver_path, 'chromedriver_87')
+    driver = webdriver.Chrome(driver_path, options=chrome_options)
+    driver.execute_cdp_cmd('Network.setUserAgentOverride', {"userAgent": f'{agent_rotation}'})
+    print(driver.execute_script("return navigator.userAgent"))
+    print('Chrome has been started')
+    sleep(1)
+    return driver
