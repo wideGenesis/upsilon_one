@@ -15,12 +15,10 @@ import io
 import quandl
 from scipy.stats import norm
 import random
-# from pyvirtualdisplay import Display
 
 
 # ============================== Inflows GET ================================
 def get_flows(driver=None, img_out_path_=None):
-    # Display(visible=0, size=(1920, 1080)).start()
     etfs = ['VCIT', 'SPY', 'VTI', 'VEA', 'VWO', 'QQQ', 'VXX', 'TLT', 'SHY', 'LQD']
     with driver:
         print('Hi')
@@ -32,7 +30,7 @@ def get_flows(driver=None, img_out_path_=None):
         try:
             elem = driver.find_element_by_xpath(".//*[@id='edit-tickers']")
             print('elem 1 has been located')
-        except Exception as e0:
+        except Exception:
             return
         elem.send_keys("GLD, SPY, VTI, VEA, VWO, QQQ, VXX, TLT, SHY, LQD, VCIT")
         print('keys has been send')
@@ -77,12 +75,10 @@ def get_flows(driver=None, img_out_path_=None):
             graph = driver.find_element_by_xpath(tag2)  # ".//*[@id='container_{etf}']"
             # driver.execute_script("return arguments[0].scrollIntoView();", graph)
             sleep(1)
-
             image = graph.screenshot_as_png
-            imageStream = io.BytesIO(image)
-            im = Image.open(imageStream)
+            image_stream = io.BytesIO(image)
+            im = Image.open(image_stream)
             im.save(os.path.join(img_out_path_, f'inflows_{etf}.png'))
-    # Display.stop()
     print('Get Fund Flows complete' + '\n')
 
 
@@ -131,12 +127,11 @@ def get_finviz_treemaps(driver=None, img_out_path_=None):
             try:
                 driver.get(v)
                 sleep(3)
-                elem = driver.find_element_by_id('body')
-                driver.execute_script("return arguments[0].scrollIntoView();", elem)
-                driver.save_screenshot(img_path)
-                im = Image.open(img_path)
-                im = im.crop((210, 0, 1330, 625))
-                im.save(img_path, quality=100, subsampling=0)
+                chart = driver.find_element_by_class_name("hover-canvas")
+                image = chart.screenshot_as_png
+                image_stream = io.BytesIO(image)
+                im = Image.open(image_stream)
+                im.save(img_path)
             except Exception as e03:
                 print(e03)
                 return
@@ -151,17 +146,11 @@ def get_coins360_treemaps(driver=None, img_out_path_=None):
         try:
             driver.get(url_)
             sleep(5)
-            elem = driver.find_element_by_id('app')
-            location = elem.location
-            size = elem.size
-            driver.save_screenshot(img_path)
-            x = location['x']
-            y = location['y']
-            width = location['x'] + size['width']
-            height = location['y'] + size['height']
-            im = Image.open(img_path)
-            im = im.crop((int(x), int(y+80), int(width), int(height-20)))
-            im.save(img_path, quality=100, subsampling=0)
+            chart = driver.find_element_by_class_name("MapBox")
+            image = chart.screenshot_as_png
+            image_stream = io.BytesIO(image)
+            im = Image.open(image_stream)
+            im.save(img_path)
         except Exception as e04:
             print(e04)
             return
@@ -224,7 +213,7 @@ def get_tw_charts(driver=None, img_out_path_=None):
             for k, v in treemaps.items():
                 im_path = os.path.join(img_out_path_, k + '.png')
                 driver.get(v)
-                sleep(15)
+                sleep(20)
                 elem = driver.find_element_by_class_name("chart-container-border")
                 webdriver.ActionChains(driver).move_to_element(elem).perform()
                 driver.execute_script("return arguments[0].scrollIntoView();", elem)
@@ -241,11 +230,16 @@ def get_tw_charts(driver=None, img_out_path_=None):
                     sleep(3)
                 except Exception as e2:
                     print(e2)
-                driver.get_screenshot_as_file(im_path)
-                im = Image.open(im_path)
-                width, height = im.size
-                cropped = im.crop((56, 44, width - 320, height - 43))
-                cropped.save(im_path, quality=100, subsampling=0)
+                chart = driver.find_element_by_class_name("layout__area--center")
+                image = chart.screenshot_as_png
+                image_stream = io.BytesIO(image)
+                im = Image.open(image_stream)
+                im.save(im_path)
+                # driver.get_screenshot_as_file(im_path)
+                # im = Image.open(im_path)
+                # width, height = im.size
+                # cropped = im.crop((56, 44, width - 320, height - 43))
+                # cropped.save(im_path, quality=100, subsampling=0)
     except Exception as e06:
         print(e06)
         return
@@ -311,23 +305,27 @@ def spx_yield():
 def vix_curve(driver=None, img_out_path_=None):
     url_ = 'http://vixcentral.com/'
     img_curve = os.path.join(img_out_path_, 'vix_curve' + '.png')
-    with driver:
-        driver.get(url_)
-        sleep(3)
-        WebDriverWait(driver, 20).until(EC.element_to_be_clickable((By.XPATH, "//*[text()='VIX Index']"))).click()
-        print('Vix disabled, button has been clicked')
-        sleep(4)
-        WebDriverWait(driver, 20).until(
-            EC.element_to_be_clickable((By.CLASS_NAME, "highcharts-button-symbol"))).click()
-        print('Menu button has been clicked')
-        sleep(5)
-        WebDriverWait(driver, 20).until(
-            EC.element_to_be_clickable((By.XPATH, "//li[contains(text(),'Download PNG image')]"))).click()
-        print('PNG has been clicked')
-        sleep(5)
-    im = Image.open('vix-futures-term-structu.png')
-    im = im.crop((0, 120, 1200, 750))
-    im.save(img_curve, quality=100, subsampling=0)
+    try:
+        with driver:
+            driver.get(url_)
+            sleep(3)
+            WebDriverWait(driver, 20).until(EC.element_to_be_clickable((By.XPATH, "//*[text()='VIX Index']"))).click()
+            print('Vix disabled, button has been clicked')
+            sleep(4)
+            WebDriverWait(driver, 20).until(
+                EC.element_to_be_clickable((By.CLASS_NAME, "highcharts-button-symbol"))).click()
+            print('Menu button has been clicked')
+            sleep(5)
+            WebDriverWait(driver, 20).until(
+                EC.element_to_be_clickable((By.XPATH, "//li[contains(text(),'Download PNG image')]"))).click()
+            print('PNG has been clicked')
+            sleep(5)
+        im = Image.open('vix-futures-term-structu.png')
+        im = im.crop((0, 120, 1200, 750))
+        im.save(img_curve, quality=100, subsampling=0)
+    except Exception as e61:
+        print(e61)
+        return
     print('Vix_curve complete' + '\n')
 
 
@@ -357,15 +355,3 @@ def users_count():
         write = f.write(f'{int(users)}')
     print(int(users))
     return users
-
-
-def headless_check(driver=None, img_out_path_=None):
-    with driver:
-        img_path = os.path.join(img_out_path_, 'headless.png')
-        try:
-            driver.get('https://intoli.com/blog/making-chrome-headless-undetectable/chrome-headless-test.html')
-            sleep(3)
-            driver.save_screenshot(img_path)
-        except Exception as z:
-            print(z)
-    exit(200)
