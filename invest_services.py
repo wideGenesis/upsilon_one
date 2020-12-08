@@ -53,11 +53,11 @@ def main():
     schedule.every(720).minutes.do(lambda: get_flows(driver=chrome_init(webdriver_path=WEBDRIVER,
                                                                         agent_rotation=agents(), headless=True),
                                                      img_out_path_=IMAGES_OUT_PATH))
-    schedule.every(60).minutes.do(lambda: advance_decline(ag=agents()))
+    schedule.every(120).minutes.do(lambda: advance_decline(ag=agents()))
     schedule.every(480).minutes.do(lambda: qt_curve())
     schedule.every(480).minutes.do(lambda: spx_yield())
     schedule.every(480).minutes.do(lambda: vix_cont())
-    schedule.every(65).minutes.do(lambda: get_sma50(ag=agents()))
+    schedule.every(125).minutes.do(lambda: get_sma50(ag=agents()))
     schedule.every().monday.do(lambda: get_economics(ag=agents(), img_out_path_=IMAGES_OUT_PATH))
     schedule.every(30).minutes.do(lambda: get_finviz_treemaps(driver=firefox_init(webdriver_path=WEBDRIVER,
                                                                                   agent_rotation=agents()),

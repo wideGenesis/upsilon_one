@@ -347,12 +347,12 @@ def vix_cont():
 
 
 def users_count():
-    with open(os.path.join('results', 'img_out', 'users.csv'), 'r') as f0:
+    with open(os.path.join('results', 'users.csv'), 'r') as f0:
         for x in f0:
             x = x.split()
     users = int(x[0]) + norm.ppf(random.uniform(0, 1), loc=2, scale=2)
 
-    with open(os.path.join('results', 'img_out', 'users.csv'), 'w+') as f:
+    with open(os.path.join('results', 'users.csv'), 'w+') as f:
         write = f.write(f'{int(users)}')
     print(int(users))
     return users

@@ -1,13 +1,13 @@
 Data,Country,Last,Previous,Reference,Unit
 Interest Rate,Russia,4.25,4.25,Oct/20,%
-Interest Rate,China,3.85,3.85,Nov/20,%
+Interest Rate,China,3.85,3.85,Dec/20,%
 Interest Rate,United States,0.25,0.25,Nov/20,%
 Interest Rate,United Kingdom,0.1,0.1,Nov/20,%
 Interest Rate,Euro Area,0,0,Oct/20,%
 Interest Rate,France,0,0,Oct/20,%
 Interest Rate,Germany,0,0,Oct/20,%
 Interest Rate,Japan,-0.1,-0.1,Oct/20,%
-Inflation Rate,Russia,4,3.7,Oct/20,%
+Inflation Rate,Russia,4.4,4,Nov/20,%
 Inflation Rate,United States,1.2,1.4,Oct/20,%
 Inflation Rate,United Kingdom,0.7,0.5,Oct/20,%
 Inflation Rate,China,0.5,1.7,Oct/20,%
@@ -17,17 +17,17 @@ Inflation Rate,Germany,-0.3,-0.2,Nov/20,%
 Inflation Rate,Japan,-0.4,0,Oct/20,%
 Unemployment Rate,France,9,7.1,Sep/20,%
 Unemployment Rate,Euro Area,8.4,8.5,Oct/20,%
-Unemployment Rate,United States,6.9,7.9,Oct/20,%
+Unemployment Rate,United States,6.7,6.9,Nov/20,%
 Unemployment Rate,Russia,6.3,6.3,Oct/20,%
 Unemployment Rate,China,5.3,5.4,Oct/20,%
 Unemployment Rate,United Kingdom,4.8,4.5,Sep/20,%
 Unemployment Rate,Germany,4.5,4.5,Oct/20,%
 Unemployment Rate,Japan,3.1,3,Oct/20,%
 Composite PMI,China,57.5,55.7,Nov/20,points
-Composite PMI,Euro Area,45.1,50,Nov/20,points
-Composite PMI,France,39.9,47.5,Nov/20,points
-Composite PMI,Germany,52,55,Nov/20,points
+Composite PMI,Euro Area,45.3,50,Nov/20,points
+Composite PMI,France,40.6,47.5,Nov/20,points
+Composite PMI,Germany,51.7,55,Nov/20,points
 Composite PMI,Japan,48.1,48,Nov/20,points
-Composite PMI,Russia,47.1,53.7,Oct/20,points
-Composite PMI,United Kingdom,47.4,52.1,Nov/20,points
-Composite PMI,United States,57.9,56.3,Nov/20,points
+Composite PMI,Russia,47.8,47.1,Nov/20,points
+Composite PMI,United Kingdom,49,52.1,Nov/20,points
+Composite PMI,United States,58.6,56.3,Nov/20,points

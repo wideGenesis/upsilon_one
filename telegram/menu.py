@@ -68,7 +68,7 @@ async def profile_menu(event, client, engine=None):
     await client.get_input_entity(sender_id)
     user_profile = await sql.user_search(sender_id.user_id, engine)
     expired_date = ""
-    if user_profile[11] is None :
+    if user_profile[11] is None:
         print("None")
         expired_date = "None"
     else:
