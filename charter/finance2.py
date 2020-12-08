@@ -1,72 +1,101 @@
 #!/usr/bin/python
+import yaml
 from FinanceChart import *
 from pychartdir import *
 from datetime import date, timedelta
 
 setLicenseCode("DEVP-2LTF-FD2N-G76T-2691-3A31")
 
+conf = yaml.safe_load(open('../config/settings.yaml'))
+
+# *************** Settings for candlestick chart
+IMAGE_WIDTH = conf['CHARTER_CANDLE_CHART']['IMAGE_WIDTH']
+IMAGE_HEIGHT = conf['CHARTER_CANDLE_CHART']['IMAGE_HEIGHT']
+TITLE_FONT_COLOR = conf['CHARTER_CANDLE_CHART']['TITLE_FONT_COLOR']
+EXTRA_DAYS = conf['CHARTER_CANDLE_CHART']['EXTRA_DAYS']
+AXIS_FONT_COLOR = conf['CHARTER_CANDLE_CHART']['AXIS_FONT_COLOR']
+CHART_BACKGROUND_COLOR = conf['CHARTER_CANDLE_CHART']['CHART_BACKGROUND_COLOR']
+OUTER_BACKGROUND_COLOR = conf['CHARTER_CANDLE_CHART']['OUTER_BACKGROUND_COLOR']
+GRID_LINE_COLOR = conf['CHARTER_CANDLE_CHART']['GRID_LINE_COLOR']
+WATERMARK_TEXT_COLOR = conf['CHARTER_CANDLE_CHART']['WATERMARK_TEXT_COLOR']
+CANDLE_UP_COLOR = conf['CHARTER_CANDLE_CHART']['CANDLE_UP_COLOR']
+CANDLE_DOWN_COLOR = conf['CHARTER_CANDLE_CHART']['CANDLE_DOWN_COLOR']
+CANDLE_SHADOW_COLOR = conf['CHARTER_CANDLE_CHART']['CANDLE_SHADOW_COLOR']
+COMPARISON_LINE_COLOR = conf['CHARTER_CANDLE_CHART']['COMPARISON_LINE_COLOR']
+
+# *************** Settings for histogram chart
+H_IMAGE_WIDTH = conf['CHARTER_HISTOGRAM']['IMAGE_WIDTH']
+H_IMAGE_HEIGHT = conf['CHARTER_HISTOGRAM']['IMAGE_HEIGHT']
+H_AXIS_FONT_COLOR = conf['CHARTER_HISTOGRAM']['AXIS_FONT_COLOR']
+H_TITLE_FONT_COLOR = conf['CHARTER_HISTOGRAM']['TITLE_FONT_COLOR']
+H_WATERMARK_TEXT_COLOR = conf['CHARTER_HISTOGRAM']['WATERMARK_TEXT_COLOR']
+BAR_UP_COLOR = conf['CHARTER_HISTOGRAM']['BAR_UP_COLOR']
+BAR_DOWN_COLOR = conf['CHARTER_HISTOGRAM']['BAR_DOWN_COLOR']
+HIST_BACKGROUND_COLOR = conf['CHARTER_HISTOGRAM']['HIST_BACKGROUND_COLOR']
+
 
 def create_chart(ticker, data, compare_ticker=None, compare_data=None):
-    extraDays = 5
+    extra_days = EXTRA_DAYS
 
-    timeStamps = []
-    highData = []
-    lowData = []
-    openData = []
-    closeData = []
-    volData = []
+    time_stamps = []
+    high_data = []
+    low_data = []
+    open_data = []
+    close_data = []
+    volume_data = []
 
     for quote in data:
         dt = date.fromisoformat(str(quote[0]))
-        timeStamps.append(chartTime(dt.year, dt.month, dt.day))
-        openData.append(float(quote[1]))
-        highData.append(float(quote[2]))
-        lowData.append(float(quote[3]))
-        closeData.append(float(quote[4]))
+        time_stamps.append(chartTime(dt.year, dt.month, dt.day))
+        open_data.append(float(quote[1]))
+        high_data.append(float(quote[2]))
+        low_data.append(float(quote[3]))
+        close_data.append(float(quote[4]))
 
     compare_close_data = []
-    compare_dt = None
     for cquote in compare_data:
-        compare_dt = date.fromisoformat(str(cquote[0]))
         compare_close_data.append(float(cquote[4]))
 
     i = 0
     td = timedelta(1)
-    while i < extraDays:
+    while i < extra_days:
         dt = dt + td
-        timeStamps.append(chartTime(dt.year, dt.month, dt.day))
+        time_stamps.append(chartTime(dt.year, dt.month, dt.day))
         compare_close_data.append(NoValue)
         i += 1
 
-    m = FinanceChart(640)
+    m = FinanceChart(IMAGE_WIDTH)
 
-    m.setData(timeStamps=timeStamps, highData=highData, lowData=lowData, openData=openData, closeData=closeData,
-              volData=volData, extraPoints=extraDays)
+    m.setData(timeStamps=time_stamps, highData=high_data, lowData=low_data, openData=open_data, closeData=close_data,
+              volData=volume_data, extraPoints=extra_days)
 
     title_str = "Portfolio vs " + compare_ticker
     m.addPlotAreaTitle(Center, "<*font=arial.ttf,size=12,color=0x5fffffff*>%s" % title_str)
 
     m.setLegendStyle("normal", 8, Transparent, 0xC4D6FF)
-    m.setXAxisStyle("normal", 8, 0x5fFFFFFF, 0)
-    m.setYAxisStyle("normal", 8, 0x5fFFFFFF, 0)
+    m.setXAxisStyle("normal", 8, AXIS_FONT_COLOR, 0)
+    m.setYAxisStyle("normal", 8, AXIS_FONT_COLOR, 0)
 
-    m.setMargins(leftMargin=20, topMargin=7, rightMargin=35, bottomMargin=25)
-    m.setPlotAreaStyle(bgColor=0x000000, majorHGridColor=0xcdd9d9d9, majorVGridColor=0xcdd9d9d9,
-                       minorHGridColor=0xcdd9d9d9, minorVGridColor=0xcdd9d9d9)
+    # m.setMargins(leftMargin=20, topMargin=7, rightMargin=35, bottomMargin=25)
+    m.setPlotAreaStyle(bgColor=CHART_BACKGROUND_COLOR,
+                       majorHGridColor=GRID_LINE_COLOR,
+                       majorVGridColor=GRID_LINE_COLOR,
+                       minorHGridColor=GRID_LINE_COLOR,
+                       minorVGridColor=GRID_LINE_COLOR)
     m.setPlotAreaBorder(Transparent, 0)
-    m.addText(130, 130, "(c) @UpsilonBot", "arialbd.ttf", 32, 0xf1d9d9d9)
+    m.addText(130, 130, "(c) @UpsilonBot", "arialbd.ttf", 32, WATERMARK_TEXT_COLOR)
 
-    main_chart = m.addMainChart(320)
+    main_chart = m.addMainChart(IMAGE_HEIGHT)
 
     m.setPercentageAxis()
     # main_chart.setClipping(True)
-    main_chart.setBackground(0x000000)
+    main_chart.setBackground(OUTER_BACKGROUND_COLOR)
 
     csl = m.addCandleStick(-1, -1)
-    csl.getDataSet(0).setDataColor(0x38761D, 0x9eB5B5B8)
-    csl.getDataSet(1).setDataColor(0xff0000, 0x9eB5B5B8)
+    csl.getDataSet(0).setDataColor(CANDLE_UP_COLOR, CANDLE_SHADOW_COLOR)
+    csl.getDataSet(1).setDataColor(CANDLE_DOWN_COLOR, CANDLE_SHADOW_COLOR)
 
-    m.addComparison(compare_close_data, 0xff7f27, compare_ticker)
+    m.addComparison(compare_close_data, COMPARISON_LINE_COLOR, compare_ticker)
 
     filename = "port_chart_over_" + compare_ticker + ".png"
     m.makeChart(filename)
@@ -149,20 +178,19 @@ def create_excess_histogram(ticker, data, compare_ticker, compare_data):
         value = bar - bars2[i]
         bars.append(bar - bars2[i])
         if value >= 0:
-            colors.append(0x38761D)
+            colors.append(BAR_UP_COLOR)
         else:
-            colors.append(0xff0000)
+            colors.append(BAR_DOWN_COLOR)
         i += 1
-    excess_chart = XYChart(640, 250, 0x000000)
+    excess_chart = XYChart(H_IMAGE_WIDTH, H_IMAGE_HEIGHT, HIST_BACKGROUND_COLOR)
     excess_chart.setYAxisOnRight(True)
-    excess_chart.xAxis().setLabelStyle("normal", 8, 0x5fFFFFFF, 0)
-    excess_chart.yAxis().setLabelStyle("normal", 8, 0x5fFFFFFF, 0)
+    excess_chart.xAxis().setLabelStyle("normal", 8, H_AXIS_FONT_COLOR, 0)
+    excess_chart.yAxis().setLabelStyle("normal", 8, H_AXIS_FONT_COLOR, 0)
     excess_chart.yAxis().setLabelFormat("{value}%")
-    excess_chart.setRoundedFrame(0x000000, 20)
     excess_chart.setPlotArea(0, 25, 605, 205, Transparent, -1, Transparent, 0xcccccc)
     title_str = "Monthly Portfolio Excess Returns over " + compare_ticker
-    excess_chart.addTitle(title_str, "arial.ttf", 10, 0x5fFFFFFF)
-    excess_chart.addText(100, 100, "(c) @UpsilonBot", "arialbd.ttf", 32, 0xcdd9d9d9)
+    excess_chart.addTitle(title_str, "arial.ttf", 10, H_TITLE_FONT_COLOR)
+    excess_chart.addText(100, 100, "(c) @UpsilonBot", "arialbd.ttf", 32, H_WATERMARK_TEXT_COLOR)
     bl = excess_chart.addBarLayer3(bars, colors)
     bl.setBorderColor(Transparent)
     bl.setBarShape(CircleShape)
@@ -180,6 +208,3 @@ def color_2_chart_string(int_color):
     res = hex(int_color)
     return res
 
-# QColor ATGOwnChartDialog::getInverseColor(QColor inColor) {
-#     return ((255-inColor.alpha()) << 24)+((255-inColor.red()) << 16)+((255-inColor.green()) << 8) + (255-inColor.blue());
-# }
