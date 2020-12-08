@@ -27,6 +27,7 @@ def get_flows(driver=None, img_out_path_=None):
         sleep(8)
         html = driver.page_source
         print(html)
+        sleep(10)
         try:
             elem = driver.find_element_by_xpath(".//*[@id='edit-tickers']")
             print('elem 1 has been located')
