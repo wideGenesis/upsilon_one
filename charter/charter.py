@@ -20,6 +20,8 @@ container = AlchemySessionContainer(engine=engine)
 alchemy_session = container.new_session('default')
 
 QUOTE_TABLE_NAME = "quotes"
+
+
 # ============================== Logging Setup ======================
 # logging.basicConfig(
 #     filemode='w',
@@ -29,34 +31,78 @@ QUOTE_TABLE_NAME = "quotes"
 # logging.getLogger('telethon').setLevel(level=logging.DEBUG)
 
 
+def get_year_data_by_ticker(ticker, start_date=None, end_date=date.today()):
+    if sql.is_table_exist(QUOTE_TABLE_NAME, engine):
+        quotes = None
+        if start_date is None:
+            td = timedelta(365)
+            start_date = end_date - td
+        if sql.ticker_lookup(ticker, QUOTE_TABLE_NAME, engine):
+            quotes = sql.get_quotes_by_ticker(ticker=ticker, table_name=QUOTE_TABLE_NAME, start_date=start_date,
+                                              end_date=end_date, engine=engine)
+        else:
+            print("Ticker:" + ticker + " not found!!!")
+            return None
+    else:
+        print("Quotes table:" + QUOTE_TABLE_NAME + " not found!")
+        return None
+    return quotes
+
+
+def get_ytd_data_by_ticker(ticker, start_date=None, end_date=date.today()):
+    if sql.is_table_exist(QUOTE_TABLE_NAME, engine):
+        quotes = None
+        if start_date is None:
+            start_date = date(end_date.year, 1, 1)
+        if sql.ticker_lookup(ticker, QUOTE_TABLE_NAME, engine):
+            quotes = sql.get_quotes_by_ticker(ticker=ticker, table_name=QUOTE_TABLE_NAME, start_date=start_date,
+                                              end_date=end_date, engine=engine)
+        else:
+            print("Ticker:" + ticker + " not found!!!")
+            return None
+    else:
+        print("Quotes table:" + QUOTE_TABLE_NAME + " not found!")
+        return None
+    return quotes
+
+
+def create_candle_chart_image(ticker, compare_ticker, chart_type="Y"):
+    ticker_quotes = None
+    compare_ticker_quotes = None
+    if chart_type == "Y":
+        ticker_quotes = get_year_data_by_ticker(ticker)
+        compare_ticker_quotes = get_year_data_by_ticker(compare_ticker)
+    if chart_type == "YTD":
+        ticker_quotes = get_ytd_data_by_ticker(ticker)
+        compare_ticker_quotes = get_ytd_data_by_ticker(compare_ticker)
+    if ticker_quotes is not None and compare_ticker_quotes is not None:
+        fin.create_chart(ticker, ticker_quotes, compare_ticker, compare_ticker_quotes)
+    else:
+        print("WARNING: Can't create chart!")
+
+
+def create_excess_histogram(ticker, compare_ticker, chart_type="Y"):
+    ticker_quotes = None
+    compare_ticker_quotes = None
+    if chart_type == "Y":
+        ticker_quotes = get_year_data_by_ticker(ticker)
+        compare_ticker_quotes = get_year_data_by_ticker(compare_ticker)
+    if chart_type == "YTD":
+        ticker_quotes = get_ytd_data_by_ticker(ticker)
+        compare_ticker_quotes = get_ytd_data_by_ticker(compare_ticker)
+    if ticker_quotes is not None and compare_ticker_quotes is not None:
+        fin.create_excess_histogram(ticker, ticker_quotes, compare_ticker, compare_ticker_quotes)
+    else:
+        print("WARNING: Can't create chart!")
+
+
 def main():
     print("__Start main__")
     if sql.is_table_exist(QUOTE_TABLE_NAME, engine):
         ticker = "QQQ"
-        td = timedelta(365)
-        end_date = date.today()
-        start_date = end_date - td
-        if sql.ticker_lookup(ticker, QUOTE_TABLE_NAME, engine):
-            if end_date is not None and start_date is not None:
-                quotes = sql.get_quotes_by_ticker(ticker=ticker, table_name=QUOTE_TABLE_NAME, start_date=start_date,
-                                                  end_date=end_date, engine=engine)
-            else:
-                quotes = sql.get_quotes_by_ticker(ticker=ticker, table_name=QUOTE_TABLE_NAME, engine=engine)
-            compare_ticker = "MTUM"
-            compare_quotes = None
-            if sql.ticker_lookup(compare_ticker, QUOTE_TABLE_NAME, engine):
-                if end_date is not None and start_date is not None:
-                    compare_quotes = sql.get_quotes_by_ticker(ticker=compare_ticker, table_name=QUOTE_TABLE_NAME,
-                                                              start_date=start_date, end_date=end_date, engine=engine)
-                else:
-                    compare_quotes = sql.get_quotes_by_ticker(ticker=ticker, table_name=QUOTE_TABLE_NAME, engine=engine)
-            print(str(quotes))
-            fin.create_chart(ticker, quotes, compare_ticker, compare_quotes)
-            fin.create_excess_histogram(ticker, quotes, compare_ticker, compare_quotes)
-        else:
-            print("Ticker:" + ticker + " not found!!!")
-    else:
-        print("Quotes tbale:" + QUOTE_TABLE_NAME + " not found!")
+        compare_ticker = "MTUM"
+        create_candle_chart_image(ticker, compare_ticker, chart_type="YTD")
+        create_excess_histogram(ticker, compare_ticker, chart_type="YTD")
 
 
 if __name__ == '__main__':

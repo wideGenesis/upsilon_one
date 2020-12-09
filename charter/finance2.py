@@ -135,9 +135,6 @@ def create_excess_histogram(ticker, data, compare_ticker, compare_data):
                 month_close = float(quote[4])
                 pdt = dt
 
-    print("Labels:" + str(labels))
-    print("Bars1:" + str(bars1))
-
     compare_close_data = []
     compare_open_data = []
     compare_month_open = None
