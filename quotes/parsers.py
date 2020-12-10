@@ -230,6 +230,10 @@ def get_tw_charts(driver=None, img_out_path_=None):
                     sleep(3)
                 except Exception as e2:
                     print(e2)
+
+                elem = driver.find_element_by_class_name("layout__area--top")
+                webdriver.ActionChains(driver).move_to_element(elem).click().perform()
+
                 chart = driver.find_element_by_class_name("layout__area--center")
                 image = chart.screenshot_as_png
                 image_stream = io.BytesIO(image)
