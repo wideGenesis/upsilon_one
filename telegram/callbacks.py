@@ -136,8 +136,6 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
     elif event.data == b'us2':
         message = await client.send_message(entity=entity, message='Загрузка...')
         await client.send_file(entity, img_path + 'sectors.png')
-        await client.send_message(event.input_sender, 'Волатильность и барометр жадности/страха')
-        await client.send_file(entity, img_path + 'volatility.png')
         await client.edit_message(message, 'Общая картина рынка')
         await event.edit()
         await client.send_message(event.input_sender, 'Как интерпритировать графики выше? /instruction02',
