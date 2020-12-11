@@ -12,7 +12,6 @@ from telegram import sql_queries as sql
 from telegram import menu
 from telegram import shared
 from payments.payagregator import PaymentAgregator
-from quotes.parsers import vix_cont
 
 PAYMENT_AGGREGATOR = None
 PAYMENT_AGGREGATOR_TIMER = None

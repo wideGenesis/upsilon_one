@@ -1,3 +1,5 @@
+import os
+import csv
 import base64
 import rsa
 import random
@@ -7,6 +9,7 @@ from aiohttp import web
 from telegram import sql_queries as sql
 from telegram import ai
 from telegram import shared
+from quotes import stock_quotes_news as sqn
 
 
 class WebHandler:
@@ -130,7 +133,7 @@ async def dialog_flow_handler(event, client_):
     except ValueError as e:
         sender_id = await event.get_input_sender()
     if not any(value in event.text for value in
-               ('/start', '/help', '/publish_to', '/to', 'Главное меню', 'Профиль', 'Помощь', 'Donate')):
+               ('/start', '/help', '/publish_to', '/to', 'Главное меню', 'Профиль', 'Помощь', 'Donate', '/q', '/n')):
         user_message = event.text
         project_id = 'common-bot-1'
         try:
@@ -144,22 +147,29 @@ async def dialog_flow_handler(event, client_):
             print(e, 'Dialogflow response failure')
             await client_.send_message(sender_id, fallback)
 
-# @client.on(events.ChatAction)
-# async def get_participants_from_chat(event):
-#     if event.user_joined or event.user_added:
-#         # print(event.action_message.to_id, '1XXXXXXXXXX')
-#         # print(event.action_message.to_id.chat_id, '3XXXXXXXXXX')
-#         # entity = await client.get_entity(event.action_message.to_id)
-#         # chat = await event.get_input_chat()
-#         # print(chat, '1dgggdg')
-#         try:
-#             participants = await client.get_participants(event.action_message.to_id)
-#         except AttributeError as e:
-#             logging.exception(e,
-#                               'NoneType object has no attribute to_id ' + '\n' + 'Probably bot was added to some chat')
-#         for user in participants:
-#             if user.id is not None:
-#                 entity = await client.get_entity(PeerUser(user.id))
-#                 print('Dump complete!')
-#                 # print(user.access_hash, user.id, user.username, user.first_name, user.last_name, entity)
-#                 # TODO Добавить в модели поля bot=True, scam=False
+
+async def quotes_to_handler(event, client_, limit=20):
+    parse = str(event.text).split(' ')
+    stock = parse[1]
+    stock = stock.upper()
+    img_path = os.path.join('results/ticker_stat', f'{stock}.png')
+    try:
+        msg1 = sqn.stock_description(stock=stock)
+        msg2 = sqn.stock_quotes(stock=stock)
+
+        await client_.send_message(event.input_sender, msg1)
+        # await client_.send_message(event.input_sender, msg2)
+        await client_.send_file(event.input_sender, img_path)
+    except ValueError as e0:
+        print(e0)
+
+
+async def news_to_handler(event, client_, limit=20):
+    parse = str(event.text).split(' ')
+    stock = parse[1]
+    try:
+        msg = sqn.stock_news(stock=stock)
+        await client_.send_message(event.input_sender, f'Последние новости с упоминанием {stock}')
+        await client_.send_message(event.input_sender, msg)
+    except ValueError as e1:
+        print(e1)

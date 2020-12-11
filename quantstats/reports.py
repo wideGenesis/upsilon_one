@@ -55,7 +55,7 @@ def html(returns, benchmark=None, rf=0.,
     tpl = tpl.replace('{{title}}', title)
     tpl = tpl.replace('{{v}}', __version__)
 
-    mtrx = metrics(returns=returns, benchmark=benchmark,
+    mtrx = metrics_v1(returns=returns, benchmark=benchmark,
                    rf=rf, display=False, mode='full',
                    sep=True, internal="True",
                    compounded=compounded)[2:]
@@ -220,7 +220,7 @@ def full(returns, benchmark=None, rf=0., grayscale=False,
 
     if _utils._in_notebook():
         iDisplay(iHTML('<h4>Performance Metrics</h4>'))
-        iDisplay(metrics(returns=returns, benchmark=benchmark,
+        iDisplay(metrics_v1(returns=returns, benchmark=benchmark,
                          rf=rf, display=display, mode='full',
                          compounded=compounded))
         iDisplay(iHTML('<h4>5 Worst Drawdowns</h4>'))
@@ -232,7 +232,7 @@ def full(returns, benchmark=None, rf=0., grayscale=False,
         iDisplay(iHTML('<h4>Strategy Visualization</h4>'))
     else:
         print('[Performance Metrics]\n')
-        metrics(returns=returns, benchmark=benchmark,
+        metrics_v1(returns=returns, benchmark=benchmark,
                 rf=rf, display=display, mode='full',
                 compounded=compounded)
         print('\n\n')
@@ -254,13 +254,13 @@ def basic(returns, benchmark=None, rf=0., grayscale=False,
 
     if _utils._in_notebook():
         iDisplay(iHTML('<h4>Performance Metrics</h4>'))
-        metrics(returns=returns, benchmark=benchmark,
+        metrics_v1(returns=returns, benchmark=benchmark,
                 rf=rf, display=display, mode='basic',
                 compounded=compounded)
         iDisplay(iHTML('<h4>Strategy Visualization</h4>'))
     else:
         print('[Performance Metrics]\n')
-        metrics(returns=returns, benchmark=benchmark,
+        metrics_v1(returns=returns, benchmark=benchmark,
                 rf=rf, display=display, mode='basic',
                 compounded=compounded)
 
@@ -271,7 +271,7 @@ def basic(returns, benchmark=None, rf=0., grayscale=False,
           grayscale=grayscale, figsize=figsize, mode='basic')
 
 
-def metrics(returns, benchmark=None, rf=0., display=True,
+def metrics_v1(returns, benchmark=None, rf=0., display=True,
             mode='basic', sep=False, compounded=True, **kwargs):
 
     if isinstance(returns, _pd.DataFrame) and len(returns.columns) > 1:
@@ -474,6 +474,162 @@ def metrics(returns, benchmark=None, rf=0., display=True,
 
     if not sep:
         metrics = metrics[metrics.index != '']
+    return metrics
+
+
+def metrics_v2(returns, benchmark=None, ticker_=None, rf=0., display=False,
+            mode='full', sep=False, compounded=True, **kwargs):
+
+
+    if isinstance(returns, _pd.DataFrame) and len(returns.columns) > 1:
+        raise ValueError("`returns` must be a pandas Series, "
+                         "but a multi-column DataFrame was passed")
+
+    if benchmark is not None:
+        if isinstance(returns, _pd.DataFrame) and len(returns.columns) > 1:
+            raise ValueError("`benchmark` must be a pandas Series, "
+                             "but a multi-column DataFrame was passed")
+
+    blank = ['']
+    df = _pd.DataFrame({"returns": _utils._prepare_returns(returns, rf)})
+    if benchmark is not None:
+        blank = ['', '']
+        df["benchmark"] = _utils._prepare_benchmark(
+            benchmark, returns.index, rf)
+
+    df = df.fillna(0)
+
+    # pct multiplier
+    pct = 100 if display or "internal" in kwargs else 1
+
+    # return df
+    dd = _calc_dd(df, display=(display or "internal" in kwargs))
+
+    metrics = _pd.DataFrame()
+
+    s_start = {'returns': df['returns'].index.strftime('%Y-%m-%d')[0]}
+    s_end = {'returns': df['returns'].index.strftime('%Y-%m-%d')[-1]}
+    s_rf = {'returns': rf}
+
+    if "benchmark" in df:
+        s_start['benchmark'] = df['benchmark'].index.strftime('%Y-%m-%d')[0]
+        s_end['benchmark'] = df['benchmark'].index.strftime('%Y-%m-%d')[-1]
+        s_rf['benchmark'] = rf
+
+    metrics['Start Period'] = _pd.Series(s_start)
+    metrics['End Period'] = _pd.Series(s_end)
+
+    if compounded:
+        metrics['Cumulative Return %'] = (
+            _stats.comp(df) * pct).map('{:,.2f}'.format)
+    else:
+        metrics['Total Return %'] = (df.sum() * pct).map('{:,.2f}'.format)
+
+    metrics['CAGR%%'] = _stats.cagr(df, rf, compounded) * pct
+    metrics['Sharpe'] = _stats.sharpe(df, rf)
+    metrics['Sortino'] = _stats.sortino(df, rf)
+    metrics['Max Drawdown %'] = blank
+    metrics['Longest DD Days'] = blank
+
+    if mode.lower() == 'full':
+        ret_vol = _stats.volatility(df['returns']) * pct
+        if "benchmark" in df:
+            bench_vol = _stats.volatility(df['benchmark']) * pct
+            metrics['Volatility (ann.) %'] = [ret_vol, bench_vol]
+            # metrics['R^2'] = _stats.r_squared(df['returns'], df['benchmark'])
+        else:
+            metrics['Volatility (ann.) %'] = [ret_vol]
+
+        metrics['Skew'] = _stats.skew(df)
+        metrics['Kurtosis'] = _stats.kurtosis(df)
+        metrics['Expected Monthly %%'] = _stats.expected_return(df, aggregate='M') * pct
+        metrics['Expected Yearly %%'] = _stats.expected_return(df, aggregate='A') * pct
+        metrics['Kelly Criterion %'] = _stats.kelly_criterion(df) * pct
+        metrics['Daily Value-at-Risk %'] = -abs(_stats.var(df) * pct)
+        metrics['Expected Shortfall (cVaR) %'] = -abs(_stats.cvar(df) * pct)
+
+
+    comp_func = _stats.comp if compounded else _np.sum
+
+    today = df.index[-1]
+    d = today - _td(3*365/12)
+    metrics['3M %'] = comp_func(
+        df[df.index >= _dt(d.year, d.month, d.day)]) * pct
+    d = today - _td(6*365/12)
+    metrics['6M %'] = comp_func(
+        df[df.index >= _dt(d.year, d.month, d.day)]) * pct
+    metrics['YTD %'] = comp_func(df[df.index >= _dt(today.year, 1, 1)]) * pct
+    d = today - _td(12*365/12)
+    metrics['1Y %'] = comp_func(
+        df[df.index >= _dt(d.year, d.month, d.day)]) * pct
+    metrics['3Y (ann.) %'] = _stats.cagr(
+        df[df.index >= _dt(today.year-3, today.month, today.day)
+           ], 0., compounded) * pct
+    metrics['5Y (ann.) %'] = _stats.cagr(
+        df[df.index >= _dt(today.year-5, today.month, today.day)
+           ], 0., compounded) * pct
+    metrics['10Y (ann.) %'] = _stats.cagr(
+        df[df.index >= _dt(today.year-10, today.month, today.day)
+           ], 0., compounded) * pct
+    # metrics['All-time (ann.) %'] = _stats.cagr(df, 0., compounded) * pct
+
+    if mode.lower() == 'full':
+        metrics['Best Year %'] = _stats.best(df, aggregate='A') * pct
+        metrics['Worst Year %'] = _stats.worst(df, aggregate='A') * pct
+
+    if mode.lower() == 'full':
+
+        if "benchmark" in df:
+            greeks = _stats.greeks(df['returns'], df['benchmark'])
+            metrics['Alpha'] = [str(round(greeks['alpha'], 2)), '-']
+            metrics['Beta'] = [str(round(greeks['beta'], 2)), '-']
+
+    # prepare for display
+    for col in metrics.columns:
+        try:
+            metrics[col] = metrics[col].astype(float).round(2)
+            if display or "internal" in kwargs:
+                metrics[col] = metrics[col].astype(str)
+        except Exception:
+            pass
+        if (display or "internal" in kwargs) and "%" in col:
+            metrics[col] = metrics[col] + '%'
+    try:
+        metrics['Longest DD Days'] = _pd.to_numeric(
+            metrics['Longest DD Days']).astype('int')
+        metrics['Avg. Drawdown Days'] = _pd.to_numeric(
+            metrics['Avg. Drawdown Days']).astype('int')
+
+        if display or "internal" in kwargs:
+            metrics['Longest DD Days'] = metrics['Longest DD Days'].astype(str)
+            metrics['Avg. Drawdown Days'] = metrics['Avg. Drawdown Days'
+                                                    ].astype(str)
+    except Exception:
+        metrics['Longest DD Days'] = '-'
+        metrics['Avg. Drawdown Days'] = '-'
+        if display or "internal" in kwargs:
+            metrics['Longest DD Days'] = '-'
+            metrics['Avg. Drawdown Days'] = '-'
+
+    metrics.columns = [
+        col if '~' not in col else '' for col in metrics.columns]
+    metrics.columns = [
+        col[:-1] if '%' in col else col for col in metrics.columns]
+    metrics = metrics.T
+
+    if "benchmark" in df:
+        metrics.columns = [f'{ticker_}', 'Benchmark']
+    else:
+        metrics.columns = [f'{ticker_}']
+
+    if display:
+        print(_tabulate(metrics, headers="keys", tablefmt='simple'))
+        return None
+
+    if not sep:
+        metrics = metrics[metrics.index != '']
+    metrics.to_csv(f'results/ticker_stat/{ticker_}.csv')
+    metrics = metrics.to_string()
     return metrics
 
 

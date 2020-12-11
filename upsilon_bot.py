@@ -111,6 +111,16 @@ async def dialog_flow(event):
     await handlers.dialog_flow_handler(event, client)
 
 
+@client.on(events.NewMessage(pattern='/q'))
+async def quotes_to(event):
+    await handlers.quotes_to_handler(event, client, limit=0)
+
+
+@client.on(events.NewMessage(pattern='/n'))
+async def news_to(event):
+    await handlers.news_to_handler(event, client, limit=0)
+
+
 # ============================== Callbacks =======================
 @client.on(events.CallbackQuery)
 async def callback(event):

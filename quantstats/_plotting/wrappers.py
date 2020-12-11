@@ -196,10 +196,10 @@ def snapshot_v2(returns, grayscale=False, figsize=(10, 8),
     fig.set_facecolor('black')
 
     if subtitle:
-        axes[0].set_title(f"\n%s - %s {ticker} Sharpe: %.2f                      " % (
+        axes[0].set_title("%s \n \n %s - %s" % (
+            ticker,
             returns.index.date[:1][0].strftime('%e %b \'%y'),
-            returns.index.date[-1:][0].strftime('%e %b \'%y'),
-            _stats.sharpe(returns)
+            returns.index.date[-1:][0].strftime('%e %b \'%y')
         ), fontsize=12, color='white')
 
     axes[0].set_ylabel('Cumulative Return', fontname=fontname,
@@ -225,23 +225,6 @@ def snapshot_v2(returns, grayscale=False, figsize=(10, 8),
     axes[1].axhline(0, color='silver', lw=1, zorder=0)
     if not grayscale:
         axes[1].fill_between(dd.index, 0, dd, color=colors[2], alpha=.1)
-
-    # axes[2].set_ylabel('Daily Return', fontname=fontname,
-    #                    fontweight='bold', fontsize=12)
-    # axes[2].plot(returns * 100, color=colors[0], lw=0.5, zorder=1)
-    # axes[2].axhline(0, color='silver', lw=1, zorder=0)
-    # axes[2].axhline(0, color=colors[-1], linestyle='--', lw=1, zorder=2)
-    #
-    # retmax = _utils._round_to_closest(returns.max() * 100, 5)
-    # retmin = _utils._round_to_closest(returns.min() * 100, 5)
-    # retdiff = (retmax - retmin)
-    # steps = 5
-    # if retdiff > 50:
-    #     steps = retdiff / 5
-    # elif retdiff > 30:
-    #     steps = retdiff / 4
-    # steps = int(_utils._round_to_closest(steps, 5))
-    # axes[2].set_yticks(_np.arange(retmin, retmax, step=steps))
 
     for ax in axes:
         ax.set_facecolor('black')
