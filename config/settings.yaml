@@ -8,6 +8,7 @@ PATHS:
   SQLITE3_PATH: 'telegram/'
   LOGS: 'logs/'
   WEBDRIVER: 'webdriver/'
+  ETF_HOLDINGS_URL: 'https://www.barchart.com/stocks/quotes/{}/constituents?page=all'
 
 
 TELEGRAM:

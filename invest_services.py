@@ -7,6 +7,7 @@ import logging
 from quotes.parsers_env import firefox_init, chrome_init, agents
 from quotes.parsers import get_flows, advance_decline, get_finviz_treemaps,\
     get_coins360_treemaps, get_economics, get_sma50, get_tw_charts, vix_curve, vix_cont, qt_curve, spx_yield
+from quotes.get_universe import ConstituentsScraper #get_etf_holdings
 import schedule
 from time import sleep
 
@@ -19,7 +20,7 @@ conf = yaml.safe_load(open('config/settings.yaml'))
 LOGS = conf['PATHS']['LOGS']
 WEBDRIVER = conf['PATHS']['WEBDRIVER']
 IMAGES_OUT_PATH = conf['PATHS']['IMAGES_OUT_PATH']
-
+ETF_HOLDINGS_URL = conf['PATHS']['ETF_HOLDINGS_URL']
 
 # ============================== Logging Setup ======================
 logging.basicConfig(
@@ -32,44 +33,40 @@ logging.getLogger('scrapers').setLevel(level=logging.WARNING)
 
 # ============================== Main  =============================
 def main():
-    get_flows(driver=chrome_init(webdriver_path=WEBDRIVER,
-                                 agent_rotation=agents(), headless=True), img_out_path_=IMAGES_OUT_PATH)
+    etfs = ['XLU', 'ARKW', 'ARKK']
+    chrome = chrome_init(webdriver_path=WEBDRIVER, agent_rotation=agents(), headless=True)
+    firefox = firefox_init(webdriver_path=WEBDRIVER, agent_rotation=agents())
+    universe = ConstituentsScraper(driver=chrome, holdings_url=ETF_HOLDINGS_URL, etfs_list=etfs)
+    constituents = universe.etfs_scraper()
+    print(constituents)
 
+    # get_etf_holdings(browser=chrome_init(webdriver_path=WEBDRIVER,
+    #                              agent_rotation=agents(), headless=True), holdings_url=ETF_HOLDINGS_URL,
+    #                  etf_name='ARKW')
+    exit()
+    get_flows(driver=chrome, img_out_path_=IMAGES_OUT_PATH)
     advance_decline(ag=agents())
     qt_curve()
     spx_yield()
     vix_cont()
-
     get_sma50(ag=agents())
     get_economics(ag=agents(), img_out_path_=IMAGES_OUT_PATH)
-    get_finviz_treemaps(driver=firefox_init(webdriver_path=WEBDRIVER, agent_rotation=agents()),
-                        img_out_path_=IMAGES_OUT_PATH)
-    get_coins360_treemaps(driver=firefox_init(webdriver_path=WEBDRIVER, agent_rotation=agents()),
-                          img_out_path_=IMAGES_OUT_PATH)
-    get_tw_charts(driver=chrome_init(webdriver_path=WEBDRIVER, agent_rotation=agents()), img_out_path_=IMAGES_OUT_PATH)
-    vix_curve(driver=chrome_init(webdriver_path=WEBDRIVER, agent_rotation=agents()),
-              img_out_path_=IMAGES_OUT_PATH)
+    get_finviz_treemaps(driver=firefox, img_out_path_=IMAGES_OUT_PATH)
+    get_coins360_treemaps(driver=firefox, img_out_path_=IMAGES_OUT_PATH)
+    get_tw_charts(driver=chrome, img_out_path_=IMAGES_OUT_PATH)
+    vix_curve(driver=chrome, img_out_path_=IMAGES_OUT_PATH)
 
-    schedule.every(720).minutes.do(lambda: get_flows(driver=chrome_init(webdriver_path=WEBDRIVER,
-                                                                        agent_rotation=agents(), headless=True),
-                                                     img_out_path_=IMAGES_OUT_PATH))
+    schedule.every(720).minutes.do(lambda: get_flows(driver=chrome, img_out_path_=IMAGES_OUT_PATH))
     schedule.every(120).minutes.do(lambda: advance_decline(ag=agents()))
     schedule.every(480).minutes.do(lambda: qt_curve())
     schedule.every(480).minutes.do(lambda: spx_yield())
     schedule.every(480).minutes.do(lambda: vix_cont())
     schedule.every(125).minutes.do(lambda: get_sma50(ag=agents()))
     schedule.every().monday.do(lambda: get_economics(ag=agents(), img_out_path_=IMAGES_OUT_PATH))
-    schedule.every(30).minutes.do(lambda: get_finviz_treemaps(driver=firefox_init(webdriver_path=WEBDRIVER,
-                                                                                  agent_rotation=agents()),
-                                                              img_out_path_=IMAGES_OUT_PATH))
-    schedule.every(30).minutes.do(lambda: get_coins360_treemaps(driver=firefox_init(webdriver_path=WEBDRIVER,
-                                                                                    agent_rotation=agents()),
-                                                                img_out_path_=IMAGES_OUT_PATH))
-    schedule.every(30).minutes.do(lambda: get_tw_charts(driver=chrome_init(webdriver_path=WEBDRIVER,
-                                                                           agent_rotation=agents()),
-                                                        img_out_path_=IMAGES_OUT_PATH))
-    schedule.every(120).minutes.do(lambda: vix_curve(
-        driver=chrome_init(webdriver_path=WEBDRIVER, agent_rotation=agents()), img_out_path_=IMAGES_OUT_PATH))
+    schedule.every(30).minutes.do(lambda: get_finviz_treemaps(driver=firefox, img_out_path_=IMAGES_OUT_PATH))
+    schedule.every(30).minutes.do(lambda: get_coins360_treemaps(driver=firefox, img_out_path_=IMAGES_OUT_PATH))
+    schedule.every(30).minutes.do(lambda: get_tw_charts(driver=chrome, img_out_path_=IMAGES_OUT_PATH))
+    schedule.every(120).minutes.do(lambda: vix_curve(driver=chrome, img_out_path_=IMAGES_OUT_PATH))
 
     while True:
         schedule.run_pending()

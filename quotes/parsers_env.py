@@ -68,6 +68,5 @@ def chrome_init(webdriver_path, agent_rotation, headless=True):
     driver = webdriver.Chrome(driver_path, options=chrome_options)
     driver.execute_cdp_cmd('Network.setUserAgentOverride', {"userAgent": f'{agent_rotation}'})
     print(driver.execute_script("return navigator.userAgent"))
-    print('Chrome has been started')
-    sleep(1)
+    print('Chrome has been initialized')
     return driver
