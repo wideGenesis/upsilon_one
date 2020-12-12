@@ -33,17 +33,15 @@ logging.getLogger('scrapers').setLevel(level=logging.WARNING)
 
 # ============================== Main  =============================
 def main():
-    etfs = ['XLU', 'ARKW', 'ARKK']
+    etfs = ['DIA', 'XLU']
     chrome = chrome_init(webdriver_path=WEBDRIVER, agent_rotation=agents(), headless=True)
     firefox = firefox_init(webdriver_path=WEBDRIVER, agent_rotation=agents())
-    universe = ConstituentsScraper(driver=chrome, holdings_url=ETF_HOLDINGS_URL, etfs_list=etfs)
-    constituents = universe.etfs_scraper()
-    print(constituents)
+    universe = ConstituentsScraper(holdings_url=ETF_HOLDINGS_URL, etfs_list=etfs)
 
-    # get_etf_holdings(browser=chrome_init(webdriver_path=WEBDRIVER,
-    #                              agent_rotation=agents(), headless=True), holdings_url=ETF_HOLDINGS_URL,
-    #                  etf_name='ARKW')
+    constituents = universe.get_etf_holdings(driver=chrome)
+    print(constituents)
     exit()
+
     get_flows(driver=chrome, img_out_path_=IMAGES_OUT_PATH)
     advance_decline(ag=agents())
     qt_curve()
