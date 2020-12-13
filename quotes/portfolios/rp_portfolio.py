@@ -52,10 +52,6 @@ class RiskParityAllocator:
         self.linkage_ = linkage_
 
     def distance_correlation(self):
-        """
-        :dependence_method: dependence_method=information_variation, mutual_information, distance_correlation,
-        spearmans_rho, gpr_distance, gnpr_distance
-        """
         dist_corr = get_dependence_matrix(self.returns, self.dependence_method)
         if self.angular_distance:
             corr = get_distance_matrix(dist_corr, self.distance_metric)

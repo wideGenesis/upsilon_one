@@ -20,7 +20,7 @@ container = AlchemySessionContainer(engine=engine)
 alchemy_session = container.new_session('default')
 
 DEFAULT_START_QUOTES_DATE = SQL_USER = conf['SQL']['DEFAULT_START_QUOTES_DATE']
-QUOTE_TABLE_NAME = "quotes"
+QUOTE_TABLE_NAME = conf['SQL_TABLE_NAMES']['QUOTE_TABLE_NAME']
 TICKERS = conf['WORLD_MEGA_CAPS']
 TICKERS += conf['ETF_FOR_INDEX']
 TICKERS += conf['TOP_RP_ASSETS']
