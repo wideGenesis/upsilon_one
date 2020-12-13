@@ -1,10 +1,26 @@
 from time import sleep
 import pandas as pd
+from .sql_queries import *
 from dataclasses import dataclass
 from bs4 import BeautifulSoup
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
+
+
+def get_and_save_holdings(holdings_url, etfs_list, driver, sql_table_name, engine):
+    universe = ConstituentsScraper(holdings_url=holdings_url, etfs_list=etfs_list)
+    constituents = universe.get_etf_holdings(driver=driver)
+    print(constituents)
+    if is_table_exist(sql_table_name, engine):
+        update_universe_table(constituents, sql_table_name, engine)
+    else:
+        create_universe_table(sql_table_name, engine)
+        insert_universe_data(constituents, sql_table_name, engine)
+
+
+def get_universe_from_db(table_name, engine):
+    return get_universe(table_name, engine)
 
 
 @dataclass
@@ -60,6 +76,7 @@ class ConstituentsScraper:
                     percent = float(celltext.rstrip('%'))
                     # shares = int(cells[3].text.strip().replace(',', ''))
                     if symbol != "" and percent > self.bottom_percent:
+                        # print("Symbol:" + str(symbol))
                         asset_dict[symbol] = {
                             'symbol': symbol,
                             # 'name': name,

@@ -7,9 +7,12 @@ import logging
 from quotes.parsers_env import firefox_init, chrome_init, agents
 from quotes.parsers import get_flows, advance_decline, get_finviz_treemaps,\
     get_coins360_treemaps, get_economics, get_sma50, get_tw_charts, vix_curve, vix_cont, qt_curve, spx_yield
-from quotes.get_universe import ConstituentsScraper #get_etf_holdings
+from quotes.get_universe import *
 import schedule
 from time import sleep
+from sqlalchemy import create_engine
+from alchemysession import AlchemySessionContainer
+
 
 
 PYTHON_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir))
@@ -21,6 +24,19 @@ LOGS = conf['PATHS']['LOGS']
 WEBDRIVER = conf['PATHS']['WEBDRIVER']
 IMAGES_OUT_PATH = conf['PATHS']['IMAGES_OUT_PATH']
 ETF_HOLDINGS_URL = conf['PATHS']['ETF_HOLDINGS_URL']
+
+UNIVERSE_TABLE_NAME = conf['SQL_TABLE_NAMES']['UNIVERSE_TABLE_NAME']
+
+# ============================== SQL Connect ======================
+
+SQL_DB_NAME = conf['SQL']['DB_NAME']
+SQL_USER = conf['SQL']['DB_USER']
+SQL_PASSWORD = conf['SQL']['DB_PASSWORD']
+SQL_URI = 'mysql+pymysql://{}:{}@localhost/{}'.format(SQL_USER, SQL_PASSWORD, SQL_DB_NAME)
+
+engine = create_engine(SQL_URI, pool_recycle=3600)
+container = AlchemySessionContainer(engine=engine)
+alchemy_session = container.new_session('default')
 
 # ============================== Logging Setup ======================
 logging.basicConfig(
@@ -36,10 +52,9 @@ def main():
     etfs = ['DIA', 'XLU']
     chrome = chrome_init(webdriver_path=WEBDRIVER, agent_rotation=agents(), headless=True)
     firefox = firefox_init(webdriver_path=WEBDRIVER, agent_rotation=agents())
-    universe = ConstituentsScraper(holdings_url=ETF_HOLDINGS_URL, etfs_list=etfs)
 
-    constituents = universe.get_etf_holdings(driver=chrome)
-    print(constituents)
+    get_and_save_holdings(holdings_url=ETF_HOLDINGS_URL, etfs_list=etfs, driver=chrome,
+                          sql_table_name=UNIVERSE_TABLE_NAME, engine=engine)
     exit()
 
     get_flows(driver=chrome, img_out_path_=IMAGES_OUT_PATH)

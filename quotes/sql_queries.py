@@ -62,7 +62,7 @@ def create_quotes_table(table_name="quotes", engine=None):
 
 def insert_quotes(ticker, quotes, table_name="quotes", is_update=True, engine=None):
     with engine.connect() as connection:
-        connection.begin()
+        transaction = connection.begin()
         try:
             for qdate in quotes:
                 o, h, l, c, v, d = quotes[qdate]
@@ -86,12 +86,63 @@ def insert_quotes(ticker, quotes, table_name="quotes", is_update=True, engine=No
                                                                                    str(o), str(h), str(l), str(c),
                                                                                    str(v), str(d)])
         except:
-            connection.execute("rollback")
-        connection.execute("commit")
+            transaction.rollback()
+        transaction.commit()
 
 
-def db_save_expired_data(expired, level, identifier, engine=None):
+# ******************** UNIVERSE ********************
+def create_universe_table(table_name="universe", engine=None):
     with engine.connect() as connection:
-        result = connection.execute("UPDATE entities SET expired = %s, subscribe_level = %s WHERE id = %s",
-                                    [expired, level, identifier])
-        return result.cursor.fetchone()
+        is_exist = is_table_exist(table_name, engine)
+        if not is_exist:
+            connection.execute("CREATE TABLE "
+                               + table_name +
+                               " (ticker VARCHAR(6) NOT NULL, "
+                               "PRIMARY KEY(ticker)"
+                               ")")
+            connection.execute("commit")
+
+
+def update_universe_table(new_universe, table_name="universe", engine=None):
+    with engine.connect() as connection:
+        is_exist = is_table_exist(table_name, engine)
+        if is_exist:
+            transaction = connection.begin()
+            try:
+                del_query = "DELETE FROM " + table_name
+                connection.execute(del_query)
+                for ticker in new_universe:
+                    connection.execute("INSERT INTO " + table_name + " (ticker) "
+                                       "VALUES (%s)", [ticker])
+            except:
+                transaction.rollback()
+            transaction.commit()
+        else:
+            print(f'Can\'t find table: {table_name}!')
+
+
+def insert_universe_data(new_universe, table_name="universe", engine=None):
+    with engine.connect() as connection:
+        is_exist = is_table_exist(table_name, engine)
+        if is_exist:
+            transaction = connection.begin()
+            try:
+                for ticker in new_universe:
+                    connection.execute("INSERT INTO " + table_name + " (ticker) "
+                                       "VALUES (%s)", [ticker])
+            except:
+                transaction.rollback()
+            transaction.commit()
+        else:
+            print(f'Can\'t find table: {table_name}!')
+
+
+def get_universe(table_name="universe", engine=None):
+    with engine.connect() as connection:
+        is_exist = is_table_exist(table_name, engine)
+        if is_exist:
+            del_query = "SELECT * FROM " + table_name
+            result = connection.execute(del_query)
+            return result.fetchall() if result.rowcount > 0 else None
+        else:
+            print(f'Can\'t find table: {table_name}!')
