@@ -8,6 +8,8 @@ from quotes.parsers_env import firefox_init, chrome_init, agents
 from quotes.parsers import get_flows, advance_decline, get_finviz_treemaps,\
     get_coins360_treemaps, get_economics, get_sma50, get_tw_charts, vix_curve, vix_cont, qt_curve, spx_yield
 from quotes.get_universe import *
+from quotes.quote_loader import *
+from quotes.portfolios.rp_portfolio import *
 import schedule
 from time import sleep
 from sqlalchemy import create_engine
@@ -26,7 +28,9 @@ IMAGES_OUT_PATH = conf['PATHS']['IMAGES_OUT_PATH']
 ETF_HOLDINGS_URL = conf['PATHS']['ETF_HOLDINGS_URL']
 
 UNIVERSE_TABLE_NAME = conf['SQL_TABLE_NAMES']['UNIVERSE_TABLE_NAME']
+QUOTE_TABLE_NAME = conf['SQL_TABLE_NAMES']['QUOTE_TABLE_NAME']
 
+ETF_FOR_INDEX = conf['ETF_FOR_INDEX']
 # ============================== SQL Connect ======================
 
 SQL_DB_NAME = conf['SQL']['DB_NAME']
@@ -50,11 +54,17 @@ logging.getLogger('scrapers').setLevel(level=logging.WARNING)
 # ============================== Main  =============================
 def main():
     etfs = ['DIA', 'XLU']
+    get_rp_alloction(QUOTE_TABLE_NAME, UNIVERSE_TABLE_NAME, engine)
+    exit()
+
     chrome = chrome_init(webdriver_path=WEBDRIVER, agent_rotation=agents(), headless=True)
     firefox = firefox_init(webdriver_path=WEBDRIVER, agent_rotation=agents())
 
-    get_and_save_holdings(holdings_url=ETF_HOLDINGS_URL, etfs_list=etfs, driver=chrome,
+    get_and_save_holdings(holdings_url=ETF_HOLDINGS_URL, etfs_list=ETF_FOR_INDEX, driver=chrome,
                           sql_table_name=UNIVERSE_TABLE_NAME, engine=engine)
+    update_universe_prices()
+
+
     exit()
 
     get_flows(driver=chrome, img_out_path_=IMAGES_OUT_PATH)

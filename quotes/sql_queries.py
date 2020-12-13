@@ -1,4 +1,6 @@
 from datetime import date
+import pymysql
+import pandas as pd
 
 
 def is_table_exist(table_name, engine=None) -> bool:
@@ -85,10 +87,29 @@ def insert_quotes(ticker, quotes, table_name="quotes", is_update=True, engine=No
                                        "VALUES (%s, %s, %s, %s, %s, %s, %s, %s)", [ticker, str(qdate),
                                                                                    str(o), str(h), str(l), str(c),
                                                                                    str(v), str(d)])
+            transaction.commit()
         except:
             transaction.rollback()
-        transaction.commit()
 
+
+def get_closes_universe_df(q_table_name, u_table_name, engine):
+    tickers = get_universe(u_table_name, engine)
+    with engine.connect() as connection:
+        closes = None
+        dat = {}
+        for ticker in tickers:
+            query_string = f'SELECT dateTime, close from {q_table_name} where ticker=\'{ticker}\''
+            q_result = connection.execute(query_string)
+            rows = q_result.fetchall()
+            c0 = []
+            c1 = []
+            for row in rows:
+                c0.append(row[0])
+                c1.append(row[1])
+            series = pd.Series(c1, index=c0)
+            dat[ticker] = series
+        closes = pd.DataFrame(dat)
+    return closes
 
 # ******************** UNIVERSE ********************
 def create_universe_table(table_name="universe", engine=None):
@@ -112,8 +133,7 @@ def update_universe_table(new_universe, table_name="universe", engine=None):
                 del_query = "DELETE FROM " + table_name
                 connection.execute(del_query)
                 for ticker in new_universe:
-                    connection.execute("INSERT INTO " + table_name + " (ticker) "
-                                       "VALUES (%s)", [ticker])
+                    connection.execute("INSERT INTO " + table_name + " (ticker) VALUES (%s)", [ticker])
             except:
                 transaction.rollback()
             transaction.commit()
@@ -128,8 +148,7 @@ def insert_universe_data(new_universe, table_name="universe", engine=None):
             transaction = connection.begin()
             try:
                 for ticker in new_universe:
-                    connection.execute("INSERT INTO " + table_name + " (ticker) "
-                                       "VALUES (%s)", [ticker])
+                    connection.execute("INSERT INTO " + table_name + " (ticker) VALUES (%s)", [ticker])
             except:
                 transaction.rollback()
             transaction.commit()
@@ -141,8 +160,14 @@ def get_universe(table_name="universe", engine=None):
     with engine.connect() as connection:
         is_exist = is_table_exist(table_name, engine)
         if is_exist:
-            del_query = "SELECT * FROM " + table_name
+            res = list()
+            del_query = "SELECT ticker FROM " + table_name
             result = connection.execute(del_query)
-            return result.fetchall() if result.rowcount > 0 else None
+            if result.rowcount > 0:
+                for t in result.fetchall():
+                    res.append(t[0])
+                return res
+            else:
+                return None
         else:
             print(f'Can\'t find table: {table_name}!')

@@ -1,10 +1,9 @@
 import pandas as pd
 import cmath
 import os
-import sql_queries as sql
+from quotes.sql_queries import *
 from yahoofinancials import YahooFinancials
 from datetime import datetime
-
 
 
 # Формат даты в сторку
@@ -184,4 +183,4 @@ def download_quotes_to_db(ticker, start_date, end_date, tablename, is_update, en
             print(f"{ticker} has split {rec['splitRatio']} for {date}")
 
     print("PRICES:" + str(prices))
-    sql.insert_quotes(ticker, prices, tablename, is_update, engine)
+    insert_quotes(ticker, prices, tablename, is_update, engine)
