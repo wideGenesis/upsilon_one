@@ -40,7 +40,7 @@ def main():
 
     constituents = universe.get_etf_holdings(driver=chrome)
     print(constituents)
-    exit()
+    # exit()
 
     get_flows(driver=chrome, img_out_path_=IMAGES_OUT_PATH)
     advance_decline(ag=agents())
