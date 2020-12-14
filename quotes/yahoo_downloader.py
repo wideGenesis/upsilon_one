@@ -184,3 +184,9 @@ def download_quotes_to_db(ticker, start_date, end_date, tablename, is_update, en
 
     # print("PRICES:" + str(prices))
     insert_quotes(ticker, prices, tablename, is_update, engine)
+
+
+def get_market_cap(ticker):
+    yf = YahooFinancials(ticker)
+    data = yf.get_market_cap()
+    return data

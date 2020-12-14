@@ -71,7 +71,8 @@ def insert_quotes(ticker, quotes, table_name="quotes", is_update=True, engine=No
                 test = False
                 if is_update:
                     try:
-                        query_string = "SELECT * FROM " + table_name + " WHERE ticker = '" + ticker + "' AND dateTime = '" + str(qdate) + "' LIMIT 1"
+                        query_string = "SELECT * FROM " + table_name + " WHERE ticker = '" + ticker + "' AND dateTime = '" + str(
+                            qdate) + "' LIMIT 1"
                         result = connection.execute(query_string)
                         if result.rowcount > 0:
                             test = True
@@ -92,24 +93,28 @@ def insert_quotes(ticker, quotes, table_name="quotes", is_update=True, engine=No
             transaction.rollback()
 
 
-def get_closes_universe_df(q_table_name, u_table_name, engine):
+def get_closes_universe_df(q_table_name, u_table_name, cap_filter, engine):
     tickers = get_universe(u_table_name, engine)
     with engine.connect() as connection:
         closes = None
         dat = {}
         for ticker in tickers:
-            query_string = f'SELECT dateTime, close from {q_table_name} where ticker=\'{ticker}\''
+            query_string = f'SELECT q.dateTime, q.close FROM {q_table_name} q, {u_table_name} u' \
+                           f' WHERE q.ticker=\'{ticker}\' AND q.ticker=u.ticker AND u.mkt_cap > {cap_filter}' \
+                           f' AND u.mkt_cap IS NOT NULL'
             q_result = connection.execute(query_string)
-            rows = q_result.fetchall()
-            c0 = []
-            c1 = []
-            for row in rows:
-                c0.append(row[0])
-                c1.append(row[1])
-            series = pd.Series(c1, index=c0)
-            dat[ticker] = series
+            if q_result.rowcount > 0:
+                rows = q_result.fetchall()
+                c0 = []
+                c1 = []
+                for row in rows:
+                    c0.append(row[0])
+                    c1.append(row[1])
+                series = pd.Series(c1, index=c0)
+                dat[ticker] = series
         closes = pd.DataFrame(dat)
     return closes
+
 
 # ******************** UNIVERSE ********************
 def create_universe_table(table_name="universe", engine=None):
@@ -119,6 +124,7 @@ def create_universe_table(table_name="universe", engine=None):
             connection.execute("CREATE TABLE "
                                + table_name +
                                " (ticker VARCHAR(6) NOT NULL, "
+                               "  mkt_cap BIGINT, "
                                "PRIMARY KEY(ticker)"
                                ")")
             connection.execute("commit")
@@ -134,9 +140,26 @@ def update_universe_table(new_universe, table_name="universe", engine=None):
                 connection.execute(del_query)
                 for ticker in new_universe:
                     connection.execute("INSERT INTO " + table_name + " (ticker) VALUES (%s)", [ticker])
+                transaction.commit()
             except:
                 transaction.rollback()
-            transaction.commit()
+        else:
+            print(f'Can\'t find table: {table_name}!')
+
+
+def set_universe_mkt_cap(mkt_caps, table_name="universe", engine=None):
+    with engine.connect() as connection:
+        is_exist = is_table_exist(table_name, engine)
+        if is_exist:
+            transaction = connection.begin()
+            try:
+                for cap in mkt_caps:
+                    upd_query = f'UPDATE {table_name} SET mkt_cap=\'{mkt_caps[cap]}\' WHERE ticker=\'{cap}\''
+                    print(upd_query)
+                    connection.execute(upd_query)
+                transaction.commit()
+            except:
+                transaction.rollback()
         else:
             print(f'Can\'t find table: {table_name}!')
 

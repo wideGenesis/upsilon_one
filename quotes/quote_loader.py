@@ -6,9 +6,10 @@ from datetime import date, timedelta
 from sqlalchemy import create_engine
 from alchemysession import AlchemySessionContainer
 from quotes.sql_queries import *
+from project_shared import print_progress_bar
 
-# conf = yaml.safe_load(open(os.path.dirname(__file__)+'\\'+'../config/settings.yaml'))
-conf = yaml.safe_load(open('/home/gene/projects/upsilon_one/config/settings.yaml'))
+conf = yaml.safe_load(open(os.path.dirname(__file__)+'\\'+'../config/settings.yaml'))
+# conf = yaml.safe_load(open('/home/gene/projects/upsilon_one/config/settings.yaml'))
 
 # ============================== SQL Connect ======================
 
@@ -38,6 +39,20 @@ TICKERS += conf['ETFs']
 
 def update_universe_prices():
     tickers = get_universe(UNIVERSE_TABLE_NAME, engine)
+    print(f'{__file__}: Tickers: {str(tickers)} ')
+    mkt_caps = {}
+    print("#Try get market caps")
+    t_len = len(tickers)
+    i = 0
+    print_progress_bar(0, t_len, prefix='Progress:', suffix='Complete', length=50)
+    for ticker in tickers:
+        cap = get_market_cap(ticker)
+        mkt_caps[ticker] = cap
+        i += 1
+        print_progress_bar(i, t_len, prefix='Progress:', suffix='Complete', length=50)
+        # print(f'cap[{ticker}]={str(cap)}')
+    print("#Update market cap in db")
+    set_universe_mkt_cap(mkt_caps, UNIVERSE_TABLE_NAME, engine)
     print("[update_universe_prices] TICKERS: " + str(tickers))
     # Проверяем есть ли таблица, если нет ее надо создать
     is_update = False
