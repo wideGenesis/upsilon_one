@@ -32,7 +32,7 @@ HOLDINGS = conf['PATHS']['HOLDINGS']
 LOGS = conf['PATHS']['LOGS']
 WEBDRIVER = conf['PATHS']['WEBDRIVER']
 
-ETF_FOR_INDEX = conf['ETF_FOR_INDEX']
+ETF_FOR_SCRAPE = conf['ETF_FOR_SCRAPE']
 WORLD_MEGA_CAPS = conf['WORLD_MEGA_CAPS']
 
 
@@ -387,7 +387,7 @@ def main():
     world_mtum = 'mtum_world_stocks_closes.csv'
 
     # Generate us/world mega_caps.csv
-    get_constituents(ETF_FOR_INDEX)
+    get_constituents(ETF_FOR_SCRAPE)
     print('get_constituents for US complete')
 
     # Generate us/world closes.csv

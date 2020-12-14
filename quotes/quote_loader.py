@@ -7,7 +7,8 @@ from sqlalchemy import create_engine
 from alchemysession import AlchemySessionContainer
 from quotes.sql_queries import *
 
-conf = yaml.safe_load(open(os.path.dirname(__file__)+'\\'+'../config/settings.yaml'))
+# conf = yaml.safe_load(open(os.path.dirname(__file__)+'\\'+'../config/settings.yaml'))
+conf = yaml.safe_load(open('/home/gene/projects/upsilon_one/config/settings.yaml'))
 
 # ============================== SQL Connect ======================
 
@@ -23,9 +24,8 @@ alchemy_session = container.new_session('default')
 DEFAULT_START_QUOTES_DATE = SQL_USER = conf['SQL']['DEFAULT_START_QUOTES_DATE']
 QUOTE_TABLE_NAME = conf['SQL_TABLE_NAMES']['QUOTE_TABLE_NAME']
 UNIVERSE_TABLE_NAME = conf['SQL_TABLE_NAMES']['UNIVERSE_TABLE_NAME']
-TICKERS = conf['WORLD_MEGA_CAPS']
-TICKERS += conf['ETF_FOR_INDEX']
-TICKERS += conf['TOP_RP_ASSETS']
+TICKERS = conf['ETF_FOR_SCRAPE']
+TICKERS += conf['ETFs']
 
 
 # ============================== Logging Setup ======================
