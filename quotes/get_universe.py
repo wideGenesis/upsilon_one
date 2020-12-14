@@ -11,7 +11,7 @@ from selenium.webdriver.support import expected_conditions as EC
 def get_and_save_holdings(holdings_url, etfs_list, driver, sql_table_name, engine):
     universe = ConstituentsScraper(holdings_url=holdings_url, etfs_list=etfs_list)
     constituents = universe.get_etf_holdings(driver=driver)
-    print(constituents)
+    # print(constituents)
     if is_table_exist(sql_table_name, engine):
         update_universe_table(constituents, sql_table_name, engine)
     else:

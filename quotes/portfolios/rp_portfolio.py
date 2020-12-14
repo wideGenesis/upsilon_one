@@ -9,7 +9,7 @@ from mlfinlab.codependence import get_dependence_matrix, get_distance_matrix
 
 
 def get_rp_alloction(q_table_name, u_table_name, engine):
-    closes_df = get_closes_universe_df(q_table_name, u_table_name, engine)
+    closes_df = get_closes_universe_df(q_table_name, u_table_name, 9287523328, engine)
     print(str(closes_df))
 
 
