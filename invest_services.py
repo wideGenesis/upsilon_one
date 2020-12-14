@@ -30,7 +30,7 @@ ETF_HOLDINGS_URL = conf['PATHS']['ETF_HOLDINGS_URL']
 UNIVERSE_TABLE_NAME = conf['SQL_TABLE_NAMES']['UNIVERSE_TABLE_NAME']
 QUOTE_TABLE_NAME = conf['SQL_TABLE_NAMES']['QUOTE_TABLE_NAME']
 
-ETF_FOR_INDEX = conf['ETF_FOR_INDEX']
+ETF_FOR_SCRAPE = conf['ETF_FOR_SCRAPE']
 # ============================== SQL Connect ======================
 
 SQL_DB_NAME = conf['SQL']['DB_NAME']
