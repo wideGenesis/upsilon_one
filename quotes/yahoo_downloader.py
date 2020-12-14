@@ -182,5 +182,5 @@ def download_quotes_to_db(ticker, start_date, end_date, tablename, is_update, en
             date = datetime.strptime(date, '%Y-%m-%d')
             print(f"{ticker} has split {rec['splitRatio']} for {date}")
 
-    print("PRICES:" + str(prices))
+    # print("PRICES:" + str(prices))
     insert_quotes(ticker, prices, tablename, is_update, engine)

@@ -79,7 +79,7 @@ def update_universe_prices():
     else:
         print("__Table is not exists__")
         create_quotes_table(QUOTE_TABLE_NAME, engine)
-        for ticker in TICKERS:
+        for ticker in tickers:
             print("Ticker:" + ticker)
             start_date = date.fromisoformat(DEFAULT_START_QUOTES_DATE)
             # end_date = date(2020, 1, 1)
