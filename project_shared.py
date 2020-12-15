@@ -13,7 +13,9 @@ PYTHON_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pa
 sys.path.append(PYTHON_PATH)
 os.environ["PYTHONUNBUFFERED"] = "1"
 
-conf = yaml.safe_load(open('config/settings.yaml'))
+i_path, i_filename = os.path.split(__file__)
+print(f'##### {i_path}:{i_filename}')
+conf = yaml.safe_load(open(f'{i_path}/config/settings.yaml'))
 
 LOGS = conf['PATHS']['LOGS']
 WEBDRIVER = conf['PATHS']['WEBDRIVER']
@@ -27,6 +29,32 @@ UNIVERSE_TABLE_NAME = conf['SQL_TABLE_NAMES']['UNIVERSE_TABLE_NAME']
 QUOTE_TABLE_NAME = conf['SQL_TABLE_NAMES']['QUOTE_TABLE_NAME']
 ETF_FOR_SCRAPE = conf['ETF_FOR_SCRAPE']
 
+# ============================== Charter ======================
+# *************** Settings for candlestick chart
+IMAGE_WIDTH = conf['CHARTER_CANDLE_CHART']['IMAGE_WIDTH']
+IMAGE_HEIGHT = conf['CHARTER_CANDLE_CHART']['IMAGE_HEIGHT']
+TITLE_FONT_COLOR = conf['CHARTER_CANDLE_CHART']['TITLE_FONT_COLOR']
+EXTRA_DAYS = conf['CHARTER_CANDLE_CHART']['EXTRA_DAYS']
+AXIS_FONT_COLOR = conf['CHARTER_CANDLE_CHART']['AXIS_FONT_COLOR']
+CHART_BACKGROUND_COLOR = conf['CHARTER_CANDLE_CHART']['CHART_BACKGROUND_COLOR']
+OUTER_BACKGROUND_COLOR = conf['CHARTER_CANDLE_CHART']['OUTER_BACKGROUND_COLOR']
+GRID_LINE_COLOR = conf['CHARTER_CANDLE_CHART']['GRID_LINE_COLOR']
+WATERMARK_TEXT_COLOR = conf['CHARTER_CANDLE_CHART']['WATERMARK_TEXT_COLOR']
+CANDLE_UP_COLOR = conf['CHARTER_CANDLE_CHART']['CANDLE_UP_COLOR']
+CANDLE_DOWN_COLOR = conf['CHARTER_CANDLE_CHART']['CANDLE_DOWN_COLOR']
+CANDLE_SHADOW_COLOR = conf['CHARTER_CANDLE_CHART']['CANDLE_SHADOW_COLOR']
+COMPARISON_LINE_COLOR = conf['CHARTER_CANDLE_CHART']['COMPARISON_LINE_COLOR']
+
+# *************** Settings for histogram chart
+H_IMAGE_WIDTH = conf['CHARTER_HISTOGRAM']['IMAGE_WIDTH']
+H_IMAGE_HEIGHT = conf['CHARTER_HISTOGRAM']['IMAGE_HEIGHT']
+H_AXIS_FONT_COLOR = conf['CHARTER_HISTOGRAM']['AXIS_FONT_COLOR']
+H_TITLE_FONT_COLOR = conf['CHARTER_HISTOGRAM']['TITLE_FONT_COLOR']
+H_WATERMARK_TEXT_COLOR = conf['CHARTER_HISTOGRAM']['WATERMARK_TEXT_COLOR']
+BAR_UP_COLOR = conf['CHARTER_HISTOGRAM']['BAR_UP_COLOR']
+BAR_DOWN_COLOR = conf['CHARTER_HISTOGRAM']['BAR_DOWN_COLOR']
+HIST_BACKGROUND_COLOR = conf['CHARTER_HISTOGRAM']['HIST_BACKGROUND_COLOR']
+
 # ============================== SQL Connect ======================
 
 SQL_DB_NAME = conf['SQL']['DB_NAME']
@@ -38,13 +66,14 @@ engine = create_engine(SQL_URI, pool_recycle=3600)
 container = AlchemySessionContainer(engine=engine)
 alchemy_session = container.new_session('default')
 
+
 # ============================== Logging Setup ======================
-logging.basicConfig(
-    filemode='w',
-    filename=os.path.abspath('logs/invest_services.log'),
-    format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
-    level=logging.WARNING)
-logging.getLogger('scrapers').setLevel(level=logging.WARNING)
+# logging.basicConfig(
+#     filemode='w',
+#     filename=os.path.abspath('logs/invest_services.log'),
+#     format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
+#     level=logging.WARNING)
+# logging.getLogger('scrapers').setLevel(level=logging.WARNING)
 
 
 # Print iterations progress
@@ -76,4 +105,5 @@ def debug(print_string=""):
     info = inspect.getframeinfo(frame)
     path, filename = os.path.split(info.filename)
     dt = datetime.datetime.now()
-    print(f'\r[{dt.today.strftime("%H:%M:%S")}]{filename}:{info.lineno}:{print_string}')
+    print(f'\r[{dt.strftime("%H:%M:%S")}]{filename}:{info.lineno}:{print_string}')
+
