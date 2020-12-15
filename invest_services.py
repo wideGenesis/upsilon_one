@@ -13,11 +13,14 @@ from time import sleep
 
 # ============================== Main  =============================
 def main():
+    closes_df = get_closes_universe_df(QUOTE_TABLE_NAME, UNIVERSE_TABLE_NAME, 200000000000, engine)
 
-    rp = RiskParityAllocator(closes=get_closes_universe_df(QUOTE_TABLE_NAME, UNIVERSE_TABLE_NAME, 200000000000, engine),
-                             )
-    ret = rp.returns_()
-    # correl = rp.covariance()
+    rp = RiskParityAllocator(closes=closes_df, herc=False)
+    rp.calc_returns()
+    # print(rp.asset_names_)
+    # print(rp.closes)
+    # print(rp.returns)
+    rp.allocator()
 
     exit()
 
@@ -25,7 +28,6 @@ def main():
     firefox = firefox_init(webdriver_path=WEBDRIVER, agent_rotation=agents())
     get_and_save_holdings(holdings_url=ETF_HOLDINGS_URL, etfs_list=ETF_FOR_SCRAPE, driver=chrome)
     update_universe_prices()
-    get_rp_alloction(QUOTE_TABLE_NAME, UNIVERSE_TABLE_NAME, engine)
     exit()
 
     get_flows(driver=chrome, img_out_path_=IMAGES_OUT_PATH)

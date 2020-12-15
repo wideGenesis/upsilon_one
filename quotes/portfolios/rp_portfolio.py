@@ -8,14 +8,10 @@ from mlfinlab.portfolio_optimization import RiskEstimators, HierarchicalRiskPari
 from mlfinlab.codependence import get_dependence_matrix, get_distance_matrix
 
 
-def get_rp_alloction(q_table_name, u_table_name, engine):
-    closes_df = get_closes_universe_df(q_table_name, u_table_name, 9287523328, engine)
-    print(str(closes_df))
-
-
 @dataclass
 class RiskParityAllocator:
     __slots__ = [
+        'asset_names_',
         'closes',
         'returns',
         'dependence_method',
@@ -23,27 +19,30 @@ class RiskParityAllocator:
         'angular_distance',
         'corr_matrix_show',
         'herc',
-        'asset_names_',
-        'asset_prices_',
-        'asset_returns_',
         'risk_measure_',
         'linkage_',
     ]
-
+    """
+    risk_measure supported string: 
+    equal_weighting 
+    variance
+    standard_deviation
+    expected_shortfall
+    conditional_drawdown_risk
+    """
     def __init__(self,
-                 closes=None,
+                 asset_names_: list = None,
+                 closes: pd = None,
                  returns: pd = None,
                  dependence_method: str = 'distance_correlation',
                  distance_metric: str = 'angular',
                  corr_matrix_show: bool = True,
                  angular_distance: bool = True,
                  herc: bool = True,
-                 asset_names_: list = None,
-                 asset_prices_: pd = None,
-                 asset_returns_: pd = None,
                  risk_measure_: str = 'conditional_drawdown_risk',
                  linkage_: str = 'ward'
                  ):
+        self.asset_names_ = asset_names_
         self.closes = closes
         self.returns = returns
         self.dependence_method = dependence_method
@@ -51,18 +50,17 @@ class RiskParityAllocator:
         self.angular_distance = angular_distance
         self.corr_matrix_show = corr_matrix_show
         self.herc = herc
-        self.asset_names_ = asset_names_
-        self.asset_prices_ = asset_prices_
-        self.asset_returns_ = asset_returns_
+
         self.risk_measure_ = risk_measure_
         self.linkage_ = linkage_
 
-    def returns_(self):
-        df = pd.DataFrame(data=self.closes)
-        df_pch = round(df.pct_change(periods=1), 3)
+    def calc_returns(self):
+        asset_names = self.closes.columns.tolist()
+        df_pch = round(self.closes.pct_change(periods=1), 3)
         df_pch.dropna(inplace=True)
+        self.asset_names_ = asset_names
+        self.closes = self.closes
         self.returns = df_pch
-        print(self.returns.head())
 
     def distance_correlation(self):
         dist_corr = get_dependence_matrix(self.returns, self.dependence_method)
@@ -80,7 +78,7 @@ class RiskParityAllocator:
 
     def covariance(self):
         cov = RiskEstimators.empirical_covariance(
-            returns=self.returns_,
+            returns=self.returns,
             price_data=False,
             assume_centered=False)
         if self.corr_matrix_show:
@@ -95,9 +93,9 @@ class RiskParityAllocator:
             rp = HierarchicalEqualRiskContribution()
             rp.allocate(
                 asset_names=self.asset_names_,
-                asset_prices=self.asset_prices_,
-                asset_returns=self.asset_returns_,
-                covariance_matrix=self.distance_correlation(),
+                # asset_prices=self.closes,
+                asset_returns=self.returns,
+                covariance_matrix=self.covariance(),
                 risk_measure=self.risk_measure_,
                 linkage=self.linkage_,
                 optimal_num_clusters=None)
@@ -110,14 +108,15 @@ class RiskParityAllocator:
             plt.title(f'{self.risk_measure_} {self.linkage_} HERC Dendrogram', size=18)
             plt.xticks(rotation=45)
             plt.show()
+            print(w)
             return w
         else:
             rp = HierarchicalRiskParity()
             rp.allocate(
-                asset_names=self.asset_names_,
-                asset_prices=self.asset_prices_,
-                asset_returns=self.asset_returns_,
-                covariance_matrix=self.distance_correlation(),
+                # asset_names=self.asset_names_,
+                # asset_prices=self.closes,
+                asset_returns=self.returns,
+                covariance_matrix=self.covariance(),
                 distance_matrix=self.distance_correlation(),
                 linkage=self.linkage_)
             di = rp.weights.to_dict(orient='records')
@@ -126,9 +125,10 @@ class RiskParityAllocator:
                 w.update({k: v})
             plt.figure(figsize=(17, 7))
             rp.plot_clusters(assets=self.asset_names_)
-            plt.title(f'HRP_lab {self.linkage_} HERC Dendrogram', size=18)
+            plt.title(f'{self.linkage_} HRP Dendrogram', size=18)
             plt.xticks(rotation=45)
             plt.show()
+            print(w)
             return w
 
 
