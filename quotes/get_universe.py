@@ -8,11 +8,11 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 
 
-def get_and_save_holdings(holdings_url, etfs_list, driver):
+def get_and_save_holdings(driver):
     universe = ConstituentsScraper(holdings_url=ETF_HOLDINGS_URL, etfs_list=ETF_FOR_SCRAPE)
     constituents = universe.get_etf_holdings(driver=driver)
     # print(constituents)
-    if is_table_exist():
+    if is_table_exist(UNIVERSE_TABLE_NAME):
         update_universe_table(constituents)
     else:
         create_universe_table()
@@ -50,8 +50,12 @@ class ConstituentsScraper:
 
     def get_etf_holdings(self, driver):
         df_all = pd.DataFrame()
+        i = 0
+        t_len = len(self.etfs_list)
+        debug(str(self.etfs_list))
+        print_progress_bar(0, t_len, prefix='Progress:', suffix='Complete', length=50)
         for etf in self.etfs_list:
-            print(etf)
+            # print(etf)
             url = self.holdings_url.format(etf)
             try:
                 driver.get(url)
@@ -88,6 +92,8 @@ class ConstituentsScraper:
             result = pd.DataFrame(asset_dict).T
             df_all = df_all.append(result)
             df_all.drop_duplicates(keep='first', inplace=True)
+            i += 1
+            print_progress_bar(i, t_len, prefix='Progress:', suffix=f'Complete:{etf}', length=50)
         ticker_list = df_all['symbol'].tolist()
         print(ticker_list)
         driver.quit()

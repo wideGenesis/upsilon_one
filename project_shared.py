@@ -74,4 +74,6 @@ def debug(print_string=""):
     caller_frame_record = inspect.stack()[1]
     frame = caller_frame_record[0]
     info = inspect.getframeinfo(frame)
-    print(f'\r{info.filename}:{info.function}:{info.lineno}:{print_string}')
+    path, filename = os.path.split(info.filename)
+    dt = datetime.datetime.now()
+    print(f'\r[{dt.today.strftime("%H:%M:%S")}]{filename}:{info.lineno}:{print_string}')
