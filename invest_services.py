@@ -13,7 +13,7 @@ from time import sleep
 
 # ============================== Main  =============================
 def main():
-    closes_df = get_closes_universe_df(QUOTE_TABLE_NAME, UNIVERSE_TABLE_NAME, 200000000000, engine)
+    closes_df = get_closes_universe_df(200000000000)
 
     rp = RiskParityAllocator(closes=closes_df, herc=False)
     rp.calc_returns()
@@ -24,36 +24,35 @@ def main():
 
     exit()
 
-    chrome = chrome_init(webdriver_path=WEBDRIVER, agent_rotation=agents(), headless=True)
-    firefox = firefox_init(webdriver_path=WEBDRIVER, agent_rotation=agents())
-    get_and_save_holdings(holdings_url=ETF_HOLDINGS_URL, etfs_list=ETF_FOR_SCRAPE, driver=chrome,
-                          sql_table_name=UNIVERSE_TABLE_NAME, engine=engine)
+    chrome = chrome_init()
+    firefox = firefox_init()
+    get_and_save_holdings(driver=chrome)
     update_universe_prices()
     exit()
 
-    get_flows(driver=chrome, img_out_path_=IMAGES_OUT_PATH)
+    get_flows(driver=chrome)
     advance_decline(ag=agents())
     qt_curve()
     spx_yield()
     vix_cont()
     get_sma50(ag=agents())
-    get_economics(ag=agents(), img_out_path_=IMAGES_OUT_PATH)
-    get_finviz_treemaps(driver=firefox, img_out_path_=IMAGES_OUT_PATH)
-    get_coins360_treemaps(driver=firefox, img_out_path_=IMAGES_OUT_PATH)
-    get_tw_charts(driver=chrome, img_out_path_=IMAGES_OUT_PATH)
-    vix_curve(driver=chrome, img_out_path_=IMAGES_OUT_PATH)
+    get_economics(ag=agents())
+    get_finviz_treemaps(driver=firefox)
+    get_coins360_treemaps(driver=firefox)
+    get_tw_charts(driver=chrome)
+    vix_curve(driver=chrome)
 
-    schedule.every(720).minutes.do(lambda: get_flows(driver=chrome, img_out_path_=IMAGES_OUT_PATH))
+    schedule.every(720).minutes.do(lambda: get_flows(driver=chrome))
     schedule.every(120).minutes.do(lambda: advance_decline(ag=agents()))
     schedule.every(480).minutes.do(lambda: qt_curve())
     schedule.every(480).minutes.do(lambda: spx_yield())
     schedule.every(480).minutes.do(lambda: vix_cont())
     schedule.every(125).minutes.do(lambda: get_sma50(ag=agents()))
-    schedule.every().monday.do(lambda: get_economics(ag=agents(), img_out_path_=IMAGES_OUT_PATH))
-    schedule.every(30).minutes.do(lambda: get_finviz_treemaps(driver=firefox, img_out_path_=IMAGES_OUT_PATH))
-    schedule.every(30).minutes.do(lambda: get_coins360_treemaps(driver=firefox, img_out_path_=IMAGES_OUT_PATH))
-    schedule.every(30).minutes.do(lambda: get_tw_charts(driver=chrome, img_out_path_=IMAGES_OUT_PATH))
-    schedule.every(120).minutes.do(lambda: vix_curve(driver=chrome, img_out_path_=IMAGES_OUT_PATH))
+    schedule.every().monday.do(lambda: get_economics(ag=agents()))
+    schedule.every(30).minutes.do(lambda: get_finviz_treemaps(driver=firefox))
+    schedule.every(30).minutes.do(lambda: get_coins360_treemaps(driver=firefox))
+    schedule.every(30).minutes.do(lambda: get_tw_charts(driver=chrome))
+    schedule.every(120).minutes.do(lambda: vix_curve(driver=chrome))
 
     while True:
         schedule.run_pending()
