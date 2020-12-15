@@ -15,10 +15,11 @@ import io
 import quandl
 from scipy.stats import norm
 import random
+from project_shared import *
 
 
 # ============================== Inflows GET ================================
-def get_flows(driver=None, img_out_path_=None):
+def get_flows(driver=None, img_out_path_=IMAGES_OUT_PATH):
     etfs = ['VCIT', 'SPY', 'VTI', 'VEA', 'VWO', 'QQQ', 'VXX', 'TLT', 'SHY', 'LQD']
     with driver:
         print('Hi')
@@ -115,7 +116,7 @@ def advance_decline(ag=None):
 
 
 # ============================== FINVIZ TREEMAP GET ================================
-def get_finviz_treemaps(driver=None, img_out_path_=None):
+def get_finviz_treemaps(driver=None, img_out_path_=IMAGES_OUT_PATH):
     treemaps = {
         'treemap_1d': 'https://finviz.com/map.ashx?t=sec_all',
         'treemap_ytd': 'https://finviz.com/map.ashx?t=sec_all&st=ytd',
@@ -140,7 +141,7 @@ def get_finviz_treemaps(driver=None, img_out_path_=None):
 
 
 # ============================== COIN360 TREEMAP GET ================================
-def get_coins360_treemaps(driver=None, img_out_path_=None):
+def get_coins360_treemaps(driver=None, img_out_path_=IMAGES_OUT_PATH):
     url_ = 'https://coin360.com/?exceptions=[USDT%2CUSDC]&period=24h&range=[500000000%2C295729609429]'
     with driver:
         img_path = os.path.join(img_out_path_, 'coins_treemap' + '.png')
@@ -158,7 +159,7 @@ def get_coins360_treemaps(driver=None, img_out_path_=None):
     print('Get coin360 Treemap complete' + '\n')
 
 
-def get_economics(ag=None, img_out_path_=None):
+def get_economics(ag=None, img_out_path_=IMAGES_OUT_PATH):
     headers = {'User-Agent': ag}
     url_ = {
         'Interest Rate': 'https://tradingeconomics.com/country-list/interest-rate?continent=g20',
@@ -202,7 +203,7 @@ def get_economics(ag=None, img_out_path_=None):
 
 
 # ============================== TW GET ================================
-def get_tw_charts(driver=None, img_out_path_=None):
+def get_tw_charts(driver=None, img_out_path_=IMAGES_OUT_PATH):
     treemaps = {
         'sectors': 'https://www.tradingview.com/chart/8ql9Y9yV/',
         'crypto': 'https://www.tradingview.com/chart/HHWJel9w/',
@@ -306,7 +307,7 @@ def spx_yield():
         f.write(f'{x}')
 
 
-def vix_curve(driver=None, img_out_path_=None):
+def vix_curve(driver=None, img_out_path_=IMAGES_OUT_PATH):
     url_ = 'http://vixcentral.com/'
     img_curve = os.path.join(img_out_path_, 'vix_curve' + '.png')
     try:

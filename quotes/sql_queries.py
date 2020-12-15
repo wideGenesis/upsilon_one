@@ -1,68 +1,69 @@
 from datetime import date
 import pymysql
 import pandas as pd
+from project_shared import *
 
 
-def is_table_exist(table_name, engine=None) -> bool:
+def is_table_exist(table_name, engine=engine) -> bool:
     with engine.connect() as connection:
         try:
-            query_string = "SELECT 1 FROM " + table_name + " LIMIT 1"
+            query_string = f'SELECT 1 FROM {table_name} LIMIT 1'
             result = connection.execute(query_string)
             return True if result else False
         except:
             return False
 
 
-def ticker_lookup(ticker, table_name, engine=None) -> bool:
+def ticker_lookup(ticker, table_name=QUOTE_TABLE_NAME, engine=engine) -> bool:
     with engine.connect() as connection:
         try:
-            query_string = "SELECT * FROM " + table_name + " WHERE ticker = '" + ticker + "' LIMIT 1"
+            query_string = f'SELECT * FROM {table_name} WHERE ticker = \'{ticker}\' LIMIT 1'
             result = connection.execute(query_string)
             return True if result.rowcount > 0 else False
         except:
             return False
 
 
-def get_start_table_date(table_name, engine=None) -> bool:
+def get_start_table_date(table_name=QUOTE_TABLE_NAME, engine=engine) -> bool:
     with engine.connect() as connection:
         try:
-            query_string = "SELECT dateTime FROM " + table_name + " ORDER by dateTime ASC LIMIT 1"
+            query_string = f'SELECT dateTime FROM {table_name} ORDER by dateTime ASC LIMIT 1'
             result = connection.execute(query_string)
             return result.cursor.fetchone()[0]
         except:
             return None
 
 
-def get_last_table_date(table_name, engine=None) -> bool:
+def get_last_table_date(table_name=QUOTE_TABLE_NAME, engine=engine) -> bool:
     with engine.connect() as connection:
         try:
-            query_string = "SELECT dateTime FROM " + table_name + " ORDER by dateTime DESC LIMIT 1"
+            query_string = f'SELECT dateTime FROM {table_name} ORDER by dateTime DESC LIMIT 1'
             result = connection.execute(query_string)
             return result.cursor.fetchone()[0]
         except:
             return None
 
 
-def create_quotes_table(table_name="quotes", engine=None):
+def create_quotes_table(table_name=QUOTE_TABLE_NAME, engine=engine):
     with engine.connect() as connection:
-        is_exist = is_table_exist(table_name, engine)
-        if not is_exist:
-            connection.execute("CREATE TABLE "
-                               + table_name +
-                               " (ticker VARCHAR(6) NOT NULL, "
-                               "dateTime DATE, "
-                               "open  DOUBLE, "
-                               "high DOUBLE NOT NULL, "
-                               "low DOUBLE NOT NULL, "
-                               "close DOUBLE NOT NULL, "
-                               "volume INTEGER NOT NULL, "
-                               "dividend DOUBLE NOT NULL, "
-                               "PRIMARY KEY(ticker, dateTime)"
-                               ")")
-            connection.execute("commit")
+        if not is_table_exist(table_name):
+            transaction = connection.begin()
+            create_query = f'CREATE TABLE {table_name} ' \
+                           f'(ticker VARCHAR(6) NOT NULL, ' \
+                           f'dateTime DATE, ' \
+                           f'open  DOUBLE, ' \
+                           f'high DOUBLE NOT NULL, ' \
+                           f'low DOUBLE NOT NULL, ' \
+                           f'close DOUBLE NOT NULL, ' \
+                           f'volume INTEGER NOT NULL, ' \
+                           f'dividend DOUBLE NOT NULL, ' \
+                           f'PRIMARY KEY(ticker, dateTime)' \
+                           f')'
+            connection.execute(create_query)
+            transaction.commit()
 
 
-def insert_quotes(ticker, quotes, table_name="quotes", is_update=True, engine=None):
+def insert_quotes(ticker, quotes, is_update=True, table_name=QUOTE_TABLE_NAME, engine=engine):
     with engine.connect() as connection:
         transaction = connection.begin()
         try:
@@ -71,8 +72,8 @@ def insert_quotes(ticker, quotes, table_name="quotes", is_update=True, engine=No
                 test = False
                 if is_update:
                     try:
-                        query_string = "SELECT * FROM " + table_name + " WHERE ticker = '" + ticker + "' AND dateTime = '" + str(
-                            qdate) + "' LIMIT 1"
+                        query_string = f'SELECT * FROM {table_name} ' \
+                                       f'WHERE ticker = \'{ticker}\' AND dateTime = \'{str(qdate)}\' LIMIT 1'
                         result = connection.execute(query_string)
                         if result.rowcount > 0:
                             test = True
@@ -82,18 +83,18 @@ def insert_quotes(ticker, quotes, table_name="quotes", is_update=True, engine=No
                     except:
                         test = False
                 if not test:
-                    connection.execute("INSERT INTO "
-                                       + table_name +
-                                       " (ticker, dateTime, open, high, low, close, volume, dividend) "
-                                       "VALUES (%s, %s, %s, %s, %s, %s, %s, %s)", [ticker, str(qdate),
-                                                                                   str(o), str(h), str(l), str(c),
-                                                                                   str(v), str(d)])
+                    insert_query = f'INSERT INTO {table_name} ' \
+                                   f'(ticker, dateTime, open, high, low, close, volume, dividend) ' \
+                                   f'VALUES ({ticker}, {str(qdate)}, ' \
+                                   f'{str(o)}, {str(h)}, {str(l)}, {str(c)}, ' \
+                                   f'{str(v)}, {str(d)})'
+                    connection.execute(insert_query)
             transaction.commit()
         except:
             transaction.rollback()
 
 
-def get_closes_universe_df(q_table_name, u_table_name, cap_filter, engine):
+def get_closes_universe_df(q_table_name=QUOTE_TABLE_NAME, u_table_name=UNIVERSE_TABLE_NAME, cap_filter=0, engine=engine):
     tickers = get_universe(u_table_name, engine)
     with engine.connect() as connection:
         closes = None
@@ -117,29 +118,29 @@ def get_closes_universe_df(q_table_name, u_table_name, cap_filter, engine):
 
 
 # ******************** UNIVERSE ********************
-def create_universe_table(table_name="universe", engine=None):
+def create_universe_table(table_name=UNIVERSE_TABLE_NAME, engine=engine):
     with engine.connect() as connection:
-        is_exist = is_table_exist(table_name, engine)
-        if not is_exist:
-            connection.execute("CREATE TABLE "
-                               + table_name +
-                               " (ticker VARCHAR(6) NOT NULL, "
-                               "  mkt_cap BIGINT, "
-                               "PRIMARY KEY(ticker)"
-                               ")")
-            connection.execute("commit")
+        if not is_table_exist(table_name):
+            transaction = connection.begin()
+            create_query = f'CREATE TABLE {table_name} ' \
+                           f'(ticker VARCHAR(6) NOT NULL, ' \
+                           f'mkt_cap BIGINT,' \
+                           f'PRIMARY KEY(ticker)' \
+                           f')'
+            connection.execute(create_query)
+            transaction.commit()
 
 
-def update_universe_table(new_universe, table_name="universe", engine=None):
+def update_universe_table(new_universe, table_name=UNIVERSE_TABLE_NAME, engine=engine):
     with engine.connect() as connection:
-        is_exist = is_table_exist(table_name, engine)
-        if is_exist:
+        if is_table_exist(table_name):
             transaction = connection.begin()
             try:
-                del_query = "DELETE FROM " + table_name
+                del_query = f'DELETE FROM {table_name}'
                 connection.execute(del_query)
                 for ticker in new_universe:
-                    connection.execute("INSERT INTO " + table_name + " (ticker) VALUES (%s)", [ticker])
+                    insert_query = f'INSERT INTO {table_name} (ticker) VALUES \'{ticker}\''
+                    connection.execute(insert_query)
                 transaction.commit()
             except:
                 transaction.rollback()
@@ -147,10 +148,9 @@ def update_universe_table(new_universe, table_name="universe", engine=None):
             print(f'Can\'t find table: {table_name}!')
 
 
-def set_universe_mkt_cap(mkt_caps, table_name="universe", engine=None):
+def set_universe_mkt_cap(mkt_caps, table_name=UNIVERSE_TABLE_NAME, engine=engine):
     with engine.connect() as connection:
-        is_exist = is_table_exist(table_name, engine)
-        if is_exist:
+        if is_table_exist(table_name):
             transaction = connection.begin()
             try:
                 for cap in mkt_caps:
@@ -164,14 +164,14 @@ def set_universe_mkt_cap(mkt_caps, table_name="universe", engine=None):
             print(f'Can\'t find table: {table_name}!')
 
 
-def insert_universe_data(new_universe, table_name="universe", engine=None):
+def insert_universe_data(new_universe, table_name=UNIVERSE_TABLE_NAME, engine=engine):
     with engine.connect() as connection:
-        is_exist = is_table_exist(table_name, engine)
-        if is_exist:
+        if is_table_exist(table_name):
             transaction = connection.begin()
             try:
                 for ticker in new_universe:
-                    connection.execute("INSERT INTO " + table_name + " (ticker) VALUES (%s)", [ticker])
+                    insert_query = f'INSERT INTO {table_name} (ticker) VALUES \'{ticker}\''
+                    connection.execute(insert_query)
             except:
                 transaction.rollback()
             transaction.commit()
@@ -179,10 +179,9 @@ def insert_universe_data(new_universe, table_name="universe", engine=None):
             print(f'Can\'t find table: {table_name}!')
 
 
-def get_universe(table_name="universe", engine=None):
+def get_universe(table_name=UNIVERSE_TABLE_NAME, engine=engine):
     with engine.connect() as connection:
-        is_exist = is_table_exist(table_name, engine)
-        if is_exist:
+        if is_table_exist(table_name):
             res = list()
             del_query = "SELECT ticker FROM " + table_name
             result = connection.execute(del_query)

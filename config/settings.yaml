@@ -64,7 +64,6 @@ ETF_FOR_SCRAPE: [
     'ARKK',
     'ARKF',
     'QCLN'
-
 ]
 
 ETFs: [
