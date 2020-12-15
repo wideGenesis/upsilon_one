@@ -14,7 +14,11 @@ from time import sleep
 # ============================== Main  =============================
 def main():
     closes_df = get_closes_universe_df(cap_filter=200000000000)
-    rp = RiskParityAllocator(closes=closes_df, cov_method='mcd', herc=True)
+
+    select = Selector(closes=closes_df)
+    select.rs_sharpe()
+
+    rp = RiskParityAllocator(closes=closes_df, cov_method='semi', herc=True)
     rp.calc_returns()
     rp.allocator()
 
