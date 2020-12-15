@@ -9,7 +9,7 @@ from selenium.webdriver.support import expected_conditions as EC
 
 
 def get_and_save_holdings(holdings_url, etfs_list, driver):
-    universe = ConstituentsScraper(holdings_url=holdings_url, etfs_list=etfs_list)
+    universe = ConstituentsScraper(holdings_url=ETF_HOLDINGS_URL, etfs_list=ETF_FOR_SCRAPE)
     constituents = universe.get_etf_holdings(driver=driver)
     # print(constituents)
     if is_table_exist():
