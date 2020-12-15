@@ -108,11 +108,12 @@ class RiskParityAllocator:
             plt.title(f'{self.risk_measure_} {self.linkage_} HERC Dendrogram', size=18)
             plt.xticks(rotation=45)
             plt.show()
+            print(w)
             return w
         else:
             rp = HierarchicalRiskParity()
             rp.allocate(
-                asset_names=self.asset_names_,
+                # asset_names=self.asset_names_,
                 # asset_prices=self.closes,
                 asset_returns=self.returns,
                 covariance_matrix=self.covariance(),
@@ -127,6 +128,7 @@ class RiskParityAllocator:
             plt.title(f'{self.linkage_} HRP Dendrogram', size=18)
             plt.xticks(rotation=45)
             plt.show()
+            print(w)
             return w
 
 

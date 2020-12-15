@@ -20,8 +20,6 @@ def main():
     # print(rp.asset_names_)
     # print(rp.closes)
     # print(rp.returns)
-    rp.covariance()
-    rp.distance_correlation()
     rp.allocator()
 
     exit()
