@@ -20,7 +20,7 @@ class RiskParityAllocator:
         'angular_distance',
 
         'cov_method',
-        'corr_matrix_show',
+        'graphs_show',
 
         'herc',
         'risk_measure_',
@@ -44,7 +44,7 @@ class RiskParityAllocator:
                  angular_distance: bool = True,
 
                  cov_method: str = 'empirical',
-                 corr_matrix_show: bool = True,
+                 graphs_show: bool = True,
 
                  herc: bool = True,
                  risk_measure_: str = 'conditional_drawdown_risk',
@@ -59,7 +59,7 @@ class RiskParityAllocator:
         self.angular_distance = angular_distance
 
         self.cov_method = cov_method
-        self.corr_matrix_show = corr_matrix_show
+        self.graphs_show = graphs_show
 
         self.herc = herc
         self.risk_measure_ = risk_measure_
@@ -80,7 +80,7 @@ class RiskParityAllocator:
         else:
             corr = get_dependence_matrix(self.returns, self.dependence_method)
 
-        if self.corr_matrix_show:
+        if self.graphs_show:
             cluster_map = sns.clustermap(corr, yticklabels=True)
             plt.figure(figsize=(10, 10))
             cluster_map.fig.suptitle('Distance Correlations', fontsize=15)
@@ -98,7 +98,7 @@ class RiskParityAllocator:
             cov = risk_est.semi_covariance(returns=self.returns, price_data=False,)
         else:
             exit()
-        if self.corr_matrix_show:
+        if self.graphs_show:
             cluster_map = sns.clustermap(cov, yticklabels=True)
             plt.figure(figsize=(10, 10))
             cluster_map.fig.suptitle(f'{self.cov_method} Covariance Matrix', fontsize=15)
@@ -131,11 +131,12 @@ class RiskParityAllocator:
         w = {}
         for k, v in di[0].items():
             w.update({k: v})
-        plt.figure(figsize=(17, 7))
-        rp.plot_clusters(assets=self.asset_names_)
-        plt.title(title, size=18)
-        plt.xticks(rotation=45)
-        plt.show()
+        if self.graphs_show:
+            plt.figure(figsize=(17, 7))
+            rp.plot_clusters(assets=self.asset_names_)
+            plt.title(title, size=18)
+            plt.xticks(rotation=45)
+            plt.show()
         print(w)
         return w
 
@@ -145,32 +146,20 @@ class Selector:
     __slots__ = [
         'closes',
         'performance_period',
-        'mcap_reduction',
         'assets_to_hold'
     ]
 
     def __init__(self,
                  closes: pd = None,
                  performance_period: int = 21,
-                 mcap_reduction: int = 20000000000,
                  assets_to_hold: int = 10
                  ):
         self.closes = closes
         self.performance_period = performance_period
-        self.mcap_reduction = mcap_reduction
         self.assets_to_hold = assets_to_hold
 
-    def cap_reduction(self, closes, mcap_reduction):
-        df = closes  # "(index_col=\"Date\", parse_dates=True)"
-        columns = df.columns.tolist()
-        rsharpe = df.copy()
-        df = df[df['Market Cap'] > 20.0]
-        df.reset_index(drop=True, inplace=True)
-        ticker_list = df['Ticker'].tolist()
-        return ticker_list
-
-    def rs_sharpe(self, closes, performance_period, assets_to_hold):
-        df = closes  # "(index_col=\"Date\", parse_dates=True)"
+    def rs_sharpe(self):
+        df = self.closes
         columns = df.columns.tolist()
         _rs_sharpe = df.copy()
         for col in columns:
@@ -179,17 +168,27 @@ class Selector:
             up, down = delta.copy(), delta.copy()
             up[up < 0] = 0
             down[down > 0] = 0
-            roll_up1 = up.ewm(span=performance_period).mean()
-            roll_down1 = down.abs().ewm(span=performance_period).mean()
+            roll_up1 = up.ewm(span=self.performance_period).mean()
+            roll_down1 = down.abs().ewm(span=self.performance_period).mean()
             rs = roll_up1 / roll_down1
             mrsi = 50.0 - (100.0 / (1.0 + rs))
-            sharpe = mrsi / df[col].rolling(performance_period).std()
-            _rs_sharpe[col] = sharpe
+            sharpe = mrsi / df[col].rolling(self.performance_period).std()
+            _rs_sharpe[col + '_rs'] = sharpe
         _rs_sharpe.dropna(inplace=True)
         _rs_sharpe.drop_duplicates(inplace=True)
-        tickers_to_allocator = _rs_sharpe.T.sort_values(_rs_sharpe.last_valid_index(), ascending=False).T
-        tickers_to_allocator = tickers_to_allocator[1:performance_period]
+        print(_rs_sharpe)
+        exit()
+        sorting = _rs_sharpe.T.sort_values(_rs_sharpe.last_valid_index(), ascending=False).T
+        slicing = sorting.columns.tolist()
+        tickers_to_allocator = slicing[:self.assets_to_hold]
+        print(tickers_to_allocator)
         return tickers_to_allocator
 
-
-
+    # def cap_reduction(self, closes, mcap_reduction):
+    #     df = closes  # "(index_col=\"Date\", parse_dates=True)"
+    #     columns = df.columns.tolist()
+    #     rsharpe = df.copy()
+    #     df = df[df['Market Cap'] > 20.0]
+    #     df.reset_index(drop=True, inplace=True)
+    #     ticker_list = df['Ticker'].tolist()
+    #     return ticker_list
