@@ -173,11 +173,10 @@ class Selector:
             rs = roll_up1 / roll_down1
             mrsi = 50.0 - (100.0 / (1.0 + rs))
             sharpe = mrsi / df[col].rolling(self.performance_period).std()
-            _rs_sharpe[col + '_rs'] = sharpe
+            _rs_sharpe[col] = sharpe
         _rs_sharpe.dropna(inplace=True)
         _rs_sharpe.drop_duplicates(inplace=True)
-        print(_rs_sharpe)
-        exit()
+
         sorting = _rs_sharpe.T.sort_values(_rs_sharpe.last_valid_index(), ascending=False).T
         slicing = sorting.columns.tolist()
         tickers_to_allocator = slicing[:self.assets_to_hold]
