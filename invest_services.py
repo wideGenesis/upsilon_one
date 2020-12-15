@@ -14,12 +14,8 @@ from time import sleep
 # ============================== Main  =============================
 def main():
     closes_df = get_closes_universe_df(200000000000)
-
-    rp = RiskParityAllocator(closes=closes_df, herc=False)
+    rp = RiskParityAllocator(closes=closes_df, cov_method='mcd', herc=True)
     rp.calc_returns()
-    # print(rp.asset_names_)
-    # print(rp.closes)
-    # print(rp.returns)
     rp.allocator()
 
     exit()
