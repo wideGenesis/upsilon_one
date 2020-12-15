@@ -6,7 +6,8 @@ from project_shared import *
 
 def update_universe_prices():
     tickers = get_universe(UNIVERSE_TABLE_NAME, engine)
-    print(f'{__file__}: Tickers: {str(tickers)} ')
+    debug(f'Tickers: {str(tickers)}')
+    # print(f'{__file__}: Tickers: {str(tickers)} ')
     mkt_caps = {}
     print("#Try get market caps")
     t_len = len(tickers)

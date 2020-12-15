@@ -4,6 +4,8 @@ import os
 import sys
 import yaml
 import logging
+import inspect
+import datetime
 from sqlalchemy import create_engine
 from alchemysession import AlchemySessionContainer
 
@@ -24,7 +26,6 @@ DEFAULT_START_QUOTES_DATE = SQL_USER = conf['SQL']['DEFAULT_START_QUOTES_DATE']
 UNIVERSE_TABLE_NAME = conf['SQL_TABLE_NAMES']['UNIVERSE_TABLE_NAME']
 QUOTE_TABLE_NAME = conf['SQL_TABLE_NAMES']['QUOTE_TABLE_NAME']
 ETF_FOR_SCRAPE = conf['ETF_FOR_SCRAPE']
-
 
 # ============================== SQL Connect ======================
 
@@ -67,3 +68,10 @@ def print_progress_bar(iteration, total, prefix='', suffix='', decimals=1, lengt
     # Print New Line on Complete
     if iteration == total:
         print()
+
+
+def debug(print_string=""):
+    caller_frame_record = inspect.stack()[1]
+    frame = caller_frame_record[0]
+    info = inspect.getframeinfo(frame)
+    print(f'\r{info.filename}:{info.function}:{info.lineno}:{print_string}')
