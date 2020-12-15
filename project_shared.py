@@ -12,15 +12,20 @@ sys.path.append(PYTHON_PATH)
 os.environ["PYTHONUNBUFFERED"] = "1"
 
 conf = yaml.safe_load(open('config/settings.yaml'))
+
 LOGS = conf['PATHS']['LOGS']
 WEBDRIVER = conf['PATHS']['WEBDRIVER']
 IMAGES_OUT_PATH = conf['PATHS']['IMAGES_OUT_PATH']
 ETF_HOLDINGS_URL = conf['PATHS']['ETF_HOLDINGS_URL']
 
+# ============================== Quote Loader ======================
+
+DEFAULT_START_QUOTES_DATE = SQL_USER = conf['SQL']['DEFAULT_START_QUOTES_DATE']
 UNIVERSE_TABLE_NAME = conf['SQL_TABLE_NAMES']['UNIVERSE_TABLE_NAME']
 QUOTE_TABLE_NAME = conf['SQL_TABLE_NAMES']['QUOTE_TABLE_NAME']
-
 ETF_FOR_SCRAPE = conf['ETF_FOR_SCRAPE']
+
+
 # ============================== SQL Connect ======================
 
 SQL_DB_NAME = conf['SQL']['DB_NAME']

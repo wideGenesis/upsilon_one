@@ -154,7 +154,7 @@ def load_csv(ticker: str, data_dir) -> pd.DataFrame:
 
 # *************** Download to DataBase ***************
 # Скачиваем данные из яху (цены и дивиденды)
-def download_quotes_to_db(ticker, start_date, end_date, tablename, is_update, engine):
+def download_quotes_to_db(ticker, start_date, end_date, is_update):
     try:
         yf = YahooFinancials(ticker)
         data = yf.get_historical_price_data(dt_to_str(start_date), dt_to_str(end_date), 'daily')
@@ -183,7 +183,7 @@ def download_quotes_to_db(ticker, start_date, end_date, tablename, is_update, en
             print(f"{ticker} has split {rec['splitRatio']} for {date}")
 
     # print("PRICES:" + str(prices))
-    insert_quotes(ticker, prices, tablename, is_update, engine)
+    insert_quotes(ticker, prices, is_update)
 
 
 def get_market_cap(ticker):

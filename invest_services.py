@@ -23,8 +23,7 @@ def main():
 
     chrome = chrome_init(webdriver_path=WEBDRIVER, agent_rotation=agents(), headless=True)
     firefox = firefox_init(webdriver_path=WEBDRIVER, agent_rotation=agents())
-    get_and_save_holdings(holdings_url=ETF_HOLDINGS_URL, etfs_list=ETF_FOR_SCRAPE, driver=chrome,
-                          sql_table_name=UNIVERSE_TABLE_NAME, engine=engine)
+    get_and_save_holdings(holdings_url=ETF_HOLDINGS_URL, etfs_list=ETF_FOR_SCRAPE, driver=chrome)
     update_universe_prices()
     get_rp_alloction(QUOTE_TABLE_NAME, UNIVERSE_TABLE_NAME, engine)
     exit()
