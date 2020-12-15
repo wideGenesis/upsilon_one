@@ -2,7 +2,7 @@ from dataclasses import dataclass
 import pandas as pd
 from matplotlib import pyplot as plt
 import seaborn as sns
-from  quotes.sql_queries import *
+from quotes.sql_queries import *
 
 from mlfinlab.portfolio_optimization import RiskEstimators, HierarchicalRiskParity, HierarchicalEqualRiskContribution
 from mlfinlab.codependence import get_dependence_matrix, get_distance_matrix
@@ -32,7 +32,7 @@ class RiskParityAllocator:
 
     def __init__(self,
                  closes=None,
-                 returns=None,
+                 returns: pd = None,
                  dependence_method: str = 'distance_correlation',
                  distance_metric: str = 'angular',
                  corr_matrix_show: bool = True,
@@ -57,6 +57,13 @@ class RiskParityAllocator:
         self.risk_measure_ = risk_measure_
         self.linkage_ = linkage_
 
+    def returns_(self):
+        df = pd.DataFrame(data=self.closes)
+        df_pch = round(df.pct_change(periods=1), 3)
+        df_pch.dropna(inplace=True)
+        self.returns = df_pch
+        print(self.returns.head())
+
     def distance_correlation(self):
         dist_corr = get_dependence_matrix(self.returns, self.dependence_method)
         if self.angular_distance:
@@ -73,7 +80,7 @@ class RiskParityAllocator:
 
     def covariance(self):
         cov = RiskEstimators.empirical_covariance(
-            returns=self.asset_returns_,
+            returns=self.returns_,
             price_data=False,
             assume_centered=False)
         if self.corr_matrix_show:
@@ -129,119 +136,52 @@ class RiskParityAllocator:
 class Selector:
     __slots__ = [
         'closes',
-        'returns',
-        'dependence_method',
-        'distance_metric',
-        'angular_distance',
-        'corr_matrix_show',
-        'herc',
-        'asset_names_',
-        'asset_prices_',
-        'asset_returns_',
-        'risk_measure_',
-        'linkage_',
+        'performance_period',
+        'mcap_reduction',
+        'assets_to_hold'
     ]
 
     def __init__(self,
-                 closes=None,
-                 returns=None,
-                 dependence_method: str = 'distance_correlation',
-                 distance_metric: str = 'angular',
-                 corr_matrix_show: bool = True,
-                 angular_distance: bool = True,
-                 herc: bool = True,
-                 asset_names_: list = None,
-                 asset_prices_: pd = None,
-                 asset_returns_: pd = None,
-                 risk_measure_: str = 'conditional_drawdown_risk',
-                 linkage_: str = 'ward'
+                 closes: pd = None,
+                 performance_period: int = 21,
+                 mcap_reduction: int = 20000000000,
+                 assets_to_hold: int = 10
                  ):
         self.closes = closes
-        self.returns = returns
-        self.dependence_method = dependence_method
-        self.distance_metric = distance_metric
-        self.angular_distance = angular_distance
-        self.corr_matrix_show = corr_matrix_show
-        self.herc = herc
-        self.asset_names_ = asset_names_
-        self.asset_prices_ = asset_prices_
-        self.asset_returns_ = asset_returns_
-        self.risk_measure_ = risk_measure_
-        self.linkage_ = linkage_
+        self.performance_period = performance_period
+        self.mcap_reduction = mcap_reduction
+        self.assets_to_hold = assets_to_hold
 
-# def us_stock_filtration():
-#     path = os.path.join(HOLDINGS, 'us_mega_caps.csv')
-#     df = pd.read_csv(path, index_col='No.')
-#     df.drop(columns={'P/E', 'Price', 'Change', 'Volume'}, axis=1, inplace=True)
-#     df['Market Cap'] = df['Market Cap'].str.extract(r'(\d+.\d+)').astype(float)
-#     df = df[df['Market Cap'] > 20.0]
-#     df = df[df['Sector'] != 'Real Estate']
-#     df = df[df['Sector'] != 'Financial']
-#     df = df[df['Country'] == 'USA']
-#     df.reset_index(drop=True, inplace=True)
-#     ticker_list = df['Ticker'].tolist()
-#     df.to_csv(os.path.join(HOLDINGS, 'filtered_us_mega_caps.csv'))
-#     print('passed 1')
-#     return ticker_list
-#
-#
-# def momentum(filename=None):
-#     path = os.path.join(HOLDINGS, filename)
-#     data_df = pd.read_csv(path, index_col='Date', parse_dates=True)
-#     columns = data_df.columns.tolist()
-#     _mom = data_df.copy()
-#     for col in columns:
-#         symm1 = (data_df[col] - data_df[col].shift(21))/data_df[col].shift(21)
-#         symm3 = (data_df[col] - data_df[col].shift(63))/data_df[col].shift(63)
-#         zscore_m1 = (symm1 - symm1.rolling(252).mean())/symm1.rolling(252).std()
-#         zscore_m3 = (symm3 - symm3.rolling(252).mean())/symm3.rolling(252).std()
-#         _mom[col] = 0.5*zscore_m1 + 0.5*zscore_m3
-#     _mom.dropna(inplace=True)
-#     _mom.drop_duplicates(inplace=True)
-#     _mom.to_csv(os.path.join(HOLDINGS, 'mtum_' + filename))
-#     return _mom
-#
-#
-# def rsi(filename=None, n=21):
-#     path = os.path.join(HOLDINGS, filename)
-#     data_df = pd.read_csv(path, index_col='Date', parse_dates=True)
-#     columns = data_df.columns.tolist()
-#     _rsi = data_df.copy()
-#     for col in columns:
-#         delta = data_df[col].diff()
-#         delta = delta[1:]
-#         up, down = delta.copy(), delta.copy()
-#         up[up < 0] = 0
-#         down[down > 0] = 0
-#         roll_up1 = up.ewm(span=n).mean()
-#         roll_down1 = down.abs().ewm(span=n).mean()
-#         RS1 = roll_up1 / roll_down1
-#         RSI1 = 100.0 - (100.0 / (1.0 + RS1))
-#         _rsi[col] = RSI1
-#     _rsi.dropna(inplace=True)
-#     _rsi.drop_duplicates(inplace=True)
-#     _rsi.to_csv(os.path.join(HOLDINGS, 'rsi_' + filename))
-#     return _rsi
-#
-#
-# def get_market_cap(ticker):
-#     yf = YahooFinancials(ticker)
-#     data = yf.get_market_cap()
-#     return data
-#
-#
-# def impulse_cap_sorting(filename=None):
-#     df = pd.read_csv(os.path.join(HOLDINGS, filename), index_col='Date', parse_dates=True)
-#     columns = df.columns.tolist()
-#     mcap_mtum = df.copy()
-#     last = df.iloc[[-1]]
-#     for col in columns:
-#         cap_mom = 0.5*last[col] * 0.5*get_market_cap(col)
-#         print(col, '\n')
-#         mcap_mtum[col+'_cap_mom'] = cap_mom
-#         mcap_mtum.drop(columns={col}, axis=1, inplace=True)
-#     mcap_mtum.dropna(inplace=True)
-#     last_sorted = mcap_mtum.T.sort_values(mcap_mtum.last_valid_index(), ascending=False).T
-#     last_sorted.to_csv(os.path.join(HOLDINGS, 'sorted_' + filename))
-#     return last_sorted
+    def cap_reduction(self, closes, mcap_reduction):
+        df = closes  # "(index_col=\"Date\", parse_dates=True)"
+        columns = df.columns.tolist()
+        rsharpe = df.copy()
+        df = df[df['Market Cap'] > 20.0]
+        df.reset_index(drop=True, inplace=True)
+        ticker_list = df['Ticker'].tolist()
+        return ticker_list
+
+    def rs_sharpe(self, closes, performance_period, assets_to_hold):
+        df = closes  # "(index_col=\"Date\", parse_dates=True)"
+        columns = df.columns.tolist()
+        _rs_sharpe = df.copy()
+        for col in columns:
+            delta = df[col].diff()
+            delta = delta[1:]
+            up, down = delta.copy(), delta.copy()
+            up[up < 0] = 0
+            down[down > 0] = 0
+            roll_up1 = up.ewm(span=performance_period).mean()
+            roll_down1 = down.abs().ewm(span=performance_period).mean()
+            rs = roll_up1 / roll_down1
+            mrsi = 50.0 - (100.0 / (1.0 + rs))
+            sharpe = mrsi / df[col].rolling(performance_period).std()
+            _rs_sharpe[col] = sharpe
+        _rs_sharpe.dropna(inplace=True)
+        _rs_sharpe.drop_duplicates(inplace=True)
+        tickers_to_allocator = _rs_sharpe.T.sort_values(_rs_sharpe.last_valid_index(), ascending=False).T
+        tickers_to_allocator = tickers_to_allocator[1:performance_period]
+        return tickers_to_allocator
+
+
 

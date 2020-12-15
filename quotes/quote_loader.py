@@ -8,8 +8,8 @@ from alchemysession import AlchemySessionContainer
 from quotes.sql_queries import *
 from project_shared import print_progress_bar
 
-conf = yaml.safe_load(open(os.path.dirname(__file__)+'\\'+'../config/settings.yaml'))
-# conf = yaml.safe_load(open('/home/gene/projects/upsilon_one/config/settings.yaml'))
+# conf = yaml.safe_load(open(os.path.dirname(__file__)+'\\'+'../config/settings.yaml'))
+conf = yaml.safe_load(open('/home/gene/projects/upsilon_one/config/settings.yaml'))
 
 # ============================== SQL Connect ======================
 
