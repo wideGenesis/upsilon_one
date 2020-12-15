@@ -13,7 +13,7 @@ from time import sleep
 
 # ============================== Main  =============================
 def main():
-    closes_df = get_closes_universe_df(200000000000)
+    closes_df = get_closes_universe_df(cap_filter=200000000000)
     rp = RiskParityAllocator(closes=closes_df, cov_method='mcd', herc=True)
     rp.calc_returns()
     rp.allocator()
