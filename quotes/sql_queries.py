@@ -2,6 +2,7 @@ from datetime import date
 import pymysql
 import pandas as pd
 from project_shared import *
+from datetime import date, timedelta
 
 
 def is_table_exist(table_name, engine=engine) -> bool:
@@ -94,7 +95,8 @@ def insert_quotes(ticker, quotes, is_update=True, table_name=QUOTE_TABLE_NAME, e
             transaction.rollback()
 
 
-def get_closes_universe_df(q_table_name=QUOTE_TABLE_NAME, u_table_name=UNIVERSE_TABLE_NAME, cap_filter=0, engine=engine):
+def get_closes_universe_df(q_table_name=QUOTE_TABLE_NAME, u_table_name=UNIVERSE_TABLE_NAME, cap_filter=0,
+                           engine=engine):
     tickers = get_universe(u_table_name, engine)
     with engine.connect() as connection:
         closes = None
@@ -103,6 +105,39 @@ def get_closes_universe_df(q_table_name=QUOTE_TABLE_NAME, u_table_name=UNIVERSE_
             query_string = f'SELECT q.dateTime, q.close FROM {q_table_name} q, {u_table_name} u' \
                            f' WHERE q.ticker=\'{ticker}\' AND q.ticker=u.ticker AND u.mkt_cap > {cap_filter}' \
                            f' AND u.mkt_cap IS NOT NULL'
+            q_result = connection.execute(query_string)
+            if q_result.rowcount > 0:
+                rows = q_result.fetchall()
+                c0 = []
+                c1 = []
+                for row in rows:
+                    c0.append(row[0])
+                    c1.append(row[1])
+                series = pd.Series(c1, index=c0)
+                dat[ticker] = series
+        closes = pd.DataFrame(dat)
+    return closes
+
+
+def get_closes_by_ticker_list(ticker_list, start_date=None, end_date=date.today(),
+                              q_table_name=QUOTE_TABLE_NAME, u_table_name=UNIVERSE_TABLE_NAME,
+                              engine=engine):
+    with engine.connect() as connection:
+        closes = None
+        dat = {}
+        if start_date is None:
+            td = timedelta(365)
+            start_date = end_date - td
+
+        for ticker in ticker_list:
+            query_string = f'SELECT q.dateTime, q.close FROM {q_table_name} q, {u_table_name} u' \
+                           f' WHERE q.ticker=\'{ticker}\' AND q.ticker=u.ticker '
+            if start_date is not None:
+                query_string += f' AND q.dateTime >= \'{str(start_date)}\' '
+            if end_date is not None:
+                query_string += f' AND q.dateTime <= \'{str(end_date)}\' '
+            query_string += f' ORDER BY q.dateTime ASC'
+
             q_result = connection.execute(query_string)
             if q_result.rowcount > 0:
                 rows = q_result.fetchall()
