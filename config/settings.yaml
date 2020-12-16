@@ -82,6 +82,19 @@ ETFs: [
     'QCLN'
 ]
 
+EXCLUDE_SECTORS: [
+  'Financial Services',
+  'Real Estate',
+  'Financial',
+  'Energy'
+]
+
+NOT_EXCLUDE_TICKERS: [
+  'PYPL',
+  'MA',
+  'V'
+]
+
 
 #
 #WORLD_MEGA_CAPS: [

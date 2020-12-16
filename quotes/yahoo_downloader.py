@@ -4,6 +4,7 @@ import os
 from quotes.sql_queries import *
 from yahoofinancials import YahooFinancials
 from datetime import datetime
+import yfinance as yhoo
 
 
 # Формат даты в сторку
@@ -186,7 +187,16 @@ def download_quotes_to_db(ticker, start_date, end_date, is_update):
     insert_quotes(ticker, prices, is_update)
 
 
-def get_market_cap(ticker):
-    yf = YahooFinancials(ticker)
-    data = yf.get_market_cap()
-    return data
+def get_sector_and_market_cap(ticker):
+    tic = yhoo.Ticker(ticker)
+    sector = None
+    mkt_cap = 0
+    try:
+        sector = tic.info['sector']
+    except:
+        sector = None
+    try:
+        mkt_cap = tic.info['marketCap']
+    except:
+        mkt_cap = 0
+    return mkt_cap, sector

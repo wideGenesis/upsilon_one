@@ -4,22 +4,26 @@ from quotes.sql_queries import *
 from project_shared import *
 
 
-def update_universe_prices():
-    tickers = get_universe(UNIVERSE_TABLE_NAME, engine)
+def update_universe_prices(exclude_sectors=EXCLUDE_SECTORS, not_exclude_tickers=NOT_EXCLUDE_TICKERS):
+    tickers = get_universe()
     debug(f'Tickers: {str(tickers)}')
-    mkt_caps = {}
+    ticker_data = {}
     debug("#Try get market caps")
     t_len = len(tickers)
     i = 0
     print_progress_bar(0, t_len, prefix='Progress:', suffix='Complete', length=50)
     for ticker in tickers:
-        cap = get_market_cap(ticker)
-        mkt_caps[ticker] = cap
+        mkt_cap, sector = get_sector_and_market_cap(ticker)
+        c_str = f'[{ticker}:{sector}]'
+        if (sector not in exclude_sectors and sector is not None) or ticker in not_exclude_tickers:
+            ticker_data[ticker] = (sector, mkt_cap)
+        else:
+            delete_from_universe(ticker)
         i += 1
-        print_progress_bar(i, t_len, prefix='Progress:', suffix=f'Complete:{ticker}', length=50)
+        print_progress_bar(i, t_len, prefix='Progress:', suffix=f'Complete:{c_str}', length=50)
         # print(f'cap[{ticker}]={str(cap)}')
     debug("#Update market cap in db")
-    set_universe_mkt_cap(mkt_caps)
+    set_universe_mkt_cap(ticker_data)
     debug("TICKERS: " + str(tickers))
     # Проверяем есть ли таблица, если нет ее надо создать
     is_update = False
@@ -47,7 +51,7 @@ def update_universe_prices():
         # в самом  простом случае апдейтить таблицу надо с последней даты в таблице по сегодняшнюю
         i = 0
         print_progress_bar(0, t_len, prefix='Progress:', suffix='Complete', length=50)
-        for ticker in tickers:
+        for ticker in ticker_data:
             # print("### Try update ticker:" + str(ticker))
             is_ticker_exist = ticker_lookup(ticker)
             if is_ticker_exist:
@@ -67,7 +71,7 @@ def update_universe_prices():
         create_quotes_table()
         i = 0
         print_progress_bar(0, t_len, prefix='Progress:', suffix='Complete', length=50)
-        for ticker in tickers:
+        for ticker in ticker_data:
             start_date = date.fromisoformat(DEFAULT_START_QUOTES_DATE)
             end_date = date.today()
             download_quotes_to_db(ticker, start_date, end_date, is_update)

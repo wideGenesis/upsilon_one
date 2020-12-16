@@ -28,6 +28,8 @@ DEFAULT_START_QUOTES_DATE = SQL_USER = conf['SQL']['DEFAULT_START_QUOTES_DATE']
 UNIVERSE_TABLE_NAME = conf['SQL_TABLE_NAMES']['UNIVERSE_TABLE_NAME']
 QUOTE_TABLE_NAME = conf['SQL_TABLE_NAMES']['QUOTE_TABLE_NAME']
 ETF_FOR_SCRAPE = conf['ETF_FOR_SCRAPE']
+EXCLUDE_SECTORS = conf['EXCLUDE_SECTORS']
+NOT_EXCLUDE_TICKERS = conf['NOT_EXCLUDE_TICKERS']
 
 # ============================== Charter ======================
 # *************** Settings for candlestick chart
