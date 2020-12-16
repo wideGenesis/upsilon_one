@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-import pandas as pd
+import numpy as np
 from matplotlib import pyplot as plt
 import seaborn as sns
 from quotes.sql_queries import *
@@ -126,7 +126,8 @@ class RiskParityAllocator:
                 distance_matrix=self.distance_correlation(),
                 linkage=self.linkage_)
             title = f'{self.linkage_} HRP Dendrogram'
-
+        weights = rp.weights
+        y_pos = np.arange(len(weights.columns))
         di = rp.weights.to_dict(orient='records')
         w = {}
         for k, v in di[0].items():
@@ -136,7 +137,15 @@ class RiskParityAllocator:
             rp.plot_clusters(assets=self.asset_names_)
             plt.title(title, size=18)
             plt.xticks(rotation=45)
+
+            plt.figure(figsize=(25, 7))
+            plt.bar(list(weights.columns), weights.values[0])
+            plt.xticks(y_pos, rotation=45, size=10)
+            plt.xlabel('Assets', size=20)
+            plt.ylabel('Weights %', size=20)
+            plt.title(title + 'Weights', size=20)
             plt.show()
+
         print(w)
         return w
 
@@ -183,11 +192,3 @@ class Selector:
         print(tickers_to_allocator)
         return tickers_to_allocator
 
-    # def cap_reduction(self, closes, mcap_reduction):
-    #     df = closes  # "(index_col=\"Date\", parse_dates=True)"
-    #     columns = df.columns.tolist()
-    #     rsharpe = df.copy()
-    #     df = df[df['Market Cap'] > 20.0]
-    #     df.reset_index(drop=True, inplace=True)
-    #     ticker_list = df['Ticker'].tolist()
-    #     return ticker_list

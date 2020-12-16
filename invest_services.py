@@ -13,27 +13,31 @@ from time import sleep
 
 # ============================== Main  =============================
 def main():
-    # closes_df = get_closes_universe_df(cap_filter=200000000000)
-    #
-    # # select = Selector(closes=closes_df)
-    # # select.rs_sharpe()
-    #
-    # rp = RiskParityAllocator(closes=closes_df, cov_method='mcd', herc=True)
-    # rp.calc_returns()
-    # rp.allocator()
-    #
-    # # Пример использования
-    # # get_closes_by_ticker_list(ticker_list[, start_date, end_date])
-    # # если start_date и end_date не указаны специально, то данные будут браться за период от сегодня минус 365 дней
-    c_df = get_closes_by_ticker_list(['AAPL', 'ADBE', 'ADSK', 'AGIO', 'AMD'])
-    print(str(c_df))
+    # update_universe_prices()
+    closes_df = get_closes_universe_df(cap_filter=100000000000)
 
+    select = Selector(closes=closes_df)
+    tickers = select.rs_sharpe()
+    c_df = get_closes_by_ticker_list(tickers)
+
+    rp = RiskParityAllocator(closes=c_df, cov_method='mcd', herc=False, risk_measure_='conditional_drawdown_risk')
+    rp.calc_returns()
+    rp.allocator()
+
+    # # если start_date и end_date не указаны специально, то данные будут браться за период от сегодня минус 365 дней
+    """
+    equal_weighting 
+    variance
+    standard_deviation
+    expected_shortfall
+    conditional_drawdown_risk
+    """
     exit()
 
     chrome = chrome_init()
     firefox = firefox_init()
     get_and_save_holdings(driver=chrome)
-    update_universe_prices()
+
     exit()
 
     get_flows(driver=chrome)
