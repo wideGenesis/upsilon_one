@@ -22,27 +22,30 @@ def agents():
     return choice(ua)
 
 
-def firefox_init(webdriver_path=WEBDRIVER, agent_rotation=agents()):
-    profile = webdriver.FirefoxProfile()
-    profile.set_preference("network.http.use-cache", False)
-    profile.set_preference("javascript.enabled", True)
-    profile.set_preference("general.useragent.override", f"{agent_rotation}")
-    ff_options = webdriver.FirefoxOptions()
-    ff_options.add_argument('-window-size=1980,1080')
-    ff_options.add_argument('-headless')
-    driver = webdriver.Firefox(executable_path=os.path.join(webdriver_path, 'geckodriver_0_28'),
-                               firefox_profile=profile, options=ff_options)
-    # driver.install_addon(os.path.join(WEBDRIVER, 'adblock_plus-3.10-an+fx.xpi'), temporary=True)
-    p = str(pathlib.Path('adblock_for_firefox-4.24.1-fx.xpi').parent.absolute()) + \
-        '/webdriver/adblock_for_firefox-4.24.1-fx.xpi'
-    driver.install_addon(str(os.path.abspath(p)), temporary=True)
-    driver.maximize_window()
-    sleep(1)
-    print(driver.execute_script("return navigator.userAgent"))
-    return driver
+# def firefox_init(webdriver_path=WEBDRIVER, agent_rotation=agents()):
+#     profile = webdriver.FirefoxProfile()
+#     profile.set_preference("network.http.use-cache", False)
+#     profile.set_preference("javascript.enabled", True)
+#     profile.set_preference("general.useragent.override", f"{agent_rotation}")
+#     ff_options = webdriver.FirefoxOptions()
+#     ff_options.add_argument('-window-size=1980,1080')
+#     ff_options.add_argument('-headless')
+#
+#
+# def firefox_init(webdriver_path=WEBDRIVER, agent_rotation=agents()):
+#     driver = webdriver.Firefox(executable_path=os.path.join(webdriver_path, 'geckodriver_0_28'),
+#                                firefox_profile=profile, options=ff_options)
+#     p = str(pathlib.Path('adblock_for_firefox-4.24.1-fx.xpi').parent.absolute()) + \
+#         '/webdriver/adblock_for_firefox-4.24.1-fx.xpi'
+#     driver.install_addon(str(os.path.abspath(p)), temporary=True)
+#     driver.maximize_window()
+#     sleep(1)
+#     print(driver.execute_script("return navigator.userAgent"))
+#     print('Firefox has been initialized')
+#     return driver
 
 
-def chrome_init(webdriver_path=WEBDRIVER, agent_rotation=agents(), headless=True):
+def chrome_opt(agent_rotation=agents(), headless=True):
     chrome_options = Options()
 
     chrome_options.add_argument("--disable-blink-features=AutomationControlled")
@@ -62,9 +65,14 @@ def chrome_init(webdriver_path=WEBDRIVER, agent_rotation=agents(), headless=True
     # chrome_options.add_argument("--incognito")
     chrome_options.add_argument('--disable-dev-shm-usage')
     chrome_options.add_argument('--ignore-certificate-errors')
-    chrome_options.add_argument(f'user-agent={agent_rotation}')
+    # chrome_options.add_argument(f'user-agent={agent_rotation}')
     chrome_options.add_argument("--enable-javascript")
     chrome_options.add_argument("--no-sandbox")
+    return chrome_options
+
+
+def chrome_init(webdriver_path=WEBDRIVER, agent_rotation=agents(), chrome_options=chrome_opt()):
+
     driver_path = os.path.join(webdriver_path, 'chromedriver_87')
     driver = webdriver.Chrome(driver_path, options=chrome_options)
     driver.execute_cdp_cmd('Network.setUserAgentOverride', {"userAgent": f'{agent_rotation}'})

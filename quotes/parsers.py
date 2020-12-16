@@ -22,13 +22,10 @@ from project_shared import *
 def get_flows(driver=None, img_out_path_=IMAGES_OUT_PATH):
     etfs = ['VCIT', 'SPY', 'VTI', 'VEA', 'VWO', 'QQQ', 'VXX', 'TLT', 'SHY', 'LQD']
     with driver:
-        print('Hi')
-
         driver.get('https://www.etf.com/etfanalytics/etf-fund-flows-tool')
-        sleep(8)
-        html = driver.page_source
-        print(html)
         sleep(10)
+        # html = driver.page_source
+        # print(html)
         try:
             elem = driver.find_element_by_xpath(".//*[@id='edit-tickers']")
             print('elem 1 has been located')
@@ -200,6 +197,7 @@ def get_economics(ag=None, img_out_path_=IMAGES_OUT_PATH):
                     & (df.Country != 'Japan')].index)
     filename = os.path.join(img_out_path_, 'economic_data.csv')
     df.to_csv(filename, index=False)
+    print('Get economics complete' + '\n')
 
 
 # ============================== TW GET ================================
@@ -298,6 +296,7 @@ def qt_curve():
     x = str(x)
     with open(os.path.join('results', 'img_out', 'treasury_curve.csv'), 'w+') as f:
         f.write(f'{x}')
+    print('qt_curve complete')
 
 
 def spx_yield():
@@ -305,6 +304,7 @@ def spx_yield():
     x = str(x)
     with open(os.path.join('results', 'img_out', 'spx_yield.csv'), 'w+') as f:
         f.write(f'{x}')
+    print('spx_yield complete')
 
 
 def vix_curve(driver=None, img_out_path_=IMAGES_OUT_PATH):
@@ -348,6 +348,7 @@ def vix_cont():
         vix = 'Backwordation'
     with open(os.path.join('results', 'img_out', 'vix_cont.csv'), 'w+') as f:
         f.write(f'{vix}')
+    print('vix_cont complete')
 
 
 def users_count():
