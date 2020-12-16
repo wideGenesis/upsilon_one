@@ -25,6 +25,16 @@ def main():
     etalon.calc_returns()
     etalon.allocator()
 
+    rp1 = RiskParityAllocator(closes=c_df, cov_method='semi',
+                              herc=False, linkage_='ward', risk_measure_='variance')
+    rp1.calc_returns()
+    rp1.allocator()
+
+    rp2 = RiskParityAllocator(closes=c_df, cov_method='empirical',
+                              herc=True, linkage_='ward', risk_measure_='variance')
+    rp2.calc_returns()
+    rp2.allocator()
+
     # # если start_date и end_date не указаны специально, то данные будут браться за период от сегодня минус 365 дней
     """
     equal_weighting 

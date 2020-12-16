@@ -115,7 +115,7 @@ class RiskParityAllocator:
                 risk_measure=self.risk_measure_,
                 linkage=self.linkage_,
                 optimal_num_clusters=None)
-            title = f'{self.risk_measure_} {self.linkage_} HERC Dendrogram'
+            title = f'{self.cov_method} {self.linkage_} {self.risk_measure_} HERC Dendrogram'
 
         else:
             rp = HierarchicalRiskParity()
@@ -125,7 +125,7 @@ class RiskParityAllocator:
                 covariance_matrix=self.covariance(),
                 distance_matrix=self.distance_correlation(),
                 linkage=self.linkage_)
-            title = f'{self.linkage_} HRP Dendrogram'
+            title = f'{self.cov_method} {self.linkage_} HRP Dendrogram'
         weights = rp.weights
         y_pos = np.arange(len(weights.columns))
         di = rp.weights.to_dict(orient='records')
@@ -143,7 +143,7 @@ class RiskParityAllocator:
             plt.xticks(y_pos, rotation=45, size=10)
             plt.xlabel('Assets', size=20)
             plt.ylabel('Weights %', size=20)
-            plt.title(title + 'Weights', size=20)
+            plt.title(title + ' Weights', size=20)
             plt.show()
 
         print(w)
