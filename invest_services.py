@@ -20,9 +20,10 @@ def main():
     tickers = select.rs_sharpe()
     c_df = get_closes_by_ticker_list(tickers)
 
-    rp = RiskParityAllocator(closes=c_df, cov_method='mcd', herc=False, risk_measure_='conditional_drawdown_risk')
-    rp.calc_returns()
-    rp.allocator()
+    etalon = RiskParityAllocator(closes=c_df, cov_method='empirical',
+                                 herc=False, linkage_='average', risk_measure_='equal_weighting')
+    etalon.calc_returns()
+    etalon.allocator()
 
     # # если start_date и end_date не указаны специально, то данные будут браться за период от сегодня минус 365 дней
     """
@@ -31,6 +32,11 @@ def main():
     standard_deviation
     expected_shortfall
     conditional_drawdown_risk
+    
+    single
+    average
+    complete
+    ward
     """
     exit()
 
