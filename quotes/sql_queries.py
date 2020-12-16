@@ -152,6 +152,39 @@ def get_closes_by_ticker_list(ticker_list, start_date=None, end_date=date.today(
     return closes
 
 
+def get_closes_by_ticker_list_ti(ticker_list, time_interval=365,
+                                 q_table_name=QUOTE_TABLE_NAME, u_table_name=UNIVERSE_TABLE_NAME,
+                                 engine=engine):
+    with engine.connect() as connection:
+        closes = None
+        dat = {}
+        end_date = date.today()
+        td = timedelta(time_interval)
+        start_date = end_date - td
+
+        for ticker in ticker_list:
+            query_string = f'SELECT q.dateTime, q.close FROM {q_table_name} q, {u_table_name} u' \
+                           f' WHERE q.ticker=\'{ticker}\' AND q.ticker=u.ticker '
+            if start_date is not None:
+                query_string += f' AND q.dateTime >= \'{str(start_date)}\' '
+            if end_date is not None:
+                query_string += f' AND q.dateTime <= \'{str(end_date)}\' '
+            query_string += f' ORDER BY q.dateTime ASC'
+
+            q_result = connection.execute(query_string)
+            if q_result.rowcount > 0:
+                rows = q_result.fetchall()
+                c0 = []
+                c1 = []
+                for row in rows:
+                    c0.append(row[0])
+                    c1.append(row[1])
+                series = pd.Series(c1, index=c0)
+                dat[ticker] = series
+        closes = pd.DataFrame(dat)
+    return closes
+
+
 # ******************** UNIVERSE ********************
 def create_universe_table(table_name=UNIVERSE_TABLE_NAME, engine=engine):
     with engine.connect() as connection:
