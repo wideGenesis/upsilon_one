@@ -95,6 +95,6 @@ class ConstituentsScraper:
             i += 1
             print_progress_bar(i, t_len, prefix='Progress:', suffix=f'Complete:{etf}', length=50)
         ticker_list = df_all['symbol'].tolist()
-        print(ticker_list)
+        debug(ticker_list)
         driver.quit()
         return ticker_list

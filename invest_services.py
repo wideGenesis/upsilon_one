@@ -13,14 +13,20 @@ from time import sleep
 
 # ============================== Main  =============================
 def main():
-    closes_df = get_closes_universe_df(cap_filter=100000000000)
-
-    select = Selector(closes=closes_df)
-    select.rs_sharpe()
-
-    rp = RiskParityAllocator(closes=closes_df, cov_method='mcd', herc=True)
-    rp.calc_returns()
-    rp.allocator()
+    # closes_df = get_closes_universe_df(cap_filter=200000000000)
+    #
+    # # select = Selector(closes=closes_df)
+    # # select.rs_sharpe()
+    #
+    # rp = RiskParityAllocator(closes=closes_df, cov_method='mcd', herc=True)
+    # rp.calc_returns()
+    # rp.allocator()
+    #
+    # # Пример использования
+    # # get_closes_by_ticker_list(ticker_list[, start_date, end_date])
+    # # если start_date и end_date не указаны специально, то данные будут браться за период от сегодня минус 365 дней
+    c_df = get_closes_by_ticker_list(['AAPL', 'ADBE', 'ADSK', 'AGIO', 'AMD'])
+    print(str(c_df))
 
     exit()
 

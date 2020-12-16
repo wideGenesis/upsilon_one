@@ -2,6 +2,7 @@ from datetime import date
 import pymysql
 import pandas as pd
 from project_shared import *
+from datetime import date, timedelta
 
 
 def is_table_exist(table_name, engine=engine) -> bool:
@@ -77,7 +78,7 @@ def insert_quotes(ticker, quotes, is_update=True, table_name=QUOTE_TABLE_NAME, e
                         result = connection.execute(query_string)
                         if result.rowcount > 0:
                             test = True
-                            print("Duplicate date! Not insert!")
+                            debug("Duplicate date! Not insert!")
                         else:
                             test = False
                     except:
@@ -94,7 +95,8 @@ def insert_quotes(ticker, quotes, is_update=True, table_name=QUOTE_TABLE_NAME, e
             transaction.rollback()
 
 
-def get_closes_universe_df(q_table_name=QUOTE_TABLE_NAME, u_table_name=UNIVERSE_TABLE_NAME, cap_filter=0, engine=engine):
+def get_closes_universe_df(q_table_name=QUOTE_TABLE_NAME, u_table_name=UNIVERSE_TABLE_NAME, cap_filter=0,
+                           engine=engine):
     tickers = get_universe(u_table_name, engine)
     with engine.connect() as connection:
         closes = None
@@ -117,6 +119,39 @@ def get_closes_universe_df(q_table_name=QUOTE_TABLE_NAME, u_table_name=UNIVERSE_
     return closes
 
 
+def get_closes_by_ticker_list(ticker_list, start_date=None, end_date=date.today(),
+                              q_table_name=QUOTE_TABLE_NAME, u_table_name=UNIVERSE_TABLE_NAME,
+                              engine=engine):
+    with engine.connect() as connection:
+        closes = None
+        dat = {}
+        if start_date is None:
+            td = timedelta(365)
+            start_date = end_date - td
+
+        for ticker in ticker_list:
+            query_string = f'SELECT q.dateTime, q.close FROM {q_table_name} q, {u_table_name} u' \
+                           f' WHERE q.ticker=\'{ticker}\' AND q.ticker=u.ticker '
+            if start_date is not None:
+                query_string += f' AND q.dateTime >= \'{str(start_date)}\' '
+            if end_date is not None:
+                query_string += f' AND q.dateTime <= \'{str(end_date)}\' '
+            query_string += f' ORDER BY q.dateTime ASC'
+
+            q_result = connection.execute(query_string)
+            if q_result.rowcount > 0:
+                rows = q_result.fetchall()
+                c0 = []
+                c1 = []
+                for row in rows:
+                    c0.append(row[0])
+                    c1.append(row[1])
+                series = pd.Series(c1, index=c0)
+                dat[ticker] = series
+        closes = pd.DataFrame(dat)
+    return closes
+
+
 # ******************** UNIVERSE ********************
 def create_universe_table(table_name=UNIVERSE_TABLE_NAME, engine=engine):
     with engine.connect() as connection:
@@ -124,7 +159,8 @@ def create_universe_table(table_name=UNIVERSE_TABLE_NAME, engine=engine):
             transaction = connection.begin()
             create_query = f'CREATE TABLE {table_name} ' \
                            f'(ticker VARCHAR(6) NOT NULL, ' \
-                           f'mkt_cap BIGINT,' \
+                           f'mkt_cap BIGINT, ' \
+                           f'sector VARCHAR(100), ' \
                            f'PRIMARY KEY(ticker)' \
                            f')'
             connection.execute(create_query)
@@ -139,29 +175,45 @@ def update_universe_table(new_universe, table_name=UNIVERSE_TABLE_NAME, engine=e
                 del_query = f'DELETE FROM {table_name}'
                 connection.execute(del_query)
                 for ticker in new_universe:
-                    insert_query = f'INSERT INTO {table_name} (ticker) VALUES \'{ticker}\''
+                    insert_query = f'INSERT INTO {table_name} (ticker) VALUES (\'{ticker}\')'
                     connection.execute(insert_query)
                 transaction.commit()
             except:
                 transaction.rollback()
         else:
-            print(f'Can\'t find table: {table_name}!')
+            debug(f'Can\'t find table: {table_name}!')
 
 
-def set_universe_mkt_cap(mkt_caps, table_name=UNIVERSE_TABLE_NAME, engine=engine):
+def delete_from_universe(ticker, table_name=UNIVERSE_TABLE_NAME, engine=engine):
     with engine.connect() as connection:
         if is_table_exist(table_name):
             transaction = connection.begin()
             try:
-                for cap in mkt_caps:
-                    upd_query = f'UPDATE {table_name} SET mkt_cap=\'{mkt_caps[cap]}\' WHERE ticker=\'{cap}\''
-                    print(upd_query)
+                del_query = f'DELETE FROM {table_name} WHERE ticker=\'{ticker}\''
+                connection.execute(del_query)
+                transaction.commit()
+            except:
+                transaction.rollback()
+        else:
+            debug(f'Can\'t find table: {table_name}!')
+
+
+def set_universe_mkt_cap(ticker_data, table_name=UNIVERSE_TABLE_NAME, engine=engine):
+    with engine.connect() as connection:
+        if is_table_exist(table_name):
+            transaction = connection.begin()
+            try:
+                for ticker in ticker_data:
+                    sector, mkt_cap = ticker_data[ticker]
+                    upd_query = f'UPDATE {table_name} SET ' \
+                                f'mkt_cap=\'{mkt_cap}\', sector=\'{sector}\' ' \
+                                f'WHERE ticker=\'{ticker}\''
                     connection.execute(upd_query)
                 transaction.commit()
             except:
                 transaction.rollback()
         else:
-            print(f'Can\'t find table: {table_name}!')
+            debug(f'Can\'t find table: {table_name}!')
 
 
 def insert_universe_data(new_universe, table_name=UNIVERSE_TABLE_NAME, engine=engine):
@@ -170,13 +222,13 @@ def insert_universe_data(new_universe, table_name=UNIVERSE_TABLE_NAME, engine=en
             transaction = connection.begin()
             try:
                 for ticker in new_universe:
-                    insert_query = f'INSERT INTO {table_name} (ticker) VALUES \'{ticker}\''
+                    insert_query = f'INSERT INTO {table_name} (ticker) VALUES (\'{ticker}\')'
                     connection.execute(insert_query)
+                transaction.commit()
             except:
                 transaction.rollback()
-            transaction.commit()
         else:
-            print(f'Can\'t find table: {table_name}!')
+            debug(f'Can\'t find table: {table_name}!')
 
 
 def get_universe(table_name=UNIVERSE_TABLE_NAME, engine=engine):
@@ -192,4 +244,4 @@ def get_universe(table_name=UNIVERSE_TABLE_NAME, engine=engine):
             else:
                 return None
         else:
-            print(f'Can\'t find table: {table_name}!')
+            debug(f'Can\'t find table: {table_name}!')
