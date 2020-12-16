@@ -50,11 +50,10 @@ class ConstituentsScraper:
 
     def get_etf_holdings(self, driver):
         df_all = pd.DataFrame()
-        i = 0
         t_len = len(self.etfs_list)
         debug(str(self.etfs_list))
         print_progress_bar(0, t_len, prefix='Progress:', suffix='Complete', length=50)
-        for etf in self.etfs_list:
+        for count, etf in enumerate(self.etfs_list):
             # print(etf)
             url = self.holdings_url.format(etf)
             try:
@@ -92,8 +91,7 @@ class ConstituentsScraper:
             result = pd.DataFrame(asset_dict).T
             df_all = df_all.append(result)
             df_all.drop_duplicates(keep='first', inplace=True)
-            i += 1
-            print_progress_bar(i, t_len, prefix='Progress:', suffix=f'Complete:{etf}', length=50)
+            print_progress_bar(count, t_len, prefix='Progress:', suffix=f'Complete:{etf}', length=50)
         ticker_list = df_all['symbol'].tolist()
         debug(ticker_list)
         driver.quit()
