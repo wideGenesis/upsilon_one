@@ -165,6 +165,7 @@ async def quotes_to_handler(event, client_, limit=20):
         await client_.send_file(event.input_sender, img_path)
     except ValueError as e0:
         print(e0)
+    os.remove(img_path)
 
 
 async def news_to_handler(event, client_, limit=20):
