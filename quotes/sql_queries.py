@@ -95,16 +95,32 @@ def insert_quotes(ticker, quotes, is_update=True, table_name=QUOTE_TABLE_NAME, e
             transaction.rollback()
 
 
-def get_closes_universe_df(q_table_name=QUOTE_TABLE_NAME, u_table_name=UNIVERSE_TABLE_NAME, cap_filter=0,
+def get_closes_universe_df(q_table_name=QUOTE_TABLE_NAME, u_table_name=UNIVERSE_TABLE_NAME, cap_filter=0, etf_list=None,
                            engine=engine):
     tickers = get_universe(u_table_name, engine)
     with engine.connect() as connection:
         closes = None
         dat = {}
+        if etf_list is not None:
+            for ticker in etf_list:
+                query_string = f'SELECT q.dateTime, q.close FROM {q_table_name} q ' \
+                               f' WHERE q.ticker=\'{ticker}\''
+                q_result = connection.execute(query_string)
+                if q_result.rowcount > 0:
+                    rows = q_result.fetchall()
+                    c0 = []
+                    c1 = []
+                    for row in rows:
+                        c0.append(row[0])
+                        c1.append(row[1])
+                    series = pd.Series(c1, index=c0)
+                    dat[ticker] = series
+            closes = pd.DataFrame(dat)
+            return closes
         for ticker in tickers:
             query_string = f'SELECT q.dateTime, q.close FROM {q_table_name} q, {u_table_name} u' \
-                           f' WHERE q.ticker=\'{ticker}\' AND q.ticker=u.ticker AND u.mkt_cap > {cap_filter}' \
-                           f' AND u.mkt_cap IS NOT NULL'
+                            f' WHERE q.ticker=\'{ticker}\' AND q.ticker=u.ticker AND u.mkt_cap > {cap_filter}' \
+                            f' AND u.mkt_cap IS NOT NULL'
             q_result = connection.execute(query_string)
             if q_result.rowcount > 0:
                 rows = q_result.fetchall()
@@ -238,10 +254,15 @@ def set_universe_mkt_cap(ticker_data, table_name=UNIVERSE_TABLE_NAME, engine=eng
             try:
                 for ticker in ticker_data:
                     sector, mkt_cap = ticker_data[ticker]
-                    upd_query = f'UPDATE {table_name} SET ' \
-                                f'mkt_cap=\'{mkt_cap}\', sector=\'{sector}\' ' \
-                                f'WHERE ticker=\'{ticker}\''
-                    connection.execute(upd_query)
+                    if ticker_lookup(ticker, table_name):
+                        upd_query = f'UPDATE {table_name} SET ' \
+                                    f'mkt_cap=\'{mkt_cap}\', sector=\'{sector}\' ' \
+                                    f'WHERE ticker=\'{ticker}\''
+                        connection.execute(upd_query)
+                    else:
+                        insert_query = f'INSERT INTO {table_name} (ticker, mkt_cap, sector) ' \
+                                       f'VALUES (\'{ticker}\', \'{mkt_cap}\', \'{sector}\')'
+                        connection.execute(insert_query)
                 transaction.commit()
             except:
                 transaction.rollback()

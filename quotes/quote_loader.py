@@ -6,6 +6,11 @@ from project_shared import *
 
 def update_universe_prices(exclude_sectors=EXCLUDE_SECTORS, not_exclude_tickers=NOT_EXCLUDE_TICKERS):
     tickers = get_universe()
+    # ==================== Доформируем вселенную ====================
+    #  Сначала забираем сектора компаний и их капитализацию для дальнейшей фильтрации
+    #  И удалим из вселенной те акции сектора которых не подходят и эти сектора явно указаны в конфиге EXCLUDE_SECTORS
+    #  При этом оставим те акции, тикеры которых явно указаны в конфиге NOT_EXCLUDE_TICKERS, даже если
+    #  у них не подходящий сектор
     debug(f'Tickers: {str(tickers)}')
     ticker_data = {}
     debug("#Try get market caps")
@@ -21,8 +26,15 @@ def update_universe_prices(exclude_sectors=EXCLUDE_SECTORS, not_exclude_tickers=
         print_progress_bar(count, t_len, prefix='Progress:', suffix=f'Complete:{c_str}', length=50)
         # print(f'cap[{ticker}]={str(cap)}')
     debug("#Update market cap in db")
+
+    # ++++++++ Добавим во вселенную ETFs ++++++++
+    for ticker in ETFs:
+        ticker_data[ticker] = ("ETF", 0)
+
+    # ++++++++ Проапдейтим вселенную
     set_universe_mkt_cap(ticker_data)
-    debug("TICKERS: " + str(tickers))
+
+    # ==================== Теперь проапдейтим/закачаем данные по OHLC по всем тикерам вселенной
     # Проверяем есть ли таблица, если нет ее надо создать
     is_update = False
     if is_table_exist(QUOTE_TABLE_NAME):
