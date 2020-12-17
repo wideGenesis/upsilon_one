@@ -83,7 +83,7 @@ def download_yahoo(ticker, base_dir, start_date, end_date):
 # Словарь с ценами
 def dic_with_prices(prices: dict, ticker: str, date: datetime, open, high, low, close, volume, dividend=0):
     if date.weekday() > 5:
-        print(f'Найден выходной в {ticker} на {date}')
+        # print(f'Найден выходной в {ticker} на {date}')
         return
 
     open = number_to_float(open)
@@ -97,10 +97,10 @@ def dic_with_prices(prices: dict, ticker: str, date: datetime, open, high, low, 
     error_vol = not empty_check(volume)
 
     if error_price:
-        print(f'В {ticker} на {date} имеются пустые данные')
+        # print(f'В {ticker} на {date} имеются пустые данные')
         return
-    if error_vol:
-        print(f'В {ticker} на {date} нет объёма')
+    # if error_vol:
+        # print(f'В {ticker} на {date} нет объёма')
 
     prices[date] = [open, high, low, close, volume, dividend]
 
@@ -108,14 +108,14 @@ def dic_with_prices(prices: dict, ticker: str, date: datetime, open, high, low, 
 # Добавляем дивиденды к словарю с ценами
 def dic_with_div(prices: dict, ticker: str, date: datetime, amount: float):
     if date.weekday() > 5:
-        print(f'Найден выходной в {ticker} на {date}')
+        # print(f'Найден выходной в {ticker} на {date}')
         return
 
     dividend = amount
     error_price = not empty_check(dividend)
 
     if error_price:
-        print(f'В {ticker} на {date} имеются пустые данные в дивидендах')
+        # print(f'В {ticker} на {date} имеются пустые данные в дивидендах')
         return
 
     prices[date][len(prices[date]) - 1] = dividend
@@ -160,12 +160,12 @@ def download_quotes_to_db(ticker, start_date, end_date, is_update):
         yf = YahooFinancials(ticker)
         data = yf.get_historical_price_data(dt_to_str(start_date), dt_to_str(end_date), 'daily')
     except Exception as err:
-        print(f'Unable to read data for {ticker}: {err}')
+        # print(f'Unable to read data for {ticker}: {err}')
         return pd.DataFrame({})
 
     if data.get(ticker) is None or data[ticker].get('prices') is None or \
             data[ticker].get('timeZone') is None or len(data[ticker]['prices']) == 0:
-        print(f'Yahoo: no data for {ticker}')
+        # print(f'Yahoo: no data for {ticker}')
         return pd.DataFrame({})
 
     prices = {}
@@ -181,7 +181,7 @@ def download_quotes_to_db(ticker, start_date, end_date, is_update):
     if 'splits' in data[ticker]['eventsData']:
         for date, rec in sorted(data[ticker]['eventsData']['splits'].items(), key=lambda r: r[0]):
             date = datetime.strptime(date, '%Y-%m-%d')
-            print(f"{ticker} has split {rec['splitRatio']} for {date}")
+            # print(f"{ticker} has split {rec['splitRatio']} for {date}")
 
     # print("PRICES:" + str(prices))
     insert_quotes(ticker, prices, is_update)

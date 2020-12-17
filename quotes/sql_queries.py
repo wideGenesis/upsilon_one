@@ -84,9 +84,9 @@ def insert_quotes(ticker, quotes, is_update=True, table_name=QUOTE_TABLE_NAME, e
                 if not test:
                     insert_query = f'INSERT INTO {table_name} ' \
                                    f'(ticker, dateTime, open, high, low, close, volume, dividend) ' \
-                                   f'VALUES ({ticker}, {str(qdate)}, ' \
-                                   f'{str(o)}, {str(h)}, {str(l)}, {str(c)}, ' \
-                                   f'{str(v)}, {str(d)})'
+                                   f'VALUES (\'{ticker}\', \'{str(qdate)}\', ' \
+                                   f'\'{str(o)}\', \'{str(h)}\', \'{str(l)}\', \'{str(c)}\', ' \
+                                   f'\'{str(v)}\', \'{str(d)}\')'
                     connection.execute(insert_query)
             transaction.commit()
         except:
@@ -95,7 +95,6 @@ def insert_quotes(ticker, quotes, is_update=True, table_name=QUOTE_TABLE_NAME, e
 
 def get_closes_universe_df(q_table_name=QUOTE_TABLE_NAME, u_table_name=UNIVERSE_TABLE_NAME, cap_filter=0, etf_list=None,
                            engine=engine):
-    tickers = get_universe(u_table_name, engine)
     with engine.connect() as connection:
         closes = None
         dat = {}
@@ -115,9 +114,10 @@ def get_closes_universe_df(q_table_name=QUOTE_TABLE_NAME, u_table_name=UNIVERSE_
                     dat[ticker] = series
             closes = pd.DataFrame(dat)
             return closes
+        tickers = get_universe(u_table_name, engine)
         for ticker in tickers:
             query_string = f'SELECT q.dateTime, q.close FROM {q_table_name} q, {u_table_name} u' \
-                           f' WHERE q.ticker=\'{ticker}\' AND q.ticker=u.ticker AND u.mkt_cap > {cap_filter}' \
+                           f' WHERE q.ticker=\'{ticker}\' AND q.ticker=u.ticker AND u.mkt_cap > \'{cap_filter}\'' \
                            f' AND u.mkt_cap IS NOT NULL'
             q_result = connection.execute(query_string)
             if q_result.rowcount > 0:
@@ -292,6 +292,22 @@ def get_universe(table_name=UNIVERSE_TABLE_NAME, engine=engine):
             if result.rowcount > 0:
                 for t in result.fetchall():
                     res.append(t[0])
+                return res
+            else:
+                return None
+        else:
+            debug(f'Can\'t find table: {table_name}!')
+
+
+def get_all_universe(table_name=UNIVERSE_TABLE_NAME, engine=engine):
+    with engine.connect() as connection:
+        if is_table_exist(table_name):
+            res = {}
+            del_query = "SELECT ticker, sector, mkt_cap FROM " + table_name
+            result = connection.execute(del_query)
+            if result.rowcount > 0:
+                for t in result.fetchall():
+                    res[t[0]] = (t[1], t[2])
                 return res
             else:
                 return None

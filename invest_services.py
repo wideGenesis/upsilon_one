@@ -17,6 +17,8 @@ def main():
     # get_and_save_holdings(driver=chrome_init())
     update_universe_prices()
     closes_df = get_closes_universe_df(cap_filter=150000000000, etf_list=None)
+    debug(str(closes_df))
+    exit()
 
     select = Selector(closes=closes_df,
                       assets_to_hold=15)
