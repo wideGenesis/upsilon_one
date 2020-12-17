@@ -9,7 +9,7 @@ from aiohttp import web
 from telegram import sql_queries as sql
 from telegram import ai
 from telegram import shared
-from quotes import stock_quotes_news as sqn
+from quotes.stock_quotes_news import StockStat
 
 
 class WebHandler:
@@ -154,21 +154,26 @@ async def quotes_to_handler(event, client_, limit=20):
     stock = stock.upper()
     img_path = os.path.join('results/ticker_stat', f'{stock}.png')
     try:
-        msg1 = sqn.stock_description(stock=stock)
-        msg2 = sqn.stock_quotes(stock=stock)
+        ss = StockStat(stock=stock)
+        ss.stock_download()
+        msg1 = ss.stock_description()
+        ss.stock_snapshot()
+        msg2 = ss.stock_stat()
 
         await client_.send_message(event.input_sender, msg1)
-        # await client_.send_message(event.input_sender, msg2)
+        await client_.send_message(event.input_sender, msg2)
         await client_.send_file(event.input_sender, img_path)
     except ValueError as e0:
         print(e0)
+    os.remove(img_path)
 
 
 async def news_to_handler(event, client_, limit=20):
     parse = str(event.text).split(' ')
     stock = parse[1]
     try:
-        msg = sqn.stock_news(stock=stock)
+        ss = StockStat(stock=stock)
+        msg = ss.stock_news()
         await client_.send_message(event.input_sender, f'Последние новости с упоминанием {stock}')
         await client_.send_message(event.input_sender, msg)
     except ValueError as e1:

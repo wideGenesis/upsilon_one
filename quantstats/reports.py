@@ -478,7 +478,7 @@ def metrics_v1(returns, benchmark=None, rf=0., display=True,
 
 
 def metrics_v2(returns, benchmark=None, ticker_=None, rf=0., display=False,
-            mode='full', sep=False, compounded=True, **kwargs):
+            mode='full', sep=False, compounded=False, **kwargs):
 
 
     if isinstance(returns, _pd.DataFrame) and len(returns.columns) > 1:
@@ -500,7 +500,7 @@ def metrics_v2(returns, benchmark=None, ticker_=None, rf=0., display=False,
     df = df.fillna(0)
 
     # pct multiplier
-    pct = 100 if display or "internal" in kwargs else 1
+    pct = 100 #if "internal" in kwargs else 1
 
     # return df
     dd = _calc_dd(df, display=(display or "internal" in kwargs))
@@ -540,13 +540,12 @@ def metrics_v2(returns, benchmark=None, ticker_=None, rf=0., display=False,
         else:
             metrics['Volatility (ann.) %'] = [ret_vol]
 
-        metrics['Skew'] = _stats.skew(df)
-        metrics['Kurtosis'] = _stats.kurtosis(df)
+
         metrics['Expected Monthly %%'] = _stats.expected_return(df, aggregate='M') * pct
         metrics['Expected Yearly %%'] = _stats.expected_return(df, aggregate='A') * pct
         metrics['Kelly Criterion %'] = _stats.kelly_criterion(df) * pct
         metrics['Daily Value-at-Risk %'] = -abs(_stats.var(df) * pct)
-        metrics['Expected Shortfall (cVaR) %'] = -abs(_stats.cvar(df) * pct)
+
 
 
     comp_func = _stats.comp if compounded else _np.sum
@@ -628,8 +627,8 @@ def metrics_v2(returns, benchmark=None, ticker_=None, rf=0., display=False,
 
     if not sep:
         metrics = metrics[metrics.index != '']
-    metrics.to_csv(f'results/ticker_stat/{ticker_}.csv')
-    metrics = metrics.to_string()
+    # metrics.to_csv(f'results/ticker_stat/{ticker_}.csv')
+    metrics = metrics.to_json()
     return metrics
 
 
