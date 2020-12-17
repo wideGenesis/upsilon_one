@@ -42,8 +42,7 @@ class StockStat:
         try:
             returns = qs.utils.download_returns(self.stock)
         except ValueError as e11:
-            print('Ticker not found')
-            return
+            return e11
         self.returns = returns
 
     def stock_snapshot(self):
@@ -58,33 +57,31 @@ class StockStat:
                                       ticker_=self.stock,
                                       display=self.display)
         parse = json.loads(stats)
-        msg = 'Ключевые Характеристики: ' '\n' + 'Start Period ' + parse[self.stock]['Start Period'] + '\n' + \
+        msg = '```Ключевые Характеристики:``` ' + '\n' + '\n' + 'Start Period ' + parse[self.stock]['Start Period'] + '\n' + '\n' + \
               'End Period ' + parse[self.stock]['End Period'] + '\n' + \
-              "Total Return % " + '\n' + f'{self.stock} ' + str(parse[self.stock]['Total Return '])\
-              + f'| {self.benchmark} ' + str(parse['Benchmark']['Total Return ']) + '\n' + \
-              "CAGR% " + '\n' + f'{self.stock} ' + str(parse[self.stock]['CAGR%'])\
-              + f'| {self.benchmark} ' + str(parse['Benchmark']['CAGR%']) + '\n' + \
-              "Sharpe " + '\n' + f'{self.stock} ' + str(parse[self.stock]['Sharpe']) \
-              + f'| {self.benchmark} ' + str(parse['Benchmark']['Sharpe']) + '\n' + \
-              "Volatility (ann.) % " + '\n' + f'{self.stock} ' + str(parse[self.stock]['Volatility (ann.) ']) \
-              + f'| {self.benchmark} ' + str(parse['Benchmark']['Volatility (ann.) ']) + '\n' + \
-              "Expected Monthly % " + '\n' + f'{self.stock} ' + str(parse[self.stock]['Expected Monthly %']) \
-              + f'| {self.benchmark} ' + str(parse['Benchmark']['Expected Monthly %']) + '\n' + \
-              "Expected Yearly % " + '\n' + f'{self.stock} ' + str(parse[self.stock]['Expected Yearly %']) \
-              + f'| {self.benchmark} ' + str(parse['Benchmark']['Expected Yearly %']) + '\n' + \
-              "Kelly Criterion % " + '\n' + f'{self.stock} ' + str(parse[self.stock]['Kelly Criterion ']) \
-              + f'| {self.benchmark} ' + str(parse['Benchmark']['Kelly Criterion ']) + '\n' + \
-              "Daily Value-at-Risk " + '\n' + f'{self.stock} ' + str(parse[self.stock]['Daily Value-at-Risk ']) \
-              + f'| {self.benchmark} ' + str(parse['Benchmark']['Daily Value-at-Risk ']) + '\n' + \
-              "YTD " + '\n' + f'{self.stock} ' + str(parse[self.stock]['YTD ']) \
-              + f'| {self.benchmark} ' + str(parse['Benchmark']['YTD ']) + '\n' + \
-              "Best Year " + '\n' + f'{self.stock} ' + str(parse[self.stock]['Best Year ']) \
-              + f'| {self.benchmark} ' + str(parse['Benchmark']['Best Year ']) + '\n' + \
-              "Worst Year " + '\n' + f'{self.stock} ' + str(parse[self.stock]['Worst Year ']) \
-              + f'| {self.benchmark} ' + str(parse['Benchmark']['Worst Year ']) + '\n' + \
-              "Alpha " + '\n' + f'{self.stock} ' + str(parse[self.stock]['Alpha']) \
-              + f'| {self.benchmark} ' + str(parse['Benchmark']['Alpha']) + '\n' + \
-              "Beta " + '\n' + f'{self.stock} ' + str(parse[self.stock]['Beta']) \
+              "```Total Return % ```" + '\n' + f'{self.stock} ' + str(parse[self.stock]['Total Return '])\
+              + f'| {self.benchmark} ' + str(parse['Benchmark']['Total Return ']) + '\n' + '\n' + \
+              "```CAGR% ```" + '\n' + f'{self.stock} ' + str(parse[self.stock]['CAGR%'])\
+              + f'| {self.benchmark} ' + str(parse['Benchmark']['CAGR%']) + '\n' + '\n' + \
+              "```Sharpe ```" + '\n' + f'{self.stock} ' + str(parse[self.stock]['Sharpe']) \
+              + f'| {self.benchmark} ' + str(parse['Benchmark']['Sharpe']) + '\n' + '\n' + \
+              "```Volatility (ann.) ```% " + '\n' + f'{self.stock} ' + str(parse[self.stock]['Volatility (ann.) ']) \
+              + f'| {self.benchmark} ' + str(parse['Benchmark']['Volatility (ann.) ']) + '\n' + '\n' + \
+              "```Expected Monthly % ```" + '\n' + f'{self.stock} ' + str(parse[self.stock]['Expected Monthly %']) \
+              + f'| {self.benchmark} ' + str(parse['Benchmark']['Expected Monthly %']) + '\n' + '\n' + \
+              "```Expected Yearly % ```" + '\n' + f'{self.stock} ' + str(parse[self.stock]['Expected Yearly %']) \
+              + f'| {self.benchmark} ' + str(parse['Benchmark']['Expected Yearly %']) + '\n' + '\n' + \
+              "```Kelly Criterion % ```" + '\n' + f'{self.stock} ' + str(parse[self.stock]['Kelly Criterion ']) \
+              + f'| {self.benchmark} ' + str(parse['Benchmark']['Kelly Criterion ']) + '\n' + '\n' + \
+              "```Daily Value-at-Risk ```" + '\n' + f'{self.stock} ' + str(parse[self.stock]['Daily Value-at-Risk ']) \
+              + f'| {self.benchmark} ' + str(parse['Benchmark']['Daily Value-at-Risk ']) + '\n' + '\n' + \
+              "```Best Year ```" + '\n' + f'{self.stock} ' + str(parse[self.stock]['Best Year ']) \
+              + f'| {self.benchmark} ' + str(parse['Benchmark']['Best Year ']) + '\n' + '\n' + \
+              "```Worst Year ```" + '\n' + f'{self.stock} ' + str(parse[self.stock]['Worst Year ']) \
+              + f'| {self.benchmark} ' + str(parse['Benchmark']['Worst Year ']) + '\n' + '\n' + \
+              "```Alpha ```" + '\n' + f'{self.stock} ' + str(parse[self.stock]['Alpha']) \
+              + f'| {self.benchmark} ' + str(parse['Benchmark']['Alpha']) + '\n' + '\n' + \
+              "```Beta ```" + '\n' + f'{self.stock} ' + str(parse[self.stock]['Beta']) \
               + f'| {self.benchmark} ' + str(parse['Benchmark']['Beta'])
 
         return msg
