@@ -17,6 +17,7 @@ def main():
     # get_and_save_holdings(driver=chrome_init())
     # update_universe_prices()
     parking_portfolio()
+    allweather_portfolio()
     exit()
 
     get_flows(driver=chrome_init())

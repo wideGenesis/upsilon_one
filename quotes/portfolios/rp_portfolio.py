@@ -154,7 +154,7 @@ class RiskParityAllocator:
             plt.title(title + ' Weights', size=20)
             plt.show()
 
-        print(w)
+        # print(w)
         return w
 
 
@@ -196,7 +196,7 @@ class Selector:
         sorting = _rs_sharpe.T.sort_values(_rs_sharpe.last_valid_index(), ascending=False).T
         slicing = sorting.columns.tolist()
         tickers_to_allocator = slicing[:self.assets_to_hold]
-        print(tickers_to_allocator)
+        # print(tickers_to_allocator)
         return tickers_to_allocator
 
 
