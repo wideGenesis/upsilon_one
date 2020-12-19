@@ -36,6 +36,14 @@ ETFs = conf['ETFs']
 EXCLUDE_SECTORS = conf['EXCLUDE_SECTORS']
 NOT_EXCLUDE_TICKERS = conf['NOT_EXCLUDE_TICKERS']
 
+# ============================== Portfolios ======================
+
+PARKING = conf['PORTFOLIOS']['PARKING']
+ALL_WEATHER = conf['PORTFOLIOS']['ALL_WEATHER']
+BALANCED = conf['PORTFOLIOS']['BALANCED']
+AGGRESSIVE = conf['PORTFOLIOS']['AGGRESSIVE']
+LEVERAGED = conf['PORTFOLIOS']['LEVERAGED']
+
 # ============================== Charter ======================
 # *************** Settings for candlestick chart
 IMAGE_WIDTH = conf['CHARTER_CANDLE_CHART']['IMAGE_WIDTH']

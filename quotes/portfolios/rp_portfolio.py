@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+from collections import Counter
 import numpy as np
 from matplotlib import pyplot as plt
 import seaborn as sns
@@ -6,6 +7,13 @@ from quotes.sql_queries import *
 
 from mlfinlab.portfolio_optimization import RiskEstimators, HierarchicalRiskParity, HierarchicalEqualRiskContribution
 from mlfinlab.codependence import get_dependence_matrix, get_distance_matrix
+
+"""
+    etalon = RiskParityAllocator(closes=c_df, cov_method='empirical',
+                                 herc=False, linkage_='average', risk_measure_='equal_weighting')
+    rp2 = RiskParityAllocator(closes=c_df, cov_method='empirical',
+                              herc=True, linkage_='ward', risk_measure_='variance')
+"""
 
 
 @dataclass
@@ -146,7 +154,7 @@ class RiskParityAllocator:
             plt.title(title + ' Weights', size=20)
             plt.show()
 
-        print(w)
+        # print(w)
         return w
 
 
@@ -185,10 +193,44 @@ class Selector:
             _rs_sharpe[col] = sharpe
         _rs_sharpe.dropna(inplace=True)
         _rs_sharpe.drop_duplicates(inplace=True)
-
         sorting = _rs_sharpe.T.sort_values(_rs_sharpe.last_valid_index(), ascending=False).T
         slicing = sorting.columns.tolist()
         tickers_to_allocator = slicing[:self.assets_to_hold]
-        print(tickers_to_allocator)
+        # print(tickers_to_allocator)
         return tickers_to_allocator
 
+
+def core_sat(cor=None, cor_perc=None, sat=None, sat_perc=None):
+    for k, v in cor.items():
+        cor.update({k: round(v*cor_perc, 3)})
+    for k, v in sat.items():
+        sat.update({k: round(v*sat_perc, 3)})
+
+    port = Counter(cor) + Counter(sat)
+    print(dict(port))
+    return dict(port)
+
+
+# from finvizfinance.news import News
+#
+# fnews = News()
+# all_news = fnews.getNews()
+#
+# q = ['Date', 'Title','Source','Link']
+# x = all_news['news']['Source']
+#
+#
+# z = all_news['blogs']['Source'].head(50)
+#
+# print(z)
+# # print(z)
+# """
+#  www.reuters.com
+#  www.bloomberg.com
+#  www.marketwatch.com
+ 
+  # zerohedge
+  # vantagepointtrading.com
+  #
+
+# """
