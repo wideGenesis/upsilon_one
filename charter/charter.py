@@ -74,6 +74,7 @@ def main():
         compare_ticker = "FB"
         create_candle_chart_image(ticker, compare_ticker, chart_type="YTD")
         create_excess_histogram(ticker, compare_ticker, chart_type="YTD")
+        fin.create_portfolio_donut()
 
 
 if __name__ == '__main__':

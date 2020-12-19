@@ -22,6 +22,7 @@ WEBDRIVER = conf['PATHS']['WEBDRIVER']
 IMAGES_OUT_PATH = conf['PATHS']['IMAGES_OUT_PATH']
 ETF_HOLDINGS_URL = conf['PATHS']['ETF_HOLDINGS_URL']
 
+EOD_API_KEY = conf['EODHISTOCICALDATA']['API_KEY']
 # ============================== Quote Loader ======================
 
 DEFAULT_START_QUOTES_DATE = SQL_USER = conf['SQL']['DEFAULT_START_QUOTES_DATE']

@@ -170,6 +170,39 @@ def create_excess_histogram(ticker, data, compare_ticker, compare_data):
     excess_chart.makeChart(filename)
 
 
+def create_portfolio_donut(portfolio_data=None):
+    data = [25, 18, 15, 12, 8, 30, 35]
+    labels = ["AAPL", "BABA", "TTWO", "ROK ", "AMD", "QLD", "TLT"]
+
+    pie_chart = PieChart(IMAGE_WIDTH, IMAGE_HEIGHT, HIST_BACKGROUND_COLOR)
+
+    title = pie_chart.addTitle("All weather portfolio", "timesbi.ttf", 18, H_TITLE_FONT_COLOR)
+    title.setMargin2(0, 0, 8, 8)
+    pie_chart.addLine(10, title.getHeight(), pie_chart.getWidth() - 11, title.getHeight(), H_TITLE_FONT_COLOR, 2)
+    pie_chart.setDonutSize(160, 175, 110, 0)
+    # pie_chart.setTransparentColor(20)
+    pie_chart.setData(data, labels)
+    # pie_chart.setSectorStyle(RingShading)
+    pie_chart.setColors(transparentPalette)
+    pie_chart.setBackground(OUTER_BACKGROUND_COLOR)
+    pie_chart.setLabelLayout(SideLayout, 16)
+    pie_chart.setLabelFormat("<*font=arialbd.ttf,size=13,color=%s*>{={sector}+1}" % 0xffffff)
+    pie_chart.setLabelStyle("arialbd.ttf", 10).setBackground(Transparent, H_AXIS_FONT_COLOR)
+    pie_chart.setLineColor(Transparent, H_AXIS_FONT_COLOR)
+    legend_box = pie_chart.addLegend(330, 175, 1, "arialbi.ttf", 10)
+    legend_box.setAlignment(Left)
+    legend_box.setBackground(Transparent, H_AXIS_FONT_COLOR)
+    legend_box.setFontColor(H_AXIS_FONT_COLOR)
+    legend_box.setRoundedCorners()
+    legend_box.setMargin(16)
+    legend_box.setKeySpacing(0, 5)
+    legend_box.setText(
+        "<*block,valign=top*>{={sector}+1}.<*advanceTo=22*><*block,width=120*>{label}<*/*>"
+        "<*block,width=40,halign=right*>{percent}<*/*>%")
+
+    pie_chart.makeChart("donut.jpg")
+
+
 def color_2_int(red, green, blue, alpha):
     return ((255 - alpha) << 24) + (red << 16) + (green << 8) + blue
 
