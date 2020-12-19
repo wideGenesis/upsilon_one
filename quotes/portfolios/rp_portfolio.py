@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+from collections import Counter
 import numpy as np
 from matplotlib import pyplot as plt
 import seaborn as sns
@@ -6,6 +7,13 @@ from quotes.sql_queries import *
 
 from mlfinlab.portfolio_optimization import RiskEstimators, HierarchicalRiskParity, HierarchicalEqualRiskContribution
 from mlfinlab.codependence import get_dependence_matrix, get_distance_matrix
+
+"""
+    etalon = RiskParityAllocator(closes=c_df, cov_method='empirical',
+                                 herc=False, linkage_='average', risk_measure_='equal_weighting')
+    rp2 = RiskParityAllocator(closes=c_df, cov_method='empirical',
+                              herc=True, linkage_='ward', risk_measure_='variance')
+"""
 
 
 @dataclass
@@ -191,26 +199,38 @@ class Selector:
         print(tickers_to_allocator)
         return tickers_to_allocator
 
-from finvizfinance.news import News
 
-fnews = News()
-all_news = fnews.getNews()
+def core_sat(cor=None, cor_perc=None, sat=None, sat_perc=None):
+    for k, v in cor.items():
+        cor.update({k: round(v*cor_perc, 3)})
+    for k, v in sat.items():
+        sat.update({k: round(v*sat_perc, 3)})
 
-q = ['Date', 'Title','Source','Link']
-x = all_news['news']['Source']
+    port = Counter(cor) + Counter(sat)
+    print(dict(port))
+    return dict(port)
 
 
-z = all_news['blogs']['Source'].head(50)
-
-print(z)
+# from finvizfinance.news import News
+#
+# fnews = News()
+# all_news = fnews.getNews()
+#
+# q = ['Date', 'Title','Source','Link']
+# x = all_news['news']['Source']
+#
+#
+# z = all_news['blogs']['Source'].head(50)
+#
 # print(z)
-"""
- www.reuters.com
- www.bloomberg.com
- www.marketwatch.com
+# # print(z)
+# """
+#  www.reuters.com
+#  www.bloomberg.com
+#  www.marketwatch.com
  
-  zerohedge
-  vantagepointtrading.com
+  # zerohedge
+  # vantagepointtrading.com
+  #
 
-
-"""
+# """

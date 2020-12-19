@@ -6,7 +6,7 @@ from quotes.parsers import get_flows, advance_decline, get_finviz_treemaps,\
     get_coins360_treemaps, get_economics, get_sma50, get_tw_charts, vix_curve, vix_cont, qt_curve, spx_yield
 from quotes.get_universe import *
 from quotes.quote_loader import *
-from quotes.portfolios.rp_portfolio import *
+from quotes.portfolios.portfolios_calc import *
 import schedule
 from time import sleep
 
@@ -16,41 +16,8 @@ def main():
 
     # get_and_save_holdings(driver=chrome_init())
     # update_universe_prices()
-    etf = ['QQQ',
-    'QLD',
-    'SSO',
-    'XLY',
-    'XLV',
-    'FPX',
-    'TLT',
-    'IEF',
-    'TMF',
-    'FDN',
-    'FBT',
-    'ARKW',
-    'QCLN']
-
-    closes_df = get_closes_universe_df(cap_filter=150000000000, etf_list=etf)
-    # debug(str(closes_df))
-    # exit()
-
-    select = Selector(closes=closes_df,
-                      assets_to_hold=4)
-    tickers = select.rs_sharpe()
-    c_df = get_closes_by_ticker_list(tickers)
-    #
-    # etalon = RiskParityAllocator(closes=c_df, cov_method='empirical',
-    #                              herc=False, linkage_='average', risk_measure_='equal_weighting')
-    # rp2 = RiskParityAllocator(closes=c_df, cov_method='empirical',
-    #                           herc=True, linkage_='ward', risk_measure_='variance')
-    rp = RiskParityAllocator(closes=c_df,
-                             cov_method='semi',
-                             herc=False,
-                             linkage_='ward',
-                             risk_measure_='variance',
-                             graphs_show=False)
-    rp.calc_returns()
-    rp.allocator()
+    parking_portfolio()
+    exit()
 
     get_flows(driver=chrome_init())
     advance_decline(ag=agents())
