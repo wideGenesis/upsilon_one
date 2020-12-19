@@ -185,10 +185,32 @@ class Selector:
             _rs_sharpe[col] = sharpe
         _rs_sharpe.dropna(inplace=True)
         _rs_sharpe.drop_duplicates(inplace=True)
-
         sorting = _rs_sharpe.T.sort_values(_rs_sharpe.last_valid_index(), ascending=False).T
         slicing = sorting.columns.tolist()
         tickers_to_allocator = slicing[:self.assets_to_hold]
         print(tickers_to_allocator)
         return tickers_to_allocator
 
+from finvizfinance.news import News
+
+fnews = News()
+all_news = fnews.getNews()
+
+q = ['Date', 'Title','Source','Link']
+x = all_news['news']['Source']
+
+
+z = all_news['blogs']['Source'].head(50)
+
+print(z)
+# print(z)
+"""
+ www.reuters.com
+ www.bloomberg.com
+ www.marketwatch.com
+ 
+  zerohedge
+  vantagepointtrading.com
+
+
+"""
