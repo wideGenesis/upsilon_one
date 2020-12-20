@@ -10,6 +10,7 @@ from telegram import sql_queries as sql
 from telegram import ai
 from telegram import shared
 from quotes.stock_quotes_news import StockStat
+from project_shared import *
 
 
 class WebHandler:

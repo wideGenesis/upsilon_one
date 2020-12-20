@@ -8,6 +8,7 @@ PATHS:
   LOGS: 'logs/'
   WEBDRIVER: 'webdriver/'
   ETF_HOLDINGS_URL: 'https://www.barchart.com/stocks/quotes/{}/constituents?page=all'
+  CHARTER_IMAGES_PATH: 'results/port_images/'
 
 
 TELEGRAM:

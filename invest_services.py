@@ -9,6 +9,7 @@ from quotes.quote_loader import *
 from quotes.portfolios.portfolios_calc import *
 import schedule
 from time import sleep
+from charter.charter import *
 
 
 # ============================== Main  =============================
@@ -16,8 +17,14 @@ def main():
 
     # get_and_save_holdings(driver=chrome_init())
     # update_universe_prices()
-    parking_portfolio()
-    allweather_portfolio()
+    parking_weights = parking_portfolio()
+    allweather_weights = allweather_portfolio()
+    create_portfolio_pie_image(weights=parking_weights,
+                               title="Parking portfolio",
+                               filename="parking_portfolio_pie")
+    create_portfolio_pie_image(weights=allweather_weights,
+                               title="Allweather portfolio",
+                               filename="allweather_portfolio_pie")
     exit()
 
     get_flows(driver=chrome_init())

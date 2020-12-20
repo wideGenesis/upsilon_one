@@ -1,4 +1,5 @@
 from telethon.tl.custom import Button
+from project_shared import *
 
 keyboard_0 = [
     [

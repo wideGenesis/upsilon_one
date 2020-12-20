@@ -1,3 +1,6 @@
+from project_shared import *
+
+
 async def user_search(identifier, engine=None):
     with engine.connect() as connection:
         result = connection.execute("SELECT * FROM  entities WHERE id = %s", [identifier])

@@ -15,53 +15,17 @@ from telegram import sql_queries as sql
 from telegram import handlers
 from telegram import callbacks
 from telegram import shared
+from project_shared import *
 
 # ============================== Environment Setup ======================
 PYTHON_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir))
 sys.path.append(PYTHON_PATH)
 ABS_ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
 
-conf = yaml.safe_load(open('config/settings.yaml'))
-
 os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "config/Common Bot 1-43c490d227df.json"
 os.environ["PYTHONUNBUFFERED"] = "1"
 
-# ============================== Logging Setup ======================
-logging.basicConfig(
-    filemode='w',
-    filename=os.path.abspath('logs/bot.log'),
-    format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
-    level=logging.WARNING)
-logging.getLogger('telethon').setLevel(level=logging.WARNING)
-
-# ============================== Credentials and GLOBALS ======================
-
-PAYMENT_TOKEN = conf['TELEGRAM']['PAYMENT_TOKEN']
-PAYMENT_SUCCESS_LISTEN = conf['TELEGRAM']['PAYMENT_SUCCESS_LISTEN']
-PAYMENT_SUCCESS_LISTEN_PORT = conf['TELEGRAM']['PAYMENT_SUCCESS_LISTEN_PORT']
 PUBKEY = None
-
-YAHOO_PATH = conf['PATHS']['YAHOO_PATH']
-IMAGES_OUT_PATH = conf['PATHS']['IMAGES_OUT_PATH']
-TARIFF_IMAGES = conf['TELEGRAM']['TARIFF_IMAGES']
-BTC = conf['CREDENTIALS']['BTC']
-ETH = conf['CREDENTIALS']['ETH']
-API_KEY = conf['TELEGRAM']['API_KEY']
-API_HASH = conf['TELEGRAM']['API_HASH']
-UPSILON = conf['TELEGRAM']['UPSILON']
-OWNER = conf['TELEGRAM']['OWNER']  # TODO Сделать пару владельцев для коммуникации
-SERVICE_CHAT = conf['TELEGRAM']['SERVICE_CHAT']
-
-# ============================== SQL Connect ======================
-
-SQL_DB_NAME = conf['SQL']['DB_NAME']
-SQL_USER = conf['SQL']['DB_USER']
-SQL_PASSWORD = conf['SQL']['DB_PASSWORD']
-SQL_URI = 'mysql+pymysql://{}:{}@localhost/{}'.format(SQL_USER, SQL_PASSWORD, SQL_DB_NAME)
-
-engine = create_engine(SQL_URI, pool_recycle=3600)
-container = AlchemySessionContainer(engine=engine)
-alchemy_session = container.new_session('default')
 
 # ============================== Init ===================================
 client = TelegramClient(alchemy_session, API_KEY, API_HASH).start(bot_token=UPSILON)

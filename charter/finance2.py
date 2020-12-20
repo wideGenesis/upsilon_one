@@ -3,6 +3,7 @@ from FinanceChart import *
 from pychartdir import *
 from datetime import date, timedelta
 from project_shared import *
+from functools import reduce
 
 setLicenseCode("DEVP-2LTF-FD2N-G76T-2691-3A31")
 
@@ -170,16 +171,18 @@ def create_excess_histogram(ticker, data, compare_ticker, compare_data):
     excess_chart.makeChart(filename)
 
 
-def create_portfolio_donut(portfolio_data=None):
-    data = [25, 18, 15, 12, 8, 30, 35]
-    labels = ["AAPL", "BABA", "TTWO", "ROK ", "AMD", "QLD", "TLT"]
+def create_portfolio_donut(portfolio_data=None, title="", filename="pie"):
+    data = [round((i * 100), 2) for i in portfolio_data.values()]
+    debug(data)
+    labels = portfolio_data.keys()
+    debug(labels)
 
-    pie_chart = PieChart(IMAGE_WIDTH, IMAGE_HEIGHT, HIST_BACKGROUND_COLOR)
+    pie_chart = PieChart(IMAGE_WIDTH, 320, HIST_BACKGROUND_COLOR)
 
-    title = pie_chart.addTitle("All weather portfolio", "timesbi.ttf", 18, H_TITLE_FONT_COLOR)
+    title = pie_chart.addTitle(title, "timesbi.ttf", 18, H_TITLE_FONT_COLOR)
     title.setMargin2(0, 0, 8, 8)
     pie_chart.addLine(10, title.getHeight(), pie_chart.getWidth() - 11, title.getHeight(), H_TITLE_FONT_COLOR, 2)
-    pie_chart.setDonutSize(160, 175, 110, 0)
+    pie_chart.setDonutSize(160, 195, 110, 0)
     # pie_chart.setTransparentColor(20)
     pie_chart.setData(data, labels)
     # pie_chart.setSectorStyle(RingShading)
@@ -200,7 +203,7 @@ def create_portfolio_donut(portfolio_data=None):
         "<*block,valign=top*>{={sector}+1}.<*advanceTo=22*><*block,width=120*>{label}<*/*>"
         "<*block,width=40,halign=right*>{percent}<*/*>%")
 
-    pie_chart.makeChart("donut.jpg")
+    pie_chart.makeChart(f'{CHARTER_IMAGES_PATH}{filename}.png')
 
 
 def color_2_int(red, green, blue, alpha):

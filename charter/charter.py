@@ -1,5 +1,5 @@
-import finance2 as fin
-import sql_queries as sql
+import charter.finance2 as fin
+import charter.sql_queries as sql
 from datetime import date, timedelta
 from project_shared import *
 
@@ -66,6 +66,9 @@ def create_excess_histogram(ticker, compare_ticker, chart_type="Y"):
     else:
         debug("WARNING: Can't create chart!")
 
+
+def create_portfolio_pie_image(weights, title, filename):
+    fin.create_portfolio_donut(portfolio_data=weights, title=title, filename=filename)
 
 def main():
     debug("__Start main__")

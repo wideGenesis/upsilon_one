@@ -45,6 +45,7 @@ AGGRESSIVE = conf['PORTFOLIOS']['AGGRESSIVE']
 LEVERAGED = conf['PORTFOLIOS']['LEVERAGED']
 
 # ============================== Charter ======================
+CHARTER_IMAGES_PATH = "" + i_path + "/" + conf['PATHS']['CHARTER_IMAGES_PATH']
 # *************** Settings for candlestick chart
 IMAGE_WIDTH = conf['CHARTER_CANDLE_CHART']['IMAGE_WIDTH']
 IMAGE_HEIGHT = conf['CHARTER_CANDLE_CHART']['IMAGE_HEIGHT']
@@ -81,6 +82,20 @@ engine = create_engine(SQL_URI, pool_recycle=3600)
 container = AlchemySessionContainer(engine=engine)
 alchemy_session = container.new_session('default')
 
+# ============================== BOT SETTINGS ======================
+PAYMENT_TOKEN = conf['TELEGRAM']['PAYMENT_TOKEN']
+PAYMENT_SUCCESS_LISTEN = conf['TELEGRAM']['PAYMENT_SUCCESS_LISTEN']
+PAYMENT_SUCCESS_LISTEN_PORT = conf['TELEGRAM']['PAYMENT_SUCCESS_LISTEN_PORT']
+
+YAHOO_PATH = conf['PATHS']['YAHOO_PATH']
+TARIFF_IMAGES = conf['TELEGRAM']['TARIFF_IMAGES']
+BTC = conf['CREDENTIALS']['BTC']
+ETH = conf['CREDENTIALS']['ETH']
+API_KEY = conf['TELEGRAM']['API_KEY']
+API_HASH = conf['TELEGRAM']['API_HASH']
+UPSILON = conf['TELEGRAM']['UPSILON']
+OWNER = conf['TELEGRAM']['OWNER']  # TODO Сделать пару владельцев для коммуникации
+SERVICE_CHAT = conf['TELEGRAM']['SERVICE_CHAT']
 
 # ============================== Logging Setup ======================
 # logging.basicConfig(

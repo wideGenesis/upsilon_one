@@ -4,6 +4,7 @@ from telegram import sql_queries as sql
 from telethon.tl.custom import Button
 from telegram import buttons
 from quotes.parsers import users_count
+from project_shared import *
 
 
 async def start_menu(event, client, engine=None):

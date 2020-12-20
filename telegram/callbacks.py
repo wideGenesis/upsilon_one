@@ -12,6 +12,7 @@ from telegram import sql_queries as sql
 from telegram import menu
 from telegram import shared
 from payments.payagregator import PaymentAgregator
+from project_shared import *
 
 PAYMENT_AGGREGATOR = None
 PAYMENT_AGGREGATOR_TIMER = None
@@ -221,12 +222,14 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
         message = await client.send_message(entity=entity, message='Загрузка...')
         await client.edit_message(message, '"Парковочный" портфель без риска')
         await event.edit()
+        await client.send_file(entity, CHARTER_IMAGES_PATH + 'parking_portfolio_pie.png')
         await client.send_message(event.input_sender, 'Кому и когда покупать парковочный портфель? /instruction05',
                                   buttons=buttons.keyboard_a2_back)
     elif event.data == b'a2a4':
         message = await client.send_message(entity=entity, message='Загрузка...')
         await client.edit_message(message, 'Всепогодный портфель')
         await event.edit()
+        await client.send_file(entity, CHARTER_IMAGES_PATH + 'allweather_portfolio_pie.png')
         await client.send_message(event.input_sender, 'Кому и когда покупать всепогодный портфель? /instruction06',
                                   buttons=buttons.keyboard_a2_back)
     elif event.data == b'a2a5':
