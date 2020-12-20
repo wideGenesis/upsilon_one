@@ -9,7 +9,9 @@ def get_all_etf_holdings():
     debug("#Start get ETF holdings")
     session = requests.Session()
     ticker_data = {}
-    for etf in ETF_FOR_SCRAPE:
+    t_len = len(ETF_FOR_SCRAPE)
+    print_progress_bar(0, t_len, prefix='Progress:', suffix='Complete', length=50)
+    for count, etf in enumerate(ETF_FOR_SCRAPE):
         url = f'https://eodhistoricaldata.com/api/fundamentals/{etf}.US'
         params = {'api_token': EOD_API_KEY}
         request_result = session.get(url, params=params)
@@ -17,8 +19,12 @@ def get_all_etf_holdings():
             parsed_json = json.loads(request_result.text)
             holdings = parsed_json['ETF_Data']['Holdings']
             for holding in holdings:
-                ticker_data[holdings[holding]['Code']] = holdings[holding]['Sector']
-                debug(f"Ticker:{holdings[holding]['Code']}  Sector: {holdings[holding]['Sector']}")
+                ticker = holdings[holding]['Code']
+                sector = holdings[holding]['Sector']
+                mkt_cap = get_mkt_cap(ticker, session)
+                if (sector not in EXCLUDE_SECTORS and sector is not None) or ticker in NOT_EXCLUDE_TICKERS:
+                    ticker_data[ticker] = (sector, mkt_cap)
+        print_progress_bar(count, t_len, prefix='Progress:', suffix=f'Complete:{etf}    ', length=50)
     return ticker_data
 
 
@@ -39,6 +45,19 @@ def get_etf_holdings(etf):
 def get_market_cap(ticker):
     debug("#Start get MarketCapitalization")
     session = requests.Session()
+    mkt_cap = 0
+    url = f'https://eodhistoricaldata.com/api/fundamentals/{ticker}.US'
+    params = {'api_token': EOD_API_KEY, 'filter': 'Highlights::MarketCapitalization'}
+    request_result = session.get(url, params=params)
+    if request_result.status_code == requests.codes.ok:
+        parsed_json = json.loads(request_result.text)
+        mkt_cap = int(parsed_json)
+    return mkt_cap
+
+
+def get_mkt_cap(ticker, sess):
+    debug("#Start get MarketCapitalization")
+    session = sess
     mkt_cap = 0
     url = f'https://eodhistoricaldata.com/api/fundamentals/{ticker}.US'
     params = {'api_token': EOD_API_KEY, 'filter': 'Highlights::MarketCapitalization'}

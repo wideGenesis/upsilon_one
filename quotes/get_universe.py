@@ -6,6 +6,22 @@ from bs4 import BeautifulSoup
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
+from quotes.eodhistoricaldata import *
+
+
+def eod_get_and_save_holdings():
+    constituents = get_all_etf_holdings()
+
+    # ++++++++ Добавим во вселенную ETFs ++++++++
+    for ticker in ETFs:
+        constituents[ticker] = ("ETF", 0)
+
+    # ++++++++ положим все в базу ++++++++
+    if is_table_exist(UNIVERSE_TABLE_NAME):
+        eod_update_universe_table(constituents)
+    else:
+        create_universe_table()
+        eod_insert_universe_data(constituents)
 
 
 def get_and_save_holdings(driver):
