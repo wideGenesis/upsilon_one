@@ -1,0 +1,29 @@
+,ADBE,Benchmark
+Start Period,2015-12-11,2015-12-11
+End Period,2020-12-11,2020-12-11
+Cumulative Return ,4.19,1.84
+CAGR%,0.39,0.23
+Sharpe,1.18,1.06
+Sortino,1.76,1.48
+Max Drawdown ,,
+Longest DD Days,-,-
+Volatility (ann.) ,0.32,0.22
+Skew,0.29,-0.6
+Kurtosis,10.49,10.53
+Expected Monthly %,0.03,0.02
+Expected Yearly %,0.32,0.19
+Kelly Criterion ,0.06,0.09
+Daily Value-at-Risk ,-0.03,-0.02
+Expected Shortfall (cVaR) ,-0.03,-0.02
+3M ,-0.01,0.08
+6M ,0.17,0.23
+YTD ,0.44,0.42
+1Y ,0.56,0.48
+3Y (ann.) ,0.4,0.26
+5Y (ann.) ,0.39,0.23
+10Y (ann.) ,0.39,0.23
+Best Year ,0.7,0.42
+Worst Year ,0.03,-0.0
+Alpha,0.1,-
+Beta,1.2,-
+Avg. Drawdown Days,-,-

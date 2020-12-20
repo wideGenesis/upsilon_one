@@ -1,0 +1,29 @@
+,NFLX,Benchmark
+Start Period,2015-12-14,2015-12-14
+End Period,2020-12-11,2020-12-11
+Cumulative Return ,3.17,1.82
+CAGR%,0.33,0.23
+Sharpe,0.91,1.05
+Sortino,1.36,1.47
+Max Drawdown ,,
+Longest DD Days,-,-
+Volatility (ann.) ,0.41,0.22
+Skew,0.2,-0.6
+Kurtosis,5.5,10.52
+Expected Monthly %,0.02,0.02
+Expected Yearly %,0.27,0.19
+Kelly Criterion ,0.04,0.1
+Daily Value-at-Risk ,-0.04,-0.02
+Expected Shortfall (cVaR) ,-0.04,-0.02
+3M ,0.01,0.09
+6M ,0.16,0.23
+YTD ,0.56,0.43
+1Y ,0.68,0.48
+3Y (ann.) ,0.39,0.26
+5Y (ann.) ,0.33,0.23
+10Y (ann.) ,0.33,0.23
+Best Year ,0.56,0.43
+Worst Year ,-0.05,-0.0
+Alpha,0.11,-
+Beta,1.11,-
+Avg. Drawdown Days,-,-

@@ -15,8 +15,8 @@ from charter.charter import *
 # ============================== Main  =============================
 def main():
 
-    # get_and_save_holdings(driver=chrome_init())
-    # update_universe_prices()
+    get_and_save_holdings(driver=chrome_init())
+    update_universe_prices()
     parking_weights = parking_portfolio()
     allweather_weights = allweather_portfolio()
     create_portfolio_pie_image(weights=parking_weights,
