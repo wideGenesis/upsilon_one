@@ -19,12 +19,24 @@ def main():
     update_universe_prices()
     parking_weights = parking_portfolio()
     allweather_weights = allweather_portfolio()
+    balanced_weights = balanced_portfolio()
+    aggressive_weights = aggressive_portfolio()
+    leveraged_weights = leveraged_portfolio()
     create_portfolio_pie_image(weights=parking_weights,
                                title="Parking portfolio",
                                filename="parking_portfolio_pie")
     create_portfolio_pie_image(weights=allweather_weights,
                                title="Allweather portfolio",
                                filename="allweather_portfolio_pie")
+    create_portfolio_pie_image(weights=balanced_weights,
+                               title="Balanced portfolio",
+                               filename="balanced_portfolio_pie")
+    create_portfolio_pie_image(weights=aggressive_weights,
+                               title="Aggressive portfolio",
+                               filename="aggressive_portfolio_pie")
+    create_portfolio_pie_image(weights=leveraged_weights,
+                               title="lLeveraged portfolio",
+                               filename="leveraged_portfolio_pie")
     exit()
 
     get_flows(driver=chrome_init())
