@@ -236,19 +236,22 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
         message = await client.send_message(entity=entity, message='Загрузка...')
         await client.edit_message(message, 'Сбалансированный портфель')
         await event.edit()
+        await client.send_file(entity, CHARTER_IMAGES_PATH + 'balanced_portfolio_pie.png')
         await client.send_message(event.input_sender, 'Кому и когда покупать сбалансированный портфель? /instruction07',
                                   buttons=buttons.keyboard_a2_back)
     elif event.data == b'a2a6':
         message = await client.send_message(entity=entity, message='Загрузка...')
         await client.edit_message(message, 'Агрессивный портфель')
         await event.edit()
+        await client.send_file(entity, CHARTER_IMAGES_PATH + 'aggressive_portfolio_pie.png')
         await client.send_message(event.input_sender, 'Кому и когда покупать агрессивный портфель? /instruction08',
                                   buttons=buttons.keyboard_a2_back)
     elif event.data == b'a2a7':
         message = await client.send_message(entity=entity, message='Загрузка...')
-        await client.edit_message(message, 'Крипто портфель')
+        await client.edit_message(message, 'Плечевой портфель')
         await event.edit()
-        await client.send_message(event.input_sender, 'Кому и когда покупать крипто портфель? /instruction09',
+        await client.send_file(entity, CHARTER_IMAGES_PATH + 'leveraged_portfolio_pie.png')
+        await client.send_message(event.input_sender, 'Кому и когда покупать плечевой портфель? /instruction09',
                                   buttons=buttons.keyboard_a2_back)
     elif event.data == b'a2a8':
         message = await client.send_message(entity=entity, message='Загрузка...')
