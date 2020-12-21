@@ -16,10 +16,12 @@ from charter.charter import *
 # ============================== Main  =============================
 def main():
 
+    # Это забирание вселенной по-старому
     # get_and_save_holdings(driver=chrome_init())
     # update_universe_prices()
-    # eod_get_and_save_holdings()
-    # exit()
+
+    # Это уже формирование вселенной по-новому, через апи
+    eod_get_and_save_holdings()
     eod_update_universe_prices()
 
     parking_weights = parking_portfolio()

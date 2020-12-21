@@ -10,7 +10,9 @@ def get_all_etf_holdings():
     debug("ETF_FOR_SCRAPE:" + str(ETF_FOR_SCRAPE))
     ticker_data = {}
     request_count = 0
-    for etf in ETF_FOR_SCRAPE:
+    t_len = len(ETF_FOR_SCRAPE)
+    print_progress_bar(0, t_len, prefix='Progress:', suffix='Complete', length=50)
+    for numb, etf in enumerate(ETF_FOR_SCRAPE):
         with requests.Session() as session:
             url = f'https://eodhistoricaldata.com/api/fundamentals/{etf}.US'
             params = {'api_token': EOD_API_KEY, 'filter': 'ETF_Data::Holdings'}
@@ -25,9 +27,7 @@ def get_all_etf_holdings():
             request_count += 1
             if request_result.status_code == requests.codes.ok:
                 parsed_json = json.loads(request_result.text)
-                t_len = len(parsed_json)
-                print_progress_bar(0, t_len, prefix='Progress:', suffix='Complete', length=50)
-                for count, company in enumerate(parsed_json):
+                for count, company in enumerate(parsed_json, start=1):
                     ticker = parsed_json[company].get('Code', None)
                     sector = parsed_json[company].get('Sector', None)
                     if ticker is not None:
@@ -37,7 +37,7 @@ def get_all_etf_holdings():
                             if (sector not in EXCLUDE_SECTORS and sector is not None) or ticker in NOT_EXCLUDE_TICKERS:
                                 ticker_data[ticker] = (sector, mkt_cap)
                     else:
-                        debug(f'Cant get Code for company:ETF:{etf}:{company}')
+                        # debug(f'Cant get Code for company:ETF:{etf}:{company}')
                         ticker = lookup_ticker_by_name(company_name=company, sess=session)
                         request_count += 1
                         if ticker is not None and ticker not in ticker_data:
@@ -45,8 +45,11 @@ def get_all_etf_holdings():
                             request_count += 1
                             mkt_cap = get_mkt_cap(ticker, session)
                             request_count += 1
-                            parsed_json[ticker] = (sector, mkt_cap)
-                    print_progress_bar(count, t_len, prefix='Progress:', suffix=f'Complete:{etf}:{ticker}:[{count}:{t_len}]    ', length=50)
+                            if (sector not in EXCLUDE_SECTORS and sector is not None) or ticker in NOT_EXCLUDE_TICKERS:
+                                ticker_data[ticker] = (sector, mkt_cap)
+                    if count == ETF_FOR_SCRAPE[etf]:
+                        break
+        print_progress_bar(numb, t_len, prefix='Progress:', suffix=f'Complete:{etf}:{len(ticker_data)}    ', length=50)
     return ticker_data
 
 
@@ -181,7 +184,7 @@ def get_historical_prices(ticker, from_date, end_date, is_update=False):
         request_result = session.get(url, params=params)
     except Exception as e:
         # print(e, 'Waiting 10 sec')
-        sleep(10)
+        sleep(15)
         request_result = session.get(url, params=params)
     if request_result.status_code == requests.codes.ok:
         parsed_json = json.loads(request_result.text)
