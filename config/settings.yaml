@@ -54,17 +54,17 @@ CREDENTIALS:
 EODHISTOCICALDATA:
   API_KEY: 'OeAFFmMliFG5orCUuwAKQ8l4WWFQ67YX'
 
-ETF_FOR_SCRAPE: [
-    'QQQ', # 20
-    'IWY', # 20
-    'FDN', # 20
-    'QCLN' # 20
-    'ARKW', # 15
-    'ARKK', # 15
-    'ARKF', # 15
-    'ARKG', # 15
 
-]
+ETF_FOR_SCRAPE: {
+                  'QQQ': 20,
+                  'IWY': 20,
+                  'FDN': 20,
+                  'QCLN': 20,
+                  'ARKW': 15,
+                  'ARKK': 15,
+                  'ARKF': 15,
+                  'ARKG': 15
+}
 
 ETFs: [
     'QQQ',
