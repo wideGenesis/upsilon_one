@@ -10,6 +10,7 @@ from quotes.eodhistoricaldata import *
 
 
 def eod_get_and_save_holdings():
+    debug("Start eod_get_and_save_holdings")
     constituents = get_all_etf_holdings()
 
     # ++++++++ Добавим во вселенную ETFs ++++++++
@@ -22,6 +23,7 @@ def eod_get_and_save_holdings():
     else:
         create_universe_table()
         eod_insert_universe_data(constituents)
+    debug("END eod_get_and_save_holdings")
 
 
 def get_and_save_holdings(driver):
@@ -104,6 +106,8 @@ class ConstituentsScraper:
                         }
                 except BaseException as ex:
                     print(ex)
+            if etf == "ARKF":
+                debug("asset_dict:" + str(asset_dict))
             result = pd.DataFrame(asset_dict).T
             df_all = df_all.append(result)
             df_all.drop_duplicates(keep='first', inplace=True)

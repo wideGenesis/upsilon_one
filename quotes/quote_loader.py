@@ -115,26 +115,32 @@ def eod_update_universe_prices(exclude_sectors=EXCLUDE_SECTORS, not_exclude_tick
         print_progress_bar(0, t_len, prefix='Progress:', suffix='Complete', length=50)
         for count, ticker in enumerate(tickers):
             # print("### Try update ticker:" + str(ticker))
+            if count > 0 and count % 15 == 0:
+                sleep(3)
             if ticker_lookup(ticker):
                 if (end_table_date - td) != today:
                     is_update = True
                     # print("(ticker exist) Start date:" + str(end_table_date) + "; End date:" + str(today))
-                    download_quotes_to_db(ticker, end_table_date, today, is_update)
+                    get_historical_prices(ticker, end_table_date, today, is_update)
                 # else:
                 #     print("Nothing to update. The table is up to date.")
             else:
                 # print("(ticker not exist) Start date:" + str(start_table_date) + "; End date:" + str(today))
-                download_quotes_to_db(ticker, start_table_date, today, is_update)
-            print_progress_bar(count, t_len, prefix='Progress:', suffix=f'Complete:{ticker}   ', length=50)
+                get_historical_prices(ticker, start_table_date, today, is_update)
+            print_progress_bar(count, t_len, prefix='Progress:', suffix=f'Complete:{ticker}:[{count}:{t_len}]   ',
+                               length=50)
     else:
         debug("__Table is not exists__")
         create_quotes_table()
         print_progress_bar(0, t_len, prefix='Progress:', suffix='Complete', length=50)
         for count, ticker in enumerate(tickers):
+            if count > 0 and count % 15 == 0:
+                sleep(3)
             start_date = date.fromisoformat(DEFAULT_START_QUOTES_DATE)
             end_date = date.today()
-            download_quotes_to_db(ticker, start_date, end_date, is_update)
-            print_progress_bar(count, t_len, prefix='Progress:', suffix=f'Complete:{ticker}   ', length=50)
+            get_historical_prices(ticker, start_date, end_date, is_update)
+            print_progress_bar(count, t_len, prefix='Progress:', suffix=f'Complete:{ticker}:[{count}:{t_len}]   ',
+                               length=50)
 
 
 def main():

@@ -7,6 +7,7 @@ from quotes.parsers import get_flows, advance_decline, get_finviz_treemaps,\
 from quotes.get_universe import *
 from quotes.quote_loader import *
 from quotes.portfolios.portfolios_calc import *
+from quotes.portfolios.portfolios_save import *
 import schedule
 from time import sleep
 from charter.charter import *
@@ -15,8 +16,12 @@ from charter.charter import *
 # ============================== Main  =============================
 def main():
 
-    get_and_save_holdings(driver=chrome_init())
-    update_universe_prices()
+    # get_and_save_holdings(driver=chrome_init())
+    # update_universe_prices()
+    # eod_get_and_save_holdings()
+    # exit()
+    eod_update_universe_prices()
+
     parking_weights = parking_portfolio()
     allweather_weights = allweather_portfolio()
     balanced_weights = balanced_portfolio()
@@ -35,7 +40,7 @@ def main():
                                title="Aggressive portfolio",
                                filename="aggressive_portfolio_pie")
     create_portfolio_pie_image(weights=leveraged_weights,
-                               title="lLeveraged portfolio",
+                               title="Leveraged portfolio",
                                filename="leveraged_portfolio_pie")
     exit()
 
