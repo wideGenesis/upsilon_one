@@ -175,7 +175,7 @@ class Selector:
         self.performance_period = performance_period
         self.assets_to_hold = assets_to_hold
 
-    def rs_sharpe(self):
+    def rs_sharpe(self, etf=False):
         df = self.closes
         columns = df.columns.tolist()
         _rs_sharpe = df.copy()
@@ -190,7 +190,10 @@ class Selector:
             rs = roll_up1 / roll_down1
             mrsi = 50.0 - (100.0 / (1.0 + rs))
             sharpe = mrsi / df[col].rolling(self.performance_period).std()
-            _rs_sharpe[col] = sharpe
+            if etf:
+                _rs_sharpe[col] = mrsi
+            else:
+                _rs_sharpe[col] = sharpe
         _rs_sharpe.dropna(inplace=True)
         _rs_sharpe.drop_duplicates(inplace=True)
         sorting = _rs_sharpe.T.sort_values(_rs_sharpe.last_valid_index(), ascending=False).T
