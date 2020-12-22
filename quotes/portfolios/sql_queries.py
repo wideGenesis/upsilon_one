@@ -22,7 +22,7 @@ def create_portfolio_allocation_table(table_name=PORTFOLIO_ALLOCATION_TABLE_NAME
                            f'(port_id VARCHAR(100) NOT NULL, ' \
                            f'ticker VARCHAR(6), ' \
                            f'weight DOUBLE, ' \
-                           f'PRIMARY KEY(port_id)' \
+                           f'PRIMARY KEY(port_id, ticker, weight)' \
                            f')'
             connection.execute(create_query)
             transaction.commit()
@@ -44,7 +44,7 @@ def update_portfolio_allocation(port_id, weights, table_name=PORTFOLIO_ALLOCATIO
 def get_portfolio_allocation(port_id, table_name=PORTFOLIO_ALLOCATION_TABLE_NAME, engine=engine):
     with engine.connect() as connection:
         if is_table_exist(table_name):
-            get_query = f'SELECT port_id, ticker, weight FROM {table_name} WHERE port_id=\'{port_id}\''
+            get_query = f'SELECT ticker, weight FROM {table_name} WHERE port_id=\'{port_id}\''
             get_result = connection.execute(get_query)
             return get_result.fetchall() if get_result.rowcount > 0 else None
 

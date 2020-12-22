@@ -173,9 +173,9 @@ def create_excess_histogram(ticker, data, compare_ticker, compare_data):
 
 def create_portfolio_donut(portfolio_data=None, title="", filename="pie"):
     data = [round((i * 100), 2) for i in portfolio_data.values()]
-    debug(data)
+    # debug(data)
     labels = portfolio_data.keys()
-    debug(labels)
+    # debug(labels)
 
     pie_chart = PieChart(IMAGE_WIDTH, 320, HIST_BACKGROUND_COLOR)
 

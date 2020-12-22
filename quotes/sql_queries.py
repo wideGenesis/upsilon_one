@@ -166,6 +166,32 @@ def get_closes_by_ticker_list(ticker_list, start_date=None, end_date=date.today(
     return closes
 
 
+def get_ohlc_dict_by_ticker_list(ticker_list, start_date=None, end_date=date.today(),
+                                 q_table_name=QUOTE_TABLE_NAME, u_table_name=UNIVERSE_TABLE_NAME,
+                                 engine=engine):
+    with engine.connect() as connection:
+        ohlc = {}
+        if start_date is None:
+            td = timedelta(365)
+            start_date = end_date - td
+
+        for ticker in ticker_list:
+            query_string = f'SELECT q.dateTime, q.open, q.high, q.low, q.close ' \
+                           f'FROM {q_table_name} q, {u_table_name} u' \
+                           f' WHERE q.ticker=\'{ticker}\' AND q.ticker=u.ticker '
+            if start_date is not None:
+                query_string += f' AND q.dateTime >= \'{str(start_date)}\' '
+            if end_date is not None:
+                query_string += f' AND q.dateTime <= \'{str(end_date)}\' '
+            query_string += f' ORDER BY q.dateTime ASC'
+
+            q_result = connection.execute(query_string)
+            if q_result.rowcount > 0:
+                rows = q_result.fetchall()
+                ohlc[ticker] = rows
+    return ohlc
+
+
 def get_closes_by_ticker_list_ti(ticker_list, time_interval=365,
                                  q_table_name=QUOTE_TABLE_NAME, u_table_name=UNIVERSE_TABLE_NAME,
                                  engine=engine):
@@ -372,5 +398,3 @@ def get_all_universe(table_name=UNIVERSE_TABLE_NAME, engine=engine):
                 return None
         else:
             debug(f'Can\'t find table: {table_name}!')
-
-
