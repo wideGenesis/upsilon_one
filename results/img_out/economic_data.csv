@@ -1,12 +1,12 @@
 Data,Country,Last,Previous,Reference,Unit
-Interest Rate,Russia,4.25,4.25,Oct/20,%
+Interest Rate,Russia,4.25,4.25,Dec/20,%
 Interest Rate,China,3.85,3.85,Dec/20,%
 Interest Rate,United States,0.25,0.25,Dec/20,%
 Interest Rate,United Kingdom,0.1,0.1,Dec/20,%
 Interest Rate,Euro Area,0,0,Dec/20,%
 Interest Rate,France,0,0,Dec/20,%
 Interest Rate,Germany,0,0,Dec/20,%
-Interest Rate,Japan,-0.1,-0.1,Oct/20,%
+Interest Rate,Japan,-0.1,-0.1,Dec/20,%
 Inflation Rate,Russia,4.4,4,Nov/20,%
 Inflation Rate,United States,1.2,1.2,Nov/20,%
 Inflation Rate,United Kingdom,0.3,0.7,Nov/20,%
@@ -18,7 +18,7 @@ Inflation Rate,Japan,-0.9,-0.4,Nov/20,%
 Unemployment Rate,France,9,7.1,Sep/20,%
 Unemployment Rate,Euro Area,8.4,8.5,Oct/20,%
 Unemployment Rate,United States,6.7,6.9,Nov/20,%
-Unemployment Rate,Russia,6.3,6.3,Oct/20,%
+Unemployment Rate,Russia,6.1,6.3,Nov/20,%
 Unemployment Rate,China,5.2,5.3,Nov/20,%
 Unemployment Rate,United Kingdom,4.9,4.8,Oct/20,%
 Unemployment Rate,Germany,4.5,4.5,Oct/20,%

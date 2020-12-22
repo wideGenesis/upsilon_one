@@ -214,6 +214,10 @@ def core_sat(cor=None, cor_perc=None, sat=None, sat_perc=None):
     return dict(port)
 
 
+def returns_calc():
+
+
+
 # from finvizfinance.news import News
 #
 # fnews = News()
