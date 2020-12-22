@@ -21,8 +21,8 @@ def main():
     # update_universe_prices()
 
     # Это уже формирование вселенной по-новому, через апи
-    eod_get_and_save_holdings()
-    eod_update_universe_prices()
+    # eod_get_and_save_holdings()
+    # eod_update_universe_prices()
 
     parking_weights = parking_portfolio()
     allweather_weights = allweather_portfolio()
