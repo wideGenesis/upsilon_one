@@ -113,46 +113,23 @@ class StockStat:
         return msg
 
 
-def fin_news():
+def fin_news(blogs=False, rows=20):
     fnews = News()
     all_news = fnews.getNews()
-    news = all_news['news'][0:5]
-    news = news[(news.Source == "www.reuters.com") | (news.Source == "www.marketwatch.com") | (
+    if blogs:
+        news = all_news['blogs'][0:rows]
+        news = news[(news.Source == "zerohedge") | (news.Source == "vantagepointtrading.com") | (
+                news.Source == "seekingalpha.com")]
+    else:
+        news = all_news['news'][0:rows]
+        news = news[(news.Source == "www.reuters.com") | (news.Source == "www.marketwatch.com") | (
                 news.Source == "www.bloomberg.com")]
     news_list = []
-    for d1 in news['Date']:
-        for t1 in news['Title']:
-            for l1 in news['Link']:
-                row = (d1 + ' ' + t1 + ' ' + l1)
-                news_list.append(row)
+    for index, row in news.iterrows():
+        row = (row['Date'], row['Title'], row['Link'])
+        news_list.append(row)
+    msg = ''
+    for n in news_list[0:rows]:
+        msg += ' '.join(n) + '\n' + '\n'
+    return msg
 
-    print(news_list)
-
-
-    #
-    # return msg
-
-    # msg = ''
-    # for n in news['Link'][0:10]:
-    #     for s in news['Source'][0:10]:
-    #         if s == 'www.reuters.com':
-    #             msg += n + '\n' + '\n'
-    # print(msg)
-    # return msg
-    #
-    # z = all_news['blogs']['Source'].head(50)
-    #
-    # print(z)
-    # print(type(z))
-    # print(type(all_news))
-    # """
-    #  www.reuters.com
-    #  www.bloomberg.com
-    #  www.marketwatch.com
-    #
-    #   zerohedge
-    #   vantagepointtrading.com
-    #
-    #
-    # """
-fin_news()

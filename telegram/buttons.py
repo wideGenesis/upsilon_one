@@ -196,10 +196,10 @@ keyboard_a7_back = [
 
 keyboard_a8 = [
     [
-        Button.inline('\U0001F5DE  ' + 'Поставщики новостей', b'a9a1')
+        Button.inline('\U0001F5DE  ' + 'Последние новости', b'a9a1')
     ],
     [
-        Button.inline('\U0001F4B1   ' + 'Тикеры', b'a9a2')
+        Button.inline('\U0001F4B1   ' + 'Последние статьи в блогах', b'a9a2')
     ],
     [
         Button.inline('\U0001F519  ' + 'Назад', b'main')

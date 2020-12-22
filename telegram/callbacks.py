@@ -13,6 +13,7 @@ from telegram import menu
 from telegram import shared
 from payments.payagregator import PaymentAgregator
 from project_shared import *
+from quotes.stock_quotes_news import fin_news
 
 PAYMENT_AGGREGATOR = None
 PAYMENT_AGGREGATOR_TIMER = None
@@ -374,18 +375,16 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
         await event.edit()
 
     # ============================== Агрегатор новостей =============================
-    elif event.data == b'a8a1':
-        message = await client.send_message(entity=entity, message='Загрузка...')
-        await client.edit_message(message, 'Поставщики новостей')
-        await event.edit()
-        await client.send_message(event.input_sender, 'Поставщики новостей',
-                                  buttons=buttons.keyboard_a8_back)
-    elif event.data == b'a8a2':
-        message = await client.send_message(entity=entity, message='Загрузка...')
-        await client.edit_message(message, 'Тикеры')
-        await event.edit()
-        await client.send_message(event.input_sender, 'Тикеры',
-                                  buttons=buttons.keyboard_a8_back)
+    elif event.data == b'a9a1':
+        msg1 = fin_news(blogs=False)
+        message = await client.send_message(entity=entity, message='Последние новости')
+        await client.send_message(entity=entity, message=msg1, buttons=buttons.keyboard_a8_back)
+
+    elif event.data == b'a9a2':
+        msg2 = fin_news(blogs=True)
+        message = await client.send_message(entity=entity, message='Последние статьи в блогах')
+        await client.send_message(entity=entity, message=msg2, buttons=buttons.keyboard_a8_back)
+
     elif event.data == b'a8a-1':
         await client.send_message(event.input_sender, 'Агрегатор новостей', buttons=buttons.keyboard_a8)
         await event.edit()
