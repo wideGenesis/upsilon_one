@@ -214,30 +214,7 @@ def core_sat(cor=None, cor_perc=None, sat=None, sat_perc=None):
     return dict(port)
 
 
-def returns_calc():
+def returns_calc(allocation=None, closes=None):
+    pass
 
 
-
-# from finvizfinance.news import News
-#
-# fnews = News()
-# all_news = fnews.getNews()
-#
-# q = ['Date', 'Title','Source','Link']
-# x = all_news['news']['Source']
-#
-#
-# z = all_news['blogs']['Source'].head(50)
-#
-# print(z)
-# # print(z)
-# """
-#  www.reuters.com
-#  www.bloomberg.com
-#  www.marketwatch.com
- 
-  # zerohedge
-  # vantagepointtrading.com
-  #
-
-# """

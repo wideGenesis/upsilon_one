@@ -2,6 +2,7 @@ from dataclasses import dataclass
 import pandas as pd
 import json
 import finviz
+from finvizfinance.news import News
 import quantstats as qs
 
 
@@ -110,3 +111,48 @@ class StockStat:
         for n in news[0:15]:
             msg += ' '.join(n) + '\n' + '\n'
         return msg
+
+
+def fin_news():
+    fnews = News()
+    all_news = fnews.getNews()
+    news = all_news['news'][0:5]
+    news = news[(news.Source == "www.reuters.com") | (news.Source == "www.marketwatch.com") | (
+                news.Source == "www.bloomberg.com")]
+    news_list = []
+    for d1 in news['Date']:
+        for t1 in news['Title']:
+            for l1 in news['Link']:
+                row = (d1 + ' ' + t1 + ' ' + l1)
+                news_list.append(row)
+
+    print(news_list)
+
+
+    #
+    # return msg
+
+    # msg = ''
+    # for n in news['Link'][0:10]:
+    #     for s in news['Source'][0:10]:
+    #         if s == 'www.reuters.com':
+    #             msg += n + '\n' + '\n'
+    # print(msg)
+    # return msg
+    #
+    # z = all_news['blogs']['Source'].head(50)
+    #
+    # print(z)
+    # print(type(z))
+    # print(type(all_news))
+    # """
+    #  www.reuters.com
+    #  www.bloomberg.com
+    #  www.marketwatch.com
+    #
+    #   zerohedge
+    #   vantagepointtrading.com
+    #
+    #
+    # """
+fin_news()
