@@ -214,7 +214,36 @@ def core_sat(cor=None, cor_perc=None, sat=None, sat_perc=None):
     return dict(port)
 
 
-def returns_calc(allocation=None, closes=None):
-    pass
+def returns_calc(init_capital=10000, ohlc=None):
+    cap_qty = {}
+    for k, v in ohlc.items():
+        ticker_qty = init_capital * v[0][5]
+        cap_qty.update({k: ticker_qty})
+    print(cap_qty)
+    for (k1, v1), (k2, v2) in zip(cap_qty.items(), ohlc.items()):
+        fraction = round(v1 / v2[0][4])
+        cap_qty.update({k1: fraction})
+    print(cap_qty)
+    for (k1, v1), (k2, v2) in zip(cap_qty.items(), ohlc.items()):
+        ohlc_list = []
+        cap_in_open = round(v1 * v2[0][1], 2)
+        ohlc_list.append(cap_in_open)
+        cap_in_hi = round(v1 * v2[0][2], 2)
+        ohlc_list.append(cap_in_hi)
+        cap_in_lo = round(v1 * v2[0][3], 2)
+        ohlc_list.append(cap_in_lo)
+        cap_in_close = round(v1 * v2[0][4], 2)
+        ohlc_list.append(cap_in_close)
+        cap_qty.update({k1: ohlc_list})
+    print(cap_qty)
+    op, hi, lo, cl = 0, 0, 0, 0
+    for k, v in cap_qty.items():
+        op += v[0]
+        hi += v[1]
+        lo += v[2]
+        cl += v[3]
+    print([round(op, 2), round(hi, 2), round(lo, 2), round(cl, 2)])
+    return [round(op, 2), round(hi, 2), round(lo, 2), round(cl, 2)]
+
 
 

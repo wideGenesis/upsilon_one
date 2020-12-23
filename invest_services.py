@@ -21,44 +21,42 @@ def main():
     # update_universe_prices()
 
     # Это уже формирование вселенной по-новому, через апи
-    eod_get_and_save_holdings()
-    eod_update_universe_prices()
+    # eod_get_and_save_holdings()
+    # eod_update_universe_prices()
 
-    parking_weights = parking_portfolio()
-    allweather_weights = allweather_portfolio()
-    balanced_weights = balanced_portfolio()
-    aggressive_weights = aggressive_portfolio()
-    leveraged_weights = leveraged_portfolio()
-    create_portfolio_pie_image(weights=parking_weights,
-                               title="Parking portfolio",
-                               filename="parking_portfolio_pie")
-    create_portfolio_pie_image(weights=allweather_weights,
-                               title="Allweather portfolio",
-                               filename="allweather_portfolio_pie")
-    create_portfolio_pie_image(weights=balanced_weights,
-                               title="Balanced portfolio",
-                               filename="balanced_portfolio_pie")
-    create_portfolio_pie_image(weights=aggressive_weights,
-                               title="Aggressive portfolio",
-                               filename="aggressive_portfolio_pie")
-    create_portfolio_pie_image(weights=leveraged_weights,
-                               title="Leveraged portfolio",
-                               filename="leveraged_portfolio_pie")
-    save_portfolio_weights(name='parking', portfolio_weights=parking_weights)
-    save_portfolio_weights(name='allweather', portfolio_weights=parking_weights)
-    save_portfolio_weights(name='balanced', portfolio_weights=parking_weights)
-    save_portfolio_weights(name='aggressive', portfolio_weights=parking_weights)
-    save_portfolio_weights(name='leveraged', portfolio_weights=parking_weights)
+    # parking_weights = parking_portfolio()
+    # allweather_weights = allweather_portfolio()
+    # balanced_weights = balanced_portfolio()
+    # aggressive_weights = aggressive_portfolio()
+    # leveraged_weights = leveraged_portfolio()
+    # create_portfolio_pie_image(weights=parking_weights,
+    #                            title="Parking portfolio",
+    #                            filename="parking_portfolio_pie")
+    # create_portfolio_pie_image(weights=allweather_weights,
+    #                            title="Allweather portfolio",
+    #                            filename="allweather_portfolio_pie")
+    # create_portfolio_pie_image(weights=balanced_weights,
+    #                            title="Balanced portfolio",
+    #                            filename="balanced_portfolio_pie")
+    # create_portfolio_pie_image(weights=aggressive_weights,
+    #                            title="Aggressive portfolio",
+    #                            filename="aggressive_portfolio_pie")
+    # create_portfolio_pie_image(weights=leveraged_weights,
+    #                            title="Leveraged portfolio",
+    #                            filename="leveraged_portfolio_pie")
+    # save_portfolio_weights(name='parking', portfolio_weights=parking_weights)
+    # save_portfolio_weights(name='allweather', portfolio_weights=parking_weights)
+    # save_portfolio_weights(name='balanced', portfolio_weights=parking_weights)
+    # save_portfolio_weights(name='aggressive', portfolio_weights=parking_weights)
+    # save_portfolio_weights(name='leveraged', portfolio_weights=parking_weights)
 
     td = timedelta(days=4)
     ed = date.today()
     sd = ed - td
-    ohlc = get_ohlc_dict_by_ticker_list(['AAPL', 'CMCSA'], start_date=sd, end_date=ed)
+    ohlc = get_ohlc_dict_by_port_id('parking', start_date=sd, end_date=ed)
     debug("OHLC:" + str(ohlc))
 
-    allo = get_portfolio_allocation("parking")
-    debug("Allocation:" + str(allo))
-
+    returns_calc(ohlc=ohlc)
     exit()
 
     get_flows(driver=chrome_init())
