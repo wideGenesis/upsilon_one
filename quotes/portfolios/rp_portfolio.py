@@ -220,7 +220,11 @@ def returns_calc(init_capital=10000, ohlc=None):
     for k, v in ohlc.items():
         ticker_qty = init_capital * v[0][5]
         cap_qty.update({k: ticker_qty})
+        # добавим к листу просто то что мы расчитали это доля в деньга
         tmp[k].append(ticker_qty)
+        # нам же эта доля в деньгах больше не нужна будет, давай сразу же ее и преобразуем в кол-во акций
+        tmp[k][-1] = round(ticker_qty / tmp[k][0][4])
+        # И тогда сл. цикл нам не нужен будет вовсе, вроде как :-)
     debug(tmp)
     print(cap_qty)
     for (k1, v1), (k2, v2) in zip(cap_qty.items(), ohlc.items()):
