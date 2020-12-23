@@ -244,6 +244,9 @@ def returns_calc(init_capital=10000, ohlc=None):
         cl += v[3]
     print([round(op, 2), round(hi, 2), round(lo, 2), round(cl, 2)])
     return [round(op, 2), round(hi, 2), round(lo, 2), round(cl, 2)]
+"""
+
+"""
 
 
 
