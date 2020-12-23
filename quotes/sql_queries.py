@@ -170,15 +170,17 @@ def get_ohlc_dict_by_ticker_list(ticker_list, start_date=None, end_date=date.tod
                                  q_table_name=QUOTE_TABLE_NAME, u_table_name=UNIVERSE_TABLE_NAME,
                                  engine=engine):
     with engine.connect() as connection:
+        weight_table = PORTFOLIO_ALLOCATION_TABLE_NAME
         ohlc = {}
         if start_date is None:
             td = timedelta(365)
             start_date = end_date - td
 
         for ticker in ticker_list:
-            query_string = f'SELECT q.dateTime, q.open, q.high, q.low, q.close ' \
-                           f'FROM {q_table_name} q, {u_table_name} u' \
-                           f' WHERE q.ticker=\'{ticker}\' AND q.ticker=u.ticker '
+            query_string = f'SELECT q.dateTime, q.open, q.high, q.low, q.close, w.weight ' \
+                           f'FROM {q_table_name} q, {u_table_name} u, {weight_table} w' \
+                           f' WHERE q.ticker=\'{ticker}\' AND q.ticker=u.ticker ' \
+                           f' AND q.ticker=w.ticker AND u.ticker=w.ticker'
             if start_date is not None:
                 query_string += f' AND q.dateTime >= \'{str(start_date)}\' '
             if end_date is not None:
