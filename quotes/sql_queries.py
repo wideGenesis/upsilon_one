@@ -166,46 +166,35 @@ def get_closes_by_ticker_list(ticker_list, start_date=None, end_date=date.today(
     return closes
 
 
-def get_port_allo(port_id, table_name=PORTFOLIO_ALLOCATION_TABLE_NAME, engine=engine):
-    with engine.connect() as connection:
-        weights = {}
-        if is_table_exist(table_name):
-            get_query = f'SELECT ticker, weight FROM {table_name} WHERE port_id=\'{port_id}\''
-            get_result = connection.execute(get_query)
-            if get_result.rowcount > 0:
-                rows = get_result.fetchall()
-                for row in rows:
-                    weights[row[0]] = row[1]
-        return weights
-
-
 def get_ohlc_dict_by_port_id(port_id, start_date=None, end_date=date.today(),
                                  q_table_name=QUOTE_TABLE_NAME, u_table_name=UNIVERSE_TABLE_NAME,
                                  engine=engine):
     with engine.connect() as connection:
         weight_table = PORTFOLIO_ALLOCATION_TABLE_NAME
-        ticker_list = get_port_allo(port_id).keys()
         ohlc = {}
         if start_date is None:
             td = timedelta(365)
             start_date = end_date - td
+        query_string = f'SELECT q.ticker, q.dateTime, q.open, q.high, q.low, q.close, w.weight ' \
+                       f'FROM {q_table_name} q, {u_table_name} u, {weight_table} w' \
+                       f' WHERE q.ticker=u.ticker ' \
+                       f' AND q.ticker=w.ticker AND u.ticker=w.ticker ' \
+                       f' AND w.port_id=\'{port_id}\''
+        if start_date is not None:
+            query_string += f' AND q.dateTime >= \'{str(start_date)}\' '
+        if end_date is not None:
+            query_string += f' AND q.dateTime <= \'{str(end_date)}\' '
+        query_string += f' ORDER BY q.dateTime ASC'
 
-        for ticker in ticker_list:
-            query_string = f'SELECT q.dateTime, q.open, q.high, q.low, q.close, w.weight ' \
-                           f'FROM {q_table_name} q, {u_table_name} u, {weight_table} w' \
-                           f' WHERE q.ticker=\'{ticker}\' AND q.ticker=u.ticker ' \
-                           f' AND q.ticker=w.ticker AND u.ticker=w.ticker ' \
-                           f' AND w.port_id=\'{port_id}\''
-            if start_date is not None:
-                query_string += f' AND q.dateTime >= \'{str(start_date)}\' '
-            if end_date is not None:
-                query_string += f' AND q.dateTime <= \'{str(end_date)}\' '
-            query_string += f' ORDER BY q.dateTime ASC'
-
-            q_result = connection.execute(query_string)
-            if q_result.rowcount > 0:
-                rows = q_result.fetchall()
-                ohlc[ticker] = rows
+        q_result = connection.execute(query_string)
+        if q_result.rowcount > 0:
+            rows = q_result.fetchall()
+            for row in rows:
+                ticker, dat, o, h, l, c, weight = row
+                if ticker in ohlc:
+                    ohlc[ticker].append((dat, o, h, l, c, weight))
+                else:
+                    ohlc[ticker] = [(dat, o, h, l, c, weight)]
     return ohlc
 
 
