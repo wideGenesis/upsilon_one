@@ -166,7 +166,7 @@ def get_closes_by_ticker_list(ticker_list, start_date=None, end_date=date.today(
     return closes
 
 
-def get_ohlc_dict_by_ticker_list(ticker_list, start_date=None, end_date=date.today(),
+def get_ohlc_dict_by_ticker_list(ticker_list, port_id, start_date=None, end_date=date.today(),
                                  q_table_name=QUOTE_TABLE_NAME, u_table_name=UNIVERSE_TABLE_NAME,
                                  engine=engine):
     with engine.connect() as connection:
@@ -180,7 +180,8 @@ def get_ohlc_dict_by_ticker_list(ticker_list, start_date=None, end_date=date.tod
             query_string = f'SELECT q.dateTime, q.open, q.high, q.low, q.close, w.weight ' \
                            f'FROM {q_table_name} q, {u_table_name} u, {weight_table} w' \
                            f' WHERE q.ticker=\'{ticker}\' AND q.ticker=u.ticker ' \
-                           f' AND q.ticker=w.ticker AND u.ticker=w.ticker'
+                           f' AND q.ticker=w.ticker AND u.ticker=w.ticker ' \
+                           f' AND w.port_id=\'{port_id}\''
             if start_date is not None:
                 query_string += f' AND q.dateTime >= \'{str(start_date)}\' '
             if end_date is not None:

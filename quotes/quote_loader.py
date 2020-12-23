@@ -144,12 +144,12 @@ def eod_update_universe_prices(exclude_sectors=EXCLUDE_SECTORS, not_exclude_tick
 
 
 def main():
-    # td = timedelta(days=4)
-    # ed = date.today()
-    # sd = ed - td
-    # ohlc = get_ohlc_dict_by_ticker_list(['AAPL', 'CMCSA'], start_date=sd, end_date=ed)
-    # debug("OHLC:" + str(ohlc))
-    # exit()
+    td = timedelta(days=4)
+    ed = date.today()
+    sd = ed - td
+    ohlc = get_ohlc_dict_by_ticker_list(['AAPL', 'CMCSA'], "parking", start_date=sd, end_date=ed)
+    debug("OHLC:" + str(ohlc))
+    exit()
     print("__Start main__")
     tickers = get_universe(UNIVERSE_TABLE_NAME, engine)
     # Проверяем есть ли таблица, если нет ее надо создать
