@@ -147,7 +147,7 @@ def main():
     td = timedelta(days=4)
     ed = date.today()
     sd = ed - td
-    ohlc = get_ohlc_dict_by_ticker_list(['AAPL', 'CMCSA'], "parking", start_date=sd, end_date=ed)
+    ohlc = get_ohlc_dict_by_port_id("parking", start_date=sd, end_date=ed)
     debug("OHLC:" + str(ohlc))
     exit()
     print("__Start main__")

@@ -166,11 +166,25 @@ def get_closes_by_ticker_list(ticker_list, start_date=None, end_date=date.today(
     return closes
 
 
-def get_ohlc_dict_by_ticker_list(ticker_list, port_id, start_date=None, end_date=date.today(),
+def get_port_allo(port_id, table_name=PORTFOLIO_ALLOCATION_TABLE_NAME, engine=engine):
+    with engine.connect() as connection:
+        weights = {}
+        if is_table_exist(table_name):
+            get_query = f'SELECT ticker, weight FROM {table_name} WHERE port_id=\'{port_id}\''
+            get_result = connection.execute(get_query)
+            if get_result.rowcount > 0:
+                rows = get_result.fetchall()
+                for row in rows:
+                    weights[row[0]] = row[1]
+        return weights
+
+
+def get_ohlc_dict_by_port_id(port_id, start_date=None, end_date=date.today(),
                                  q_table_name=QUOTE_TABLE_NAME, u_table_name=UNIVERSE_TABLE_NAME,
                                  engine=engine):
     with engine.connect() as connection:
         weight_table = PORTFOLIO_ALLOCATION_TABLE_NAME
+        ticker_list = get_port_allo(port_id).keys()
         ohlc = {}
         if start_date is None:
             td = timedelta(365)
