@@ -216,13 +216,18 @@ def core_sat(cor=None, cor_perc=None, sat=None, sat_perc=None):
 
 def returns_calc(init_capital=10000, ohlc=None):
     cap_qty = {}
+    tmp = ohlc
     for k, v in ohlc.items():
         ticker_qty = init_capital * v[0][5]
         cap_qty.update({k: ticker_qty})
+        tmp[k].append(ticker_qty)
+    debug(tmp)
     print(cap_qty)
     for (k1, v1), (k2, v2) in zip(cap_qty.items(), ohlc.items()):
         fraction = round(v1 / v2[0][4])
         cap_qty.update({k1: fraction})
+        tmp[k1][-1] = fraction
+    debug(tmp)
     print(cap_qty)
     for (k1, v1), (k2, v2) in zip(cap_qty.items(), ohlc.items()):
         ohlc_list = []
