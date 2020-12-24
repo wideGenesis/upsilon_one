@@ -57,6 +57,7 @@ def main():
     debug("OHLC:" + str(ohlc))
 
     returns_calc(ohlc=ohlc)
+
     exit()
 
     get_flows(driver=chrome_init())
