@@ -50,7 +50,7 @@ def main():
     # save_portfolio_weights(name='aggressive', portfolio_weights=parking_weights)
     # save_portfolio_weights(name='leveraged', portfolio_weights=parking_weights)
 
-    td = timedelta(days=4)
+    td = timedelta(days=15)
     ed = date.today()
     sd = ed - td
     ohlc = get_ohlc_dict_by_port_id('parking', start_date=sd, end_date=ed)

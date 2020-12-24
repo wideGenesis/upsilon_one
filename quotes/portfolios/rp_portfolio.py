@@ -42,6 +42,7 @@ class RiskParityAllocator:
     expected_shortfall
     conditional_drawdown_risk
     """
+
     def __init__(self,
                  asset_names_: list = None,
                  closes: pd = None,
@@ -103,7 +104,7 @@ class RiskParityAllocator:
         elif self.cov_method == 'mcd':
             cov = risk_est.minimum_covariance_determinant(returns=self.returns, price_data=False, assume_centered=False)
         elif self.cov_method == 'semi':
-            cov = risk_est.semi_covariance(returns=self.returns, price_data=False,)
+            cov = risk_est.semi_covariance(returns=self.returns, price_data=False, )
         else:
             exit()
         if self.graphs_show:
@@ -205,9 +206,9 @@ class Selector:
 
 def core_sat(cor=None, cor_perc=None, sat=None, sat_perc=None):
     for k, v in cor.items():
-        cor.update({k: round(v*cor_perc, 3)})
+        cor.update({k: round(v * cor_perc, 3)})
     for k, v in sat.items():
-        sat.update({k: round(v*sat_perc, 3)})
+        sat.update({k: round(v * sat_perc, 3)})
 
     port = Counter(cor) + Counter(sat)
     print(dict(port))
@@ -216,33 +217,25 @@ def core_sat(cor=None, cor_perc=None, sat=None, sat_perc=None):
 
 def returns_calc(init_capital=10000, ohlc=None):
     cap_ohlc = {}
-    tmp = ohlc
-    for k, v in ohlc.items():
-        ticker_qty = init_capital * v[0][5]
-        tmp[k].append(ticker_qty)
-        tmp[k][-1] = round(ticker_qty / tmp[k][0][4])
-
-    for k, v in tmp.items():
-        ohlc_list = []
-        cap_in_open = round(v[1] * v[0][1], 2)
-        ohlc_list.append(cap_in_open)
-        cap_in_hi = round(v[1] * v[0][2], 2)
-        ohlc_list.append(cap_in_hi)
-        cap_in_lo = round(v[1] * v[0][3], 2)
-        ohlc_list.append(cap_in_lo)
-        cap_in_close = round(v[1] * v[0][4], 2)
-        ohlc_list.append(cap_in_close)
-        cap_ohlc.update({k: ohlc_list})
-
-    op, hi, lo, cl = 0, 0, 0, 0
-    for k, v in cap_ohlc.items():
-        op += v[0]
-        hi += v[1]
-        lo += v[2]
-        cl += v[3]
-    print([round(op, 2), round(hi, 2), round(lo, 2), round(cl, 2)])
-    return [round(op, 2), round(hi, 2), round(lo, 2), round(cl, 2)]
-
+    shares = 0
+    for ticker in ohlc:
+        for count, dohlcw in enumerate(ohlc[ticker]):
+            if count == 0:
+                shares = round((init_capital * dohlcw[5]) / dohlcw[4])
+            cap_in_open = round(shares * dohlcw[1], 2)
+            cap_in_hi = round(shares * dohlcw[2], 2)
+            cap_in_low = round(shares * dohlcw[3], 2)
+            cap_in_close = round(shares * dohlcw[4], 2)
+            if dohlcw[0] not in cap_ohlc:
+                cap_ohlc[dohlcw[0]] = (dohlcw[0], cap_in_open, cap_in_hi, cap_in_low, cap_in_close)
+            else:
+                cap_ohlc[dohlcw[0]] = (dohlcw[0],
+                                       round(cap_ohlc[dohlcw[0]][1] + cap_in_open, 2),
+                                       round(cap_ohlc[dohlcw[0]][2] + cap_in_hi, 2),
+                                       round(cap_ohlc[dohlcw[0]][3] + cap_in_low, 2),
+                                       round(cap_ohlc[dohlcw[0]][4] + cap_in_close, 2))
+    debug(cap_ohlc.values())
+    return cap_ohlc.values()
 #
 # def returns_calc_old(init_capital=10000, ohlc=None):
 #     cap_qty = {}
