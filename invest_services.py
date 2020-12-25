@@ -22,7 +22,7 @@ def main():
 
     # Это уже формирование вселенной по-новому, через апи
     # eod_get_and_save_holdings()
-    # eod_update_universe_prices()
+    eod_update_universe_prices()
 
     # parking_weights = parking_portfolio()
     # allweather_weights = allweather_portfolio()
@@ -50,14 +50,14 @@ def main():
     # save_portfolio_weights(name='aggressive', portfolio_weights=parking_weights)
     # save_portfolio_weights(name='leveraged', portfolio_weights=parking_weights)
 
-    td = timedelta(days=15)
+    td = timedelta(days=2)
     ed = date.today()
     sd = ed - td
     ohlc = get_ohlc_dict_by_port_id('parking', start_date=sd, end_date=ed)
     debug("OHLC:" + str(ohlc))
 
     returns_calc(ohlc=ohlc)
-
+    returns_calc_old(ohlc=ohlc)
     exit()
 
     get_flows(driver=chrome_init())
