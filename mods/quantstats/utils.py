@@ -226,7 +226,7 @@ def _prepare_returns(data, rf=0., nperiods=None):
     return data
 
 
-def download_returns(ticker, period="max"):
+def download_returns(ticker, period="5y"):
     if isinstance(period, _pd.DatetimeIndex):
         p = {"start": period[0]}
     else:

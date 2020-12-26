@@ -20,6 +20,7 @@
 
 import warnings
 import matplotlib.pyplot as _plt
+import matplotlib as mpl
 from matplotlib.ticker import (
     StrMethodFormatter as _StrMethodFormatter,
     FuncFormatter as _FuncFormatter
@@ -37,7 +38,7 @@ from . import core as _core
 
 
 
-_FLATUI_COLORS = ["#f52a2a", "#61c5ff", "#af4b64",
+_FLATUI_COLORS = ["#ff0000", "#00de0b", "#af4b64",
                   "#4fa487", "#9b59b6", "#9e9e9e"]
 _GRAYSCALE_COLORS = (len(_FLATUI_COLORS) * ['black']) + ['white']
 
@@ -58,12 +59,121 @@ def to_plotly(fig):
         return plotly.plotly.iplot(fig, filename='quantstats-plot',
                                    overwrite=True)
 
+#
+# def snapshot(returns, grayscale=False, figsize=(10, 8),
+#              title='Portfolio Summary', fontname='Arial', lw=1.5,
+#              mode="comp", subtitle=True, savefig=None, show=True):
+#
+#     colors = _GRAYSCALE_COLORS if grayscale else _FLATUI_COLORS
+#
+#     returns = _utils.make_portfolio(returns, 1, mode).pct_change().fillna(0)
+#
+#     if figsize is None:
+#         size = list(_plt.gcf().get_size_inches())
+#         figsize = (size[0], size[0]*.75)
+#
+#     fig, axes = _plt.subplots(3, 1, sharex=True, figsize=figsize,
+#                               gridspec_kw={'height_ratios': [3, 1, 1]})
+#
+#     for ax in axes:
+#         ax.spines['top'].set_visible(False)
+#         ax.spines['right'].set_visible(False)
+#         ax.spines['bottom'].set_visible(False)
+#         ax.spines['left'].set_visible(False)
+#
+#     fig.suptitle(title, fontsize=14, y=.995,
+#                  fontname=fontname, fontweight='bold', color='black')
+#
+#     # fig.set_facecolor('white')
+#     fig.set_facecolor('black')
+#
+#     if subtitle:
+#         axes[0].set_title("\n%s - %s ;  Sharpe: %.2f                      " % (
+#             returns.index.date[:1][0].strftime('%e %b \'%y'),
+#             returns.index.date[-1:][0].strftime('%e %b \'%y'),
+#             _stats.sharpe(returns)
+#         ), fontsize=12, color='gray')
+#
+#     axes[0].set_ylabel('Cumulative Return', fontname=fontname,
+#                        fontweight='bold', fontsize=12)
+#     axes[0].plot(_stats.compsum(returns) * 100, color=colors[1],
+#                  lw=1 if grayscale else lw, zorder=1)
+#     axes[0].axhline(0, color='silver', lw=1, zorder=0)
+#
+#     dd = _stats.to_drawdown_series(returns) * 100
+#     ddmin = _utils._round_to_closest(abs(dd.min()), 5)
+#     ddmin_ticks = 5
+#     if ddmin > 50:
+#         ddmin_ticks = ddmin / 4
+#     elif ddmin > 20:
+#         ddmin_ticks = ddmin / 3
+#     ddmin_ticks = int(_utils._round_to_closest(ddmin_ticks, 5))
+#
+#     # ddmin_ticks = int(_utils._round_to_closest(ddmin, 5))
+#     axes[1].set_ylabel('Drawdown', fontname=fontname,
+#                        fontweight='bold', fontsize=12)
+#     axes[1].set_yticks(_np.arange(-ddmin, 0, step=ddmin_ticks))
+#     axes[1].plot(dd, color=colors[2], lw=1 if grayscale else 1, zorder=1)
+#     axes[1].axhline(0, color='silver', lw=1, zorder=0)
+#     if not grayscale:
+#         axes[1].fill_between(dd.index, 0, dd, color=colors[2], alpha=.1)
+#
+#     axes[2].set_ylabel('Daily Return', fontname=fontname,
+#                        fontweight='bold', fontsize=12)
+#     axes[2].plot(returns * 100, color=colors[0], lw=0.5, zorder=1)
+#     axes[2].axhline(0, color='silver', lw=1, zorder=0)
+#     axes[2].axhline(0, color=colors[-1], linestyle='--', lw=1, zorder=2)
+#
+#     retmax = _utils._round_to_closest(returns.max() * 100, 5)
+#     retmin = _utils._round_to_closest(returns.min() * 100, 5)
+#     retdiff = (retmax - retmin)
+#     steps = 5
+#     if retdiff > 50:
+#         steps = retdiff / 5
+#     elif retdiff > 30:
+#         steps = retdiff / 4
+#     steps = int(_utils._round_to_closest(steps, 5))
+#     axes[2].set_yticks(_np.arange(retmin, retmax, step=steps))
+#
+#     for ax in axes:
+#         ax.set_facecolor('white')
+#         ax.yaxis.set_label_coords(-.1, .5)
+#         ax.yaxis.set_major_formatter(_StrMethodFormatter('{x:,.0f}%'))
+#
+#     _plt.subplots_adjust(hspace=0, bottom=0, top=1)
+#     fig.autofmt_xdate()
+#
+#     try:
+#         _plt.subplots_adjust(hspace=0)
+#     except Exception:
+#         pass
+#     try:
+#         fig.tight_layout(w_pad=0, h_pad=0)
+#     except Exception:
+#         pass
+#
+#     if savefig:
+#         if isinstance(savefig, dict):
+#             _plt.savefig(**savefig)
+#         else:
+#             _plt.savefig(savefig)
+#
+#     if show:
+#         _plt.show(block=False)
+#
+#     _plt.close()
+#
+#     if not show:
+#         return fig
+#
+#     return None
 
-def snapshot(returns, grayscale=False, figsize=(10, 8),
-             title='Portfolio Summary', fontname='Arial', lw=1.5,
-             mode="comp", subtitle=True, savefig=None, show=True):
 
-    colors = _GRAYSCALE_COLORS if grayscale else _FLATUI_COLORS
+def snapshot_v2(returns, grayscale=False, figsize=(10, 8),
+             title='Summary', fontname='Arial', lw=1.5,
+             mode="comp", subtitle=True, savefig=None, show=False):
+
+    colors = _FLATUI_COLORS
 
     returns = _utils.make_portfolio(returns, 1, mode).pct_change().fillna(0)
 
@@ -71,8 +181,11 @@ def snapshot(returns, grayscale=False, figsize=(10, 8),
         size = list(_plt.gcf().get_size_inches())
         figsize = (size[0], size[0]*.75)
 
-    fig, axes = _plt.subplots(3, 1, sharex=True, figsize=figsize,
-                              gridspec_kw={'height_ratios': [3, 1, 1]})
+    fig, axes = _plt.subplots(2, 1, figsize=figsize,
+                              gridspec_kw={'height_ratios': [3, 1]})
+    fig.patch.set_facecolor('#000000')
+    # specify color of background in saved figure
+    mpl.rcParams['savefig.facecolor'] = '#000000'
 
     for ax in axes:
         ax.spines['top'].set_visible(False)
@@ -81,20 +194,17 @@ def snapshot(returns, grayscale=False, figsize=(10, 8),
         ax.spines['left'].set_visible(False)
 
     fig.suptitle(title, fontsize=14, y=.995,
-                 fontname=fontname, fontweight='bold', color='black')
-
-    # fig.set_facecolor('white')
-    fig.set_facecolor('black')
+                 fontname=fontname, fontweight='bold', color='white')
 
     if subtitle:
-        axes[0].set_title("\n%s - %s ;  Sharpe: %.2f                      " % (
+        axes[0].set_title(" \n \n %s - %s" % (
+            # ticker,
             returns.index.date[:1][0].strftime('%e %b \'%y'),
-            returns.index.date[-1:][0].strftime('%e %b \'%y'),
-            _stats.sharpe(returns)
-        ), fontsize=12, color='gray')
+            returns.index.date[-1:][0].strftime('%e %b \'%y')
+        ), fontsize=12, color='white')
 
     axes[0].set_ylabel('Cumulative Return', fontname=fontname,
-                       fontweight='bold', fontsize=12)
+                       fontweight='bold', fontsize=10)
     axes[0].plot(_stats.compsum(returns) * 100, color=colors[1],
                  lw=1 if grayscale else lw, zorder=1)
     axes[0].axhline(0, color='silver', lw=1, zorder=0)
@@ -110,32 +220,15 @@ def snapshot(returns, grayscale=False, figsize=(10, 8),
 
     # ddmin_ticks = int(_utils._round_to_closest(ddmin, 5))
     axes[1].set_ylabel('Drawdown', fontname=fontname,
-                       fontweight='bold', fontsize=12)
+                       fontweight='bold', fontsize=10)
     axes[1].set_yticks(_np.arange(-ddmin, 0, step=ddmin_ticks))
-    axes[1].plot(dd, color=colors[2], lw=1 if grayscale else 1, zorder=1)
+    axes[1].plot(dd, color=colors[0], lw=1 if grayscale else 1, zorder=1)
     axes[1].axhline(0, color='silver', lw=1, zorder=0)
     if not grayscale:
         axes[1].fill_between(dd.index, 0, dd, color=colors[2], alpha=.1)
 
-    axes[2].set_ylabel('Daily Return', fontname=fontname,
-                       fontweight='bold', fontsize=12)
-    axes[2].plot(returns * 100, color=colors[0], lw=0.5, zorder=1)
-    axes[2].axhline(0, color='silver', lw=1, zorder=0)
-    axes[2].axhline(0, color=colors[-1], linestyle='--', lw=1, zorder=2)
-
-    retmax = _utils._round_to_closest(returns.max() * 100, 5)
-    retmin = _utils._round_to_closest(returns.min() * 100, 5)
-    retdiff = (retmax - retmin)
-    steps = 5
-    if retdiff > 50:
-        steps = retdiff / 5
-    elif retdiff > 30:
-        steps = retdiff / 4
-    steps = int(_utils._round_to_closest(steps, 5))
-    axes[2].set_yticks(_np.arange(retmin, retmax, step=steps))
-
     for ax in axes:
-        ax.set_facecolor('white')
+        ax.set_facecolor('black')
         ax.yaxis.set_label_coords(-.1, .5)
         ax.yaxis.set_major_formatter(_StrMethodFormatter('{x:,.0f}%'))
 
