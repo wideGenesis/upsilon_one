@@ -25,7 +25,7 @@ x = np.random.rand(10, 2)
 norm.ppf(x)
 Z = norm.ppf(np.random.rand(10, 2))
 t_intervals = 1000
-iterations = 10000
+iterations = 10
 daily_returns = np.exp(drift.values + stdev.values * norm.ppf(np.random.rand(t_intervals, iterations)))
 S0 = data.iloc[-1]
 price_list = np.zeros_like(daily_returns)
@@ -35,7 +35,22 @@ for t in range(1, t_intervals):
 
 plt.figure(figsize=(10, 6))
 plt.plot(price_list)
+
+daily_returns_2 = np.exp(drift.values + stdev.values * norm.pdf(np.random.rand(t_intervals, iterations)))
+S0_2 = data.iloc[-1]
+price_list_2 = np.zeros_like(daily_returns_2)
+price_list_2[0] = S0_2
+for t in range(1, t_intervals):
+    price_list_2[t] = price_list_2[t - 1] * daily_returns_2[t]
+plt.figure(figsize=(10, 6))
+plt.plot(price_list_2)
+
+# daily_returns3 = np.exp(drift.values + stdev.values * norm.logpdf(np.random.rand(t_intervals, iterations)))
+
+
+
 plt.show()
+"users = int(x[0]) + norm.ppf(random.uniform(0, 1), loc=2, scale=2)"
 
 
 

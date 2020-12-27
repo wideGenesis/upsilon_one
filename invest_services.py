@@ -129,7 +129,6 @@ def main():
     # port_id = 'leveraged'
     portfolio_tester(port_id=port_id, data_interval=data_interval, start_test_date=start_test_date)
 
-
     exit()
 
     get_flows(driver=chrome_init())
