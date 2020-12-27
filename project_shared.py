@@ -6,8 +6,10 @@ import yaml
 import logging
 import inspect
 import datetime
+import calendar
 from sqlalchemy import create_engine
 from alchemysession import AlchemySessionContainer
+
 
 PYTHON_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir))
 sys.path.append(PYTHON_PATH)
@@ -35,6 +37,7 @@ ETF_FOR_SCRAPE = conf['ETF_FOR_SCRAPE']
 ETFs = conf['ETFs']
 EXCLUDE_SECTORS = conf['EXCLUDE_SECTORS']
 NOT_EXCLUDE_TICKERS = conf['NOT_EXCLUDE_TICKERS']
+VALID_EXCHANGE = conf['VALID_EXCHANGE']
 
 # ============================== Portfolios ======================
 
@@ -145,3 +148,10 @@ def debug(print_string=""):
     dt = datetime.datetime.now()
     print(f'\r[{dt.strftime("%H:%M:%S")}]{filename}:{info.lineno}:{print_string}')
 
+
+def add_months(sourcedate, months):
+    month = sourcedate.month - 1 + months
+    year = sourcedate.year + month // 12
+    month = month % 12 + 1
+    day = min(sourcedate.day, calendar.monthrange(year,month)[1])
+    return datetime.date(year, month, day)

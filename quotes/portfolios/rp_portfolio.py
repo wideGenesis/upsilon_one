@@ -169,7 +169,7 @@ class Selector:
 
     def __init__(self,
                  closes: pd = None,
-                 performance_period: int = 21,
+                 performance_period: int = 63, #21,
                  assets_to_hold: int = 10
                  ):
         self.closes = closes
@@ -211,7 +211,7 @@ def core_sat(cor=None, cor_perc=None, sat=None, sat_perc=None):
         sat.update({k: round(v * sat_perc, 3)})
 
     port = Counter(cor) + Counter(sat)
-    print(dict(port))
+    # print(dict(port))
     return dict(port)
 
 
@@ -222,10 +222,16 @@ def returns_calc(init_capital=10000, ohlc=None):
         for count, dohlcw in enumerate(ohlc[ticker]):
             if count == 0:
                 shares = round((init_capital * dohlcw[5]) / dohlcw[4])
+                # debug(f'Shares[{ticker}]={shares}')
             cap_in_open = round(shares * dohlcw[1], 2)
             cap_in_hi = round(shares * dohlcw[2], 2)
             cap_in_low = round(shares * dohlcw[3], 2)
             cap_in_close = round(shares * dohlcw[4], 2)
+            # debug(f'[{ticker}:{str(dohlcw[0])}]'
+            #       f'O={shares}*{dohlcw[1]}={cap_in_open}  '
+            #       f'H={shares}*{dohlcw[2]}={cap_in_hi}  '
+            #       f'L={shares}*{dohlcw[3]}={cap_in_low}  '
+            #       f'C={shares}*{dohlcw[4]}={cap_in_close}')
             if dohlcw[0] not in cap_ohlc:
                 cap_ohlc[dohlcw[0]] = (dohlcw[0], cap_in_open, cap_in_hi, cap_in_low, cap_in_close)
             else:
@@ -234,7 +240,7 @@ def returns_calc(init_capital=10000, ohlc=None):
                                        round(cap_ohlc[dohlcw[0]][2] + cap_in_hi, 2),
                                        round(cap_ohlc[dohlcw[0]][3] + cap_in_low, 2),
                                        round(cap_ohlc[dohlcw[0]][4] + cap_in_close, 2))
-    debug(cap_ohlc.values())
+    # debug(cap_ohlc.values())
     return cap_ohlc.values()
 #
 # def returns_calc_old(init_capital=10000, ohlc=None):

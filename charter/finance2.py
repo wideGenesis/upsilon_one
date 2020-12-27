@@ -43,7 +43,11 @@ def create_chart(ticker, data, compare_ticker=None, compare_data=None):
     m.setData(timeStamps=time_stamps, highData=high_data, lowData=low_data, openData=open_data, closeData=close_data,
               volData=volume_data, extraPoints=extra_days)
 
-    title_str = "Portfolio vs " + compare_ticker
+    title_ticker = ""
+    for i, c in enumerate(ticker):
+        title_ticker += c.upper() if i == 0 else c
+
+    title_str = f'{title_ticker} portfolio vs {compare_ticker}'
     m.addPlotAreaTitle(Center, "<*font=arial.ttf,size=12,color=0x5fffffff*>%s" % title_str)
 
     m.setLegendStyle("normal", 8, Transparent, 0xC4D6FF)
@@ -71,7 +75,7 @@ def create_chart(ticker, data, compare_ticker=None, compare_data=None):
 
     m.addComparison(compare_close_data, COMPARISON_LINE_COLOR, compare_ticker)
 
-    filename = "port_chart_over_" + compare_ticker + ".png"
+    filename = f'{ticker}_port_chart_over_{compare_ticker}.png'
     m.makeChart(filename)
 
 

@@ -54,6 +54,7 @@ def create_quotes_table(table_name=QUOTE_TABLE_NAME, engine=engine):
                            f'high DOUBLE NOT NULL, ' \
                            f'low DOUBLE NOT NULL, ' \
                            f'close DOUBLE NOT NULL, ' \
+                           f'adj_close DOUBLE NOT NULL, ' \
                            f'volume INTEGER NOT NULL, ' \
                            f'dividend DOUBLE NOT NULL, ' \
                            f'PRIMARY KEY(ticker, dateTime)' \
@@ -67,7 +68,7 @@ def insert_quotes(ticker, quotes, is_update=True, table_name=QUOTE_TABLE_NAME, e
         transaction = connection.begin()
         try:
             for qdate in quotes:
-                o, h, l, c, v, d = quotes[qdate]
+                o, h, l, c, ac, v, d = quotes[qdate]
                 test = False
                 if is_update:
                     try:
@@ -83,9 +84,9 @@ def insert_quotes(ticker, quotes, is_update=True, table_name=QUOTE_TABLE_NAME, e
                         test = False
                 if not test:
                     insert_query = f'INSERT INTO {table_name} ' \
-                                   f'(ticker, dateTime, open, high, low, close, volume, dividend) ' \
+                                   f'(ticker, dateTime, open, high, low, close, adj_close, volume, dividend) ' \
                                    f'VALUES (\'{ticker}\', \'{str(qdate)}\', ' \
-                                   f'\'{str(o)}\', \'{str(h)}\', \'{str(l)}\', \'{str(c)}\', ' \
+                                   f'\'{str(o)}\', \'{str(h)}\', \'{str(l)}\', \'{str(c)}\', \'{str(ac)}\', ' \
                                    f'\'{str(v)}\', \'{str(d)}\')'
                     connection.execute(insert_query)
             transaction.commit()
@@ -94,7 +95,7 @@ def insert_quotes(ticker, quotes, is_update=True, table_name=QUOTE_TABLE_NAME, e
 
 
 def get_closes_universe_df(q_table_name=QUOTE_TABLE_NAME, u_table_name=UNIVERSE_TABLE_NAME, cap_filter=0, etf_list=None,
-                           engine=engine):
+                           start_date=None, end_date=date.today(), engine=engine):
     with engine.connect() as connection:
         closes = None
         dat = {}
@@ -102,6 +103,11 @@ def get_closes_universe_df(q_table_name=QUOTE_TABLE_NAME, u_table_name=UNIVERSE_
             for ticker in etf_list:
                 query_string = f'SELECT q.dateTime, q.close FROM {q_table_name} q ' \
                                f' WHERE q.ticker=\'{ticker}\''
+                if start_date is not None:
+                    query_string += f' AND q.dateTime >= \'{str(start_date)}\' '
+                if end_date is not None:
+                    query_string += f' AND q.dateTime <= \'{str(end_date)}\' '
+                query_string += f' ORDER BY q.dateTime ASC'
                 q_result = connection.execute(query_string)
                 if q_result.rowcount > 0:
                     rows = q_result.fetchall()
@@ -119,6 +125,10 @@ def get_closes_universe_df(q_table_name=QUOTE_TABLE_NAME, u_table_name=UNIVERSE_
             query_string = f'SELECT q.dateTime, q.close FROM {q_table_name} q, {u_table_name} u' \
                            f' WHERE q.ticker=\'{ticker}\' AND q.ticker=u.ticker AND u.mkt_cap > \'{cap_filter}\'' \
                            f' AND u.mkt_cap IS NOT NULL'
+            if start_date is not None:
+                query_string += f' AND q.dateTime >= \'{str(start_date)}\' '
+            if end_date is not None:
+                query_string += f' AND q.dateTime <= \'{str(end_date)}\' '
             q_result = connection.execute(query_string)
             if q_result.rowcount > 0:
                 rows = q_result.fetchall()
@@ -240,6 +250,7 @@ def create_universe_table(table_name=UNIVERSE_TABLE_NAME, engine=engine):
                            f'(ticker VARCHAR(6) NOT NULL, ' \
                            f'mkt_cap BIGINT, ' \
                            f'sector VARCHAR(100), ' \
+                           f'exchange VARCHAR(20), ' \
                            f'PRIMARY KEY(ticker)' \
                            f')'
             connection.execute(create_query)
@@ -271,12 +282,13 @@ def eod_update_universe_table(new_universe, table_name=UNIVERSE_TABLE_NAME, engi
                 del_query = f'DELETE FROM {table_name}'
                 connection.execute(del_query)
                 for ticker in new_universe:
-                    sector, mkt_cap = new_universe[ticker]
-                    insert_query = f'INSERT INTO {table_name} (ticker, mkt_cap, sector) ' \
-                                   f'VALUES (\'{ticker}\', \'{mkt_cap}\', \'{sector}\')'
+                    sector, mkt_cap, exchange = new_universe[ticker]
+                    insert_query = f'INSERT INTO {table_name} (ticker, mkt_cap, sector, exchange) ' \
+                                   f'VALUES (\'{ticker}\', \'{mkt_cap}\', \'{sector}\', \'{exchange}\')'
                     connection.execute(insert_query)
                 transaction.commit()
-            except:
+            except Exception as e:
+                debug(e)
                 transaction.rollback()
         else:
             debug(f'Can\'t find table: {table_name}!')
@@ -363,12 +375,15 @@ def eod_insert_universe_data(new_universe, table_name=UNIVERSE_TABLE_NAME, engin
             transaction = connection.begin()
             try:
                 for ticker in new_universe:
-                    sector, mkt_cap = new_universe[ticker]
-                    insert_query = f'INSERT INTO {table_name} (ticker, mkt_cap, sector) ' \
-                                   f'VALUES (\'{ticker}\', \'{mkt_cap}\', \'{sector}\')'
+                    if len(new_universe[ticker]) < 3:
+                        debug(f'ticker:{ticker} : new_universe[ticker]={new_universe[ticker]}')
+                    sector, mkt_cap, exchange = new_universe[ticker]
+                    insert_query = f'INSERT INTO {table_name} (ticker, mkt_cap, sector, exchange) ' \
+                                   f'VALUES (\'{ticker}\', \'{mkt_cap}\', \'{sector}\', \'{exchange}\')'
                     connection.execute(insert_query)
                 transaction.commit()
-            except:
+            except Exception as e:
+                debug(e)
                 transaction.rollback()
         else:
             debug(f'Can\'t find table: {table_name}!')

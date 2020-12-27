@@ -120,7 +120,7 @@ def get_portfolio_returns_ti(port_id, time_interval=None, interval_type="Y",
 # ============ Bars ============
 def create_portfolio_bars_table(table_name=PORTFOLIO_BARS_TABLE_NAME, engine=engine):
     with engine.connect() as connection:
-        if is_table_exist(table_name):
+        if not is_table_exist(table_name):
             transaction = connection.begin()
             create_query = f'CREATE TABLE {table_name} ' \
                            f'(port_id VARCHAR(100) NOT NULL, ' \
@@ -132,6 +132,27 @@ def create_portfolio_bars_table(table_name=PORTFOLIO_BARS_TABLE_NAME, engine=eng
                            f'PRIMARY KEY(port_id, bdate)' \
                            f')'
             connection.execute(create_query)
+            transaction.commit()
+
+
+def insert_portfolio_bars(port_id, bar_list, table_name=PORTFOLIO_BARS_TABLE_NAME, engine=engine):
+    with engine.connect() as connection:
+        if is_table_exist(table_name):
+            transaction = connection.begin()
+            for bar in bar_list:
+                bar_date, o, h, l, c = bar
+                exist_query = f'SELECT * FROM {table_name} WHERE port_id=\'{port_id}\' AND bdate=\'{str(bar_date)}\''
+                exist_result = connection.execute(exist_query)
+                if exist_result.rowcount == 1:
+                    update_query = f'UPDATE {table_name} ' \
+                                   f'SET open=\'{str(o)}\', high=\'{str(h)}\', low=\'{str(l)}\', close=\'{str(c)}\' ' \
+                                   f'WHERE port_id=\'{port_id}\' AND bdate=\'{str(bar_date)}\''
+                    connection.execute(update_query)
+                else:
+                    ins_query = f'INSERT INTO {table_name} (port_id, bdate, open, high, low, close) ' \
+                                f'VALUES (\'{port_id}\', \'{str(bar_date)}\', ' \
+                                f'\'{str(o)}\', \'{str(h)}\', \'{str(l)}\', \'{str(c)}\')'
+                    connection.execute(ins_query)
             transaction.commit()
 
 

@@ -81,7 +81,7 @@ def download_yahoo(ticker, base_dir, start_date, end_date):
 
 
 # Словарь с ценами
-def dic_with_prices(prices: dict, ticker: str, date: datetime, open, high, low, close, volume, dividend=0):
+def dic_with_prices(prices: dict, ticker: str, date: datetime, open, high, low, close, adjclose, volume, dividend=0):
     if date.weekday() > 5:
         # print(f'Найден выходной в {ticker} на {date}')
         return
@@ -90,10 +90,11 @@ def dic_with_prices(prices: dict, ticker: str, date: datetime, open, high, low, 
     high = number_to_float(high)
     low = number_to_float(low)
     close = number_to_float(close)
+    adjclose = number_to_float(adjclose)
     volume = number_to_int(volume)
 
     error_price = (not empty_check(open)) or (not empty_check(high)) or (not empty_check(low)) or (
-        not empty_check(close))
+        not empty_check(close) or (not empty_check(adjclose)) )
     error_vol = not empty_check(volume)
 
     if error_price:
@@ -102,7 +103,7 @@ def dic_with_prices(prices: dict, ticker: str, date: datetime, open, high, low, 
     # if error_vol:
         # print(f'В {ticker} на {date} нет объёма')
 
-    prices[date] = [open, high, low, close, volume, dividend]
+    prices[date] = [open, high, low, close, adjclose, volume, dividend]
 
 
 # Добавляем дивиденды к словарю с ценами
@@ -171,7 +172,8 @@ def download_quotes_to_db(ticker, start_date, end_date, is_update):
     prices = {}
     for rec in sorted(data[ticker]['prices'], key=lambda r: r['date']):
         date = datetime.strptime(rec['formatted_date'], '%Y-%m-%d')
-        dic_with_prices(prices, ticker, date, rec['open'], rec['high'], rec['low'], rec['close'], rec['volume'])
+        dic_with_prices(prices, ticker, date, rec['open'], rec['high'], rec['low'], rec['close'],
+                        rec['adjclose'], rec['volume'])
 
     if 'dividends' in data[ticker]['eventsData']:
         for date, rec in sorted(data[ticker]['eventsData']['dividends'].items(), key=lambda r: r[0]):
@@ -189,14 +191,6 @@ def download_quotes_to_db(ticker, start_date, end_date, is_update):
 
 def get_sector_and_market_cap(ticker):
     tic = yhoo.Ticker(ticker)
-    sector = None
-    mkt_cap = 0
-    try:
-        sector = tic.info['sector']
-    except:
-        sector = None
-    try:
-        mkt_cap = tic.info['marketCap']
-    except:
-        mkt_cap = 0
+    sector = tic.info.get('sector', None)
+    mkt_cap = tic.info.get('marketCap', 0)
     return mkt_cap, sector

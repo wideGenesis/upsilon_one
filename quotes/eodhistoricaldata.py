@@ -29,24 +29,25 @@ def get_all_etf_holdings():
                 parsed_json = json.loads(request_result.text)
                 for count, company in enumerate(parsed_json, start=1):
                     ticker = parsed_json[company].get('Code', None)
-                    sector = parsed_json[company].get('Sector', None)
                     if ticker is not None:
                         if ticker not in ticker_data:
-                            mkt_cap = get_mkt_cap(ticker, session)
+                            sector, mkt_cap, exchange = get_data_by_ticker(ticker, session)
                             request_count += 1
-                            if (sector not in EXCLUDE_SECTORS and sector is not None) or ticker in NOT_EXCLUDE_TICKERS:
-                                ticker_data[ticker] = (sector, mkt_cap)
+                            # debug(f'{ticker}:{exchange}')
+                            if ((sector not in EXCLUDE_SECTORS and sector is not None)
+                                or ticker in NOT_EXCLUDE_TICKERS) and exchange in VALID_EXCHANGE:
+                                ticker_data[ticker] = (sector, mkt_cap, exchange)
                     else:
                         # debug(f'Cant get Code for company:ETF:{etf}:{company}')
                         ticker = lookup_ticker_by_name(company_name=company, sess=session)
                         request_count += 1
                         if ticker is not None and ticker not in ticker_data:
-                            sector = get_sector(ticker, session)
+                            sector, mkt_cap, exchange = get_data_by_ticker(ticker, session)
                             request_count += 1
-                            mkt_cap = get_mkt_cap(ticker, session)
-                            request_count += 1
-                            if (sector not in EXCLUDE_SECTORS and sector is not None) or ticker in NOT_EXCLUDE_TICKERS:
-                                ticker_data[ticker] = (sector, mkt_cap)
+                            # debug(f'{ticker}:{exchange}')
+                            if ((sector not in EXCLUDE_SECTORS and sector is not None)
+                                or ticker in NOT_EXCLUDE_TICKERS) and exchange in VALID_EXCHANGE:
+                                ticker_data[ticker] = (sector, mkt_cap, exchange)
                     if count == ETF_FOR_SCRAPE[etf]:
                         break
         print_progress_bar(numb, t_len, prefix='Progress:', suffix=f'Complete:{etf}:{len(ticker_data)}    ', length=50)
@@ -125,6 +126,24 @@ def get_sector(ticker, sess):
     return sector
 
 
+def get_data_by_ticker(ticker, sess):
+    session = sess
+    sector = ""
+    mkt_cap = 0
+    exchange = ""
+    url = f'https://eodhistoricaldata.com/api/fundamentals/{ticker}.US'
+    params = {'api_token': EOD_API_KEY}
+    request_result = session.get(url, params=params)
+    if request_result.status_code == requests.codes.ok:
+        parsed_json = json.loads(request_result.text)
+        if parsed_json.get('General', None) is not None:
+            sector = parsed_json['General'].get('Sector', None)
+            exchange = parsed_json['General'].get('Exchange', None)
+            if parsed_json.get('Highlights', None) is not None:
+                mkt_cap = parsed_json['Highlights'].get('MarketCapitalization', 0)
+    return sector, mkt_cap, exchange
+
+
 def search_ticker_by_name(company_name, exchange="US"):
     ticker = None
     if company_name is None:
@@ -189,7 +208,25 @@ def get_historical_prices(ticker, from_date, end_date, is_update=False):
     if request_result.status_code == requests.codes.ok:
         parsed_json = json.loads(request_result.text)
         for bar in parsed_json:
-            prices[bar['date']] = (bar['open'], bar['high'], bar['low'], bar['adjusted_close'], bar['volume'], 0)
+            prices[bar['date']] = (bar['open'], bar['high'], bar['low'], bar['close'], bar['adjusted_close'],
+                                   bar['volume'], 0)
+
+    url = f'https://eodhistoricaldata.com/api/splits/{ticker}.US'
+    params = {'api_token': EOD_API_KEY,
+              'from': from_date.strftime("%Y-%m-%d"),
+              'to': end_date.strftime("%Y-%m-%d"),
+              'fmt': 'json'}
+    try:
+        request_result = session.get(url, params=params)
+    except Exception as e:
+        # print(e, 'Waiting 10 sec')
+        sleep(15)
+        request_result = session.get(url, params=params)
+    if request_result.status_code == requests.codes.ok:
+        parsed_json = json.loads(request_result.text)
+        for split in parsed_json:
+            debug(f'Split[{ticker}]:' + split['date'] + ":::" + split['split'])
+
     insert_quotes(ticker, prices, is_update)
 
 

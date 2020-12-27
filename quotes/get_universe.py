@@ -15,7 +15,7 @@ def eod_get_and_save_holdings():
 
     # ++++++++ Добавим во вселенную ETFs ++++++++
     for ticker in ETFs:
-        constituents[ticker] = ("ETF", 0)
+        constituents[ticker] = ("ETF", 0, "US")
 
     # ++++++++ положим все в базу ++++++++
     if is_table_exist(UNIVERSE_TABLE_NAME):

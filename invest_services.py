@@ -13,6 +13,62 @@ from time import sleep
 from charter.charter import *
 
 
+def portfolio_tester(init_cap=10000, port_id='parking', data_interval=-3, start_test_date=datetime.date(2019, 1, 1)):
+    in_cap = init_cap
+    compare_ticker = ""
+    wend_date = start_test_date
+    wstart_date = add_months(wend_date, data_interval)
+    debug(f'wend_date={wend_date}  wstart_date={wstart_date}')
+
+    weights = {}
+    if port_id == 'parking':
+        weights = parking_portfolio(wstart_date, wend_date)
+        compare_ticker = "TLT"
+    elif port_id == 'allweather':
+        weights = allweather_portfolio(wstart_date, wend_date)
+        compare_ticker = "TLT"
+    elif port_id == 'balanced':
+        weights = balanced_portfolio(wstart_date, wend_date)
+        compare_ticker = "QQQ"
+    elif port_id == 'aggressive':
+        weights = aggressive_portfolio(wstart_date, wend_date)
+        compare_ticker = "QQQ"
+    elif port_id == 'leveraged':
+        weights = leveraged_portfolio(wstart_date, wend_date)
+        compare_ticker = "QQQ"
+
+    debug(f'Start allo [{wend_date}]:{weights}')
+    save_portfolio_weights(name=port_id, portfolio_weights=weights)
+
+    while wend_date <= date.today():
+        wend_date = add_months(wend_date, 1)
+        wstart_date = add_months(wend_date, data_interval)
+        pstart_date = add_months(wend_date, -1)
+
+        ohlc = get_ohlc_dict_by_port_id(port_id, start_date=pstart_date, end_date=wend_date)
+        portfolio_bars = returns_calc(init_capital=in_cap, ohlc=ohlc)
+        save_portfolio_bars(name=port_id, portfolio_bars=portfolio_bars)
+        pb = list(portfolio_bars)
+        in_cap = pb[-1][-1]
+
+        if port_id == 'parking':
+            weights = parking_portfolio(wstart_date, wend_date)
+        elif port_id == 'allweather':
+            weights = allweather_portfolio(wstart_date, wend_date)
+        elif port_id == 'balanced':
+            weights = balanced_portfolio(wstart_date, wend_date)
+        elif port_id == 'aggressive':
+            weights = aggressive_portfolio(wstart_date, wend_date)
+        elif port_id == 'leveraged':
+            weights = leveraged_portfolio(wstart_date, wend_date)
+
+        debug(f'allo [{wend_date}]:{weights}')
+        save_portfolio_weights(name=port_id, portfolio_weights=weights)
+
+    sd = datetime.date(2015, 1, 1)
+    create_candle_portfoliio_img(port_id=port_id, compare_ticker=compare_ticker, start_date=sd)
+
+
 # ============================== Main  =============================
 def main():
 
@@ -22,7 +78,7 @@ def main():
 
     # Это уже формирование вселенной по-новому, через апи
     # eod_get_and_save_holdings()
-    # eod_update_universe_prices()
+    # update_universe_prices1()
 
     # parking_weights = parking_portfolio()
     # allweather_weights = allweather_portfolio()
@@ -45,18 +101,34 @@ def main():
     #                            title="Leveraged portfolio",
     #                            filename="leveraged_portfolio_pie")
     # save_portfolio_weights(name='parking', portfolio_weights=parking_weights)
-    # save_portfolio_weights(name='allweather', portfolio_weights=parking_weights)
-    # save_portfolio_weights(name='balanced', portfolio_weights=parking_weights)
-    # save_portfolio_weights(name='aggressive', portfolio_weights=parking_weights)
-    # save_portfolio_weights(name='leveraged', portfolio_weights=parking_weights)
+    # save_portfolio_weights(name='allweather', portfolio_weights=allweather_weights)
+    # save_portfolio_weights(name='balanced', portfolio_weights=balanced_weights)
+    # save_portfolio_weights(name='aggressive', portfolio_weights=aggressive_weights)
+    # save_portfolio_weights(name='leveraged', portfolio_weights=leveraged_weights)
+    #
+    # td = timedelta(days=365)
+    # ed = date.today()
+    # sd = ed - td
+    # ohlc = get_ohlc_dict_by_port_id('leveraged', start_date=sd, end_date=ed)
+    # debug("OHLC:" + str(ohlc))
+    #
+    # portfolio_bars = returns_calc(ohlc=ohlc)
+    # save_portfolio_bars(name="leveraged", portfolio_bars=portfolio_bars)
+    # create_candle_portfoliio_img(port_id="leveraged", compare_ticker="QQQ", start_date=sd, end_date=ed)
+    #
+    # exit()
 
-    td = timedelta(days=15)
-    ed = date.today()
-    sd = ed - td
-    ohlc = get_ohlc_dict_by_port_id('parking', start_date=sd, end_date=ed)
-    debug("OHLC:" + str(ohlc))
+    # start_test_date - первая дата на которую будет вычеслена первая аллокация, далее эта дата смещается на месяц
+    # data_interval -- за какой период времени на RP будут подаваться данные -3 значит за 3 месяца
+    start_test_date = datetime.date(2015, 1, 1)
+    data_interval = -3
+    # port_id = 'parking'
+    port_id = 'allweather'
+    # port_id = 'balanced'
+    # port_id = 'aggressive'
+    # port_id = 'leveraged'
+    portfolio_tester(port_id=port_id, data_interval=data_interval, start_test_date=start_test_date)
 
-    returns_calc(ohlc=ohlc)
 
     exit()
 

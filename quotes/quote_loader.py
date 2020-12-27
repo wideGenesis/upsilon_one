@@ -4,6 +4,7 @@ from quotes.sql_queries import *
 from project_shared import *
 from quotes.eodhistoricaldata import *
 
+
 def update_universe_prices(exclude_sectors=EXCLUDE_SECTORS, not_exclude_tickers=NOT_EXCLUDE_TICKERS):
     tickers = get_universe()
     # ==================== Доформируем вселенную ====================
@@ -82,6 +83,62 @@ def update_universe_prices(exclude_sectors=EXCLUDE_SECTORS, not_exclude_tickers=
             end_date = date.today()
             download_quotes_to_db(ticker, start_date, end_date, is_update)
             print_progress_bar(count, t_len, prefix='Progress:', suffix=f'Complete:{ticker}', length=50)
+
+
+def update_universe_prices1(exclude_sectors=EXCLUDE_SECTORS, not_exclude_tickers=NOT_EXCLUDE_TICKERS):
+    tickers = get_universe()
+    t_len = len(tickers)
+
+    # ==================== Теперь проапдейтим/закачаем данные по OHLC по всем тикерам вселенной
+    # Проверяем есть ли таблица, если нет ее надо создать
+    is_update = False
+    if is_table_exist(QUOTE_TABLE_NAME):
+        debug("## Table is exist")
+        td = timedelta(days=1)
+        # Таблица есть
+        start_table_date = get_start_table_date()
+        # если в таблице есть данные то должна быть хотябы одна стартовая дата
+        # если стартовой даты нет, то таблица скорее всего пуста и тогда начинать закачку нужно с нуля
+        if start_table_date is None:
+            debug("### start_table_date is None")
+            start_table_date = date.fromisoformat(DEFAULT_START_QUOTES_DATE)
+
+        # если в таблице есть данные то должна быть хотябы одна конечная дата
+        # если конечной даты нет, то таблица скорее всего пуста и тогда начинать закачку нужно с нуля
+        end_table_date = get_last_table_date()
+        if end_table_date is None:
+            debug("### end_table_date is None")
+            end_table_date = date.fromisoformat(DEFAULT_START_QUOTES_DATE)
+        else:
+            end_table_date = end_table_date + td
+
+        today = date.today()
+        # в самом  простом случае апдейтить таблицу надо с последней даты в таблице по сегодняшнюю
+        print_progress_bar(0, t_len, prefix='Progress:', suffix='Complete', length=50)
+        for count, ticker in enumerate(tickers):
+            # print("### Try update ticker:" + str(ticker))
+            if ticker_lookup(ticker):
+                if (end_table_date - td) != today:
+                    is_update = True
+                    # print("(ticker exist) Start date:" + str(end_table_date) + "; End date:" + str(today))
+                    download_quotes_to_db(ticker, end_table_date, today, is_update)
+                # else:
+                #     print("Nothing to update. The table is up to date.")
+            else:
+                # print("(ticker not exist) Start date:" + str(start_table_date) + "; End date:" + str(today))
+                download_quotes_to_db(ticker, start_table_date, today, is_update)
+            print_progress_bar(count, t_len, prefix='Progress:', suffix=f'Complete:{ticker}:[{count}:{t_len}]   ',
+                               length=50)
+    else:
+        debug("__Table is not exists__")
+        create_quotes_table()
+        print_progress_bar(0, t_len, prefix='Progress:', suffix='Complete', length=50)
+        for count, ticker in enumerate(tickers):
+            start_date = date.fromisoformat(DEFAULT_START_QUOTES_DATE)
+            end_date = date.today()
+            download_quotes_to_db(ticker, start_date, end_date, is_update)
+            print_progress_bar(count, t_len, prefix='Progress:', suffix=f'Complete:{ticker}:[{count}:{t_len}]   ',
+                               length=50)
 
 
 def eod_update_universe_prices(exclude_sectors=EXCLUDE_SECTORS, not_exclude_tickers=NOT_EXCLUDE_TICKERS):
