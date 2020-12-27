@@ -164,37 +164,61 @@ class Selector:
     __slots__ = [
         'closes',
         'performance_period',
-        'assets_to_hold'
+        'assets_to_hold',
+        'selectors_mode'
     ]
 
     def __init__(self,
                  closes: pd = None,
                  performance_period: int = 63, #21,
-                 assets_to_hold: int = 10
+                 assets_to_hold: int = 10,
+                 selectors_mode: int = 0
                  ):
         self.closes = closes
         self.performance_period = performance_period
         self.assets_to_hold = assets_to_hold
+        self.selectors_mode = selectors_mode
 
-    def rs_sharpe(self, etf=False):
+
+    def rs_sharpe(self):
+        """
+        :selectors_mode: 0 = RSI/rolling.Std(), 1 = RSI, 2 = Momentum
+        """
         df = self.closes
         columns = df.columns.tolist()
         _rs_sharpe = df.copy()
         for col in columns:
-            delta = df[col].diff()
-            delta = delta[1:]
-            up, down = delta.copy(), delta.copy()
-            up[up < 0] = 0
-            down[down > 0] = 0
-            roll_up1 = up.ewm(span=self.performance_period).mean()
-            roll_down1 = down.abs().ewm(span=self.performance_period).mean()
-            rs = roll_up1 / roll_down1
-            mrsi = 50.0 - (100.0 / (1.0 + rs))
-            sharpe = mrsi / df[col].rolling(self.performance_period).std()
-            if etf:
+            if self.selectors_mode == 2:
+                momentum = (df[col] - df[col].shift(self.performance_period)) / df[col].shift(self.performance_period)
+                _rs_sharpe[col] = momentum
+            elif self.selectors_mode == 1:
+                delta = df[col].diff()
+                delta = delta[1:]
+                up, down = delta.copy(), delta.copy()
+                up[up < 0] = 0
+                down[down > 0] = 0
+                roll_up1 = up.ewm(span=self.performance_period).mean()
+                roll_down1 = down.abs().ewm(span=self.performance_period).mean()
+                rs = roll_up1 / roll_down1
+                mrsi = 50.0 - (100.0 / (1.0 + rs))
                 _rs_sharpe[col] = mrsi
-            else:
+            elif self.selectors_mode == 0:
+                delta = df[col].diff()
+                delta = delta[1:]
+                up, down = delta.copy(), delta.copy()
+                up[up < 0] = 0
+                down[down > 0] = 0
+                roll_up1 = up.ewm(span=self.performance_period).mean()
+                roll_down1 = down.abs().ewm(span=self.performance_period).mean()
+                rs = roll_up1 / roll_down1
+                mrsi = 50.0 - (100.0 / (1.0 + rs))
+                _rs_sharpe[col] = mrsi
+                sharpe = mrsi / df[col].rolling(self.performance_period).std()
                 _rs_sharpe[col] = sharpe
+            else:
+                print('Mode doesn\'t exists')
+                pass
+
         _rs_sharpe.dropna(inplace=True)
         _rs_sharpe.drop_duplicates(inplace=True)
         sorting = _rs_sharpe.T.sort_values(_rs_sharpe.last_valid_index(), ascending=False).T

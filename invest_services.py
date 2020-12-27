@@ -65,7 +65,7 @@ def portfolio_tester(init_cap=10000, port_id='parking', data_interval=-3, start_
         debug(f'allo [{wend_date}]:{weights}')
         save_portfolio_weights(name=port_id, portfolio_weights=weights)
 
-    sd = datetime.date(2015, 1, 1)
+    sd = datetime.date(2007, 1, 1)
     create_candle_portfoliio_img(port_id=port_id, compare_ticker=compare_ticker, start_date=sd)
 
 
@@ -120,7 +120,7 @@ def main():
 
     # start_test_date - первая дата на которую будет вычеслена первая аллокация, далее эта дата смещается на месяц
     # data_interval -- за какой период времени на RP будут подаваться данные -3 значит за 3 месяца
-    start_test_date = datetime.date(2015, 1, 1)
+    start_test_date = datetime.date(2007, 1, 1)
     data_interval = -3
     # port_id = 'parking'
     port_id = 'allweather'
