@@ -37,7 +37,7 @@ def parking_portfolio(start_date=None, end_date=date.today()):
 def allweather_portfolio(start_date=None, end_date=date.today()):
     # cor_closes = get_closes_universe_df(cap_filter=200000000000, etf_list=ALL_WEATHER)
     cor_closes = get_closes_universe_df(etf_list=ALL_WEATHER, start_date=start_date, end_date=end_date)
-    cor_select = Selector(closes=cor_closes, assets_to_hold=4, selectors_mode=1)
+    cor_select = Selector(closes=cor_closes, assets_to_hold=4, selectors_mode=1, performance_period=21)
     cor_tickers = cor_select.rs_sharpe()
     cor_list = get_closes_by_ticker_list(cor_tickers)
     cor_rp = RiskParityAllocator(closes=cor_list, cov_method='semi', herc=False, linkage_='ward',

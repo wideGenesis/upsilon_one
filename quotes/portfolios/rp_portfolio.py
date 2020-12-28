@@ -181,7 +181,7 @@ class Selector:
 
     def rs_sharpe(self):
         """
-        :selectors_mode: 0 = RSI/rolling.Std(), 1 = RSI, 2 = Momentum
+        :selectors_mode: 0 = RSI/rolling.Std(), 1 = RSI
         """
         df = self.closes
         columns = df.columns.tolist()
@@ -197,16 +197,13 @@ class Selector:
             rs = roll_up1 / roll_down1
             mrsi = 50.0 - (100.0 / (1.0 + rs))
             sharpe = mrsi / df[col].rolling(self.performance_period).std()
-            momentum = (df[col] - df[col].shift(self.performance_period)) / df[col].shift(self.performance_period)
-            if self.selectors_mode == 2:
-                _rs_sharpe[col] = momentum
-            elif self.selectors_mode == 1:
+            if self.selectors_mode == 1:
                 _rs_sharpe[col] = mrsi
             elif self.selectors_mode == 0:
                 _rs_sharpe[col] = sharpe
             else:
                 print('Mode doesnt exists')
-                pass
+                exit()
         _rs_sharpe.dropna(inplace=True)
         _rs_sharpe.drop_duplicates(inplace=True)
         sorting = _rs_sharpe.T.sort_values(_rs_sharpe.last_valid_index(), ascending=False).T
@@ -214,6 +211,23 @@ class Selector:
         tickers_to_allocator = slicing[:self.assets_to_hold]
         # print(tickers_to_allocator)
         return tickers_to_allocator
+
+    def momentum(self):
+        df = self.closes
+        columns = df.columns.tolist()
+        momentum_df = df.copy()
+        for col in columns:
+            mom = (df[col] - df[col].shift(self.performance_period))/df[col].shift(self.performance_period)
+            mom = mom[self.performance_period:]
+
+        momentum_df.dropna(inplace=True)
+        momentum_df.drop_duplicates(inplace=True)
+        sorting = momentum_df.T.sort_values(momentum_df.last_valid_index(), ascending=False).T
+        slicing = sorting.columns.tolist()
+        tickers_to_allocator = slicing[:self.assets_to_hold]
+        # print(tickers_to_allocator)
+        return tickers_to_allocator
+
 
 def core_sat(cor=None, cor_perc=None, sat=None, sat_perc=None):
     for k, v in cor.items():
