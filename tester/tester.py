@@ -49,7 +49,7 @@ def portfolio_tester(init_cap=10000, port_id='parking', data_interval=-3, start_
         save_portfolio_returns(name=port_id, portfolio_returns=returns)
 
         pb = list(portfolio_bars)
-        in_cap = pb[-1][-1]
+        in_cap = pb[-1][4]
 
         if port_id == 'parking':
             weights = parking_portfolio(wstart_date, wend_date)

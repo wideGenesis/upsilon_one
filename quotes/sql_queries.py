@@ -200,11 +200,11 @@ def get_ohlc_dict_by_port_id(port_id, start_date=None, end_date=date.today(),
         if q_result.rowcount > 0:
             rows = q_result.fetchall()
             for row in rows:
-                ticker, dat, o, h, l, c, weight = row
+                ticker, dat, o, h, l, c, weight, ac = row
                 if ticker in ohlc:
-                    ohlc[ticker].append((dat, o, h, l, c, weight))
+                    ohlc[ticker].append((dat, o, h, l, c, weight, ac))
                 else:
-                    ohlc[ticker] = [(dat, o, h, l, c, weight)]
+                    ohlc[ticker] = [(dat, o, h, l, c, weight, ac)]
     return ohlc
 
 
