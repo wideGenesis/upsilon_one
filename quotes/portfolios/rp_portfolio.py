@@ -225,7 +225,7 @@ class Selector:
         sorting = momentum_df.T.sort_values(momentum_df.last_valid_index(), ascending=False).T
         slicing = sorting.columns.tolist()
         tickers_to_allocator = slicing[:self.assets_to_hold]
-        # print(tickers_to_allocator)
+        print(tickers_to_allocator)
         return tickers_to_allocator
 
 
