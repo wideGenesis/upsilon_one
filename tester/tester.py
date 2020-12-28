@@ -49,7 +49,12 @@ def portfolio_tester(init_cap=10000, port_id='parking', data_interval=-3, start_
         save_portfolio_returns(name=port_id, portfolio_returns=returns)
 
         pb = list(portfolio_bars)
-        in_cap = pb[-1][4]
+        cash = round(in_cap - pb[0][4], 2)
+        if cash > 0:
+            in_cap = round(pb[-1][4] + cash, 2)
+        else:
+            debug("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%")
+            in_cap = pb[-1][4]
 
         if port_id == 'parking':
             weights = parking_portfolio(wstart_date, wend_date)

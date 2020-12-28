@@ -241,47 +241,37 @@ def core_sat(cor=None, cor_perc=None, sat=None, sat_perc=None):
 
 
 def returns_calc(init_capital=100000, ohlc=None):
-    # debug(ohlc)
     cap_ohlc = {}
     shares = 0
     # Расчет OHLC
     for ticker in ohlc:
         for count, dohlcwac in enumerate(ohlc[ticker]):
-            # debug(f'[{ticker}]:{dohlcwac}')
             if count == 0:
-                shares = round((init_capital * dohlcwac[5]) / dohlcwac[4])
-                if shares == 0:
-                    shares = 1
-                    # debug(f'ticker:date:Not round : round :{ticker} : {str(dohlcwac[0])} : {(init_capital * dohlcwac[5]) / dohlcwac[4]} : {shares}')
-            cap_in_open = round(shares * dohlcwac[1], 4)
-            cap_in_hi = round(shares * dohlcwac[2], 4)
-            cap_in_low = round(shares * dohlcwac[3], 4)
-            cap_in_close = round(shares * dohlcwac[4], 4)
-            cap_in_adjclose = round(shares * dohlcwac[6], 4)
-            # if cap_in_adjclose == 0:
-            #     debug(f'ticker:date:adjclose:cap_in_adjclose:shares:{ticker}:{str(dohlcwac[0])}:{dohlcwac[6]}:{cap_in_adjclose}:{shares}')
+                shares = int((init_capital * dohlcwac[5]) / dohlcwac[4])
+            cap_in_open = round(shares * dohlcwac[1], 2)
+            cap_in_hi = round(shares * dohlcwac[2], 2)
+            cap_in_low = round(shares * dohlcwac[3], 2)
+            cap_in_close = round(shares * dohlcwac[4], 2)
+            cap_in_adjclose = round(shares * dohlcwac[6], 2)
             if dohlcwac[0] not in cap_ohlc:
                 cap_ohlc[dohlcwac[0]] = (dohlcwac[0], cap_in_open, cap_in_hi, cap_in_low, cap_in_close, cap_in_adjclose)
             else:
                 cap_ohlc[dohlcwac[0]] = (dohlcwac[0],
-                                         round(cap_ohlc[dohlcwac[0]][1] + cap_in_open, 4),
-                                         round(cap_ohlc[dohlcwac[0]][2] + cap_in_hi, 4),
-                                         round(cap_ohlc[dohlcwac[0]][3] + cap_in_low, 4),
-                                         round(cap_ohlc[dohlcwac[0]][4] + cap_in_close, 4),
-                                         round(cap_ohlc[dohlcwac[0]][5] + cap_in_adjclose, 4))
-                # if cap_ohlc[dohlcwac[0]][5] == 0:
-                #     debug(f'ticker:date:cap_in_adjclose:{ticker}:{str(dohlcwac[0])}:{cap_ohlc[dohlcwac[0]][5] }')
+                                         round(cap_ohlc[dohlcwac[0]][1] + cap_in_open, 2),
+                                         round(cap_ohlc[dohlcwac[0]][2] + cap_in_hi, 2),
+                                         round(cap_ohlc[dohlcwac[0]][3] + cap_in_low, 2),
+                                         round(cap_ohlc[dohlcwac[0]][4] + cap_in_close, 2),
+                                         round(cap_ohlc[dohlcwac[0]][5] + cap_in_adjclose, 2))
     # Расчет Returns
     returns = {}
     for i, ohlc_date in enumerate(cap_ohlc):
         if i > 0:
-            # debug(f'prev_date:prev_close={str(prev_ohlc_date)}:{cap_ohlc[prev_ohlc_date][-1]}')
-            # debug(f'cur_date:cur_close:{str(ohlc_date)}:{cap_ohlc[ohlc_date][-1]}')
-            ret = round((cap_ohlc[ohlc_date][-1] - cap_ohlc[prev_ohlc_date][-1]) / cap_ohlc[prev_ohlc_date][-1], 4)
-            # debug(f'return={str(ret)}')
+            last_close = cap_ohlc[ohlc_date][-1]
+            prev_close = cap_ohlc[prev_ohlc_date][-1]
+            ret = round((last_close - prev_close) / prev_close, 2)
             returns[ohlc_date] = ret
         prev_ohlc_date = ohlc_date
-    debug(cap_ohlc.values())
+    # debug(cap_ohlc.values())
     # debug(returns)
     return cap_ohlc.values(), returns
 
