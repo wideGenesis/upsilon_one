@@ -70,6 +70,7 @@ def balanced_portfolio(start_date=None, end_date=date.today()):
     cor_rp.calc_returns()
     core = cor_rp.allocator()
     # debug(f'CORE:{core}')    return core
+    return core
 
     # sat_closes = get_closes_universe_df(cap_filter=100000000000, etf_list=None)
     # sat_select = Selector(closes=sat_closes, assets_to_hold=7)

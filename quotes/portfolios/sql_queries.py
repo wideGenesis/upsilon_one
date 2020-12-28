@@ -29,7 +29,7 @@ def create_portfolio_allocation_table(table_name=PORTFOLIO_ALLOCATION_TABLE_NAME
 
 
 def update_portfolio_allocation(port_id, weights, table_name=PORTFOLIO_ALLOCATION_TABLE_NAME, engine=engine):
-    with engine.connect() as connection:
+     with engine.connect() as connection:
         if is_table_exist(table_name):
             transaction = connection.begin()
             del_query = f'DELETE FROM {table_name} WHERE port_id=\'{port_id}\''
