@@ -8,7 +8,7 @@ from functools import reduce
 setLicenseCode("DEVP-2LTF-FD2N-G76T-2691-3A31")
 
 
-def create_chart(ticker, data, compare_ticker=None, compare_data=None):
+def create_chart(ticker, data, compare_ticker=None, compare_data=None, chart_type='Candlestic'):
     extra_days = EXTRA_DAYS
 
     time_stamps = []
@@ -69,9 +69,14 @@ def create_chart(ticker, data, compare_ticker=None, compare_data=None):
     # main_chart.setClipping(True)
     main_chart.setBackground(OUTER_BACKGROUND_COLOR)
 
-    csl = m.addCandleStick(-1, -1)
-    csl.getDataSet(0).setDataColor(CANDLE_UP_COLOR, CANDLE_SHADOW_COLOR)
-    csl.getDataSet(1).setDataColor(CANDLE_DOWN_COLOR, CANDLE_SHADOW_COLOR)
+    if chart_type == 'Candlestic':
+        csl = m.addCandleStick(-1, -1)
+        csl.getDataSet(0).setDataColor(CANDLE_UP_COLOR, CANDLE_SHADOW_COLOR)
+        csl.getDataSet(1).setDataColor(CANDLE_DOWN_COLOR, CANDLE_SHADOW_COLOR)
+    elif chart_type == 'Bar':
+        m.addHLOC(CANDLE_UP_COLOR, CANDLE_DOWN_COLOR)
+    elif chart_type == 'Line':
+        m.addCloseLine(CANDLE_UP_COLOR)
 
     m.addComparison(compare_close_data, COMPARISON_LINE_COLOR, compare_ticker)
 

@@ -75,6 +75,25 @@ def append_portfolio_returns(port_id, ret, ret_date=date.today(),
             transaction.commit()
 
 
+def insert_portfolio_returns(port_id, returns, table_name=PORTFOLIO_RETURNS_TABLE_NAME, engine=engine):
+    with engine.connect() as connection:
+        if is_table_exist(table_name):
+            transaction = connection.begin()
+            for rdate in returns:
+                exist_query = f'SELECT * FROM {table_name} WHERE port_id=\'{port_id}\' AND rdate=\'{str(rdate)}\''
+                exist_result = connection.execute(exist_query)
+                if exist_result.rowcount == 1:
+                    update_query = f'UPDATE {table_name} ' \
+                                   f'SET ret=\'{str(returns[rdate])}\' ' \
+                                   f'WHERE port_id=\'{port_id}\' AND rdate=\'{str(rdate)}\''
+                    connection.execute(update_query)
+                else:
+                    ins_query = f'INSERT INTO {table_name} (port_id, rdate, ret) ' \
+                                f'VALUES (\'{port_id}\', \'{str(rdate)}\', \'{str(returns[rdate])}\')'
+                    connection.execute(ins_query)
+            transaction.commit()
+
+
 def get_portfolio_returns(port_id, start_date=None, end_date=date.today(),
                           table_name=PORTFOLIO_RETURNS_TABLE_NAME, engine=engine):
     with engine.connect() as connection:
@@ -129,6 +148,7 @@ def create_portfolio_bars_table(table_name=PORTFOLIO_BARS_TABLE_NAME, engine=eng
                            f'high DOUBLE NOT NULL, ' \
                            f'low DOUBLE NOT NULL, ' \
                            f'close DOUBLE NOT NULL, ' \
+                           f'adjclose DOUBLE NOT NULL, ' \
                            f'PRIMARY KEY(port_id, bdate)' \
                            f')'
             connection.execute(create_query)
@@ -140,18 +160,19 @@ def insert_portfolio_bars(port_id, bar_list, table_name=PORTFOLIO_BARS_TABLE_NAM
         if is_table_exist(table_name):
             transaction = connection.begin()
             for bar in bar_list:
-                bar_date, o, h, l, c = bar
+                bar_date, o, h, l, c, ac = bar
                 exist_query = f'SELECT * FROM {table_name} WHERE port_id=\'{port_id}\' AND bdate=\'{str(bar_date)}\''
                 exist_result = connection.execute(exist_query)
                 if exist_result.rowcount == 1:
                     update_query = f'UPDATE {table_name} ' \
-                                   f'SET open=\'{str(o)}\', high=\'{str(h)}\', low=\'{str(l)}\', close=\'{str(c)}\' ' \
+                                   f'SET open=\'{str(o)}\', high=\'{str(h)}\', low=\'{str(l)}\', close=\'{str(c)}\', ' \
+                                   f'adjclose=\'{str(ac)}\'' \
                                    f'WHERE port_id=\'{port_id}\' AND bdate=\'{str(bar_date)}\''
                     connection.execute(update_query)
                 else:
-                    ins_query = f'INSERT INTO {table_name} (port_id, bdate, open, high, low, close) ' \
+                    ins_query = f'INSERT INTO {table_name} (port_id, bdate, open, high, low, close, adjclose) ' \
                                 f'VALUES (\'{port_id}\', \'{str(bar_date)}\', ' \
-                                f'\'{str(o)}\', \'{str(h)}\', \'{str(l)}\', \'{str(c)}\')'
+                                f'\'{str(o)}\', \'{str(h)}\', \'{str(l)}\', \'{str(c)}\', \'{str(ac)}\')'
                     connection.execute(ins_query)
             transaction.commit()
 

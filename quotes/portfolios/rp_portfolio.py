@@ -243,20 +243,16 @@ def core_sat(cor=None, cor_perc=None, sat=None, sat_perc=None):
 def returns_calc(init_capital=100000, ohlc=None):
     cap_ohlc = {}
     shares = 0
+    # Расчет OHLC
     for ticker in ohlc:
         for count, dohlcw in enumerate(ohlc[ticker]):
             if count == 0:
                 shares = round((init_capital * dohlcw[5]) / dohlcw[4])
-                # debug(f'Shares[{ticker}]={shares}')
             cap_in_open = round(shares * dohlcw[1], 2)
             cap_in_hi = round(shares * dohlcw[2], 2)
             cap_in_low = round(shares * dohlcw[3], 2)
             cap_in_close = round(shares * dohlcw[4], 2)
-            # debug(f'[{ticker}:{str(dohlcw[0])}]'
-            #       f'O={shares}*{dohlcw[1]}={cap_in_open}  '
-            #       f'H={shares}*{dohlcw[2]}={cap_in_hi}  '
-            #       f'L={shares}*{dohlcw[3]}={cap_in_low}  '
-            #       f'C={shares}*{dohlcw[4]}={cap_in_close}')
+            cap_in_adjclose = round(shares * dohlcw[6], 2)
             if dohlcw[0] not in cap_ohlc:
                 cap_ohlc[dohlcw[0]] = (dohlcw[0], cap_in_open, cap_in_hi, cap_in_low, cap_in_close)
             else:
@@ -264,9 +260,21 @@ def returns_calc(init_capital=100000, ohlc=None):
                                        round(cap_ohlc[dohlcw[0]][1] + cap_in_open, 2),
                                        round(cap_ohlc[dohlcw[0]][2] + cap_in_hi, 2),
                                        round(cap_ohlc[dohlcw[0]][3] + cap_in_low, 2),
-                                       round(cap_ohlc[dohlcw[0]][4] + cap_in_close, 2))
+                                       round(cap_ohlc[dohlcw[0]][4] + cap_in_close, 2),
+                                       round(cap_ohlc[dohlcw[0]][6] + cap_in_adjclose, 2))
+    # Расчет Returns
+    returns = {}
+    for i, ohlc_date in enumerate(cap_ohlc):
+        if i > 0:
+            # debug(f'prev_date:prev_close={str(prev_ohlc_date)}:{cap_ohlc[prev_ohlc_date][-1]}')
+            # debug(f'cur_date:cur_close:{str(ohlc_date)}:{cap_ohlc[ohlc_date][-1]}')
+            ret = round((cap_ohlc[ohlc_date][-1] - cap_ohlc[prev_ohlc_date][-1])/cap_ohlc[prev_ohlc_date][-1], 4)
+            # debug(f'return={str(ret)}')
+            returns[ohlc_date] = ret
+        prev_ohlc_date = ohlc_date
     # debug(cap_ohlc.values())
-    return cap_ohlc.values()
+    # debug(returns)
+    return cap_ohlc.values(), returns
 
 
 def returns_calc_old(init_capital=10000, ohlc=None):

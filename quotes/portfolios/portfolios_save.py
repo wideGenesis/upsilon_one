@@ -12,3 +12,9 @@ def save_portfolio_bars(name="portfolio", portfolio_bars=None):
     if not is_table_exist(PORTFOLIO_BARS_TABLE_NAME):
         create_portfolio_bars_table()
     insert_portfolio_bars(port_id=name, bar_list=portfolio_bars)
+
+
+def save_portfolio_returns(name="portfolio", portfolio_returns=None):
+    if not is_table_exist(PORTFOLIO_RETURNS_TABLE_NAME):
+        create_portfolio_returns_table()
+    insert_portfolio_returns(port_id=name, returns=portfolio_returns)
