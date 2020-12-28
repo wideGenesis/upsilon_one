@@ -12,7 +12,7 @@ from charter.charter import *
 import multiprocessing as mp
 
 
-def portfolio_tester(init_cap=10000, port_id='parking', data_interval=-3, start_test_date=datetime.date(2019, 1, 1)):
+def portfolio_tester(init_cap=10000, port_id='parking', data_interval=-3, start_test_date=datetime.date(2008, 1, 1)):
     in_cap = init_cap
     compare_ticker = ""
     wend_date = start_test_date
@@ -25,7 +25,7 @@ def portfolio_tester(init_cap=10000, port_id='parking', data_interval=-3, start_
         compare_ticker = "TLT"
     elif port_id == 'allweather':
         weights = allweather_portfolio(wstart_date, wend_date)
-        compare_ticker = "TLT"
+        compare_ticker = "SPY"
     elif port_id == 'balanced':
         weights = balanced_portfolio(wstart_date, wend_date)
         compare_ticker = "QQQ"
@@ -76,24 +76,24 @@ def portfolio_tester(init_cap=10000, port_id='parking', data_interval=-3, start_
 
 
 def main():
-    portfolio_tester(init_cap=10000, port_id='parking', data_interval=-3, start_test_date=datetime.date(2007, 1, 1))
+    portfolio_tester(init_cap=10000, port_id='parking', data_interval=-3, start_test_date=datetime.date(2008, 1, 1))
 
 
 if __name__ == '__main__':
     mp.set_start_method('spawn')
     q = mp.Queue()
-    p1 = mp.Process(target=portfolio_tester, args=(10000, 'parking', -3, datetime.date(2007, 1, 1),))
-    p1.start()
-    p2 = mp.Process(target=portfolio_tester, args=(10000, 'allweather', -3, datetime.date(2007, 1, 1),))
+    # p1 = mp.Process(target=portfolio_tester, args=(10000, 'parking', -3, datetime.date(2007, 1, 1),))
+    # p1.start()
+    p2 = mp.Process(target=portfolio_tester, args=(10000, 'allweather', -3, datetime.date(2008, 1, 1),))
     p2.start()
-    p3 = mp.Process(target=portfolio_tester, args=(10000, 'balanced', -3, datetime.date(2007, 1, 1),))
-    p3.start()
-    p4 = mp.Process(target=portfolio_tester, args=(10000, 'aggressive', -3, datetime.date(2007, 1, 1),))
-    p4.start()
+    # p3 = mp.Process(target=portfolio_tester, args=(10000, 'balanced', -3, datetime.date(2007, 1, 1),))
+    # p3.start()
+    # p4 = mp.Process(target=portfolio_tester, args=(10000, 'aggressive', -3, datetime.date(2007, 1, 1),))
+    # p4.start()
     # p5 = mp.Process(target=portfolio_tester, args=(10000, 'leveraged', -3, datetime.date(2007, 1, 1),))
     # p5.start()
-    p1.join()
+    # p1.join()
     p2.join()
-    p3.join()
-    p4.join()
+    # p3.join()
+    # p4.join()
     # p5.join()
