@@ -75,6 +75,25 @@ def append_portfolio_returns(port_id, ret, ret_date=date.today(),
             transaction.commit()
 
 
+def insert_portfolio_returns(port_id, returns, table_name=PORTFOLIO_RETURNS_TABLE_NAME, engine=engine):
+    with engine.connect() as connection:
+        if is_table_exist(table_name):
+            transaction = connection.begin()
+            for rdate in returns:
+                exist_query = f'SELECT * FROM {table_name} WHERE port_id=\'{port_id}\' AND rdate=\'{str(rdate)}\''
+                exist_result = connection.execute(exist_query)
+                if exist_result.rowcount == 1:
+                    update_query = f'UPDATE {table_name} ' \
+                                   f'SET ret=\'{str(returns[rdate])}\' ' \
+                                   f'WHERE port_id=\'{port_id}\' AND rdate=\'{str(rdate)}\''
+                    connection.execute(update_query)
+                else:
+                    ins_query = f'INSERT INTO {table_name} (port_id, rdate, ret) ' \
+                                f'VALUES (\'{port_id}\', \'{str(rdate)}\', \'{str(returns[rdate])}\')'
+                    connection.execute(ins_query)
+            transaction.commit()
+
+
 def get_portfolio_returns(port_id, start_date=None, end_date=date.today(),
                           table_name=PORTFOLIO_RETURNS_TABLE_NAME, engine=engine):
     with engine.connect() as connection:

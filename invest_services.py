@@ -13,62 +13,6 @@ from time import sleep
 from charter.charter import *
 
 
-def portfolio_tester(init_cap=10000, port_id='parking', data_interval=-3, start_test_date=datetime.date(2019, 1, 1)):
-    in_cap = init_cap
-    compare_ticker = ""
-    wend_date = start_test_date
-    wstart_date = add_months(wend_date, data_interval)
-    debug(f'wend_date={wend_date}  wstart_date={wstart_date}')
-
-    weights = {}
-    if port_id == 'parking':
-        weights = parking_portfolio(wstart_date, wend_date)
-        compare_ticker = "TLT"
-    elif port_id == 'allweather':
-        weights = allweather_portfolio(wstart_date, wend_date)
-        compare_ticker = "TLT"
-    elif port_id == 'balanced':
-        weights = balanced_portfolio(wstart_date, wend_date)
-        compare_ticker = "QQQ"
-    elif port_id == 'aggressive':
-        weights = aggressive_portfolio(wstart_date, wend_date)
-        compare_ticker = "QQQ"
-    elif port_id == 'leveraged':
-        weights = leveraged_portfolio(wstart_date, wend_date)
-        compare_ticker = "QQQ"
-
-    debug(f'Start allo [{wend_date}]:{weights}')
-    save_portfolio_weights(name=port_id, portfolio_weights=weights)
-
-    while wend_date <= date.today():
-        wend_date = add_months(wend_date, 1)
-        wstart_date = add_months(wend_date, data_interval)
-        pstart_date = add_months(wend_date, -1)
-
-        ohlc = get_ohlc_dict_by_port_id(port_id, start_date=pstart_date, end_date=wend_date)
-        portfolio_bars = returns_calc(init_capital=in_cap, ohlc=ohlc)
-        save_portfolio_bars(name=port_id, portfolio_bars=portfolio_bars)
-        pb = list(portfolio_bars)
-        in_cap = pb[-1][-1]
-
-        if port_id == 'parking':
-            weights = parking_portfolio(wstart_date, wend_date)
-        elif port_id == 'allweather':
-            weights = allweather_portfolio(wstart_date, wend_date)
-        elif port_id == 'balanced':
-            weights = balanced_portfolio(wstart_date, wend_date)
-        elif port_id == 'aggressive':
-            weights = aggressive_portfolio(wstart_date, wend_date)
-        elif port_id == 'leveraged':
-            weights = leveraged_portfolio(wstart_date, wend_date)
-
-        debug(f'allo [{wend_date}]:{weights}')
-        save_portfolio_weights(name=port_id, portfolio_weights=weights)
-
-    sd = datetime.date(2015, 1, 1)
-    create_candle_portfoliio_img(port_id=port_id, compare_ticker=compare_ticker, start_date=sd)
-
-
 # ============================== Main  =============================
 def main():
 
