@@ -217,14 +217,17 @@ class Selector:
         columns = df.columns.tolist()
         momentum_df = df.copy()
         for col in columns:
-            mom = (df[col] - df[col].shift(self.performance_period)) / df[col].shift(self.performance_period) * 100
+            mom = (df[col] - df[col].shift(self.performance_period)) / df[col].shift(self.performance_period)
             # mom = df[col].pct_change(periods=self.performance_period)
             # mom = mom[self.performance_period:]
             momentum_df[col] = mom
         momentum_df.dropna(inplace=True)
         momentum_df.drop_duplicates(inplace=True)
+        print('%%%%%%%% before', momentum_df.tail(2))
         sorting = momentum_df.T.sort_values(momentum_df.last_valid_index(), ascending=False).T
+        print('%%%%%%%% after', sorting.tail(2))
         slicing = sorting.columns.tolist()
+        # debug(slicing)
         tickers_to_allocator = slicing[:self.assets_to_hold]
         # print(tickers_to_allocator)
         return tickers_to_allocator
@@ -272,7 +275,7 @@ def returns_calc(init_capital=100000, ohlc=None):
             ret = round((last_close - prev_close) / prev_close, 2)
             returns[ohlc_date] = ret
         prev_ohlc_date = ohlc_date
-    debug(cap_ohlc.values())
+    # debug(cap_ohlc.values())
     # debug(returns)
     return cap_ohlc.values(), returns
 
