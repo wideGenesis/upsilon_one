@@ -193,7 +193,7 @@ def get_ohlc_dict_by_port_id(port_id, start_date=None, end_date=date.today(),
         if start_date is not None:
             query_string += f' AND q.dateTime >= \'{str(start_date)}\' '
         if end_date is not None:
-            query_string += f' AND q.dateTime <= \'{str(end_date)}\' '
+            query_string += f' AND q.dateTime < \'{str(end_date)}\' '
         query_string += f' ORDER BY q.dateTime ASC'
 
         q_result = connection.execute(query_string)
