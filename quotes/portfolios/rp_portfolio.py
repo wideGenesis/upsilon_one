@@ -272,7 +272,7 @@ def returns_calc(init_capital=100000, ohlc=None):
             ret = round((last_close - prev_close) / prev_close, 2)
             returns[ohlc_date] = ret
         prev_ohlc_date = ohlc_date
-    # debug(cap_ohlc.values())
+    debug(cap_ohlc.values())
     # debug(returns)
     return cap_ohlc.values(), returns
 
