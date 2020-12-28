@@ -22,7 +22,7 @@ def main():
 
     # Это уже формирование вселенной по-новому, через апи
     # eod_get_and_save_holdings()
-    # update_universe_prices1()
+    update_universe_prices1()
 
     # parking_weights = parking_portfolio()
     # allweather_weights = allweather_portfolio()
