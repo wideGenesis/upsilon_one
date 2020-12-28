@@ -64,14 +64,14 @@ def main():
 
     # start_test_date - первая дата на которую будет вычеслена первая аллокация, далее эта дата смещается на месяц
     # data_interval -- за какой период времени на RP будут подаваться данные -3 значит за 3 месяца
-    start_test_date = datetime.date(2015, 1, 1)
+    start_test_date = datetime.date(2007, 1, 1)
     data_interval = -3
     # port_id = 'parking'
     port_id = 'allweather'
     # port_id = 'balanced'
     # port_id = 'aggressive'
     # port_id = 'leveraged'
-    portfolio_tester(port_id=port_id, data_interval=data_interval, start_test_date=start_test_date)
+    # portfolio_tester(port_id=port_id, data_interval=data_interval, start_test_date=start_test_date)
 
     exit()
 

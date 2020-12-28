@@ -178,7 +178,7 @@ def avg_loss(returns, aggregate=None, compounded=True):
 
 def volatility(returns, periods=252, annualize=True):
     """ calculates the volatility of returns for a period """
-    std = _utils._prepare_returns(returns).std()
+    std = _utils._prepare_returns_v2(returns).std()
     if annualize:
         return std * _np.sqrt(periods)
 

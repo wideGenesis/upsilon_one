@@ -51,7 +51,7 @@ def html(returns, benchmark=None, rf=0.,
         f.close()
 
     date_range = returns.index.strftime('%e %b, %Y')
-    tpl = tpl.replace('{{date_range}}', date_range[0] + ' - ' + date_range[-1])
+    # tpl = tpl.replace('{{date_range}}', date_range[0] + ' - ' + date_range[-1])
     tpl = tpl.replace('{{title}}', title)
     # tpl = tpl.replace('{{title}}', f'<h1 style="text-align:center">{title}</h1>')
     # tpl = tpl.replace('{{v}}', __version__)
@@ -646,7 +646,7 @@ def metrics_v3(returns, benchmark=None, rf=0., display=True,
                              "but a multi-column DataFrame was passed")
 
     blank = ['']
-    df = _pd.DataFrame({"returns": _utils._prepare_returns(returns, rf)})
+    df = _pd.DataFrame({"returns": _utils._prepare_returns_v2(returns, rf)})
     if benchmark is not None:
         blank = ['', '']
         df["benchmark"] = _utils._prepare_benchmark(
@@ -685,15 +685,15 @@ def metrics_v3(returns, benchmark=None, rf=0., display=True,
         metrics['Total Return %'] = (df.sum() * pct).map('{:,.2f}'.format)
 
     metrics['CAGR%%'] = _stats.cagr(df, rf, compounded) * pct
-    metrics['Sharpe'] = _stats.sharpe(df, rf)
-    metrics['Sortino'] = _stats.sortino(df, rf)
+    metrics['Sharpe'] = _stats.sharpe(df, rf, periods=21)
+    metrics['Sortino'] = _stats.sortino(df, rf, periods=21)
     metrics['Max Drawdown %'] = blank
     metrics['Longest DD Days'] = blank
 
     if mode.lower() == 'full':
-        ret_vol = _stats.volatility(df['returns']) * pct
+        ret_vol = _stats.volatility(df['returns'], periods=21) * pct
         if "benchmark" in df:
-            bench_vol = _stats.volatility(df['benchmark']) * pct
+            bench_vol = _stats.volatility(df['benchmark'], periods=21) * pct
             metrics['Volatility (ann.) %'] = [ret_vol, bench_vol]
             # metrics['R^2'] = _stats.r_squared(df['returns'], df['benchmark'])
         else:
@@ -710,7 +710,7 @@ def metrics_v3(returns, benchmark=None, rf=0., display=True,
             df, aggregate='M') * pct
         metrics['Expected Yearly %%'] = _stats.expected_return(
             df, aggregate='A') * pct
-        # metrics['Kelly Criterion %'] = _stats.kelly_criterion(df) * pct
+        metrics['Kelly Criterion %'] = _stats.kelly_criterion(df) * pct
         # metrics['Risk of Ruin %'] = _stats.risk_of_ruin(df)
 
         # metrics['Daily Value-at-Risk %'] = -abs(_stats.var(df) * pct)
@@ -761,8 +761,8 @@ def metrics_v3(returns, benchmark=None, rf=0., display=True,
     # best/worst
     if mode.lower() == 'full':
         metrics['~~~'] = blank
-        metrics['Best Day %'] = _stats.best(df) * pct
-        metrics['Worst Day %'] = _stats.worst(df) * pct
+        # metrics['Best Day %'] = _stats.best(df) * pct
+        # metrics['Worst Day %'] = _stats.worst(df) * pct
         metrics['Best Month %'] = _stats.best(df, aggregate='M') * pct
         metrics['Worst Month %'] = _stats.worst(df, aggregate='M') * pct
         metrics['Best Year %'] = _stats.best(df, aggregate='A') * pct
@@ -772,7 +772,7 @@ def metrics_v3(returns, benchmark=None, rf=0., display=True,
     metrics['~~~~'] = blank
     for ix, row in dd.iterrows():
         metrics[ix] = row
-    # metrics['Recovery Factor'] = _stats.recovery_factor(df)
+    metrics['Recovery Factor'] = _stats.recovery_factor(df)
     # metrics['Ulcer Index'] = _stats.ulcer_index(df, rf)
 
     # win rate
