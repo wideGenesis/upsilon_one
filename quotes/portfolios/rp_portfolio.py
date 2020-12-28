@@ -238,6 +238,7 @@ def returns_calc(init_capital=100000, ohlc=None):
             cap_in_hi = round(shares * dohlcw[2], 2)
             cap_in_low = round(shares * dohlcw[3], 2)
             cap_in_close = round(shares * dohlcw[4], 2)
+            cap_in_adjclose = round(shares * dohlcw[6], 2)
             if dohlcw[0] not in cap_ohlc:
                 cap_ohlc[dohlcw[0]] = (dohlcw[0], cap_in_open, cap_in_hi, cap_in_low, cap_in_close)
             else:
@@ -245,7 +246,8 @@ def returns_calc(init_capital=100000, ohlc=None):
                                        round(cap_ohlc[dohlcw[0]][1] + cap_in_open, 2),
                                        round(cap_ohlc[dohlcw[0]][2] + cap_in_hi, 2),
                                        round(cap_ohlc[dohlcw[0]][3] + cap_in_low, 2),
-                                       round(cap_ohlc[dohlcw[0]][4] + cap_in_close, 2))
+                                       round(cap_ohlc[dohlcw[0]][4] + cap_in_close, 2),
+                                       round(cap_ohlc[dohlcw[0]][6] + cap_in_adjclose, 2))
     # Расчет Returns
     returns = {}
     for i, ohlc_date in enumerate(cap_ohlc):

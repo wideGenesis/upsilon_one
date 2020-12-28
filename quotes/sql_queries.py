@@ -185,7 +185,7 @@ def get_ohlc_dict_by_port_id(port_id, start_date=None, end_date=date.today(),
         if start_date is None:
             td = timedelta(365)
             start_date = end_date - td
-        query_string = f'SELECT q.ticker, q.dateTime, q.open, q.high, q.low, q.close, w.weight ' \
+        query_string = f'SELECT q.ticker, q.dateTime, q.open, q.high, q.low, q.close, w.weight, q.adj_close ' \
                        f'FROM {q_table_name} q, {u_table_name} u, {weight_table} w' \
                        f' WHERE q.ticker=u.ticker ' \
                        f' AND q.ticker=w.ticker AND u.ticker=w.ticker ' \
