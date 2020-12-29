@@ -224,9 +224,9 @@ class Selector:
             momentum_df[col] = mom
         momentum_df.dropna(inplace=True)
         momentum_df.drop_duplicates(inplace=True)
-        print('%%%%%%%% after', momentum_df.tail(2))
+        # print('%%%%%%%% after', momentum_df.tail(2))
         sorting = momentum_df.T.sort_values(momentum_df.last_valid_index(), ascending=False).T
-        print('%%%%%%%% after', sorting.tail(2))
+        # print('%%%%%%%% after', sorting.tail(2))
         slicing = sorting.columns.tolist()
         tickers_to_allocator = slicing[:self.assets_to_hold]
         # print(tickers_to_allocator)

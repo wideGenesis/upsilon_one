@@ -12,10 +12,38 @@ from charter.charter import *
 import multiprocessing as mp
 
 
+def init_tester(port_id='parking', data_interval=-3, start_test_date=datetime.date(2008, 1, 1)):
+    min_dat = ""
+    if port_id == 'parking':
+        min_dat, ticker = find_min_date(PARKING)
+    elif port_id == 'allweather':
+        min_dat, ticker = find_min_date(ALL_WEATHER)
+    elif port_id == 'balanced':
+        min_dat, ticker = find_min_date(BALANCED)
+    elif port_id == 'aggressive':
+        min_dat, ticker = find_min_date(AGGRESSIVE)
+    elif port_id == 'leveraged':
+        min_dat, ticker = find_min_date(LEVERAGED)
+
+    if min_dat.day > 1:
+        min_dat = add_months(min_dat, abs(data_interval)+1)
+        min_dat = datetime.date(min_dat.year, min_dat.month, 1)
+    else:
+        min_dat = add_months(min_dat, abs(data_interval))
+    debug(min_dat)
+    if start_test_date >= min_dat:
+        debug(f'All ok! Start_test_date -- ok:{start_test_date}')
+        return start_test_date
+    else:
+        warning(f'[{port_id}][{ticker}]: You must start test from:{min_dat}')
+        return min_dat
+
+
 def portfolio_tester(init_cap=10000, port_id='parking', data_interval=-3, start_test_date=datetime.date(2008, 1, 1)):
     in_cap = init_cap
     compare_ticker = ""
-    wend_date = start_test_date
+    real_start_date = init_tester(port_id=port_id, data_interval=data_interval, start_test_date=start_test_date)
+    wend_date = real_start_date
     wstart_date = add_months(wend_date, data_interval)
     debug(f'Port_id={port_id}  wend_date={wend_date}  wstart_date={wstart_date}')
 
@@ -71,30 +99,32 @@ def portfolio_tester(init_cap=10000, port_id='parking', data_interval=-3, start_
         debug(f'allo [{wend_date.strftime("%Y %b")}]:{weights}')
         save_portfolio_weights(name=port_id, portfolio_weights=weights)
 
-    sd = start_test_date
+    sd = real_start_date
     create_candle_portfolio_img(port_id=port_id, compare_ticker=compare_ticker, start_date=sd, chart_type='Line')
 
 
 def main():
-    portfolio_tester(init_cap=10000, port_id='parking', data_interval=-3, start_test_date=datetime.date(2008, 1, 1))
+    # init_tester(port_id='leveraged')
+    # portfolio_tester(init_cap=10000, port_id='parking', data_interval=-3, start_test_date=datetime.date(2008, 1, 1))
+    pass
 
 
 if __name__ == '__main__':
     # main()
     mp.set_start_method('spawn')
-    q = mp.Queue()
+    # q = mp.Queue()
     # p1 = mp.Process(target=portfolio_tester, args=(10000, 'parking', -3, datetime.date(2008, 1, 1),))
     # p1.start()
     # p2 = mp.Process(target=portfolio_tester, args=(10000, 'allweather', -3, datetime.date(2008, 1, 1),))
     # p2.start()
     # p3 = mp.Process(target=portfolio_tester, args=(10000, 'balanced', -3, datetime.date(2008, 1, 1),))
     # p3.start()
-    # p4 = mp.Process(target=portfolio_tester, args=(10000, 'aggressive', -3, datetime.date(2008, 1, 1),))
-    # p4.start()
-    p5 = mp.Process(target=portfolio_tester, args=(10000, 'leveraged', -3, datetime.date(2008, 1, 1),))
+    p4 = mp.Process(target=portfolio_tester, args=(10000, 'aggressive', -3, datetime.date(2008, 1, 1),))
+    p4.start()
+    p5 = mp.Process(target=portfolio_tester, args=(10000, 'leveraged', -3, datetime.date(2006, 1, 1),))
     p5.start()
     # p1.join()
     # p2.join()
     # p3.join()
-    # p4.join()
+    p4.join()
     p5.join()

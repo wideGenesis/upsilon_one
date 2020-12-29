@@ -419,3 +419,26 @@ def get_all_universe(table_name=UNIVERSE_TABLE_NAME, engine=engine):
                 return None
         else:
             debug(f'Can\'t find table: {table_name}!')
+
+
+def find_min_date(tisker_list, table_name=QUOTE_TABLE_NAME):
+    with engine.connect() as connection:
+        if is_table_exist(table_name):
+            min_dates = {}
+            for ticker in tisker_list:
+                if ticker_lookup(ticker):
+                    sql_query = f'SELECT min(q.dateTime) FROM {table_name} q ' \
+                                f'WHERE q.ticker=\'{ticker}\''
+                    result = connection.execute(sql_query)
+                    if result.rowcount > 0:
+                        min_dates[ticker] = result.cursor.fetchone()[0]
+                    else:
+                        return -1
+                else:
+                    return -2
+            # debug(min_dates)
+            md = max(min_dates.values())
+            ticker = list(min_dates.keys())[list(min_dates.values()).index(md)]
+            return md, ticker
+        else:
+            debug(f'Can\'t find table: {table_name}!')

@@ -117,6 +117,23 @@ SERVICE_CHAT = conf['TELEGRAM']['SERVICE_CHAT']
 # logging.getLogger('scrapers').setLevel(level=logging.WARNING)
 
 
+class bcolors:
+    HEADER = '\033[95m'
+    OKBLUE = '\033[94m'
+    OKGREEN = '\033[92m'
+    WARNING = '\033[93m'
+    FAIL = '\033[91m'
+    ENDC = '\033[0m'
+
+    def disable(self):
+        self.HEADER = ''
+        self.OKBLUE = ''
+        self.OKGREEN = ''
+        self.WARNING = ''
+        self.FAIL = ''
+        self.ENDC = ''
+
+
 # Print iterations progress
 def print_progress_bar(iteration, total, prefix='', suffix='', decimals=1, length=100, fill='█', print_end=""):
     """
@@ -147,6 +164,15 @@ def debug(print_string=""):
     path, filename = os.path.split(info.filename)
     dt = datetime.datetime.now()
     print(f'\r[{dt.strftime("%H:%M:%S")}]{filename}:{info.lineno}:{print_string}')
+
+
+def warning(print_string=""):
+    caller_frame_record = inspect.stack()[1]
+    frame = caller_frame_record[0]
+    info = inspect.getframeinfo(frame)
+    path, filename = os.path.split(info.filename)
+    dt = datetime.datetime.now()
+    print(f'{bcolors.WARNING}[{dt.strftime("%H:%M:%S")}]{filename}:{info.lineno}:{print_string}{bcolors.ENDC}')
 
 
 def add_months(sourcedate, months):
