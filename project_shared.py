@@ -157,22 +157,18 @@ def print_progress_bar(iteration, total, prefix='', suffix='', decimals=1, lengt
         print()
 
 
-def debug(print_string=""):
+def debug(print_string="", debug_type="NORMAL"):
     caller_frame_record = inspect.stack()[1]
     frame = caller_frame_record[0]
     info = inspect.getframeinfo(frame)
     path, filename = os.path.split(info.filename)
     dt = datetime.datetime.now()
-    print(f'\r[{dt.strftime("%H:%M:%S")}]{filename}:{info.lineno}:{print_string}')
-
-
-def warning(print_string=""):
-    caller_frame_record = inspect.stack()[1]
-    frame = caller_frame_record[0]
-    info = inspect.getframeinfo(frame)
-    path, filename = os.path.split(info.filename)
-    dt = datetime.datetime.now()
-    print(f'{bcolors.WARNING}[{dt.strftime("%H:%M:%S")}]{filename}:{info.lineno}:{print_string}{bcolors.ENDC}')
+    if debug_type == "NORMAL":
+        print(f'\r[{dt.strftime("%H:%M:%S")}]{filename}:{info.lineno}:{print_string}')
+    elif debug_type == "WARNING":
+        print(f'{bcolors.WARNING}[{dt.strftime("%H:%M:%S")}]{filename}:{info.lineno}:{print_string}{bcolors.ENDC}')
+    elif debug_type == "ERROR":
+        print(f'{bcolors.FAIL}[{dt.strftime("%H:%M:%S")}]{filename}:{info.lineno}:{print_string}{bcolors.ENDC}')
 
 
 def add_months(sourcedate, months):

@@ -30,12 +30,11 @@ def init_tester(port_id='parking', data_interval=-3, start_test_date=datetime.da
         min_dat = datetime.date(min_dat.year, min_dat.month, 1)
     else:
         min_dat = add_months(min_dat, abs(data_interval))
-    debug(min_dat)
     if start_test_date >= min_dat:
-        debug(f'All ok! Start_test_date -- ok:{start_test_date}')
+        debug(f'Start_test_date -- ok:{start_test_date}')
         return start_test_date
     else:
-        warning(f'[{port_id}][{ticker}]: You must start test from:{min_dat}')
+        debug(f'[{port_id}][{ticker}]: You must start test from:{min_dat}', "WARNING")
         return min_dat
 
 
