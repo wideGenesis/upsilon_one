@@ -50,7 +50,7 @@ def create_chart(ticker, data, compare_ticker=None, compare_data=None, chart_typ
     title_str = f'{title_ticker} portfolio vs {compare_ticker}'
     m.addPlotAreaTitle(Center, "<*font=arial.ttf,size=12,color=0x5fffffff*>%s" % title_str)
 
-    m.setLogScale(True)
+    # m.setLogScale(True)
     m.setLegendStyle("normal", 8, Transparent, 0xC4D6FF)
     m.setXAxisStyle("normal", 8, AXIS_FONT_COLOR, 0)
     m.setYAxisStyle("normal", 8, AXIS_FONT_COLOR, 0)
