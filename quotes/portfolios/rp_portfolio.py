@@ -206,7 +206,9 @@ class Selector:
                 exit()
         _rs_sharpe.dropna(inplace=True)
         _rs_sharpe.drop_duplicates(inplace=True)
+        print('%%%%%%%% before', _rs_sharpe.tail(2))
         sorting = _rs_sharpe.T.sort_values(_rs_sharpe.last_valid_index(), ascending=False).T
+        print('%%%%%%%% after', sorting.tail(2))
         slicing = sorting.columns.tolist()
         tickers_to_allocator = slicing[:self.assets_to_hold]
         # print(tickers_to_allocator)
@@ -219,7 +221,6 @@ class Selector:
         for col in columns:
             mom = (df[col] - df[col].shift(self.performance_period)) / df[col].shift(self.performance_period)
             # mom = df[col].pct_change(periods=self.performance_period)
-            # mom = mom[self.performance_period:]
             momentum_df[col] = mom
         momentum_df.dropna(inplace=True)
         momentum_df.drop_duplicates(inplace=True)
