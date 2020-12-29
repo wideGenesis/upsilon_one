@@ -106,7 +106,7 @@ def get_closes_universe_df(q_table_name=QUOTE_TABLE_NAME, u_table_name=UNIVERSE_
                 if start_date is not None:
                     query_string += f' AND q.dateTime >= \'{str(start_date)}\' '
                 if end_date is not None:
-                    query_string += f' AND q.dateTime <= \'{str(end_date)}\' '
+                    query_string += f' AND q.dateTime < \'{str(end_date)}\' '
                 query_string += f' ORDER BY q.dateTime ASC'
                 q_result = connection.execute(query_string)
                 if q_result.rowcount > 0:
