@@ -433,10 +433,9 @@ def find_min_date(tisker_list, table_name=QUOTE_TABLE_NAME):
                     if result.rowcount > 0:
                         min_dates[ticker] = result.cursor.fetchone()[0]
                     else:
-                        return -1
+                        return None, ticker
                 else:
-                    return -2
-            # debug(min_dates)
+                    return None, None
             md = max(min_dates.values())
             ticker = list(min_dates.keys())[list(min_dates.values()).index(md)]
             return md, ticker

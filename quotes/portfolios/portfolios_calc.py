@@ -9,7 +9,61 @@ from quotes.portfolios.rp_portfolio import *
 """
 
 
-def parking_portfolio(start_date=None, end_date=date.today()):
+def calc_portfolio(portfolio_args):
+    cor_closes = get_closes_universe_df(etf_list=portfolio_args['cor_etf_list'],
+                                        start_date=portfolio_args['cor_selector_start_date'],
+                                        end_date=portfolio_args['cor_selector_end_date'])
+    cor_select = Selector(closes=cor_closes,
+                          assets_to_hold=portfolio_args['cor_assets_to_hold'],
+                          selectors_mode=portfolio_args['cor_selectors_mode'], performance_period=21)
+    cor_tickers = []
+    if portfolio_args['cor_selector_type'] == 'rs_sharpe':
+        cor_tickers = cor_select.rs_sharpe()
+    elif portfolio_args['cor_selector_type'] == 'momentum':
+        cor_tickers = cor_select.momentum()
+
+    cor_list = get_closes_by_ticker_list(cor_tickers)
+    cor_rp = RiskParityAllocator(closes=cor_list,
+                                 cov_method=portfolio_args['cor_cov_method'],
+                                 herc=portfolio_args['cor_herc'],
+                                 linkage_=portfolio_args['cor_linkage_'],
+                                 risk_measure_=portfolio_args['cor_risk_measure_'],
+                                 graphs_show=portfolio_args['cor_graphs_show'])
+    cor_rp.calc_returns()
+    core = cor_rp.allocator()
+    if portfolio_args['etf_only']:
+        return core
+    else:
+        sat_closes = get_closes_universe_df(cap_filter=portfolio_args['sat_cap_filter'],
+                                            etf_list=portfolio_args['sat_etf_list'],
+                                            start_date=portfolio_args['sat_selector_start_date'],
+                                            end_date=portfolio_args['sat_selector_end_date'])
+        sat_select = Selector(closes=sat_closes,
+                              assets_to_hold=portfolio_args['sat_assets_to_hold'],
+                              selectors_mode=portfolio_args['sat_selectors_mode'])
+
+        sat_tickers = sat_select.rs_sharpe()
+
+        sat_list = get_closes_by_ticker_list(sat_tickers,
+                                             start_date=portfolio_args['sat_alloctor_start_date'],
+                                             end_date=portfolio_args['sat_allocator_end_date'])
+        sat_rp = RiskParityAllocator(closes=sat_list,
+                                     cov_method=portfolio_args['sat_cov_method'],
+                                     herc=portfolio_args['sat_herc'],
+                                     linkage_=portfolio_args['sat_linkage_'],
+                                     risk_measure_=portfolio_args['sat_risk_measure_'],
+                                     graphs_show=portfolio_args['sat_graphs_show'])
+        sat_rp.calc_returns()
+        satellite = sat_rp.allocator()
+
+        weights = core_sat(cor=core,
+                           cor_perc=portfolio_args['cor_perc'],
+                           sat=satellite,
+                           sat_perc=portfolio_args['sat_perc'])
+        return weights
+
+
+def parking_portfolio(start_date=None, end_date=date.today(), **kwargs):
     # cor_closes = get_closes_universe_df(cap_filter=200000000000, etf_list=PARKING)
     cor_closes = get_closes_universe_df(etf_list=PARKING, start_date=start_date, end_date=end_date)
     cor_select = Selector(closes=cor_closes, assets_to_hold=4, selectors_mode=1, performance_period=21)
