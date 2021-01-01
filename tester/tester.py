@@ -94,7 +94,39 @@ def portfolio_tester(init_cap=10000, port_id='parking', allocator_data_interval=
     elif port_id == 'balanced':
         compare_ticker = "QQQ"
     elif port_id == 'aggressive':
-        compare_ticker = "QQQ"
+        portfolio_args['etf_only'] = True
+        portfolio_args['cor_perc'] = 0.7
+        portfolio_args['sat_perc'] = 0.3
+        # ********************* Aggressive cor *********************
+        portfolio_args['cor_alloctor_start_date'] = alloctor_start_date
+        portfolio_args['cor_allocator_end_date'] = allocator_end_date
+        portfolio_args['cor_selector_start_date'] = selector_start_date
+        portfolio_args['cor_selector_end_date'] = selector_end_date
+        portfolio_args['cor_etf_list'] = AGGRESSIVE
+        portfolio_args['cor_assets_to_hold'] = 4
+        portfolio_args['cor_selectors_mode'] = 1
+        portfolio_args['cor_selector_type'] = 'momentum'
+        portfolio_args['cor_cov_method'] = 'semi'
+        portfolio_args['cor_herc'] = False
+        portfolio_args['cor_linkage_'] = 'ward'
+        portfolio_args['cor_risk_measure_'] = 'variance'
+        portfolio_args['cor_graphs_show'] = False
+        # ********************* Aggressive sat *********************
+        portfolio_args['sat_alloctor_start_date'] = alloctor_start_date
+        portfolio_args['sat_allocator_end_date'] = allocator_end_date
+        portfolio_args['sat_selector_start_date'] = selector_start_date
+        portfolio_args['sat_selector_end_date'] = selector_end_date
+        portfolio_args['sat_etf_list'] = None
+        portfolio_args['sat_cap_filter'] = 5000000000
+        portfolio_args['sat_assets_to_hold'] = 15
+        portfolio_args['sat_selectors_mode'] = 1
+        portfolio_args['sat_selector_type'] = 'rs_sharpe'
+        portfolio_args['sat_cov_method'] = 'semi'
+        portfolio_args['sat_herc'] = False
+        portfolio_args['sat_linkage_'] = 'ward'
+        portfolio_args['sat_risk_measure_'] = 'variance'
+        portfolio_args['sat_graphs_show'] = False
+        compare_ticker = "SPY"
     elif port_id == 'leveraged':
         compare_ticker = "QQQ"
 
@@ -124,6 +156,7 @@ def portfolio_tester(init_cap=10000, port_id='parking', allocator_data_interval=
             debug("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%")
             in_cap = pb[-1][4]
 
+        debug(f'{allocator_end_date}:{cash}')
         portfolio_args['cor_alloctor_start_date'] = alloctor_start_date
         portfolio_args['cor_allocator_end_date'] = allocator_end_date
         portfolio_args['cor_selector_start_date'] = selector_start_date
@@ -143,8 +176,8 @@ def portfolio_tester(init_cap=10000, port_id='parking', allocator_data_interval=
 
 
 def main():
-    portfolio_tester(init_cap=10000, port_id='parking', allocator_data_interval=3, selector_data_interval=3,
-                     start_test_date=datetime.date(2008, 1, 1))
+    portfolio_tester(init_cap=10000, port_id='aggressive', allocator_data_interval=3, selector_data_interval=1,
+                     start_test_date=datetime.date(2020, 1, 1))
     # pass
 
 

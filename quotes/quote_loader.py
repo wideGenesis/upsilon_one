@@ -115,7 +115,7 @@ def update_universe_prices1(exclude_sectors=EXCLUDE_SECTORS, not_exclude_tickers
         today = date.today()
         # в самом  простом случае апдейтить таблицу надо с последней даты в таблице по сегодняшнюю
         print_progress_bar(0, t_len, prefix='Progress:', suffix='Complete', length=50)
-        for count, ticker in enumerate(tickers):
+        for count, ticker in enumerate(tickers, start=1):
             # print("### Try update ticker:" + str(ticker))
             if ticker_lookup(ticker):
                 if (end_table_date - td) != today:
@@ -133,7 +133,7 @@ def update_universe_prices1(exclude_sectors=EXCLUDE_SECTORS, not_exclude_tickers
         debug("__Table is not exists__")
         create_quotes_table()
         print_progress_bar(0, t_len, prefix='Progress:', suffix='Complete', length=50)
-        for count, ticker in enumerate(tickers):
+        for count, ticker in enumerate(tickers, start=1):
             start_date = date.fromisoformat(DEFAULT_START_QUOTES_DATE)
             end_date = date.today()
             download_quotes_to_db(ticker, start_date, end_date, is_update)
