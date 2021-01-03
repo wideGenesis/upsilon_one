@@ -144,6 +144,8 @@ def portfolio_tester(init_cap=10000, port_id='parking', allocator_data_interval=
         pstart_date = add_months(pend_date, -1)
 
         ohlc = get_ohlc_dict_by_port_id(port_id, start_date=pstart_date, end_date=pend_date)
+        if len(ohlc) == 0:
+            break
         portfolio_bars, returns = returns_calc(init_capital=in_cap, ohlc=ohlc)
         save_portfolio_bars(name=port_id, portfolio_bars=portfolio_bars)
         save_portfolio_returns(name=port_id, portfolio_returns=returns)
@@ -176,8 +178,8 @@ def portfolio_tester(init_cap=10000, port_id='parking', allocator_data_interval=
 
 
 def main():
-    portfolio_tester(init_cap=10000, port_id='aggressive', allocator_data_interval=3, selector_data_interval=1,
-                     start_test_date=datetime.date(2020, 1, 1))
+    portfolio_tester(init_cap=10000, port_id='aggressive', allocator_data_interval=3, selector_data_interval=2,
+                     start_test_date=datetime.date(2018, 1, 1))
     # pass
 
 
