@@ -217,7 +217,7 @@ class Selector:
 
     def momentum(self):
         df = self.closes
-        print(df.head(25))
+        # print(df.head(25))
         columns = df.columns.tolist()
         momentum_df = df.copy()
         for col in columns:
@@ -227,7 +227,7 @@ class Selector:
             momentum_df[col] = mom
         momentum_df.dropna(inplace=True)
         momentum_df.drop_duplicates(inplace=True)
-        print('%%%%%%%% before sort', '\n',  momentum_df.head(25))
+        # print('%%%%%%%% before sort', '\n',  momentum_df.head(25))
         sorting = momentum_df.T.sort_values(momentum_df.last_valid_index(), ascending=False).T
         # print('%%%%%%%% after', sorting.tail(2))
         slicing = sorting.columns.tolist()
