@@ -222,7 +222,7 @@ class Selector:
         momentum_df = df.copy()
         for col in columns:
             # mom = (df[col] - df[col].shift(self.performance_period)) / df[col].shift(self.performance_period)
-            mom = ((df[col].iloc[-1] - df[col].iloc[0]) / df[col].iloc[0])
+            mom = ((df[col].iloc[-1] - df[col].iloc[0]) / df[col].iloc[0]) * 100
             # mom = df[col].pct_change(periods=self.performance_period)
             momentum_df[col] = mom
         momentum_df.dropna(inplace=True)
