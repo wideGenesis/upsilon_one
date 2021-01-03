@@ -190,7 +190,7 @@ class RiskParityAllocator:
                 mrsi = 50.0 - (100.0 / (1.0 + rs))
                 performance_df[col] = mrsi
             else:
-                mom = (df[col].iloc[0] - df[col].iloc[-1]) / df[col].iloc[-1]
+                mom = (df[col].iloc[0] - df[col].iloc[-1]) / df[col].iloc[-1] * 100
                 # mom = df[col].pct_change(periods=self.performance_lookback)
                 performance_df[col] = mom
 

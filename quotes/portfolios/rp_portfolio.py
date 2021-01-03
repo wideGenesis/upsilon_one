@@ -184,6 +184,7 @@ class Selector:
         :selectors_mode: 0 = RSI/rolling.Std(), 1 = RSI
         """
         df = self.closes
+        print(df.head(25))
         columns = df.columns.tolist()
         _rs_sharpe = df.copy()
         for col in columns:
@@ -216,15 +217,17 @@ class Selector:
 
     def momentum(self):
         df = self.closes
+        print(df.head(25))
         columns = df.columns.tolist()
         momentum_df = df.copy()
         for col in columns:
-            mom = (df[col] - df[col].shift(self.performance_period)) / df[col].shift(self.performance_period)
+            # mom = (df[col] - df[col].shift(self.performance_period)) / df[col].shift(self.performance_period)
+            mom = ((df[col].iloc[0] - df[col].iloc[-1]) / df[col].iloc[-1]) * 100
             # mom = df[col].pct_change(periods=self.performance_period)
             momentum_df[col] = mom
         momentum_df.dropna(inplace=True)
         momentum_df.drop_duplicates(inplace=True)
-        # print('%%%%%%%% after', momentum_df.tail(2))
+        print('%%%%%%%% before sort', '\n', momentum_df.tail(1), '\n', momentum_df.head(1))
         sorting = momentum_df.T.sort_values(momentum_df.last_valid_index(), ascending=False).T
         # print('%%%%%%%% after', sorting.tail(2))
         slicing = sorting.columns.tolist()

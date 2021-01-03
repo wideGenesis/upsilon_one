@@ -84,7 +84,6 @@ def portfolio_tester(init_cap=10000, port_id='parking', allocator_data_interval=
         portfolio_args['sat_etf_list'] = None
         portfolio_args['sat_cap_filter'] = 100000000000
         portfolio_args['sat_assets_to_hold'] = 4
-        portfolio_args['sat_selector_type'] = 'momentum'
         portfolio_args['sat_cov_method'] = 'semi'
         portfolio_args['sat_herc'] = False
         portfolio_args['sat_linkage_'] = 'ward'
@@ -117,6 +116,8 @@ def portfolio_tester(init_cap=10000, port_id='parking', allocator_data_interval=
         pstart_date = add_months(pend_date, -1)
 
         ohlc = get_ohlc_dict_by_port_id(port_id, start_date=pstart_date, end_date=pend_date)
+        if len(ohlc) == 0:
+            break
         portfolio_bars, returns = returns_calc(init_capital=in_cap, ohlc=ohlc)
         save_portfolio_bars(name=port_id, portfolio_bars=portfolio_bars)
         save_portfolio_returns(name=port_id, portfolio_returns=returns)
@@ -129,6 +130,7 @@ def portfolio_tester(init_cap=10000, port_id='parking', allocator_data_interval=
             debug("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%")
             in_cap = pb[-1][4]
 
+        debug(f'{allocator_end_date}:{cash}')
         portfolio_args['cor_alloctor_start_date'] = alloctor_start_date
         portfolio_args['cor_allocator_end_date'] = allocator_end_date
         portfolio_args['cor_selector_start_date'] = selector_start_date
@@ -148,7 +150,7 @@ def portfolio_tester(init_cap=10000, port_id='parking', allocator_data_interval=
 
 
 def main():
-    portfolio_tester(init_cap=10000, port_id='parking', allocator_data_interval=3, selector_data_interval=3,
+    portfolio_tester(init_cap=10000, port_id='parking', allocator_data_interval=3, selector_data_interval=2,
                      start_test_date=datetime.date(2008, 1, 1))
     # pass
 

@@ -178,8 +178,8 @@ def portfolio_tester(init_cap=10000, port_id='parking', allocator_data_interval=
 
 
 def main():
-    portfolio_tester(init_cap=10000, port_id='aggressive', allocator_data_interval=3, selector_data_interval=2,
-                     start_test_date=datetime.date(2018, 1, 1))
+    portfolio_tester(init_cap=10000, port_id='parking', allocator_data_interval=3, selector_data_interval=2,
+                     start_test_date=datetime.date(2008, 1, 1))
     # pass
 
 
