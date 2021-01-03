@@ -158,7 +158,7 @@ def portfolio_tester(init_cap=10000, port_id='parking', allocator_data_interval=
             debug("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%")
             in_cap = pb[-1][4]
 
-        debug(f'{allocator_end_date}:{cash}')
+        # debug(f'{allocator_end_date}:{cash}')
         portfolio_args['cor_alloctor_start_date'] = alloctor_start_date
         portfolio_args['cor_allocator_end_date'] = allocator_end_date
         portfolio_args['cor_selector_start_date'] = selector_start_date
@@ -178,7 +178,7 @@ def portfolio_tester(init_cap=10000, port_id='parking', allocator_data_interval=
 
 
 def main():
-    portfolio_tester(init_cap=10000, port_id='parking', allocator_data_interval=3, selector_data_interval=2,
+    portfolio_tester(init_cap=10000, port_id='parking', allocator_data_interval=3, selector_data_interval=1,
                      start_test_date=datetime.date(2008, 1, 1))
     # pass
 

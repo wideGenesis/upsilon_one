@@ -15,14 +15,16 @@ def calc_portfolio(portfolio_args):
                                         end_date=portfolio_args['cor_selector_end_date'])
     cor_select = Selector(closes=cor_closes,
                           assets_to_hold=portfolio_args['cor_assets_to_hold'],
-                          selectors_mode=portfolio_args['cor_selectors_mode'], performance_period=21)
+                          selectors_mode=portfolio_args['cor_selectors_mode'])
     cor_tickers = []
     if portfolio_args['cor_selector_type'] == 'rs_sharpe':
         cor_tickers = cor_select.rs_sharpe()
     elif portfolio_args['cor_selector_type'] == 'momentum':
         cor_tickers = cor_select.momentum()
 
-    cor_list = get_closes_by_ticker_list(cor_tickers)
+    cor_list = get_closes_by_ticker_list(cor_tickers,
+                                         start_date=portfolio_args['cor_alloctor_start_date'],
+                                         end_date=portfolio_args['cor_allocator_end_date'])
     cor_rp = RiskParityAllocator(closes=cor_list,
                                  cov_method=portfolio_args['cor_cov_method'],
                                  herc=portfolio_args['cor_herc'],
