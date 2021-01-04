@@ -20,7 +20,7 @@ def calc_portfolio(portfolio_args):
                                  risk_measure_=portfolio_args['cor_risk_measure_'],
                                  graphs_show=portfolio_args['cor_graphs_show'],
                                  assets_to_hold=portfolio_args['cor_assets_to_hold'],
-                                 rsi=portfolio_args['cor_rsi_mode'],
+                                 selector_type=portfolio_args['cor_selector_type'],
                                  std_adj=portfolio_args['cor_selector_adjustment'],
                                  )
     cor_tickers = []

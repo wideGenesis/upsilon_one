@@ -33,6 +33,9 @@ class RiskParityAllocator:
         'herc',
         'risk_measure_',
         'linkage_',
+        'selector_type',
+        'std_adj',
+        'assets_to_hold'
     ]
     """
     risk_measure supported string: 
@@ -57,7 +60,12 @@ class RiskParityAllocator:
 
                  herc: bool = True,
                  risk_measure_: str = 'conditional_drawdown_risk',
-                 linkage_: str = 'ward'
+                 linkage_: str = 'ward',
+
+                 selector_type: int = 1,
+                 std_adj: bool = False,
+                 assets_to_hold: int = 10,
+
                  ):
         self.asset_names_ = asset_names_
         self.closes = closes
@@ -73,6 +81,13 @@ class RiskParityAllocator:
         self.herc = herc
         self.risk_measure_ = risk_measure_
         self.linkage_ = linkage_
+
+        self.selector_type = selector_type
+        self.std_adj = std_adj
+        self.assets_to_hold = assets_to_hold
+
+    def closes_updater(self, new_closes=None):
+        self.closes = new_closes
 
     def calc_returns(self):
         asset_names = self.closes.columns.tolist()
@@ -158,78 +173,32 @@ class RiskParityAllocator:
         # print(w)
         return w
 
-
-@dataclass
-class Selector:
-    __slots__ = [
-        'closes',
-        'performance_period',
-        'assets_to_hold',
-        'selectors_mode'
-    ]
-
-    def __init__(self,
-                 closes: pd = None,
-                 performance_period: int = 63,  # 21,
-                 assets_to_hold: int = 10,
-                 selectors_mode: int = 0
-                 ):
-        self.closes = closes
-        self.performance_period = performance_period
-        self.assets_to_hold = assets_to_hold
-        self.selectors_mode = selectors_mode
-
-    def rs_sharpe(self):
-        """
-        :selectors_mode: 0 = RSI/rolling.Std(), 1 = RSI
-        """
+    def selector(self):
         df = self.closes
-        print(df.head(25))
         columns = df.columns.tolist()
-        _rs_sharpe = df.copy()
+        performance_df = df.copy()
         for col in columns:
-            delta = df[col].diff()
-            delta = delta[1:]
-            up, down = delta.copy(), delta.copy()
-            up[up < 0] = 0
-            down[down > 0] = 0
-            roll_up1 = up.ewm(span=self.performance_period).mean()
-            roll_down1 = down.abs().ewm(span=self.performance_period).mean()
-            rs = roll_up1 / roll_down1
-            mrsi = 50.0 - (100.0 / (1.0 + rs))
-            sharpe = mrsi / df[col].rolling(self.performance_period).std()
-            if self.selectors_mode == 1:
-                _rs_sharpe[col] = mrsi
-            elif self.selectors_mode == 0:
-                _rs_sharpe[col] = sharpe
-            else:
-                print('Mode doesnt exists')
-                exit()
-        _rs_sharpe.dropna(inplace=True)
-        _rs_sharpe.drop_duplicates(inplace=True)
-        # print('%%%%%%%% before', _rs_sharpe.tail(2))
-        sorting = _rs_sharpe.T.sort_values(_rs_sharpe.last_valid_index(), ascending=False).T
-        # print('%%%%%%%% after', sorting.tail(2))
-        slicing = sorting.columns.tolist()
-        tickers_to_allocator = slicing[:self.assets_to_hold]
-        # print(tickers_to_allocator)
-        return tickers_to_allocator
+            if self.selector_type == 0:
+                delta = df[col].diff()
+                delta = delta[1:]
+                up, down = delta.copy(), delta.copy()
+                up[up < 0] = 0
+                down[down > 0] = 0
+                roll_up1 = up.ewm().mean()
+                roll_down1 = down.abs().ewm().mean()
+                rs = roll_up1 / roll_down1
+                mrsi = 50.0 - (100.0 / (1.0 + rs))
+                performance_df[col] = mrsi
+            elif self.selector_type == 1:
+                mom = ((df[col].iloc[-1] - df[col].iloc[0]) / df[col].iloc[0])
+                # mom = df[col].pct_change(periods=self.performance_lookback)
+                performance_df[col] = mom
 
-    def momentum(self):
-        df = self.closes
-        # print(df.head(25))
-        columns = df.columns.tolist()
-        momentum_df = df.copy()
-        for col in columns:
-            # mom = (df[col] - df[col].shift(self.performance_period)) / df[col].shift(self.performance_period)
-            mom = ((df[col].iloc[-1] - df[col].iloc[0]) / df[col].iloc[0]) * 100
-            # mom = df[col].pct_change(periods=self.performance_period)
-            momentum_df[col] = mom
-        momentum_df.dropna(inplace=True)
-        momentum_df.drop_duplicates(inplace=True)
-        # print('%%%%%%%% before sort', '\n',  momentum_df.head(25))
-        sorting = momentum_df.T.sort_values(momentum_df.last_valid_index(), ascending=False).T
-        # print('%%%%%%%% after', sorting.tail(2))
+        performance_df.dropna(inplace=True)
+        performance_df.drop_duplicates(inplace=True)
+        # print('%%%%%%%% before', performance_df.tail(10))
+        sorting = performance_df.T.sort_values(performance_df.last_valid_index(), ascending=False).T
+        # print('%%%%%%%% after', sorting.tail(10))
         slicing = sorting.columns.tolist()
         tickers_to_allocator = slicing[:self.assets_to_hold]
         # print(tickers_to_allocator)
@@ -281,33 +250,3 @@ def returns_calc(init_capital=100000, ohlc=None):
     # debug(cap_ohlc.values())
     # debug(returns)
     return cap_ohlc.values(), returns
-
-
-def returns_calc_old(init_capital=10000, ohlc=None):
-    cap_ohlc = {}
-    tmp = ohlc
-    for k, v in ohlc.items():
-        ticker_qty = init_capital * v[0][5]
-        tmp[k].append(ticker_qty)
-        tmp[k][-1] = round(ticker_qty / tmp[k][0][4])
-
-    for k, v in tmp.items():
-        ohlc_list = []
-        cap_in_open = round(v[1] * v[0][1], 2)
-        ohlc_list.append(cap_in_open)
-        cap_in_hi = round(v[1] * v[0][2], 2)
-        ohlc_list.append(cap_in_hi)
-        cap_in_lo = round(v[1] * v[0][3], 2)
-        ohlc_list.append(cap_in_lo)
-        cap_in_close = round(v[1] * v[0][4], 2)
-        ohlc_list.append(cap_in_close)
-        cap_ohlc.update({k: ohlc_list})
-
-    op, hi, lo, cl = 0, 0, 0, 0
-    for k, v in cap_ohlc.items():
-        op += v[0]
-        hi += v[1]
-        lo += v[2]
-        cl += v[3]
-    print([round(op, 2), round(hi, 2), round(lo, 2), round(cl, 2)])
-    return [round(op, 2), round(hi, 2), round(lo, 2), round(cl, 2)]

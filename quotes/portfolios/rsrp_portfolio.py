@@ -33,7 +33,7 @@ class RiskParityAllocator:
         'herc',
         'risk_measure_',
         'linkage_',
-        'rsi',
+        'selector_type',
         'std_adj',
         'assets_to_hold'
     ]
@@ -62,7 +62,7 @@ class RiskParityAllocator:
                  risk_measure_: str = 'conditional_drawdown_risk',
                  linkage_: str = 'ward',
 
-                 rsi: bool = False,
+                 selector_type: int = 1,
                  std_adj: bool = False,
                  assets_to_hold: int = 10,
 
@@ -82,7 +82,7 @@ class RiskParityAllocator:
         self.risk_measure_ = risk_measure_
         self.linkage_ = linkage_
 
-        self.rsi = rsi
+        self.selector_type = selector_type
         self.std_adj = std_adj
         self.assets_to_hold = assets_to_hold
 
@@ -178,7 +178,7 @@ class RiskParityAllocator:
         columns = df.columns.tolist()
         performance_df = df.copy()
         for col in columns:
-            if self.rsi:
+            if self.selector_type == 0:
                 delta = df[col].diff()
                 delta = delta[1:]
                 up, down = delta.copy(), delta.copy()
@@ -189,7 +189,7 @@ class RiskParityAllocator:
                 rs = roll_up1 / roll_down1
                 mrsi = 50.0 - (100.0 / (1.0 + rs))
                 performance_df[col] = mrsi
-            else:
+            elif self.selector_type == 1:
                 mom = ((df[col].iloc[-1] - df[col].iloc[0]) / df[col].iloc[0])
                 # mom = df[col].pct_change(periods=self.performance_lookback)
                 performance_df[col] = mom

@@ -71,7 +71,7 @@ def portfolio_tester(init_cap=10000, port_id='parking', allocator_data_interval=
         portfolio_args['cor_linkage_'] = 'ward'
         portfolio_args['cor_risk_measure_'] = 'variance'
         portfolio_args['cor_graphs_show'] = False
-        portfolio_args['cor_rsi_mode'] = False
+        portfolio_args['cor_selector_type'] = 1
         portfolio_args['cor_selector_adjustment'] = False
         portfolio_args['cor_rp_lookback'] = 12
         portfolio_args['cor_performance_lookback'] = 1
@@ -89,7 +89,7 @@ def portfolio_tester(init_cap=10000, port_id='parking', allocator_data_interval=
         portfolio_args['sat_linkage_'] = 'ward'
         portfolio_args['sat_risk_measure_'] = 'variance'
         portfolio_args['sat_graphs_show'] = False
-        portfolio_args['sat_rsi_mode'] = False
+        portfolio_args['sat_selector_type'] = 1
         portfolio_args['sat_selector_adjustment'] = False
 
         compare_ticker = "TLT"
