@@ -87,9 +87,9 @@ def portfolio_tester(init_cap=10000, port_id='parking', allocator_data_interval=
         portfolio_args['sat_linkage_'] = 'ward'
         portfolio_args['sat_risk_measure_'] = 'variance'
         portfolio_args['sat_graphs_show'] = False
-        compare_ticker = "TLT"
         portfolio_args['cor_selector_type'] = 1
         portfolio_args['cor_selector_adjustment'] = False
+        compare_ticker = "TLT"
 
     elif port_id == 'allweather':
         # ======================================== A L L W E A T H E R ========================================
@@ -123,9 +123,9 @@ def portfolio_tester(init_cap=10000, port_id='parking', allocator_data_interval=
         portfolio_args['sat_linkage_'] = 'ward'
         portfolio_args['sat_risk_measure_'] = 'variance'
         portfolio_args['sat_graphs_show'] = False
-        compare_ticker = "SPY"
         portfolio_args['cor_selector_type'] = 1
         portfolio_args['cor_selector_adjustment'] = False
+        compare_ticker = "SPY"
 
     elif port_id == 'balanced':
         # ======================================== B A L A N C E D ========================================
@@ -159,9 +159,9 @@ def portfolio_tester(init_cap=10000, port_id='parking', allocator_data_interval=
         portfolio_args['sat_linkage_'] = 'ward'
         portfolio_args['sat_risk_measure_'] = 'variance'
         portfolio_args['sat_graphs_show'] = False
-        compare_ticker = "QQQ"
         portfolio_args['cor_selector_type'] = 1
         portfolio_args['cor_selector_adjustment'] = False
+        compare_ticker = "QQQ"
     elif port_id == 'aggressive':
         # ======================================== A G G R E S S I V E ========================================
         portfolio_args['etf_only'] = True
@@ -194,9 +194,9 @@ def portfolio_tester(init_cap=10000, port_id='parking', allocator_data_interval=
         portfolio_args['sat_linkage_'] = 'ward'
         portfolio_args['sat_risk_measure_'] = 'variance'
         portfolio_args['sat_graphs_show'] = False
-        compare_ticker = "QQQ"
         portfolio_args['cor_selector_type'] = 1
         portfolio_args['cor_selector_adjustment'] = False
+        compare_ticker = "QQQ"
     elif port_id == 'leveraged':
         # ======================================== L E V E R A G E D ========================================
         portfolio_args['etf_only'] = True
@@ -229,9 +229,9 @@ def portfolio_tester(init_cap=10000, port_id='parking', allocator_data_interval=
         portfolio_args['sat_linkage_'] = 'ward'
         portfolio_args['sat_risk_measure_'] = 'variance'
         portfolio_args['sat_graphs_show'] = False
-        compare_ticker = "QQQ"
         portfolio_args['cor_selector_type'] = 1
         portfolio_args['cor_selector_adjustment'] = False
+        compare_ticker = "QQQ"
 
     weights = calc_portfolio(portfolio_args)
 
@@ -281,7 +281,7 @@ def portfolio_tester(init_cap=10000, port_id='parking', allocator_data_interval=
 
 
 def main():
-    # portfolio_tester(init_cap=10000, port_id='aggressive', allocator_data_interval=3, selector_data_interval=1,
+    # portfolio_tester(init_cap=10000, port_id='parking', allocator_data_interval=3, selector_data_interval=1,
     #                  start_test_date=datetime.date(2008, 1, 1))
     pass
 
@@ -290,18 +290,18 @@ if __name__ == '__main__':
     # main()
     mp.set_start_method('spawn')
     q = mp.Queue()
-    p1 = mp.Process(target=portfolio_tester, args=(10000, 'parking', 3, 2, datetime.date(2008, 1, 1),))
+    p1 = mp.Process(target=portfolio_tester, args=(10000, 'parking', 3, 1, datetime.date(2008, 1, 1),))
     p1.start()
-    p2 = mp.Process(target=portfolio_tester, args=(10000, 'allweather', 3, 1, datetime.date(2008, 1, 1),))
-    p2.start()
-    p3 = mp.Process(target=portfolio_tester, args=(10000, 'balanced', 3, 1, datetime.date(2008, 1, 1),))
-    p3.start()
-    p4 = mp.Process(target=portfolio_tester, args=(10000, 'aggressive', 3, 1, datetime.date(2008, 1, 1),))
-    p4.start()
-    p5 = mp.Process(target=portfolio_tester, args=(10000, 'leveraged', 3, 1,  datetime.date(2010, 1, 1),))
-    p5.start()
-    # p1.join()
-    p2.join()
-    p3.join()
-    p4.join()
-    p5.join()
+    # p2 = mp.Process(target=portfolio_tester, args=(10000, 'allweather', 3, 1, datetime.date(2008, 1, 1),))
+    # p2.start()
+    # p3 = mp.Process(target=portfolio_tester, args=(10000, 'balanced', 3, 1, datetime.date(2008, 1, 1),))
+    # p3.start()
+    # p4 = mp.Process(target=portfolio_tester, args=(10000, 'aggressive', 3, 1, datetime.date(2008, 1, 1),))
+    # p4.start()
+    # p5 = mp.Process(target=portfolio_tester, args=(10000, 'leveraged', 3, 1,  datetime.date(2010, 1, 1),))
+    # p5.start()
+    p1.join()
+    # p2.join()
+    # p3.join()
+    # p4.join()
+    # p5.join()

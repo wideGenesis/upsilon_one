@@ -26,7 +26,9 @@ def calc_portfolio(portfolio_args):
                                  )
     cor_tickers = []
     cor_tickers = cor_rp.selector()
-    cor_list = get_closes_by_ticker_list(cor_tickers)
+    cor_list = get_closes_by_ticker_list(cor_tickers,
+                                         start_date=portfolio_args['cor_alloctor_start_date'],
+                                         end_date=portfolio_args['cor_allocator_end_date'])
     cor_rp.closes_updater(new_closes=cor_list)
     cor_rp.calc_returns()
     core = cor_rp.allocator()
@@ -50,7 +52,9 @@ def calc_portfolio(portfolio_args):
                                      )
         sat_tickers = []
         sat_tickers = sat_rp.selector()
-        sat_list = get_closes_by_ticker_list(sat_tickers)
+        sat_list = get_closes_by_ticker_list(sat_tickers,
+                                             start_date=portfolio_args['sat_alloctor_start_date'],
+                                             end_date=portfolio_args['sat_allocator_end_date'])
         sat_rp.closes_updater(new_closes=sat_list)
         sat_rp.calc_returns()
         satellite = sat_rp.allocator()
