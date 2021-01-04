@@ -72,7 +72,7 @@ def portfolio_tester(init_cap=10000, port_id='parking', allocator_data_interval=
         portfolio_args['cor_linkage_'] = 'ward'
         portfolio_args['cor_risk_measure_'] = 'variance'
         portfolio_args['cor_graphs_show'] = False
-        portfolio_args['cor_selector_type'] = 2
+        portfolio_args['cor_selector_type'] = 1
         portfolio_args['cor_selector_adjustment'] = False
         # ********************* Parking sat *********************
         portfolio_args['sat_alloctor_start_date'] = alloctor_start_date
@@ -108,7 +108,7 @@ def portfolio_tester(init_cap=10000, port_id='parking', allocator_data_interval=
         portfolio_args['cor_linkage_'] = 'ward'
         portfolio_args['cor_risk_measure_'] = 'variance'
         portfolio_args['cor_graphs_show'] = False
-        portfolio_args['cor_selector_type'] = 2
+        portfolio_args['cor_selector_type'] = 1
         portfolio_args['cor_selector_adjustment'] = False
         # ********************* Allweather sat *********************
         portfolio_args['sat_alloctor_start_date'] = alloctor_start_date
