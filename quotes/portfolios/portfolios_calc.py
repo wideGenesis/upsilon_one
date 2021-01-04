@@ -48,7 +48,7 @@ def calc_portfolio(portfolio_args):
         if portfolio_args['sat_selector_type'] == 'rs_sharpe':
             sat_tickers = sat_select.rs_sharpe()
         elif portfolio_args['sat_selector_type'] == 'momentum':
-            sat_tickers = cor_select.momentum()
+            sat_tickers = sat_select.momentum()
 
         sat_list = get_closes_by_ticker_list(sat_tickers,
                                              start_date=portfolio_args['sat_alloctor_start_date'],
