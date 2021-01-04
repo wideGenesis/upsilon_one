@@ -177,6 +177,7 @@ class RiskParityAllocator:
         df = self.closes
         columns = df.columns.tolist()
         performance_df = df.copy()
+        window = df.shape[0]
         for col in columns:
             if self.selector_type == 0:
                 delta = df[col].diff()
@@ -184,8 +185,8 @@ class RiskParityAllocator:
                 up, down = delta.copy(), delta.copy()
                 up[up < 0] = 0
                 down[down > 0] = 0
-                roll_up1 = up.ewm().mean()
-                roll_down1 = down.abs().ewm().mean()
+                roll_up1 = up.ewm(span=window).mean()
+                roll_down1 = down.abs().ewm(span=window).mean()
                 rs = roll_up1 / roll_down1
                 mrsi = 50.0 - (100.0 / (1.0 + rs))
                 performance_df[col] = mrsi
@@ -196,7 +197,7 @@ class RiskParityAllocator:
             elif self.selector_type == 2:
                 nom = ((df[col].iloc[-1] - df[col].iloc[0]) / df[col].iloc[0])
                 denom = ((df[col].iloc[-1] + df[col].iloc[0]) / 2)
-                mom_2 = ((nom / denom)*100).mean()
+                mom_2 = ((nom / denom)*100).ewm(span=window).mean()
                 performance_df[col] = mom_2
 
         performance_df.dropna(inplace=True)
