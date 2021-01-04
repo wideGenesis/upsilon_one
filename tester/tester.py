@@ -72,7 +72,7 @@ def portfolio_tester(init_cap=10000, port_id='parking', allocator_data_interval=
         portfolio_args['cor_linkage_'] = 'ward'
         portfolio_args['cor_risk_measure_'] = 'variance'
         portfolio_args['cor_graphs_show'] = False
-        portfolio_args['cor_selector_type'] = 0
+        portfolio_args['cor_selector_type'] = 2
         portfolio_args['cor_selector_adjustment'] = False
         # ********************* Parking sat *********************
         portfolio_args['sat_alloctor_start_date'] = alloctor_start_date
@@ -87,8 +87,8 @@ def portfolio_tester(init_cap=10000, port_id='parking', allocator_data_interval=
         portfolio_args['sat_linkage_'] = 'ward'
         portfolio_args['sat_risk_measure_'] = 'variance'
         portfolio_args['sat_graphs_show'] = False
-        portfolio_args['cor_selector_type'] = 1
-        portfolio_args['cor_selector_adjustment'] = False
+        portfolio_args['sat_selector_type'] = 1
+        portfolio_args['sat_selector_adjustment'] = False
         compare_ticker = "TLT"
 
     elif port_id == 'allweather':
@@ -108,7 +108,7 @@ def portfolio_tester(init_cap=10000, port_id='parking', allocator_data_interval=
         portfolio_args['cor_linkage_'] = 'ward'
         portfolio_args['cor_risk_measure_'] = 'variance'
         portfolio_args['cor_graphs_show'] = False
-        portfolio_args['cor_selector_type'] = 0
+        portfolio_args['cor_selector_type'] = 2
         portfolio_args['cor_selector_adjustment'] = False
         # ********************* Allweather sat *********************
         portfolio_args['sat_alloctor_start_date'] = alloctor_start_date
@@ -123,8 +123,8 @@ def portfolio_tester(init_cap=10000, port_id='parking', allocator_data_interval=
         portfolio_args['sat_linkage_'] = 'ward'
         portfolio_args['sat_risk_measure_'] = 'variance'
         portfolio_args['sat_graphs_show'] = False
-        portfolio_args['cor_selector_type'] = 1
-        portfolio_args['cor_selector_adjustment'] = False
+        portfolio_args['sat_selector_type'] = 1
+        portfolio_args['sat_selector_adjustment'] = False
         compare_ticker = "SPY"
 
     elif port_id == 'balanced':
@@ -159,8 +159,8 @@ def portfolio_tester(init_cap=10000, port_id='parking', allocator_data_interval=
         portfolio_args['sat_linkage_'] = 'ward'
         portfolio_args['sat_risk_measure_'] = 'variance'
         portfolio_args['sat_graphs_show'] = False
-        portfolio_args['cor_selector_type'] = 1
-        portfolio_args['cor_selector_adjustment'] = False
+        portfolio_args['sat_selector_type'] = 1
+        portfolio_args['sat_selector_adjustment'] = False
         compare_ticker = "QQQ"
     elif port_id == 'aggressive':
         # ======================================== A G G R E S S I V E ========================================
@@ -194,8 +194,8 @@ def portfolio_tester(init_cap=10000, port_id='parking', allocator_data_interval=
         portfolio_args['sat_linkage_'] = 'ward'
         portfolio_args['sat_risk_measure_'] = 'variance'
         portfolio_args['sat_graphs_show'] = False
-        portfolio_args['cor_selector_type'] = 1
-        portfolio_args['cor_selector_adjustment'] = False
+        portfolio_args['sat_selector_type'] = 1
+        portfolio_args['sat_selector_adjustment'] = False
         compare_ticker = "QQQ"
     elif port_id == 'leveraged':
         # ======================================== L E V E R A G E D ========================================
@@ -229,8 +229,8 @@ def portfolio_tester(init_cap=10000, port_id='parking', allocator_data_interval=
         portfolio_args['sat_linkage_'] = 'ward'
         portfolio_args['sat_risk_measure_'] = 'variance'
         portfolio_args['sat_graphs_show'] = False
-        portfolio_args['cor_selector_type'] = 1
-        portfolio_args['cor_selector_adjustment'] = False
+        portfolio_args['sat_selector_type'] = 1
+        portfolio_args['sat_selector_adjustment'] = False
         compare_ticker = "QQQ"
 
     weights = calc_portfolio(portfolio_args)

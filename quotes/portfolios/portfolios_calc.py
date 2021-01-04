@@ -24,7 +24,6 @@ def calc_portfolio(portfolio_args):
                                  selector_type=portfolio_args['cor_selector_type'],
                                  std_adj=portfolio_args['cor_selector_adjustment'],
                                  )
-    print(cor_rp.selector_type)
     cor_tickers = []
     cor_tickers = cor_rp.selector()
     cor_list = get_closes_by_ticker_list(cor_tickers,
