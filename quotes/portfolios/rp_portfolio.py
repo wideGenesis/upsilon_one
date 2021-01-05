@@ -195,10 +195,20 @@ class RiskParityAllocator:
                 # mom = df[col].pct_change(periods=self.performance_lookback)
                 performance_df[col] = mom
             elif self.selector_type == 2:
+                mom_2 = df[col].mean() / df[col].std()
+                performance_df[col] = mom_2
+            elif self.selector_type == 3:
+                pct = ((df[col].iloc[-1] - df[col].iloc[0]) / df[col].iloc[0])
+                mean = df[col].mean()
+                std = df[col].std()
+                mom_3_zscore = (pct - mean) / std
+                performance_df[col] = mom_3_zscore
+
+            elif self.selector_type == 10:
                 nom = ((df[col].iloc[-1] - df[col].iloc[0]) / df[col].iloc[0])
                 denom = ((df[col].iloc[-1] + df[col].iloc[0]) / 2)
-                mom_2 = ((nom / denom)*100).ewm(span=window).mean()
-                performance_df[col] = mom_2
+                mom_10 = ((nom / denom)*100).ewm(span=window).mean()
+                performance_df[col] = mom_10
 
         performance_df.dropna(inplace=True)
         performance_df.drop_duplicates(inplace=True)
