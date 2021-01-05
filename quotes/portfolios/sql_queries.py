@@ -1,5 +1,6 @@
 from project_shared import *
 from datetime import date, timedelta
+import sqlalchemy
 
 
 def is_table_exist(table_name, engine=engine) -> bool:
@@ -32,12 +33,22 @@ def update_portfolio_allocation(port_id, weights, table_name=PORTFOLIO_ALLOCATIO
      with engine.connect() as connection:
         if is_table_exist(table_name):
             transaction = connection.begin()
-            del_query = f'DELETE FROM {table_name} WHERE port_id=\'{port_id}\''
-            connection.execute(del_query)
+            try:
+                del_query = f'DELETE FROM {table_name} WHERE port_id=\'{port_id}\''
+                connection.execute(del_query)
+            except sqlalchemy.exc.OperationalError as oe:
+                debug(f'Exception: {oe}', "WARNING")
+                debug(f'Exception: {oe[0]}', "ERROR")
+                debug(f'Exception: {oe.errorCode}', "ERROR")
             for ticker in weights:
-                ins_query = f'INSERT INTO {table_name} (port_id, ticker, weight) ' \
-                            f'VALUES (\'{port_id}\', \'{ticker}\', \'{weights[ticker]}\')'
-                connection.execute(ins_query)
+                try:
+                    ins_query = f'INSERT INTO {table_name} (port_id, ticker, weight) ' \
+                                f'VALUES (\'{port_id}\', \'{ticker}\', \'{weights[ticker]}\')'
+                    connection.execute(ins_query)
+                except sqlalchemy.exc.OperationalError as oe:
+                    debug(f'Exception: {oe}', "WARNING")
+                    debug(f'Exception: {oe[0]}', "ERROR")
+                    debug(f'Exception: {oe.errorCode}', "ERROR")
             transaction.commit()
 
 
