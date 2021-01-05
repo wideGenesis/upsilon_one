@@ -116,6 +116,7 @@ SERVICE_CHAT = conf['TELEGRAM']['SERVICE_CHAT']
 #     level=logging.WARNING)
 # logging.getLogger('scrapers').setLevel(level=logging.WARNING)
 
+RECURSION_DEPTH = 5
 
 class bcolors:
     HEADER = '\033[95m'

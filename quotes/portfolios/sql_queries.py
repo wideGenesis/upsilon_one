@@ -1,3 +1,4 @@
+from time import sleep
 from project_shared import *
 from datetime import date, timedelta
 import sqlalchemy
@@ -29,27 +30,44 @@ def create_portfolio_allocation_table(table_name=PORTFOLIO_ALLOCATION_TABLE_NAME
             transaction.commit()
 
 
-def update_portfolio_allocation(port_id, weights, table_name=PORTFOLIO_ALLOCATION_TABLE_NAME, engine=engine):
-     with engine.connect() as connection:
+def update_portfolio_allocation(port_id, weights, table_name=PORTFOLIO_ALLOCATION_TABLE_NAME, engine=engine,
+                                recursion_count=0):
+    if recursion_count == RECURSION_DEPTH:
+        return -1
+    with engine.connect() as connection:
         if is_table_exist(table_name):
             transaction = connection.begin()
             try:
                 del_query = f'DELETE FROM {table_name} WHERE port_id=\'{port_id}\''
                 connection.execute(del_query)
             except sqlalchemy.exc.OperationalError as oe:
-                debug(f'Exception: {oe}', "WARNING")
-                debug(f'Exception: {oe[0]}', "ERROR")
-                debug(f'Exception: {oe.errorCode}', "ERROR")
+                if oe.orig.args[0] == 1213:
+                    debug(f'Exception: {oe}', "WARNING")
+                    sleep(0.9)
+                    errCode = update_portfolio_allocation(port_id=port_id, weights=weights,
+                                                          recursion_count=recursion_count+1)
+                    return errCode
+                else:
+                    debug(f'Exception: {oe}', "WARNING")
+                    return -1
+
             for ticker in weights:
                 try:
                     ins_query = f'INSERT INTO {table_name} (port_id, ticker, weight) ' \
                                 f'VALUES (\'{port_id}\', \'{ticker}\', \'{weights[ticker]}\')'
                     connection.execute(ins_query)
                 except sqlalchemy.exc.OperationalError as oe:
-                    debug(f'Exception: {oe}', "WARNING")
-                    debug(f'Exception: {oe[0]}', "ERROR")
-                    debug(f'Exception: {oe.errorCode}', "ERROR")
+                    if oe.orig.args[0] == 1213:
+                        debug(f'Exception: {oe}', "WARNING")
+                        sleep(0.9)
+                        errCode = update_portfolio_allocation(port_id=port_id, weights=weights,
+                                                              recursion_count=recursion_count + 1)
+                        return errCode
+                    else:
+                        debug(f'Exception: {oe}', "WARNING")
+                        return -1
             transaction.commit()
+            return 0
 
 
 def get_portfolio_allocation(port_id, table_name=PORTFOLIO_ALLOCATION_TABLE_NAME, engine=engine):
