@@ -210,7 +210,7 @@ class RiskParityAllocator:
                 # Z-Score
                 zs_1 = (mom_1 - mom_1.rolling(window - p2).mean()) / mom_1.rolling(window - p2).std()
                 zs_2 = (mom_2 - mom_2.rolling(window - p2).mean()) / mom_2.rolling(window - p2).std()
-                performance_df[col] = 0.5 * zs_1 + 0.5 * zs_2
+                performance_df[col] = 0.25 * zs_1 + 0.75 * zs_2
 
             elif self.selector_type == 3:
                 rets = df[col].pct_change()
@@ -220,6 +220,13 @@ class RiskParityAllocator:
                 mom_1 = rets.rolling(p1).apply(lambda x: np.dot(x, weights_1) / weights_1.sum())
                 # Z-Score
                 zs_1 = (mom_1 - mom_1.rolling(window - p2).mean()) / mom_1.rolling(window - p2).std()
+                performance_df[col] = zs_1
+
+            elif self.selector_type == 4:
+                rets = df[col].pct_change()
+                mom_1 = ((df[col].iloc[-1] - df[col].iloc[0]) / df[col].iloc[0])
+                # Z-Score
+                zs_1 = (mom_1 - rets.mean()) / rets.std()
                 performance_df[col] = zs_1
 
 

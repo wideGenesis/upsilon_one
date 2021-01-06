@@ -108,7 +108,7 @@ def portfolio_tester(init_cap=10000, port_id='parking', allocator_data_interval=
         portfolio_args['cor_linkage_'] = 'ward'
         portfolio_args['cor_risk_measure_'] = 'variance'
         portfolio_args['cor_graphs_show'] = False
-        portfolio_args['cor_selector_type'] = 2
+        portfolio_args['cor_selector_type'] = 4
         portfolio_args['cor_selector_adjustment'] = False
         # ********************* Allweather sat *********************
         portfolio_args['sat_alloctor_start_date'] = alloctor_start_date
@@ -292,7 +292,7 @@ if __name__ == '__main__':
     q = mp.Queue()
     # p1 = mp.Process(target=portfolio_tester, args=(10000, 'parking', 3, 1, datetime.date(2008, 1, 1),))
     # p1.start()
-    p2 = mp.Process(target=portfolio_tester, args=(10000, 'allweather', 3, 12, datetime.date(2008, 1, 1),))
+    p2 = mp.Process(target=portfolio_tester, args=(10000, 'allweather', 3, 3, datetime.date(2008, 1, 1),))
     p2.start()
     # p3 = mp.Process(target=portfolio_tester, args=(10000, 'balanced', 3, 1, datetime.date(2008, 1, 1),))
     # p3.start()
