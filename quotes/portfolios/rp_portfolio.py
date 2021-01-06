@@ -173,18 +173,7 @@ class RiskParityAllocator:
         # print(w)
         return w
 
-    # def wma(df, column='close', n=20, add_col=False):
-    #
-    #     weights = np.arange(1, n + 1)
-    #     wmas = df[column].rolling(n).apply(lambda x: np.dot(x, weights) / weights.sum(), raw=True).to_list()
-    #
-    #     if add_col == True:
-    #         df[f'{column}_WMA_{n}'] = wmas
-    #         return df
-    #     else:
-    #         return wmas
-
-    def selector(self, p1=21, p2=128):
+    def selector(self, p1=21, p2=63):
         df = self.closes
         # df2 = df.copy()
         # last_date_month = df2.index[-1].month
