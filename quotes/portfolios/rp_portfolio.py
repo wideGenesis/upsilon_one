@@ -175,10 +175,6 @@ class RiskParityAllocator:
 
     def selector(self, p1=21, p2=63):
         df = self.closes
-        # df2 = df.copy()
-        # last_date_month = df2.index[-1].month
-        # df2.index = pd.to_datetime(df2.index)
-        # df2 = df2[df2.index.month == last_date_month]
         columns = df.columns.tolist()
         performance_df = df.copy()
         window = df.shape[0]
@@ -192,8 +188,9 @@ class RiskParityAllocator:
                 roll_up1 = up.ewm(span=window).mean()
                 roll_down1 = down.abs().ewm(span=window).mean()
                 rs = roll_up1 / roll_down1
-                mrsi = 50.0 - (100.0 / (1.0 + rs))
-                performance_df[col] = mrsi
+                rsi = 100.0 / (1.0 + rs)
+                performance_df[col] = rsi
+
             elif self.selector_type == 1:
                 mom = ((df[col].iloc[-1] - df[col].iloc[0]) / df[col].iloc[0])
                 # mom = df[col].pct_change(periods=self.performance_lookback)
@@ -210,7 +207,7 @@ class RiskParityAllocator:
                 # Z-Score
                 zs_1 = (mom_1 - mom_1.rolling(window - p2).mean()) / mom_1.rolling(window - p2).std()
                 zs_2 = (mom_2 - mom_2.rolling(window - p2).mean()) / mom_2.rolling(window - p2).std()
-                performance_df[col] = 0.25 * zs_1 + 0.75 * zs_2
+                performance_df[col] = 0.5 * zs_1 + 0.5 * zs_2
 
             elif self.selector_type == 3:
                 rets = df[col].pct_change()
@@ -229,6 +226,13 @@ class RiskParityAllocator:
                 zs_1 = (mom_1 - rets.mean()) / rets.std()
                 performance_df[col] = zs_1
 
+            elif self.selector_type == 11:
+                df1 = date_slicer(df_=df, c_period=1)
+                mom1 = ((df1[col].iloc[-1] - df1[col].iloc[0]) / df1[col].iloc[0])
+
+                df2 = date_slicer(df_=df, c_period=3)
+                mom2 = ((df2[col].iloc[-1] - df2[col].iloc[0]) / df2[col].iloc[0])
+                performance_df[col] = 0.75*mom1 + 0.25*mom2
 
         performance_df.dropna(inplace=True)
         performance_df.drop_duplicates(inplace=True)
@@ -239,6 +243,20 @@ class RiskParityAllocator:
         tickers_to_allocator = slicing[:self.assets_to_hold]
         # print(tickers_to_allocator)
         return tickers_to_allocator
+
+
+def date_slicer(df_=None, c_period=1):
+    last_date_month = df_.index[-1].month
+    df_.index = pd.to_datetime(df_.index)
+    df_filtered = pd.DataFrame()
+    for m in range(c_period - 1, -1, -1):
+        if last_date_month - m > 0:
+            mask = df_.index.month == last_date_month - m
+            df_filtered = df_filtered.append(df_[mask])
+        elif last_date_month - m <= 0:
+            mask = df_.index.month == 12 + (last_date_month - m)
+            df_filtered = df_filtered.append(df_[mask])
+        return df_filtered
 
 
 def core_sat(cor=None, cor_perc=None, sat=None, sat_perc=None):
