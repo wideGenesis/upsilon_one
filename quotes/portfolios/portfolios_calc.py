@@ -23,6 +23,8 @@ def calc_portfolio(portfolio_args):
                                  assets_to_hold=portfolio_args['cor_assets_to_hold'],
                                  selector_type=portfolio_args['cor_selector_type'],
                                  std_adj=portfolio_args['cor_selector_adjustment'],
+                                 p1=portfolio_args['cor_selector_p1'],
+                                 p2=portfolio_args['cor_selector_p2'],
                                  )
     cor_tickers = []
     cor_tickers = cor_rp.selector()
@@ -49,6 +51,8 @@ def calc_portfolio(portfolio_args):
                                      assets_to_hold=portfolio_args['sat_assets_to_hold'],
                                      selector_type=portfolio_args['sat_selector_type'],
                                      std_adj=portfolio_args['sat_selector_adjustment'],
+                                     p1=portfolio_args['sat_selector_p1'],
+                                     p2=portfolio_args['sat_selector_p2'],
                                      )
         sat_tickers = []
         sat_tickers = sat_rp.selector()

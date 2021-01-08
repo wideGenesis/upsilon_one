@@ -35,7 +35,9 @@ class RiskParityAllocator:
         'linkage_',
         'selector_type',
         'std_adj',
-        'assets_to_hold'
+        'assets_to_hold',
+        'p1',
+        'p2'
     ]
     """
     risk_measure supported string: 
@@ -65,6 +67,8 @@ class RiskParityAllocator:
                  selector_type: int = 1,
                  std_adj: bool = False,
                  assets_to_hold: int = 10,
+                 p1: int = 21,
+                 p2: int = 63,
 
                  ):
         self.asset_names_ = asset_names_
@@ -85,6 +89,8 @@ class RiskParityAllocator:
         self.selector_type = selector_type
         self.std_adj = std_adj
         self.assets_to_hold = assets_to_hold
+        self.p1 = p1
+        self.p2 = p2
 
     def closes_updater(self, new_closes=None):
         self.closes = new_closes
@@ -173,13 +179,13 @@ class RiskParityAllocator:
         # print(w)
         return w
 
-    def selector(self, p1=21, p2=63):
+    def selector(self):
         df = self.closes
         columns = df.columns.tolist()
         performance_df = df.copy()
         window = df.shape[0]
         for col in columns:
-            if self.selector_type == 0:
+            if self.selector_type == 0:  # RSI Roll
                 delta = df[col].diff()
                 delta = delta[1:]
                 up, down = delta.copy(), delta.copy()
@@ -191,48 +197,59 @@ class RiskParityAllocator:
                 rsi = 100.0 / (1.0 + rs)
                 performance_df[col] = rsi
 
-            elif self.selector_type == 1:
+            elif self.selector_type == 1:  # Mom Roll zs
+                rets = df[col].pct_change()
+                rets = rets[~np.isnan(rets)]
+                # lwma Weighting
+                weights_1 = np.arange(1, self.p1 + 1)
+                mom_1 = rets.rolling(self.p1).apply(lambda x: np.dot(x, weights_1) / weights_1.sum())
+                # Z-Score
+                zs_1 = (mom_1 - mom_1.rolling(window - self.p2).mean()) / mom_1.rolling(window - self.p2).std()
+                performance_df[col] = zs_1
+
+            elif self.selector_type == 2:  # Mom 2 periods Roll zs
+                rets = df[col].pct_change()
+                rets = rets[~np.isnan(rets)]
+                # lwma Weighting
+                weights_1 = np.arange(1, self.p1 + 1)
+                weights_2 = np.arange(1, self.p2 + 1)
+                mom_1 = rets.rolling(self.p1).apply(lambda x: np.dot(x, weights_1) / weights_1.sum())
+                mom_2 = rets.rolling(self.p2).apply(lambda x: np.dot(x, weights_2) / weights_2.sum())
+                # Z-Score
+                zs_1 = (mom_1 - mom_1.rolling(window - self.p2).mean()) / mom_1.rolling(window - self.p2).std()
+                zs_2 = (mom_2 - mom_2.rolling(window - self.p2).mean()) / mom_2.rolling(window - self.p2).std()
+                performance_df[col] = 0.5 * zs_1 + 0.5 * zs_2
+
+            elif self.selector_type == 10:  # %Ch Calendar
                 mom = ((df[col].iloc[-1] - df[col].iloc[0]) / df[col].iloc[0])
                 # mom = df[col].pct_change(periods=self.performance_lookback)
                 performance_df[col] = mom
 
-            elif self.selector_type == 2:
-                rets = df[col].pct_change()
-                rets = rets[~np.isnan(rets)]
-                # lwma Weighting
-                weights_1 = np.arange(1, p1 + 1)
-                weights_2 = np.arange(1, p2 + 1)
-                mom_1 = rets.rolling(p1).apply(lambda x: np.dot(x, weights_1) / weights_1.sum())
-                mom_2 = rets.rolling(p2).apply(lambda x: np.dot(x, weights_2) / weights_2.sum())
-                # Z-Score
-                zs_1 = (mom_1 - mom_1.rolling(window - p2).mean()) / mom_1.rolling(window - p2).std()
-                zs_2 = (mom_2 - mom_2.rolling(window - p2).mean()) / mom_2.rolling(window - p2).std()
-                performance_df[col] = 0.5 * zs_1 + 0.5 * zs_2
-
-            elif self.selector_type == 3:
-                rets = df[col].pct_change()
-                rets = rets[~np.isnan(rets)]
-                # lwma Weighting
-                weights_1 = np.arange(1, p1 + 1)
-                mom_1 = rets.rolling(p1).apply(lambda x: np.dot(x, weights_1) / weights_1.sum())
-                # Z-Score
-                zs_1 = (mom_1 - mom_1.rolling(window - p2).mean()) / mom_1.rolling(window - p2).std()
-                performance_df[col] = zs_1
-
-            elif self.selector_type == 4:
+            elif self.selector_type == 11:  # %Ch Calendar zs
                 rets = df[col].pct_change()
                 mom_1 = ((df[col].iloc[-1] - df[col].iloc[0]) / df[col].iloc[0])
                 # Z-Score
                 zs_1 = (mom_1 - rets.mean()) / rets.std()
                 performance_df[col] = zs_1
 
-            elif self.selector_type == 11:
+            elif self.selector_type == 12:  # %Ch 2 periods Calendar
                 df1 = date_slicer(df_=df, c_period=1)
                 mom1 = ((df1[col].iloc[-1] - df1[col].iloc[0]) / df1[col].iloc[0])
 
                 df2 = date_slicer(df_=df, c_period=3)
                 mom2 = ((df2[col].iloc[-1] - df2[col].iloc[0]) / df2[col].iloc[0])
                 performance_df[col] = 0.75*mom1 + 0.25*mom2
+
+            elif self.selector_type == 13:  # %Ch 2 periods Calendar zs
+                df1 = date_slicer(df_=df, c_period=1)
+                rets1 = df1[col].pct_change()
+                mom1 = ((df1[col].iloc[-1] - df1[col].iloc[0]) / df1[col].iloc[0])
+                zs_1 = (mom1 - rets1.mean()) / rets1.std()
+                df2 = date_slicer(df_=df, c_period=3)
+                rets2 = df2[col].pct_change()
+                mom2 = ((df2[col].iloc[-1] - df2[col].iloc[0]) / df2[col].iloc[0])
+                zs_2 = (mom2 - rets2.mean()) / rets2.std()
+                performance_df[col] = 0.75*zs_1 + 0.25*zs_2
 
         performance_df.dropna(inplace=True)
         performance_df.drop_duplicates(inplace=True)

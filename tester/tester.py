@@ -74,6 +74,8 @@ def portfolio_tester(init_cap=10000, port_id='parking', allocator_data_interval=
         portfolio_args['cor_graphs_show'] = False
         portfolio_args['cor_selector_type'] = 3
         portfolio_args['cor_selector_adjustment'] = False
+        portfolio_args['cor_selector_p1'] = 21
+        portfolio_args['cor_selector_p2'] = 63
         # ********************* Parking sat *********************
         portfolio_args['sat_alloctor_start_date'] = alloctor_start_date
         portfolio_args['sat_allocator_end_date'] = allocator_end_date
@@ -89,6 +91,8 @@ def portfolio_tester(init_cap=10000, port_id='parking', allocator_data_interval=
         portfolio_args['sat_graphs_show'] = False
         portfolio_args['sat_selector_type'] = 1
         portfolio_args['sat_selector_adjustment'] = False
+        portfolio_args['sat_selector_p1'] = 21
+        portfolio_args['sat_selector_p2'] = 63
         compare_ticker = "TLT"
 
     elif port_id == 'allweather':
@@ -110,6 +114,8 @@ def portfolio_tester(init_cap=10000, port_id='parking', allocator_data_interval=
         portfolio_args['cor_graphs_show'] = False
         portfolio_args['cor_selector_type'] = 11
         portfolio_args['cor_selector_adjustment'] = False
+        portfolio_args['cor_selector_p1'] = 21
+        portfolio_args['cor_selector_p2'] = 63
         # ********************* Allweather sat *********************
         portfolio_args['sat_alloctor_start_date'] = alloctor_start_date
         portfolio_args['sat_allocator_end_date'] = allocator_end_date
@@ -125,6 +131,8 @@ def portfolio_tester(init_cap=10000, port_id='parking', allocator_data_interval=
         portfolio_args['sat_graphs_show'] = False
         portfolio_args['sat_selector_type'] = 1
         portfolio_args['sat_selector_adjustment'] = False
+        portfolio_args['sat_selector_p1'] = 21
+        portfolio_args['sat_selector_p2'] = 63
         compare_ticker = "SPY"
 
     elif port_id == 'balanced':
@@ -146,6 +154,8 @@ def portfolio_tester(init_cap=10000, port_id='parking', allocator_data_interval=
         portfolio_args['cor_graphs_show'] = False
         portfolio_args['cor_selector_type'] = 3
         portfolio_args['cor_selector_adjustment'] = False
+        portfolio_args['cor_selector_p1'] = 21
+        portfolio_args['cor_selector_p2'] = 63
         # ********************* Balanced sat *********************
         portfolio_args['sat_alloctor_start_date'] = alloctor_start_date
         portfolio_args['sat_allocator_end_date'] = allocator_end_date
@@ -161,6 +171,8 @@ def portfolio_tester(init_cap=10000, port_id='parking', allocator_data_interval=
         portfolio_args['sat_graphs_show'] = False
         portfolio_args['sat_selector_type'] = 1
         portfolio_args['sat_selector_adjustment'] = False
+        portfolio_args['sat_selector_p1'] = 21
+        portfolio_args['sat_selector_p2'] = 63
         compare_ticker = "QQQ"
     elif port_id == 'aggressive':
         # ======================================== A G G R E S S I V E ========================================
@@ -181,6 +193,8 @@ def portfolio_tester(init_cap=10000, port_id='parking', allocator_data_interval=
         portfolio_args['cor_graphs_show'] = False
         portfolio_args['cor_selector_type'] = 3
         portfolio_args['cor_selector_adjustment'] = False
+        portfolio_args['cor_selector_p1'] = 21
+        portfolio_args['cor_selector_p2'] = 63
         # ********************* Aggressive sat *********************
         portfolio_args['sat_alloctor_start_date'] = alloctor_start_date
         portfolio_args['sat_allocator_end_date'] = allocator_end_date
@@ -196,6 +210,8 @@ def portfolio_tester(init_cap=10000, port_id='parking', allocator_data_interval=
         portfolio_args['sat_graphs_show'] = False
         portfolio_args['sat_selector_type'] = 1
         portfolio_args['sat_selector_adjustment'] = False
+        portfolio_args['sat_selector_p1'] = 21
+        portfolio_args['sat_selector_p2'] = 63
         compare_ticker = "QQQ"
     elif port_id == 'leveraged':
         # ======================================== L E V E R A G E D ========================================
@@ -216,6 +232,8 @@ def portfolio_tester(init_cap=10000, port_id='parking', allocator_data_interval=
         portfolio_args['cor_graphs_show'] = False
         portfolio_args['cor_selector_type'] = 10
         portfolio_args['cor_selector_adjustment'] = False
+        portfolio_args['cor_selector_p1'] = 21
+        portfolio_args['cor_selector_p2'] = 63
         # ********************* Leveraged sat *********************
         portfolio_args['sat_alloctor_start_date'] = alloctor_start_date
         portfolio_args['sat_allocator_end_date'] = allocator_end_date
@@ -231,6 +249,8 @@ def portfolio_tester(init_cap=10000, port_id='parking', allocator_data_interval=
         portfolio_args['sat_graphs_show'] = False
         portfolio_args['sat_selector_type'] = 1
         portfolio_args['sat_selector_adjustment'] = False
+        portfolio_args['sat_selector_p1'] = 21
+        portfolio_args['sat_selector_p2'] = 63
         compare_ticker = "QQQ"
 
     weights = calc_portfolio(portfolio_args)
