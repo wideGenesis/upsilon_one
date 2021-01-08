@@ -211,7 +211,7 @@ class RiskParityAllocator:
                 weights_1 = np.arange(1, self.p1 + 1)
                 mom_1 = rets.rolling(self.p1).apply(lambda x: np.dot(x, weights_1) / weights_1.sum())
                 # Z-Score
-                zs_1 = (mom_1 - mom_1.rolling(window - self.p2).mean()) / mom_1.rolling(window - self.p2).std()
+                zs_1 = (mom_1 - mom_1.rolling(window - self.p1).mean()) / mom_1.rolling(window - self.p1).std()
                 performance_df[col] = zs_1
 
             elif self.selector_type == 2:  # Mom 2 periods Roll zs
