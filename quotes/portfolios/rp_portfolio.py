@@ -245,7 +245,7 @@ class RiskParityAllocator:
 
                 df2 = date_slicer(df_=df, c_period=self.c_p2)
                 mom2 = ((df2[col].iloc[-1] - df2[col].iloc[0]) / df2[col].iloc[0])
-                performance_df[col] = 0.75*mom1 + 0.25*mom2
+                performance_df[col] = 0.5*mom1 + 0.5*mom2
 
             elif self.selector_type == 13:  # %Ch 2 periods Calendar zs
                 df1 = date_slicer(df_=df, c_period=self.c_p1)
@@ -256,7 +256,7 @@ class RiskParityAllocator:
                 rets2 = df2[col].pct_change()
                 mom2 = ((df2[col].iloc[-1] - df2[col].iloc[0]) / df2[col].iloc[0])
                 zs_2 = (mom2 - rets2.mean()) / rets2.std()
-                performance_df[col] = 0.75*zs_1 + 0.25*zs_2
+                performance_df[col] = 0.5*zs_1 + 0.5*zs_2
 
         performance_df.dropna(inplace=True)
         performance_df.drop_duplicates(inplace=True)
