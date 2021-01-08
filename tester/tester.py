@@ -56,6 +56,7 @@ def portfolio_tester(init_cap=10000, port_id='parking', allocator_data_interval=
 
     portfolio_args = {}
     if port_id == 'parking':
+
         # ======================================== P A R K I N G ========================================
         portfolio_args['etf_only'] = True
         portfolio_args['cor_perc'] = 0.9
@@ -76,6 +77,8 @@ def portfolio_tester(init_cap=10000, port_id='parking', allocator_data_interval=
         portfolio_args['cor_selector_adjustment'] = False
         portfolio_args['cor_selector_p1'] = 21
         portfolio_args['cor_selector_p2'] = 63
+        portfolio_args['cor_selector_c_p1'] = 1
+        portfolio_args['cor_selector_c_p2'] = 3
         # ********************* Parking sat *********************
         portfolio_args['sat_alloctor_start_date'] = alloctor_start_date
         portfolio_args['sat_allocator_end_date'] = allocator_end_date
@@ -93,9 +96,12 @@ def portfolio_tester(init_cap=10000, port_id='parking', allocator_data_interval=
         portfolio_args['sat_selector_adjustment'] = False
         portfolio_args['sat_selector_p1'] = 21
         portfolio_args['sat_selector_p2'] = 63
+        portfolio_args['sat_selector_c_p1'] = 1
+        portfolio_args['sat_selector_c_p2'] = 3
         compare_ticker = "TLT"
 
     elif port_id == 'allweather':
+
         # ======================================== A L L W E A T H E R ========================================
         portfolio_args['etf_only'] = True
         portfolio_args['cor_perc'] = 0.8
@@ -116,6 +122,8 @@ def portfolio_tester(init_cap=10000, port_id='parking', allocator_data_interval=
         portfolio_args['cor_selector_adjustment'] = False
         portfolio_args['cor_selector_p1'] = 21
         portfolio_args['cor_selector_p2'] = 63
+        portfolio_args['cor_selector_c_p1'] = 1
+        portfolio_args['cor_selector_c_p2'] = 3
         # ********************* Allweather sat *********************
         portfolio_args['sat_alloctor_start_date'] = alloctor_start_date
         portfolio_args['sat_allocator_end_date'] = allocator_end_date
@@ -133,9 +141,12 @@ def portfolio_tester(init_cap=10000, port_id='parking', allocator_data_interval=
         portfolio_args['sat_selector_adjustment'] = False
         portfolio_args['sat_selector_p1'] = 21
         portfolio_args['sat_selector_p2'] = 63
+        portfolio_args['sat_selector_c_p1'] = 1
+        portfolio_args['sat_selector_c_p2'] = 3
         compare_ticker = "SPY"
 
     elif port_id == 'balanced':
+
         # ======================================== B A L A N C E D ========================================
         portfolio_args['etf_only'] = True
         portfolio_args['cor_perc'] = 0.7
@@ -156,6 +167,8 @@ def portfolio_tester(init_cap=10000, port_id='parking', allocator_data_interval=
         portfolio_args['cor_selector_adjustment'] = False
         portfolio_args['cor_selector_p1'] = 21
         portfolio_args['cor_selector_p2'] = 63
+        portfolio_args['cor_selector_c_p1'] = 1
+        portfolio_args['cor_selector_c_p2'] = 3
         # ********************* Balanced sat *********************
         portfolio_args['sat_alloctor_start_date'] = alloctor_start_date
         portfolio_args['sat_allocator_end_date'] = allocator_end_date
@@ -173,8 +186,12 @@ def portfolio_tester(init_cap=10000, port_id='parking', allocator_data_interval=
         portfolio_args['sat_selector_adjustment'] = False
         portfolio_args['sat_selector_p1'] = 21
         portfolio_args['sat_selector_p2'] = 63
+        portfolio_args['sat_selector_c_p1'] = 1
+        portfolio_args['sat_selector_c_p2'] = 3
         compare_ticker = "QQQ"
+
     elif port_id == 'aggressive':
+
         # ======================================== A G G R E S S I V E ========================================
         portfolio_args['etf_only'] = True
         portfolio_args['cor_perc'] = 0.7
@@ -195,6 +212,8 @@ def portfolio_tester(init_cap=10000, port_id='parking', allocator_data_interval=
         portfolio_args['cor_selector_adjustment'] = False
         portfolio_args['cor_selector_p1'] = 21
         portfolio_args['cor_selector_p2'] = 63
+        portfolio_args['cor_selector_c_p1'] = 1
+        portfolio_args['cor_selector_c_p2'] = 3
         # ********************* Aggressive sat *********************
         portfolio_args['sat_alloctor_start_date'] = alloctor_start_date
         portfolio_args['sat_allocator_end_date'] = allocator_end_date
@@ -212,8 +231,12 @@ def portfolio_tester(init_cap=10000, port_id='parking', allocator_data_interval=
         portfolio_args['sat_selector_adjustment'] = False
         portfolio_args['sat_selector_p1'] = 21
         portfolio_args['sat_selector_p2'] = 63
+        portfolio_args['sat_selector_c_p1'] = 1
+        portfolio_args['sat_selector_c_p2'] = 3
         compare_ticker = "QQQ"
+
     elif port_id == 'leveraged':
+
         # ======================================== L E V E R A G E D ========================================
         portfolio_args['etf_only'] = True
         portfolio_args['cor_perc'] = 0.65
@@ -234,6 +257,8 @@ def portfolio_tester(init_cap=10000, port_id='parking', allocator_data_interval=
         portfolio_args['cor_selector_adjustment'] = False
         portfolio_args['cor_selector_p1'] = 21
         portfolio_args['cor_selector_p2'] = 63
+        portfolio_args['cor_selector_c_p1'] = 1
+        portfolio_args['cor_selector_c_p2'] = 3
         # ********************* Leveraged sat *********************
         portfolio_args['sat_alloctor_start_date'] = alloctor_start_date
         portfolio_args['sat_allocator_end_date'] = allocator_end_date
@@ -251,6 +276,8 @@ def portfolio_tester(init_cap=10000, port_id='parking', allocator_data_interval=
         portfolio_args['sat_selector_adjustment'] = False
         portfolio_args['sat_selector_p1'] = 21
         portfolio_args['sat_selector_p2'] = 63
+        portfolio_args['sat_selector_c_p1'] = 1
+        portfolio_args['sat_selector_c_p2'] = 3
         compare_ticker = "QQQ"
 
     weights = calc_portfolio(portfolio_args)

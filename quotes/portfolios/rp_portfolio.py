@@ -37,7 +37,10 @@ class RiskParityAllocator:
         'std_adj',
         'assets_to_hold',
         'p1',
-        'p2'
+        'p2',
+        'c_p1',
+        'c_p2',
+
     ]
     """
     risk_measure supported string: 
@@ -69,6 +72,8 @@ class RiskParityAllocator:
                  assets_to_hold: int = 10,
                  p1: int = 21,
                  p2: int = 63,
+                 c_p1: int = 1,
+                 c_p2: int = 3,
 
                  ):
         self.asset_names_ = asset_names_
@@ -91,6 +96,8 @@ class RiskParityAllocator:
         self.assets_to_hold = assets_to_hold
         self.p1 = p1
         self.p2 = p2
+        self.c_p1 = c_p1
+        self.c_p2 = c_p2
 
     def closes_updater(self, new_closes=None):
         self.closes = new_closes
@@ -233,19 +240,19 @@ class RiskParityAllocator:
                 performance_df[col] = zs_1
 
             elif self.selector_type == 12:  # %Ch 2 periods Calendar
-                df1 = date_slicer(df_=df, c_period=1)
+                df1 = date_slicer(df_=df, c_period=self.c_p1)
                 mom1 = ((df1[col].iloc[-1] - df1[col].iloc[0]) / df1[col].iloc[0])
 
-                df2 = date_slicer(df_=df, c_period=3)
+                df2 = date_slicer(df_=df, c_period=self.c_p2)
                 mom2 = ((df2[col].iloc[-1] - df2[col].iloc[0]) / df2[col].iloc[0])
                 performance_df[col] = 0.75*mom1 + 0.25*mom2
 
             elif self.selector_type == 13:  # %Ch 2 periods Calendar zs
-                df1 = date_slicer(df_=df, c_period=1)
+                df1 = date_slicer(df_=df, c_period=self.c_p1)
                 rets1 = df1[col].pct_change()
                 mom1 = ((df1[col].iloc[-1] - df1[col].iloc[0]) / df1[col].iloc[0])
                 zs_1 = (mom1 - rets1.mean()) / rets1.std()
-                df2 = date_slicer(df_=df, c_period=3)
+                df2 = date_slicer(df_=df, c_period=self.c_p2)
                 rets2 = df2[col].pct_change()
                 mom2 = ((df2[col].iloc[-1] - df2[col].iloc[0]) / df2[col].iloc[0])
                 zs_2 = (mom2 - rets2.mean()) / rets2.std()

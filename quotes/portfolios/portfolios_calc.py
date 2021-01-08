@@ -25,6 +25,8 @@ def calc_portfolio(portfolio_args):
                                  std_adj=portfolio_args['cor_selector_adjustment'],
                                  p1=portfolio_args['cor_selector_p1'],
                                  p2=portfolio_args['cor_selector_p2'],
+                                 c_p1=portfolio_args['cor_selector_c_p1'],
+                                 c_p2=portfolio_args['cor_selector_c_p2'],
                                  )
     cor_tickers = []
     cor_tickers = cor_rp.selector()
@@ -53,6 +55,8 @@ def calc_portfolio(portfolio_args):
                                      std_adj=portfolio_args['sat_selector_adjustment'],
                                      p1=portfolio_args['sat_selector_p1'],
                                      p2=portfolio_args['sat_selector_p2'],
+                                     c_p1=portfolio_args['sat_selector_c_p1'],
+                                     c_p2=portfolio_args['sat_selector_c_p2'],
                                      )
         sat_tickers = []
         sat_tickers = sat_rp.selector()
