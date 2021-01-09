@@ -19,8 +19,41 @@ if __name__ == '__main__':
     sd = ed - td
 
     # ======================================== P A R K I N G ========================================
-    ohlc = get_ohlc_dict_by_port_id('parking', start_date=sd, end_date=ed)
+    port_id = 'parking'
+    ohlc = get_ohlc_dict_by_port_id(port_id=port_id, start_date=sd, end_date=ed)
     portfolio_bars, portfolio_returns = returns_calc(ohlc=ohlc)
-    save_portfolio_bars(name="parking", portfolio_bars=portfolio_bars)
-    create_candle_portfolio_img(port_id="parking", compare_ticker="TLT", start_date=sd, end_date=ed)
+    save_portfolio_bars(name=port_id, portfolio_bars=portfolio_bars)
+    save_portfolio_returns(name=port_id, portfolio_returns=portfolio_returns)
+    create_candle_portfolio_img(port_id=port_id, compare_ticker="TLT", start_date=sd, end_date=ed)
 
+    # ======================================== A L L W E A T H E R ========================================
+    port_id = 'allweather'
+    ohlc = get_ohlc_dict_by_port_id(port_id=port_id, start_date=sd, end_date=ed)
+    portfolio_bars, portfolio_returns = returns_calc(ohlc=ohlc)
+    save_portfolio_bars(name=port_id, portfolio_bars=portfolio_bars)
+    save_portfolio_returns(name=port_id, portfolio_returns=portfolio_returns)
+    create_candle_portfolio_img(port_id=port_id, compare_ticker="SPY", start_date=sd, end_date=ed)
+
+    # ======================================== B A L A N C E D ========================================
+    port_id = 'balanced'
+    ohlc = get_ohlc_dict_by_port_id(port_id=port_id, start_date=sd, end_date=ed)
+    portfolio_bars, portfolio_returns = returns_calc(ohlc=ohlc)
+    save_portfolio_bars(name=port_id, portfolio_bars=portfolio_bars)
+    save_portfolio_returns(name=port_id, portfolio_returns=portfolio_returns)
+    create_candle_portfolio_img(port_id=port_id, compare_ticker="QQQ", start_date=sd, end_date=ed)
+
+    # ======================================== A G G R E S S I V E ========================================
+    port_id = 'aggressive'
+    ohlc = get_ohlc_dict_by_port_id(port_id=port_id, start_date=sd, end_date=ed)
+    portfolio_bars, portfolio_returns = returns_calc(ohlc=ohlc)
+    save_portfolio_bars(name=port_id, portfolio_bars=portfolio_bars)
+    save_portfolio_returns(name=port_id, portfolio_returns=portfolio_returns)
+    create_candle_portfolio_img(port_id=port_id, compare_ticker="QQQ", start_date=sd, end_date=ed)
+
+    # ======================================== L E V E R A G E D ========================================
+    port_id = 'leveraged'
+    ohlc = get_ohlc_dict_by_port_id(port_id=port_id, start_date=sd, end_date=ed)
+    portfolio_bars, portfolio_returns = returns_calc(ohlc=ohlc)
+    save_portfolio_bars(name=port_id, portfolio_bars=portfolio_bars)
+    save_portfolio_returns(name=port_id, portfolio_returns=portfolio_returns)
+    create_candle_portfolio_img(port_id=port_id, compare_ticker="QQQ", start_date=sd, end_date=ed)
