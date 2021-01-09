@@ -13,13 +13,15 @@ def get_and_save_universe():
         headers = {'accept': 'application/json', 'Authorization': f'Bearer {TOKEN}'}
         request_result = session.get(url, headers=headers)
         if request_result.status_code == requests.codes.ok:
+            res = {}
             parsed_json = json.loads(request_result.text)
-            universe = get_universe()
+            universe = get_all_universe()
             count = 0
             for inst in parsed_json['payload']['instruments']:
                 if inst['currency'] == 'USD' and inst['ticker'] in universe:
+                    res[inst['ticker']] = (universe[inst['ticker']][0], universe[inst['ticker']][1])
                     count += 1
-                    debug(f'Ticker: ' + inst['ticker'])
+            debug(f'Result: {res}')
             debug(f'Count: {count}')
         else:
             debug(f'Can\'t get json: {request_result.status_code}', "WARNING")

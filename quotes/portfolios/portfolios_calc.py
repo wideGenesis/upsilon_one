@@ -36,6 +36,16 @@ def calc_portfolio(portfolio_args):
     cor_rp.closes_updater(new_closes=cor_list)
     cor_rp.calc_returns()
     core = cor_rp.allocator()
+
+    # Aliases for leveraged
+    if portfolio_args['port_id'] == 'leveraged' and portfolio_args['is_aliased']:
+        if 'QQQ' in core:
+            qqq_weight = core.pop('QQQ')
+            core['QLD'] = qqq_weight
+        if 'TLT' in core:
+            tlt_weight = core.pop('TLT')
+            core['TMF'] = tlt_weight
+
     if portfolio_args['etf_only']:
         return core
     else:
