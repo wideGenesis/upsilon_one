@@ -58,7 +58,7 @@ def main():
     #
     # portfolio_bars = returns_calc(ohlc=ohlc)
     # save_portfolio_bars(name="leveraged", portfolio_bars=portfolio_bars)
-    # create_candle_portfoliio_img(port_id="leveraged", compare_ticker="QQQ", start_date=sd, end_date=ed)
+    # create_candle_portfolio_img(port_id="leveraged", compare_ticker="QQQ", start_date=sd, end_date=ed)
     #
     # exit()
 
