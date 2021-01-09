@@ -74,7 +74,7 @@ def portfolio_tester(init_cap=10000, port_id='parking', allocator_data_interval=
         portfolio_args['cor_linkage_'] = 'ward'
         portfolio_args['cor_risk_measure_'] = 'variance'
         portfolio_args['cor_graphs_show'] = False
-        portfolio_args['cor_selector_type'] = 2
+        portfolio_args['cor_selector_type'] = 13
         portfolio_args['cor_selector_adjustment'] = False
         portfolio_args['cor_selector_p1'] = 21
         portfolio_args['cor_selector_p2'] = 126
@@ -166,7 +166,7 @@ def portfolio_tester(init_cap=10000, port_id='parking', allocator_data_interval=
         portfolio_args['cor_linkage_'] = 'ward'
         portfolio_args['cor_risk_measure_'] = 'variance'
         portfolio_args['cor_graphs_show'] = False
-        portfolio_args['cor_selector_type'] = 2
+        portfolio_args['cor_selector_type'] = 13
         portfolio_args['cor_selector_adjustment'] = False
         portfolio_args['cor_selector_p1'] = 21
         portfolio_args['cor_selector_p2'] = 126
@@ -212,7 +212,7 @@ def portfolio_tester(init_cap=10000, port_id='parking', allocator_data_interval=
         portfolio_args['cor_linkage_'] = 'ward'
         portfolio_args['cor_risk_measure_'] = 'variance'
         portfolio_args['cor_graphs_show'] = False
-        portfolio_args['cor_selector_type'] = 2
+        portfolio_args['cor_selector_type'] = 12
         portfolio_args['cor_selector_adjustment'] = False
         portfolio_args['cor_selector_p1'] = 21
         portfolio_args['cor_selector_p2'] = 126
