@@ -76,13 +76,8 @@ def portfolio_tester(init_cap=10000, port_id='parking', allocator_data_interval=
         portfolio_args['cor_graphs_show'] = False
         portfolio_args['cor_selector_type'] = 2
         portfolio_args['cor_selector_adjustment'] = False
-<<<<<<< HEAD
-        portfolio_args['cor_selector_p1'] = 20
-        portfolio_args['cor_selector_p2'] = 100
-=======
         portfolio_args['cor_selector_p1'] = 21
         portfolio_args['cor_selector_p2'] = 126
->>>>>>> 9348c7122c3b8a4b3cecc37c146b724a3ad63cc0
         portfolio_args['cor_selector_c_p1'] = 1
         portfolio_args['cor_selector_c_p2'] = 3
         # ********************* Parking sat *********************
@@ -127,13 +122,8 @@ def portfolio_tester(init_cap=10000, port_id='parking', allocator_data_interval=
         portfolio_args['cor_graphs_show'] = False
         portfolio_args['cor_selector_type'] = 2
         portfolio_args['cor_selector_adjustment'] = False
-<<<<<<< HEAD
-        portfolio_args['cor_selector_p1'] = 20
-        portfolio_args['cor_selector_p2'] = 100
-=======
         portfolio_args['cor_selector_p1'] = 21
         portfolio_args['cor_selector_p2'] = 126
->>>>>>> 9348c7122c3b8a4b3cecc37c146b724a3ad63cc0
         portfolio_args['cor_selector_c_p1'] = 1
         portfolio_args['cor_selector_c_p2'] = 3
         # ********************* Allweather sat *********************
@@ -178,13 +168,8 @@ def portfolio_tester(init_cap=10000, port_id='parking', allocator_data_interval=
         portfolio_args['cor_graphs_show'] = False
         portfolio_args['cor_selector_type'] = 2
         portfolio_args['cor_selector_adjustment'] = False
-<<<<<<< HEAD
-        portfolio_args['cor_selector_p1'] = 20
-        portfolio_args['cor_selector_p2'] = 100
-=======
         portfolio_args['cor_selector_p1'] = 21
         portfolio_args['cor_selector_p2'] = 126
->>>>>>> 9348c7122c3b8a4b3cecc37c146b724a3ad63cc0
         portfolio_args['cor_selector_c_p1'] = 1
         portfolio_args['cor_selector_c_p2'] = 3
         # ********************* Balanced sat *********************
@@ -229,13 +214,8 @@ def portfolio_tester(init_cap=10000, port_id='parking', allocator_data_interval=
         portfolio_args['cor_graphs_show'] = False
         portfolio_args['cor_selector_type'] = 2
         portfolio_args['cor_selector_adjustment'] = False
-<<<<<<< HEAD
-        portfolio_args['cor_selector_p1'] = 20
-        portfolio_args['cor_selector_p2'] = 100
-=======
         portfolio_args['cor_selector_p1'] = 21
         portfolio_args['cor_selector_p2'] = 126
->>>>>>> 9348c7122c3b8a4b3cecc37c146b724a3ad63cc0
         portfolio_args['cor_selector_c_p1'] = 1
         portfolio_args['cor_selector_c_p2'] = 3
         # ********************* Aggressive sat *********************
@@ -281,13 +261,8 @@ def portfolio_tester(init_cap=10000, port_id='parking', allocator_data_interval=
         portfolio_args['cor_graphs_show'] = False
         portfolio_args['cor_selector_type'] = 13
         portfolio_args['cor_selector_adjustment'] = False
-<<<<<<< HEAD
-        portfolio_args['cor_selector_p1'] = 20
-        portfolio_args['cor_selector_p2'] = 100
-=======
         portfolio_args['cor_selector_p1'] = 21
         portfolio_args['cor_selector_p2'] = 126
->>>>>>> 9348c7122c3b8a4b3cecc37c146b724a3ad63cc0
         portfolio_args['cor_selector_c_p1'] = 1
         portfolio_args['cor_selector_c_p2'] = 3
         # ********************* Leveraged sat *********************
