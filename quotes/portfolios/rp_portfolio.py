@@ -258,6 +258,20 @@ class RiskParityAllocator:
                 zs_2 = (mom2 - rets2.mean()) / rets2.std()
                 performance_df[col] = 0.5*zs_1 + 0.5*zs_2
 
+            # elif self.selector_type == 14:  # Down GLS Calendar zs
+            #
+            #     dn = 0
+            #     df1 = date_slicer(df_=df, c_period=self.c_p1)
+            #     if df1[col].pct_change() < 0:
+            #         rets1 = df1[col].pct_change()
+            #         dn += 1
+            #     dn_prob = dn / window-1
+            #     gls = 1 - (rets1 * dn_prob)
+            #     sma_gls = gls.mean()
+            #     zs_1 = (-1)*(sma_gls - rets1.mean()) / rets1.std()
+            #     performance_df[col] = zs_1
+
+
         performance_df.dropna(inplace=True)
         performance_df.drop_duplicates(inplace=True)
         # print('%%%%%%%% before', performance_df.tail(10))
