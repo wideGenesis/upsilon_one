@@ -32,24 +32,24 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
     elif event.data == b'a2':
         await client.send_message(event.input_sender, 'Конструктор портфелей', buttons=buttons.keyboard_a2)
         await event.edit()
-    elif event.data == b'a3':
-        await client.send_message(event.input_sender, 'Калькуляторы', buttons=buttons.keyboard_a3)
-        await event.edit()
+    # elif event.data == b'a3':
+    #     await client.send_message(event.input_sender, 'Калькуляторы', buttons=buttons.keyboard_a3)
+    #     await event.edit()
     elif event.data == b'a4':
         await client.send_message(event.input_sender, 'Управление', buttons=buttons.keyboard_a4)
         await event.edit()
     elif event.data == b'a5':
         await client.send_message(event.input_sender, 'Инструкции', buttons=buttons.keyboard_a5)
         await event.edit()
-    elif event.data == b'a6':
-        await client.send_message(event.input_sender, 'Образование', buttons=buttons.keyboard_a6)
-        await event.edit()
-    elif event.data == b'a7':
-        await client.send_message(event.input_sender, 'Налоги', buttons=buttons.keyboard_a7)
-        await event.edit()
-    elif event.data == b'a8':
-        await client.send_message(event.input_sender, 'Агрегатор новостей', buttons=buttons.keyboard_a8)
-        await event.edit()
+    # elif event.data == b'a6':
+    #     await client.send_message(event.input_sender, 'Образование', buttons=buttons.keyboard_a6)
+    #     await event.edit()
+    # elif event.data == b'a7':
+    #     await client.send_message(event.input_sender, 'Налоги', buttons=buttons.keyboard_a7)
+    #     await event.edit()
+    # elif event.data == b'a8':
+    #     await client.send_message(event.input_sender, 'Агрегатор новостей', buttons=buttons.keyboard_a8)
+    #     await event.edit()
     elif event.data == b'main':
         await client.send_message(event.input_sender, 'Главное меню', buttons=buttons.keyboard_0)
         await event.edit()
@@ -207,18 +207,18 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
                                   buttons=buttons.keyboard_us_market_back)
 
     # ============================== Конструктор стратегий =============================
-    elif event.data == b'a2a1':
-        message = await client.send_message(entity=entity, message='Загрузка...')
-        await client.edit_message(message, 'Твой профиль риска')
-        await event.edit()
-        await client.send_message(event.input_sender, 'Зачем нужно знать свой профиль риска? /instruction03',
-                                  buttons=buttons.keyboard_a2_back)
-    elif event.data == b'a2a2':
-        message = await client.send_message(entity=entity, message='Загрузка...')
-        await client.edit_message(message, 'Оценка/аудит портфеля')
-        await event.edit()
-        await client.send_message(event.input_sender, 'Зачем проводить аудит своего портфеля? /instruction04',
-                                  buttons=buttons.keyboard_a2_back)
+    # elif event.data == b'a2a1':
+    #     message = await client.send_message(entity=entity, message='Загрузка...')
+    #     await client.edit_message(message, 'Твой профиль риска')
+    #     await event.edit()
+    #     await client.send_message(event.input_sender, 'Зачем нужно знать свой профиль риска? /instruction03',
+    #                               buttons=buttons.keyboard_a2_back)
+    # elif event.data == b'a2a2':
+    #     message = await client.send_message(entity=entity, message='Загрузка...')
+    #     await client.edit_message(message, 'Оценка/аудит портфеля')
+    #     await event.edit()
+    #     await client.send_message(event.input_sender, 'Зачем проводить аудит своего портфеля? /instruction04',
+    #                               buttons=buttons.keyboard_a2_back)
     elif event.data == b'a2a3':
         message = await client.send_message(entity=entity, message='Загрузка...')
         await client.edit_message(message, '"Парковочный" портфель без риска')
@@ -254,12 +254,12 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
         await client.send_file(entity, CHARTER_IMAGES_PATH + 'leveraged_portfolio_pie.png')
         await client.send_message(event.input_sender, 'Кому и когда покупать плечевой портфель? /instruction09',
                                   buttons=buttons.keyboard_a2_back)
-    elif event.data == b'a2a8':
-        message = await client.send_message(entity=entity, message='Загрузка...')
-        await client.edit_message(message, 'Трейдинг/Дневные стратегии')
-        await event.edit()
-        await client.send_message(event.input_sender, 'Подходит ли вам трейдинг? /instruction10',
-                                  buttons=buttons.keyboard_a2_back)
+    # elif event.data == b'a2a8':
+    #     message = await client.send_message(entity=entity, message='Загрузка...')
+    #     await client.edit_message(message, 'Трейдинг/Дневные стратегии')
+    #     await event.edit()
+    #     await client.send_message(event.input_sender, 'Подходит ли вам трейдинг? /instruction10',
+    #                               buttons=buttons.keyboard_a2_back)
     elif event.data == b'a2a-1':
         await client.send_message(event.input_sender, 'Конструктор стратегий', buttons=buttons.keyboard_a2)
         await event.edit()
