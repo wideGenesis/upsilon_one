@@ -73,10 +73,10 @@ def portfolio_tester(init_cap=10000, port_id='parking', allocator_data_interval=
         portfolio_args['cor_linkage_'] = 'ward'
         portfolio_args['cor_risk_measure_'] = 'variance'
         portfolio_args['cor_graphs_show'] = False
-        portfolio_args['cor_selector_type'] = 14
+        portfolio_args['cor_selector_type'] = 2
         portfolio_args['cor_selector_adjustment'] = False
-        portfolio_args['cor_selector_p1'] = 21
-        portfolio_args['cor_selector_p2'] = 63
+        portfolio_args['cor_selector_p1'] = 20
+        portfolio_args['cor_selector_p2'] = 100
         portfolio_args['cor_selector_c_p1'] = 1
         portfolio_args['cor_selector_c_p2'] = 3
         # ********************* Parking sat *********************
@@ -118,10 +118,10 @@ def portfolio_tester(init_cap=10000, port_id='parking', allocator_data_interval=
         portfolio_args['cor_linkage_'] = 'ward'
         portfolio_args['cor_risk_measure_'] = 'variance'
         portfolio_args['cor_graphs_show'] = False
-        portfolio_args['cor_selector_type'] = 14
+        portfolio_args['cor_selector_type'] = 2
         portfolio_args['cor_selector_adjustment'] = False
-        portfolio_args['cor_selector_p1'] = 21
-        portfolio_args['cor_selector_p2'] = 63
+        portfolio_args['cor_selector_p1'] = 20
+        portfolio_args['cor_selector_p2'] = 100
         portfolio_args['cor_selector_c_p1'] = 1
         portfolio_args['cor_selector_c_p2'] = 3
         # ********************* Allweather sat *********************
@@ -163,10 +163,10 @@ def portfolio_tester(init_cap=10000, port_id='parking', allocator_data_interval=
         portfolio_args['cor_linkage_'] = 'ward'
         portfolio_args['cor_risk_measure_'] = 'variance'
         portfolio_args['cor_graphs_show'] = False
-        portfolio_args['cor_selector_type'] = 14
+        portfolio_args['cor_selector_type'] = 2
         portfolio_args['cor_selector_adjustment'] = False
-        portfolio_args['cor_selector_p1'] = 21
-        portfolio_args['cor_selector_p2'] = 63
+        portfolio_args['cor_selector_p1'] = 20
+        portfolio_args['cor_selector_p2'] = 100
         portfolio_args['cor_selector_c_p1'] = 1
         portfolio_args['cor_selector_c_p2'] = 3
         # ********************* Balanced sat *********************
@@ -208,10 +208,10 @@ def portfolio_tester(init_cap=10000, port_id='parking', allocator_data_interval=
         portfolio_args['cor_linkage_'] = 'ward'
         portfolio_args['cor_risk_measure_'] = 'variance'
         portfolio_args['cor_graphs_show'] = False
-        portfolio_args['cor_selector_type'] = 14
+        portfolio_args['cor_selector_type'] = 2
         portfolio_args['cor_selector_adjustment'] = False
-        portfolio_args['cor_selector_p1'] = 21
-        portfolio_args['cor_selector_p2'] = 63
+        portfolio_args['cor_selector_p1'] = 20
+        portfolio_args['cor_selector_p2'] = 100
         portfolio_args['cor_selector_c_p1'] = 1
         portfolio_args['cor_selector_c_p2'] = 3
         # ********************* Aggressive sat *********************
@@ -253,10 +253,10 @@ def portfolio_tester(init_cap=10000, port_id='parking', allocator_data_interval=
         portfolio_args['cor_linkage_'] = 'ward'
         portfolio_args['cor_risk_measure_'] = 'variance'
         portfolio_args['cor_graphs_show'] = False
-        portfolio_args['cor_selector_type'] = 14
+        portfolio_args['cor_selector_type'] = 13
         portfolio_args['cor_selector_adjustment'] = False
-        portfolio_args['cor_selector_p1'] = 21
-        portfolio_args['cor_selector_p2'] = 63
+        portfolio_args['cor_selector_p1'] = 20
+        portfolio_args['cor_selector_p2'] = 100
         portfolio_args['cor_selector_c_p1'] = 1
         portfolio_args['cor_selector_c_p2'] = 3
         # ********************* Leveraged sat *********************
@@ -337,18 +337,18 @@ if __name__ == '__main__':
     # main()
     mp.set_start_method('spawn')
     q = mp.Queue()
-    p1 = mp.Process(target=portfolio_tester, args=(10000, 'parking', 3, 12, datetime.date(2008, 1, 1),))
-    p1.start()
-    p2 = mp.Process(target=portfolio_tester, args=(10000, 'allweather', 3, 12, datetime.date(2008, 1, 1),))
-    p2.start()
-    p3 = mp.Process(target=portfolio_tester, args=(10000, 'balanced', 3, 12, datetime.date(2008, 1, 1),))
-    p3.start()
-    p4 = mp.Process(target=portfolio_tester, args=(10000, 'aggressive', 3, 12, datetime.date(2008, 1, 1),))
-    p4.start()
-    p5 = mp.Process(target=portfolio_tester, args=(10000, 'leveraged', 3, 12,  datetime.date(2010, 1, 1),))
+    # p1 = mp.Process(target=portfolio_tester, args=(10000, 'parking', 3, 12, datetime.date(2008, 1, 1),))
+    # p1.start()
+    # p2 = mp.Process(target=portfolio_tester, args=(10000, 'allweather', 3, 12, datetime.date(2008, 1, 1),))
+    # p2.start()
+    # p3 = mp.Process(target=portfolio_tester, args=(10000, 'balanced', 3, 12, datetime.date(2008, 1, 1),))
+    # p3.start()
+    # p4 = mp.Process(target=portfolio_tester, args=(10000, 'aggressive', 3, 12, datetime.date(2008, 1, 1),))
+    # p4.start()
+    p5 = mp.Process(target=portfolio_tester, args=(10000, 'leveraged', 3, 12,  datetime.date(2010, 6, 1),))
     p5.start()
-    p1.join()
-    p2.join()
-    p3.join()
-    p4.join()
+    # p1.join()
+    # p2.join()
+    # p3.join()
+    # p4.join()
     p5.join()
