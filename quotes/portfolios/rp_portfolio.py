@@ -360,7 +360,7 @@ def returns_calc(init_capital=100000, ohlc=None):
         if i > 0:
             last_close = cap_ohlc[ohlc_date][-1]
             prev_close = cap_ohlc[prev_ohlc_date][-1]
-            ret = round((last_close - prev_close) / prev_close, 2)
+            ret = round((last_close - prev_close) / prev_close, 4)
             returns[ohlc_date] = ret
         prev_ohlc_date = ohlc_date
     # debug(cap_ohlc.values())
