@@ -18,13 +18,19 @@
 # 10 */12 * * * /home/upsilonsfather/projects/ups_one/cron_scheduler.sh "720"
 #
 # Start everyday  (каждый день в 3:00)
-# 0 3 * * * /home/upsilonsfather/projects/ups_one/cron_scheduler.sh "EVERYDAY"
+# на инстансе +5часов по отношению к New York Time ориентируемся при запуске на NYT
+# что бы запустить что-то в 3:00 по NYT надо запускать в 8:00 по времени инстанса
+# 0 8 * * * /home/upsilonsfather/projects/ups_one/cron_scheduler.sh "EVERYDAY"
 #
 # Start monday  (каждый понедельник в 3:10)
-# 10 3 * * 0 /home/upsilonsfather/projects/ups_one/cron_scheduler.sh "MONDAY"
+# на инстансе +5часов по отношению к New York Time ориентируемся при запуске на NYT
+# что бы запустить что-то в 3:00 по NYT надо запускать в 8:00 по времени инстанса
+# 10 8 * * 0 /home/upsilonsfather/projects/ups_one/cron_scheduler.sh "MONDAY"
 #
 # Start first date of month  (каждое первое число месяца в 4:00)
-# 0 4 1 * * /home/upsilonsfather/projects/ups_one/cron_scheduler.sh "FIRST_DAY_OF_MONTH"
+# на инстансе +5часов по отношению к New York Time ориентируемся при запуске на NYT
+# что бы запустить что-то в 3:00 по NYT надо запускать в 8:00 по времени инстанса
+# 0 9 1 * * /home/upsilonsfather/projects/ups_one/cron_scheduler.sh "FIRST_DAY_OF_MONTH"
 #
 #
 #
@@ -32,41 +38,41 @@ BASEDIR=/home/upsilonsfather/projects/ups_one
 LOGDIR=$BASEDIR/logs
 
 source $BASEDIR/venv/bin/activate
-echo "[$(date +'%Y-%m-%d %H:%M:%S')]************* Start  cron scheduler *************" > $LOGDIR/cron_scheduler.log
+echo "[$(date +'%Y-%m-%d %H:%M:%S')]************* Start  cron scheduler *************" >> $LOGDIR/cron_scheduler.log
 if [ "$1" == "1" ]
 then
-  echo "#Every  $1 [$(date +'%Y-%m-%d %H:%M:%S')]"  > $LOGDIR/cron_scheduler.log
+  echo "#Every  $1 [$(date +'%Y-%m-%d %H:%M:%S')]"  >> $LOGDIR/cron_scheduler.log
 elif [ "$1" == '5' ]
 then
-  echo "#Every $1 [$(date +'%Y-%m-%d %H:%M:%S')]"  > $LOGDIR/cron_scheduler.log
+  echo "#Every $1 [$(date +'%Y-%m-%d %H:%M:%S')]"  >> $LOGDIR/cron_scheduler.log
 elif [ "$1" == '30' ]
 then
-  echo "#Every $1 [$(date +'%Y-%m-%d %H:%M:%S')]"  > $LOGDIR/cron_scheduler.log
-  python3 $BASEDIR/cron_every_30_min.py  > $LOGDIR/cron_scheduler.log
+  echo "#Every $1 [$(date +'%Y-%m-%d %H:%M:%S')]"  >> $LOGDIR/cron_scheduler.log
+  python3 $BASEDIR/cron_every_30_min.py  >> $LOGDIR/cron_scheduler.log
 elif [ "$1" == '120' ]
 then
-  echo "#Every $1 [$(date +'%Y-%m-%d %H:%M:%S')]"  > $LOGDIR/cron_scheduler.log
-  python3 $BASEDIR/cron_every_120_min.py  > $LOGDIR/cron_scheduler.log
+  echo "#Every $1 [$(date +'%Y-%m-%d %H:%M:%S')]"  >> $LOGDIR/cron_scheduler.log
+  python3 $BASEDIR/cron_every_120_min.py  >> $LOGDIR/cron_scheduler.log
 elif [ "$1" == '480' ]
 then
-  echo "#Every $1 [$(date +'%Y-%m-%d %H:%M:%S')]"  > $LOGDIR/cron_scheduler.log
-  python3 $BASEDIR/cron_every_480_min.py  > $LOGDIR/cron_scheduler.log
+  echo "#Every $1 [$(date +'%Y-%m-%d %H:%M:%S')]"  >> $LOGDIR/cron_scheduler.log
+  python3 $BASEDIR/cron_every_480_min.py  >> $LOGDIR/cron_scheduler.log
 elif [ "$1" == '720' ]
 then
-  echo "#Every $1 [$(date +'%Y-%m-%d %H:%M:%S')]"  > $LOGDIR/cron_scheduler.log
-  python3 $BASEDIR/cron_every_720_min.py  > $LOGDIR/cron_scheduler.log
+  echo "#Every $1 [$(date +'%Y-%m-%d %H:%M:%S')]"  >> $LOGDIR/cron_scheduler.log
+  python3 $BASEDIR/cron_every_720_min.py  >> $LOGDIR/cron_scheduler.log
 elif [ "$1" == 'MONDAY' ]
 then
-  echo "#Every $1 [$(date +'%Y-%m-%d %H:%M:%S')]"  > $LOGDIR/cron_scheduler.log
-  python3 $BASEDIR/cron_every_monday.py  > $LOGDIR/cron_scheduler.log
+  echo "#Every $1 [$(date +'%Y-%m-%d %H:%M:%S')]"  >> $LOGDIR/cron_scheduler.log
+  python3 $BASEDIR/cron_every_monday.py  >> $LOGDIR/cron_scheduler.log
 elif [ "$1" == 'EVERYDAY' ]
 then
-  echo "#Every $1 [$(date +'%Y-%m-%d %H:%M:%S')]"  > $LOGDIR/cron_scheduler.log
-  python3 $BASEDIR/cron_update_closes_capital_returns.py  > $LOGDIR/cron_scheduler.log
+  echo "#Every $1 [$(date +'%Y-%m-%d %H:%M:%S')]"  >> $LOGDIR/cron_scheduler.log
+  python3 $BASEDIR/cron_update_closes_capital_returns.py  >> $LOGDIR/cron_scheduler.log
 elif [ "$1" == 'FIRST_DAY_OF_MONTH' ]
 then
-  echo "#Every $1 [$(date +'%Y-%m-%d %H:%M:%S')]"  > $LOGDIR/cron_scheduler.log
-  python3 $BASEDIR/cron_get_universe_holdings.py  > $LOGDIR/cron_scheduler.log
-  python3 $BASEDIR/cron_calc_portfolios_allocation.py  > $LOGDIR/cron_scheduler.log
+  echo "#Every $1 [$(date +'%Y-%m-%d %H:%M:%S')]"  >> $LOGDIR/cron_scheduler.log
+  python3 $BASEDIR/cron_get_universe_holdings.py  >> $LOGDIR/cron_scheduler.log
+  python3 $BASEDIR/cron_calc_portfolios_allocation.py  >> $LOGDIR/cron_scheduler.log
 fi
 deactivate
