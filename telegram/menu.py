@@ -74,8 +74,8 @@ async def profile_menu(event, client, engine=None):
         expired_date = "None"
     else:
         print("In user_profile = " + str(user_profile[11]))
-        dt = datetime.fromisoformat(str(user_profile[11]))
-        expired_date = datetime.strftime(dt, "%d.%m.%Y")
+        ed = user_profile[11]
+        expired_date = ed.strftime("%d.%m.%Y")
         print("expired_date=" + expired_date)
     await client.send_message(event.input_sender,
                               f'\U0001F464 : {user_profile[3]}' + '\n' +
