@@ -8,24 +8,24 @@ keyboard_0 = [
     [
         Button.inline('\U0001F9EC   ' + 'Конструктор стратегий', b'a2')
     ],
-    [
-        Button.inline('\U0001F9F0   ' + 'Калькуляторы', b'a3')
-    ],
+    # [
+    #     Button.inline('\U0001F9F0   ' + 'Калькуляторы', b'a3')
+    # ],
     [
         Button.inline('\U0001F9BE   ' + 'Управление', b'a4')
     ],
     [
         Button.inline('\U000026D1   ' + 'Инструкции', b'a5')
     ],
-    [
-        Button.inline('\U0001F393   ' + 'Образование', b'a6')
-    ],
-    [
-        Button.inline('\U0001F92F   ' + 'Налоги', b'a7')
-    ],
-    [
-        Button.inline('\U0001F5C3   ' + 'Агрегатор новостей', b'a8')
-    ]
+    # [
+    #     Button.inline('\U0001F393   ' + 'Образование', b'a6')
+    # ],
+    # [
+    #     Button.inline('\U0001F92F   ' + 'Налоги', b'a7')
+    # ],
+    # [
+    #     Button.inline('\U0001F5C3   ' + 'Агрегатор новостей', b'a8')
+    # ]
 ]
 
 keyboard_a1 = [
@@ -38,9 +38,9 @@ keyboard_a1 = [
     [
         Button.inline('\U0001F43B  ' + 'Рынок РФ', b'a1a3')
     ],
-    [
-        Button.inline('\U0001F504  ' + 'ETF сантимент', b'a1a4')
-    ],
+    # [
+    #     Button.inline('\U0001F504  ' + 'ETF сантимент', b'a1a4')
+    # ],
     [
         Button.inline('\U0001F30D  ' + 'Мировые рынки в картах', b'a1a5')
     ],
