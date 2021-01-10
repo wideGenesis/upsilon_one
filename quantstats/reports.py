@@ -50,7 +50,9 @@ def html(returns, benchmark=None, rf=0.,
         tpl = f.read()
         f.close()
 
-    date_range = returns.index.strftime('%e %b, %Y')
+    # date_range = returns.index.strftime('%e %b, %Y')
+    date_range = returns.index.strftime('Y-, %b-, %e')
+
     # tpl = tpl.replace('{{date_range}}', date_range[0] + ' - ' + date_range[-1])
     tpl = tpl.replace('{{title}}', title)
     # tpl = tpl.replace('{{title}}', f'<h1 style="text-align:center">{title}</h1>')

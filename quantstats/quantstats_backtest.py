@@ -1,17 +1,16 @@
-from quotes.portfolios.sql_queries import get_portfolio_returns
+from quotes.portfolios.sql_queries import get_portfolio_returns_df
 from datetime import date
 import pandas as pd
 import quantstats as qs
 import pdfkit
 
 
-def quantstats_pdf(closes_df=None, bench_df=None, filename=None, title=None):
-    df = pd.read_csv(closes_df, index_col='Date', parse_dates=True)
-    df = df['Aggressive']
-    bench_df = pd.read_csv(bench_df, index_col='Date', parse_dates=True)
-    # stock_closes = qs.utils.download_returns('AMZN')
-    print(df.describe())
-    # print(stock_closes.head())
+def quantstats_pdf(port_rets_df=None, bench='QQQ', filename=None, title=None):
+    df = port_rets_df
+    print(df)
+    # mom1 = ((df1[col].iloc[-1] - df1[col].iloc[0]) / df1[col].iloc[0])
+    bench_df = qs.utils.download_returns(bench, period='10y')
+
     qs.reports.html(returns=df, benchmark=bench_df, output=f'{filename}.html', title=title)
     pdfkit_options = {
                 'margin-top': '0.1',
@@ -29,7 +28,12 @@ def quantstats_pdf(closes_df=None, bench_df=None, filename=None, title=None):
     pdfkit.from_file(f'{filename}.html', f'{filename}.pdf', options=pdfkit_options)
     print('Stat pdf has been converted')
 
+x = get_portfolio_returns_df('aggressive', start_date=None, end_date=date.today())
 
-# quantstats_pdf(closes_df='aggressive.csv', bench_df='QQQ_AGGRESSIVE.csv', filename='aggressive', title='Aggressive')
-x = get_portfolio_returns('aggressive', start_date=None, end_date=date.today())
-print(x)
+quantstats_pdf(port_rets_df=x, bench='QQQ', filename='aggressive', title='Aggressive')
+# print(x)
+
+# Date,Aggressive
+# 1/31/08,-0.0636
+# 2/29/08,-0.0091
+# 3/31/08,0.0092
