@@ -356,6 +356,7 @@ def returns_calc(init_capital=100000, ohlc=None):
                                          round(cap_ohlc[dohlcwac[0]][5] + cap_in_adjclose, 2))
     # Расчет Returns
     returns = {}
+    prev_ohlc_date = -1
     for i, ohlc_date in enumerate(cap_ohlc):
         if i > 0:
             last_close = cap_ohlc[ohlc_date][-1]
