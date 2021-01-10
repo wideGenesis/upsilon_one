@@ -649,7 +649,7 @@ def metrics_v3(returns, benchmark=None, rf=0., display=True,
 
     blank = ['']
     df = _pd.DataFrame({"returns": _utils._prepare_returns_v2(returns, rf)})
-    # df = _pd.DataFrame({"returns": returns[0]}, index=returns.index)
+    # df = _pd.DataFrame({"returns": [returns[0]]})
 
     print('post utils', df)
 

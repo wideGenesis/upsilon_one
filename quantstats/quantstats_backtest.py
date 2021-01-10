@@ -7,17 +7,18 @@ import pdfkit
 
 def quantstats_pdf(port_rets_df=None, bench='QQQ', filename=None, title=None):
     df = qs.utils.download_returns(bench, period='10y')
-    #
-    # print(port_rets_df.index)
+    port_rets_df.to_csv('/home/gene/projects/upsilon_one/quantstats/port.csv')
+    df.to_csv('/home/gene/projects/upsilon_one/quantstats/utils.csv')
+    print(port_rets_df.index)
     # print(port_rets_df)
-    # print(df.index)
+    print(df.index)
     # print(df)
 
 
     # mom1 = ((df1[col].iloc[-1] - df1[col].iloc[0]) / df1[col].iloc[0])
     bench_df = qs.utils.download_returns(bench, period='10y')
 
-    qs.reports.html(returns=port_rets_df, benchmark=bench_df, output=f'{filename}.html', title=title)
+    qs.reports.html(returns=port_rets_df, output=f'{filename}.html', title=title)
     pdfkit_options = {
                 'margin-top': '0.1',
                 'margin-right': '0.1',
