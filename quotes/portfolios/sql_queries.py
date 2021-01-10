@@ -1,3 +1,4 @@
+import pandas as pd
 from time import sleep
 from project_shared import *
 from datetime import date, timedelta
@@ -136,6 +137,30 @@ def get_portfolio_returns(port_id, start_date=None, end_date=date.today(),
             query_string += f' ORDER BY rdate ASC'
             q_result = connection.execute(query_string)
             return q_result.fetchall() if q_result.rowcount > 0 else None
+
+
+def get_portfolio_returns_df(port_id, start_date=None, end_date=date.today(),
+                          table_name=PORTFOLIO_RETURNS_TABLE_NAME, engine=engine):
+    with engine.connect() as connection:
+        if is_table_exist(table_name):
+            query_string = f'SELECT rdate, ret FROM {table_name} ' \
+                           f' WHERE port_id=\'{port_id}\' '
+            if start_date is not None:
+                query_string += f' AND rdate >= \'{str(start_date)}\' '
+            if end_date is not None:
+                query_string += f' AND rdate <= \'{str(end_date)}\' '
+            query_string += f' ORDER BY rdate ASC'
+            q_result = connection.execute(query_string)
+            if q_result.rowcount > 0:
+                rows = q_result.fetchall()
+                c0 = []
+                c1 = []
+                for row in rows:
+                    c0.append(row[0])
+                    c1.append(row[1])
+                series = pd.Series(c1, index=c0)
+            portfolio_returns = pd.DataFrame(series)
+            return portfolio_returns
 
 
 def get_portfolio_returns_ti(port_id, time_interval=None, interval_type="Y",
