@@ -161,6 +161,7 @@ def get_portfolio_returns_df(port_id, start_date=None, end_date=date.today(),
                     c1.append(row[1])
                 series = pd.Series(c1, index=c0)
             portfolio_returns = pd.DataFrame(series)
+            portfolio_returns.index.name = 'Date'
             # dtyp = portfolio_returns.index.dtype
             return portfolio_returns
 

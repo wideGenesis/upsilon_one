@@ -50,8 +50,8 @@ def html(returns, benchmark=None, rf=0.,
         tpl = f.read()
         f.close()
 
-    # date_range = returns.index.strftime('%e %b, %Y')
-    date_range = returns.index.strftime('Y-, %b-, %e')
+    date_range = returns.index.strftime('%e %b, %Y')
+    # date_range = _pd.to_datetime(returns.index).strftime('%e %b, %Y')
 
     # tpl = tpl.replace('{{date_range}}', date_range[0] + ' - ' + date_range[-1])
     tpl = tpl.replace('{{title}}', title)
@@ -649,6 +649,12 @@ def metrics_v3(returns, benchmark=None, rf=0., display=True,
 
     blank = ['']
     df = _pd.DataFrame({"returns": _utils._prepare_returns_v2(returns, rf)})
+    # df = _pd.DataFrame({"returns": returns[0]}, index=returns.index)
+
+    print('post utils', df)
+
+    # df = _pd.DataFrame({"returns": returns[0]})
+
     if benchmark is not None:
         blank = ['', '']
         df["benchmark"] = _utils._prepare_benchmark(
