@@ -79,7 +79,10 @@ ETFs: [
     'QCLN',
     'SPY',
     'XBI',
-    'GLD'
+    'GLD',
+    'LQD',
+    'XLP',
+
 ]
 
 VALID_EXCHANGE: [
