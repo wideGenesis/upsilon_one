@@ -156,10 +156,12 @@ def get_portfolio_returns_df(port_id, start_date=None, end_date=date.today(),
                 c0 = []
                 c1 = []
                 for row in rows:
-                    c0.append(row[0])
+                    rdate = pd.to_datetime(row[0], errors="coerce")
+                    c0.append(rdate)
                     c1.append(row[1])
                 series = pd.Series(c1, index=c0)
             portfolio_returns = pd.DataFrame(series)
+            # dtyp = portfolio_returns.index.dtype
             return portfolio_returns
 
 
