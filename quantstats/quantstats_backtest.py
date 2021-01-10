@@ -9,6 +9,8 @@ def quantstats_pdf(port_rets_df=None, bench='QQQ', filename=None, title=None):
     df = qs.utils.download_returns(bench, period='10y')
     port_rets_df.to_csv('/home/gene/projects/upsilon_one/quantstats/port.csv')
     df.to_csv('/home/gene/projects/upsilon_one/quantstats/utils.csv')
+    path = '/home/gene/projects/upsilon_one/quantstats/utils.csv'
+    port_rets_df = pd.read_csv(path, parse_dates=True, index_col='Date')
     print(port_rets_df.index)
     # print(port_rets_df)
     print(df.index)
