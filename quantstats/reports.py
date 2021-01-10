@@ -651,10 +651,6 @@ def metrics_v3(returns, benchmark=None, rf=0., display=True,
     df = _pd.DataFrame({"returns": _utils._prepare_returns_v2(returns, rf)})
     # df = _pd.DataFrame({"returns": [returns[0]]})
 
-    print('post utils', df)
-
-    # df = _pd.DataFrame({"returns": returns[0]})
-
     if benchmark is not None:
         blank = ['', '']
         df["benchmark"] = _utils._prepare_benchmark(

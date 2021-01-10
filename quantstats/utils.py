@@ -228,25 +228,23 @@ def _prepare_returns(data, rf=0., nperiods=None):
 def _prepare_returns_v2(data, rf=0., nperiods=None):
     """ Converts price data into returns + cleanup """
     data = data.copy()
-    print('incoming', '\n', data)
-
-    # if isinstance(data, _pd.DataFrame):
-    #     for col in data.columns:
-    #         if data[col].dropna().min() >= 0 or data[col].dropna().max() > 1:
-    #             pass
-    # elif data.min() >= 0 and data.max() > 1:
-    #     pass
+    if isinstance(data, _pd.DataFrame):
+        for col in data.columns:
+            if data[col].dropna().min() >= 0 or data[col].dropna().max() > 1:
+                pass
+    elif data.min() >= 0 and data.max() > 1:
+        pass
 
     # cleanup data
     data = data.replace([_np.inf, -_np.inf], float('NaN'))
 
-    #
-    # if isinstance(data, (_pd.DataFrame, _pd.Series)):
-    #     data = data.fillna(0).replace(
-    #         [_np.inf, -_np.inf], float('NaN'))
-    #
-    # if rf > 0:
-    #     return to_excess_returns(data, rf, nperiods)
+
+    if isinstance(data, (_pd.DataFrame, _pd.Series)):
+        data = data.fillna(0).replace(
+            [_np.inf, -_np.inf], float('NaN'))
+
+    if rf > 0:
+        return to_excess_returns(data, rf, nperiods)
     return data
 
 def download_returns(ticker, period="5y"):
@@ -255,7 +253,6 @@ def download_returns(ticker, period="5y"):
     else:
         p = {"period": period}
     data = _yf.Ticker(ticker).history(**p)['Close'].pct_change()
-    print('download', '\n', data)
     return data
 
 
