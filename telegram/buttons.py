@@ -59,12 +59,12 @@ keyboard_a1_back = [
 ]
 
 keyboard_a2 = [
-    [
-        Button.inline('\U0001F4BC   ' + 'Твой профиль риска', b'a2a1')
-    ],
-    [
-        Button.inline('\U0001F4BC  ' + 'Оценка/аудит портфеля', b'a2a2')
-    ],
+    # [
+    #     Button.inline('\U0001F4BC   ' + 'Твой профиль риска', b'a2a1')
+    # ],
+    # [
+    #     Button.inline('\U0001F4BC  ' + 'Оценка/аудит портфеля', b'a2a2')
+    # ],
     [
         Button.inline('\U0001F4BC  ' + '"Парковочный" портфель без риска', b'a2a3')
     ],
@@ -80,9 +80,9 @@ keyboard_a2 = [
     [
         Button.inline('\U0001F4BC  ' + 'Плечевой портфель', b'a2a7')
     ],
-    [
-        Button.inline('\U0001F4BC  ' + 'Трейдинг/Дневные стратегии', b'a2a8')
-    ],
+    # [
+    #     Button.inline('\U0001F4BC  ' + 'Трейдинг/Дневные стратегии', b'a2a8')
+    # ],
     [
         Button.inline('\U0001F519  ' + 'Назад', b'main')
     ]
