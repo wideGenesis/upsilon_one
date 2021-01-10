@@ -7,20 +7,17 @@ import pdfkit
 
 def quantstats_pdf(port_rets_df=None, bench='QQQ', filename=None, title=None):
     df = qs.utils.download_returns(bench, period='10y')
-    port_rets_df.to_csv('/home/gene/projects/upsilon_one/quantstats/port.csv')
-    df.to_csv('/home/gene/projects/upsilon_one/quantstats/utils.csv')
-    path = '/home/gene/projects/upsilon_one/quantstats/utils.csv'
-    port_rets_df = pd.read_csv(path, parse_dates=True, index_col='Date')
-    print(port_rets_df.index)
-    # print(port_rets_df)
+    print(df)
     print(df.index)
-    # print(df)
+    print(port_rets_df)
+    print(port_rets_df.index)
+
 
 
     # mom1 = ((df1[col].iloc[-1] - df1[col].iloc[0]) / df1[col].iloc[0])
     bench_df = qs.utils.download_returns(bench, period='10y')
 
-    qs.reports.html(returns=port_rets_df, output=f'{filename}.html', title=title)
+    qs.reports.html(returns=df, output=f'{filename}.html', title=title)
     pdfkit_options = {
                 'margin-top': '0.1',
                 'margin-right': '0.1',
@@ -37,9 +34,9 @@ def quantstats_pdf(port_rets_df=None, bench='QQQ', filename=None, title=None):
     pdfkit.from_file(f'{filename}.html', f'{filename}.pdf', options=pdfkit_options)
     print('Stat pdf has been converted')
 
-x = get_portfolio_returns_df('aggressive', start_date=None, end_date=date.today())
+x = get_portfolio_returns_df('parking', start_date=None, end_date=date.today())
 
-quantstats_pdf(port_rets_df=x, bench='QQQ', filename='aggressive', title='Aggressive')
+quantstats_pdf(port_rets_df=x, bench='QQQ', filename='parking', title='parking')
 # print(x)
 
 # Date,Aggressive
