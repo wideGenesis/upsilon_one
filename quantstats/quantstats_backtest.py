@@ -1,3 +1,5 @@
+from quotes.portfolios.sql_queries import get_portfolio_returns
+from datetime import date
 import pandas as pd
 import quantstats as qs
 import pdfkit
@@ -28,4 +30,6 @@ def quantstats_pdf(closes_df=None, bench_df=None, filename=None, title=None):
     print('Stat pdf has been converted')
 
 
-quantstats_pdf(closes_df='aggressive.csv', bench_df='QQQ_AGGRESSIVE.csv', filename='aggressive', title='Aggressive')
+# quantstats_pdf(closes_df='aggressive.csv', bench_df='QQQ_AGGRESSIVE.csv', filename='aggressive', title='Aggressive')
+x = get_portfolio_returns('aggressive', start_date=None, end_date=date.today())
+print(x)

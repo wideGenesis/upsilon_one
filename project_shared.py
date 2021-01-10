@@ -46,6 +46,7 @@ ALL_WEATHER = conf['PORTFOLIOS']['ALL_WEATHER']
 BALANCED = conf['PORTFOLIOS']['BALANCED']
 AGGRESSIVE = conf['PORTFOLIOS']['AGGRESSIVE']
 LEVERAGED = conf['PORTFOLIOS']['LEVERAGED']
+TEST_ADM = conf['PORTFOLIOS']['TEST_ADM']
 
 # ============================== Charter ======================
 CHARTER_IMAGES_PATH = "" + i_path + "/" + conf['PATHS']['CHARTER_IMAGES_PATH']
