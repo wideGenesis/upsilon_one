@@ -16,6 +16,8 @@ from charter.charter import *
 # ============================== Main  =============================
 def main():
 
+    get_flows(driver=chrome_init())
+    exit()
     # Это забирание вселенной по-старому
     # get_and_save_holdings(driver=chrome_init())
     # update_universe_prices()
@@ -64,8 +66,8 @@ def main():
 
     # start_test_date - первая дата на которую будет вычеслена первая аллокация, далее эта дата смещается на месяц
     # data_interval -- за какой период времени на RP будут подаваться данные -3 значит за 3 месяца
-    start_test_date = datetime.date(2007, 1, 1)
-    data_interval = -3
+    # start_test_date = datetime.date(2007, 1, 1)
+    # data_interval = -3
     # port_id = 'parking'
     port_id = 'allweather'
     # port_id = 'balanced'

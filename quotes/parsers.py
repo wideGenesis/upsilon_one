@@ -24,8 +24,8 @@ def get_flows(driver=None, img_out_path_=IMAGES_OUT_PATH):
     with driver:
         driver.get('https://www.etf.com/etfanalytics/etf-fund-flows-tool')
         sleep(10)
-        # html = driver.page_source
-        # print(html)
+        html = driver.page_source
+        print(html)
         try:
             elem = driver.find_element_by_xpath(".//*[@id='edit-tickers']")
             print('elem 1 has been located')

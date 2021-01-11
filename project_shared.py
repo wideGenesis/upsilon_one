@@ -159,6 +159,7 @@ def print_progress_bar(iteration, total, prefix='', suffix='', decimals=1, lengt
     if iteration == total:
         print()
 
+# def debug_init(file_name="debug.log"):
 
 def debug(print_string="", debug_type="NORMAL"):
     caller_frame_record = inspect.stack()[1]
