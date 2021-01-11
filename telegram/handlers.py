@@ -154,29 +154,40 @@ async def quotes_to_handler(event, client_, limit=20):
     stock = parse[1]
     stock = stock.upper()
     img_path = os.path.join('results/ticker_stat', f'{stock}.png')
+    ss = StockStat(stock=stock)
     try:
-        ss = StockStat(stock=stock)
         ss.stock_download()
-        msg1 = ss.stock_description()
-        ss.stock_snapshot()
-        msg2 = ss.stock_stat()
-
-        await client_.send_message(event.input_sender, msg2)
-        await client_.send_file(event.input_sender, img_path)
-        await client_.send_message(event.input_sender, msg1)
-
-    except ValueError as e0:
+    except Exception as e0:
         print(e0)
+    try:
+        msg1 = ss.stock_description()
+    except Exception as e1:
+        print(e1)
+        msg1 = 'Описание для ETF недоступно'
+    try:
+        ss.stock_snapshot()
+    except Exception as e2:
+        print(e2)
+    try:
+        msg2 = ss.stock_stat()
+    except Exception as e3:
+        print(e3)
+        msg2 = 'Статистика недоступна'
+
+    await client_.send_message(event.input_sender, msg2)
+    await client_.send_file(event.input_sender, img_path)
+    await client_.send_message(event.input_sender, msg1)
     os.remove(img_path)
 
 
 async def news_to_handler(event, client_, limit=20):
     parse = str(event.text).split(' ')
     stock = parse[1]
+    ss = StockStat(stock=stock)
     try:
-        ss = StockStat(stock=stock)
         msg = ss.stock_news()
-        await client_.send_message(event.input_sender, f'Последние новости с упоминанием {stock}')
-        await client_.send_message(event.input_sender, msg)
-    except ValueError as e1:
-        print(e1)
+    except Exception as e4:
+        print(e4)
+        msg = 'Новости недоступны'
+    await client_.send_message(event.input_sender, f'Последние новости с упоминанием {stock}')
+    await client_.send_message(event.input_sender, msg)
