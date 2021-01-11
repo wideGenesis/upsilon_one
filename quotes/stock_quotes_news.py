@@ -90,7 +90,7 @@ class StockStat:
     def stock_description(self):
         try:
             price = finviz.get_stock(self.stock)
-        except ValueError as e10:
+        except Exception as e10:
             return 'Ticker not found'
         msg1 = price['Company'] + '\n' + \
             'Sector: ' + price['Sector'] + '\n' + \
@@ -105,7 +105,7 @@ class StockStat:
     def stock_news(self):
         try:
             news = finviz.get_news(self.stock)
-        except ValueError as e10:
+        except Exception as e10:
             return 'Ticker not found'
         msg = ''
         for n in news[0:15]:
