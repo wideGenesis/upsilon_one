@@ -10,7 +10,6 @@ import calendar
 from sqlalchemy import create_engine
 from alchemysession import AlchemySessionContainer
 
-
 PYTHON_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir))
 sys.path.append(PYTHON_PATH)
 os.environ["PYTHONUNBUFFERED"] = "1"
@@ -120,6 +119,9 @@ SERVICE_CHAT = conf['TELEGRAM']['SERVICE_CHAT']
 
 RECURSION_DEPTH = 5
 
+DEBUG_LOG_FILE = None
+
+
 class bcolors:
     HEADER = '\033[95m'
     OKBLUE = '\033[94m'
@@ -159,7 +161,18 @@ def print_progress_bar(iteration, total, prefix='', suffix='', decimals=1, lengt
     if iteration == total:
         print()
 
-# def debug_init(file_name="debug.log"):
+
+def debug_init(file_name="debug.log"):
+    global DEBUG_LOG_FILE
+    fname = f'{i_path}/log/{file_name}'
+    DEBUG_LOG_FILE = open(fname,"a+")
+
+
+def debug_deinit():
+    global DEBUG_LOG_FILE
+    DEBUG_LOG_FILE.close()
+    DEBUG_LOG_FILE = None
+
 
 def debug(print_string="", debug_type="NORMAL"):
     caller_frame_record = inspect.stack()[1]
@@ -167,17 +180,20 @@ def debug(print_string="", debug_type="NORMAL"):
     info = inspect.getframeinfo(frame)
     path, filename = os.path.split(info.filename)
     dt = datetime.datetime.now()
-    if debug_type == "NORMAL":
-        print(f'\r[{dt.strftime("%H:%M:%S")}]{filename}:{info.lineno}:{print_string}')
-    elif debug_type == "WARNING":
-        print(f'{bcolors.WARNING}[{dt.strftime("%H:%M:%S")}]{filename}:{info.lineno}:{print_string}{bcolors.ENDC}')
-    elif debug_type == "ERROR":
-        print(f'{bcolors.FAIL}[{dt.strftime("%H:%M:%S")}]{filename}:{info.lineno}:{print_string}{bcolors.ENDC}')
+    if DEBUG_LOG_FILE is not None:
+        DEBUG_LOG_FILE.write(f'\r[{dt.strftime("%H:%M:%S")}]{filename}:{info.lineno}:{print_string}')
+    else:
+        if debug_type == "NORMAL":
+            print(f'\r[{dt.strftime("%H:%M:%S")}]{filename}:{info.lineno}:{print_string}')
+        elif debug_type == "WARNING":
+            print(f'{bcolors.WARNING}[{dt.strftime("%H:%M:%S")}]{filename}:{info.lineno}:{print_string}{bcolors.ENDC}')
+        elif debug_type == "ERROR":
+            print(f'{bcolors.FAIL}[{dt.strftime("%H:%M:%S")}]{filename}:{info.lineno}:{print_string}{bcolors.ENDC}')
 
 
 def add_months(sourcedate, months):
     month = sourcedate.month - 1 + months
     year = sourcedate.year + month // 12
     month = month % 12 + 1
-    day = min(sourcedate.day, calendar.monthrange(year,month)[1])
+    day = min(sourcedate.day, calendar.monthrange(year, month)[1])
     return datetime.date(year, month, day)
