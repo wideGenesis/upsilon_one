@@ -70,7 +70,7 @@ def chrome_opt(agent_rotation=agents(), headless=True):
     # chrome_options.add_argument(f'user-agent={agent_rotation}')
     chrome_options.add_argument("--enable-javascript")
     chrome_options.add_argument("--no-sandbox")
-    chrome_options.add_argument("user-data-dir=/home/upsilonsfather/.config/google-chrome/Profile 1")
+    chrome_options.add_argument("user-data-dir=/home/upsilonsfather/.config/google-chrome")
     return chrome_options
 
 
