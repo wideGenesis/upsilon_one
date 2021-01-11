@@ -236,28 +236,53 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
         message = await client.send_message(entity=entity, message='Загрузка...')
         await client.edit_message(message, 'Всепогодный портфель')
         await event.edit()
+        await client.send_message(event.input_sender, 'Текущая структура портфеля')
         await client.send_file(entity, CHARTER_IMAGES_PATH + 'allweather_portfolio_pie.png')
+        await client.send_message(event.input_sender, 'Подробная статистика стратегии')
+        await client.send_file(entity, STATS_PATH + 'allweather_watermark.pdf')
+        await client.send_message(event.input_sender, 'Симуляция доходности портфеля на 10 лет')
+        await client.send_file(entity, STATS_PATH + 'allweather.png')
+        await client.send_file(entity, STATS_PATH + 'allweather2.png')
         await client.send_message(event.input_sender, 'Кому и когда покупать всепогодный портфель? /instruction06',
                                   buttons=buttons.keyboard_a2_back)
     elif event.data == b'a2a5':
         message = await client.send_message(entity=entity, message='Загрузка...')
         await client.edit_message(message, 'Сбалансированный портфель')
         await event.edit()
+        await client.send_message(event.input_sender, 'Текущая структура портфеля')
         await client.send_file(entity, CHARTER_IMAGES_PATH + 'balanced_portfolio_pie.png')
+        await client.send_message(event.input_sender, 'Подробная статистика стратегии')
+        await client.send_file(entity, STATS_PATH + 'balanced_watermark.pdf')
+        await client.send_message(event.input_sender, 'Симуляция доходности портфеля на 10 лет')
+        await client.send_file(entity, STATS_PATH + 'balanced.png')
+        await client.send_file(entity, STATS_PATH + 'balanced2.png')
         await client.send_message(event.input_sender, 'Кому и когда покупать сбалансированный портфель? /instruction07',
                                   buttons=buttons.keyboard_a2_back)
+
     elif event.data == b'a2a6':
         message = await client.send_message(entity=entity, message='Загрузка...')
         await client.edit_message(message, 'Агрессивный портфель')
         await event.edit()
+        await client.send_message(event.input_sender, 'Текущая структура портфеля')
         await client.send_file(entity, CHARTER_IMAGES_PATH + 'aggressive_portfolio_pie.png')
+        await client.send_message(event.input_sender, 'Подробная статистика стратегии')
+        await client.send_file(entity, STATS_PATH + 'aggressive_watermark.pdf')
+        await client.send_message(event.input_sender, 'Симуляция доходности портфеля на 10 лет')
+        await client.send_file(entity, STATS_PATH + 'aggressive.png')
+        await client.send_file(entity, STATS_PATH + 'aggressive2.png')
         await client.send_message(event.input_sender, 'Кому и когда покупать агрессивный портфель? /instruction08',
                                   buttons=buttons.keyboard_a2_back)
     elif event.data == b'a2a7':
         message = await client.send_message(entity=entity, message='Загрузка...')
         await client.edit_message(message, 'Плечевой портфель')
         await event.edit()
+        await client.send_message(event.input_sender, 'Текущая структура портфеля')
         await client.send_file(entity, CHARTER_IMAGES_PATH + 'leveraged_portfolio_pie.png')
+        await client.send_message(event.input_sender, 'Подробная статистика стратегии')
+        await client.send_file(entity, STATS_PATH + 'leveraged_watermark.pdf')
+        await client.send_message(event.input_sender, 'Симуляция доходности портфеля на 10 лет')
+        await client.send_file(entity, STATS_PATH + 'leveraged.png')
+        await client.send_file(entity, STATS_PATH + 'leveraged2.png')
         await client.send_message(event.input_sender, 'Кому и когда покупать плечевой портфель? /instruction09',
                                   buttons=buttons.keyboard_a2_back)
     # elif event.data == b'a2a8':
