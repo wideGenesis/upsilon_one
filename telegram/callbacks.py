@@ -223,7 +223,13 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
         message = await client.send_message(entity=entity, message='Загрузка...')
         await client.edit_message(message, '"Парковочный" портфель без риска')
         await event.edit()
+        await client.send_message(event.input_sender, 'Текущая структура портфеля')
         await client.send_file(entity, CHARTER_IMAGES_PATH + 'parking_portfolio_pie.png')
+        await client.send_message(event.input_sender, 'Подробная статистика стратегии')
+        await client.send_file(entity, STATS_PATH + 'parking_watermark.pdf')
+        await client.send_message(event.input_sender, 'Симуляция доходности портфеля на 10 лет')
+        await client.send_file(entity, STATS_PATH + 'parking.png')
+        await client.send_file(entity, STATS_PATH + 'parking2.png')
         await client.send_message(event.input_sender, 'Кому и когда покупать парковочный портфель? /instruction05',
                                   buttons=buttons.keyboard_a2_back)
     elif event.data == b'a2a4':

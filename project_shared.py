@@ -50,6 +50,7 @@ TEST_ADM = conf['PORTFOLIOS']['TEST_ADM']
 
 # ============================== Charter ======================
 CHARTER_IMAGES_PATH = "" + i_path + "/" + conf['PATHS']['CHARTER_IMAGES_PATH']
+STATS_PATH = "" + i_path + "/" + conf['PATHS']['STATS_PATH']
 # *************** Settings for candlestick chart
 IMAGE_WIDTH = conf['CHARTER_CANDLE_CHART']['IMAGE_WIDTH']
 IMAGE_HEIGHT = conf['CHARTER_CANDLE_CHART']['IMAGE_HEIGHT']
