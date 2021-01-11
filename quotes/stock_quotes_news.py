@@ -91,7 +91,7 @@ class StockStat:
         try:
             price = finviz.get_stock(self.stock)
         except Exception as e10:
-            msg1 = 'Ticker not found'
+            msg1 = 'Описание для ETF недоступно'
             return msg1
         msg1 = price['Company'] + '\n' + \
             'Sector: ' + price['Sector'] + '\n' + \
@@ -107,7 +107,7 @@ class StockStat:
         try:
             news = finviz.get_news(self.stock)
         except Exception as e10:
-            msg = 'Ticker not found'
+            msg = 'Описание для ETF недоступно'
             return msg
         msg = ''
         for n in news[0:15]:
