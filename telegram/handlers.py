@@ -161,9 +161,10 @@ async def quotes_to_handler(event, client_, limit=20):
         ss.stock_snapshot()
         msg2 = ss.stock_stat()
 
-        await client_.send_message(event.input_sender, msg1)
         await client_.send_message(event.input_sender, msg2)
         await client_.send_file(event.input_sender, img_path)
+        await client_.send_message(event.input_sender, msg1)
+
     except ValueError as e0:
         print(e0)
     os.remove(img_path)
