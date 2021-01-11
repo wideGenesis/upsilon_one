@@ -22,10 +22,10 @@ from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
-from pyvirtualdisplay import Display
+# from pyvirtualdisplay import Display
 import schedule
-from get_quotes_data import index_calc
-from yahoo_downloader import download_yahoo, load_csv
+# from get_quotes_data import index_calc
+# from yahoo_downloader import download_yahoo, load_csv
 
 
 # ============================== Environment Setup ======================
@@ -546,88 +546,88 @@ def ptable_to_csv(table, filename, headers=True):
 
 # # ============================== AI INDICES GET ================================
 
+#
+# def get_features(ticker_list, filename, data_dir_, start_date_, end_date_):
+#     for ticker_ in ticker_list.keys():
+#         download_yahoo(ticker_, data_dir_, start_date_, end_date_)
+#
+#     main_df = pd.DataFrame()
+#     for ticker_, w in ticker_list.items():
+#         df = load_csv(ticker_, data_dir_)
+#         df.drop(columns={'Dividend'}, axis=1, inplace=True)
+#         df['Open'] = w * df['Open']
+#         df['High'] = w * df['High']
+#         df['Low'] = w * df['Low']
+#         df['Close'] = w * df['Close']
+#         df['Volume'] = w * df['Volume']
+#         df.dropna(inplace=True)
+#         if len(main_df) == 0:
+#             main_df = df
+#         else:
+#             main_df['Open'] = main_df['Open'] + df['Open']
+#             main_df['High'] = main_df['High'] + df['High']
+#             main_df['Low'] = main_df['Low'] + df['Low']
+#             main_df['Close'] = main_df['Close'] + df['Close']
+#             main_df['Volume'] = main_df['Volume'] + df['Volume']
+#     main_df.dropna(inplace=True)
+#     main_df['Open'] = main_df['Open'] / 1000
+#     main_df['High'] = main_df['High'] / 1000
+#     main_df['Low'] = main_df['Low'] / 1000
+#     main_df['Close'] = main_df['Close'] / 1000
+#     main_df['Volume'] = main_df['Volume'] / 1000
+#
+#     path = os.path.join(YAHOO_PATH, f'{filename}' + '.csv')
+#     main_df.to_csv(path, index_label='Date')
+#
+#
+# def get_mpl_charts(filename):
+#     daily = pd.read_csv(os.path.join(YAHOO_PATH, f'{filename}.csv'), index_col=0, parse_dates=True)
+#     end_date_ = datetime.utcnow()
+#     daily.index.name = 'Date'
+#     daily = daily.loc['2020-01-01':f'{end_date_}', :]
+#
+#     mc = mpf.make_marketcolors(
+#         up='limegreen', down='red',
+#         edge='#e3e3e3',
+#         wick='white',
+#         volume='inherit',
+#     )
+#     my_style = mpf.make_mpf_style(base_mpf_style='nightclouds',
+#                                   marketcolors=mc,
+#                                   gridcolor='#404040',
+#                                   edgecolor='#404040',
+#                                   y_on_right=True)
+#     mpf.plot(daily,
+#              type='candle',
+#              style=my_style,
+#              volume=True,
+#              volume_panel=1,
+#              show_nontrading=False,
+#              title='\n' + f'{filename}',
+#              ylabel='Price ($)',
+#              ylabel_lower='Volume',
+#              panel_ratios=(7, 3),
+#              savefig=dict(fname=IMAGES_OUT_PATH + f'{filename}.png', dpi=300, pad_inches=1)
+#              )
 
-def get_features(ticker_list, filename, data_dir_, start_date_, end_date_):
-    for ticker_ in ticker_list.keys():
-        download_yahoo(ticker_, data_dir_, start_date_, end_date_)
-
-    main_df = pd.DataFrame()
-    for ticker_, w in ticker_list.items():
-        df = load_csv(ticker_, data_dir_)
-        df.drop(columns={'Dividend'}, axis=1, inplace=True)
-        df['Open'] = w * df['Open']
-        df['High'] = w * df['High']
-        df['Low'] = w * df['Low']
-        df['Close'] = w * df['Close']
-        df['Volume'] = w * df['Volume']
-        df.dropna(inplace=True)
-        if len(main_df) == 0:
-            main_df = df
-        else:
-            main_df['Open'] = main_df['Open'] + df['Open']
-            main_df['High'] = main_df['High'] + df['High']
-            main_df['Low'] = main_df['Low'] + df['Low']
-            main_df['Close'] = main_df['Close'] + df['Close']
-            main_df['Volume'] = main_df['Volume'] + df['Volume']
-    main_df.dropna(inplace=True)
-    main_df['Open'] = main_df['Open'] / 1000
-    main_df['High'] = main_df['High'] / 1000
-    main_df['Low'] = main_df['Low'] / 1000
-    main_df['Close'] = main_df['Close'] / 1000
-    main_df['Volume'] = main_df['Volume'] / 1000
-
-    path = os.path.join(YAHOO_PATH, f'{filename}' + '.csv')
-    main_df.to_csv(path, index_label='Date')
-
-
-def get_mpl_charts(filename):
-    daily = pd.read_csv(os.path.join(YAHOO_PATH, f'{filename}.csv'), index_col=0, parse_dates=True)
-    end_date_ = datetime.utcnow()
-    daily.index.name = 'Date'
-    daily = daily.loc['2020-01-01':f'{end_date_}', :]
-
-    mc = mpf.make_marketcolors(
-        up='limegreen', down='red',
-        edge='#e3e3e3',
-        wick='white',
-        volume='inherit',
-    )
-    my_style = mpf.make_mpf_style(base_mpf_style='nightclouds',
-                                  marketcolors=mc,
-                                  gridcolor='#404040',
-                                  edgecolor='#404040',
-                                  y_on_right=True)
-    mpf.plot(daily,
-             type='candle',
-             style=my_style,
-             volume=True,
-             volume_panel=1,
-             show_nontrading=False,
-             title='\n' + f'{filename}',
-             ylabel='Price ($)',
-             ylabel_lower='Volume',
-             panel_ratios=(7, 3),
-             savefig=dict(fname=IMAGES_OUT_PATH + f'{filename}.png', dpi=300, pad_inches=1)
-             )
-
-
-def render_index(ticker_list, filename):
-    get_features(ticker_list, filename, YAHOO_PATH, start_date, end_date)
-    get_mpl_charts(filename)
-    ai = os.path.join(IMAGES_OUT_PATH, f'{filename}.png')
-    crop(ai, ai, 400, 200, 90, 100)
-
-
-def get_indicies():
-    US_INDEX = index_calc(filename='sorted_rsi_us_stocks_closes.csv',
-                              qty=25, limit_1=12, limit_2=5, iterator=0.0018, qld_tmf=False)
-    print('US Index reconstruction complete')
-    WORLD_INDEX = index_calc(filename='sorted_rsi_world_stocks_closes.csv',
-                                 qty=50, limit_1=7, limit_2=2, iterator=0.0008, qld_tmf=False)
-    print('World Index reconstruction complete')
-    render_index(US_INDEX, 'us_index')
-    render_index(WORLD_INDEX, 'world_index')
-    print('Indicies reconstruction complete!' + '\n')
+#
+# def render_index(ticker_list, filename):
+#     get_features(ticker_list, filename, YAHOO_PATH, start_date, end_date)
+#     get_mpl_charts(filename)
+#     ai = os.path.join(IMAGES_OUT_PATH, f'{filename}.png')
+#     crop(ai, ai, 400, 200, 90, 100)
+#
+#
+# def get_indicies():
+#     US_INDEX = index_calc(filename='sorted_rsi_us_stocks_closes.csv',
+#                               qty=25, limit_1=12, limit_2=5, iterator=0.0018, qld_tmf=False)
+#     print('US Index reconstruction complete')
+#     WORLD_INDEX = index_calc(filename='sorted_rsi_world_stocks_closes.csv',
+#                                  qty=50, limit_1=7, limit_2=2, iterator=0.0008, qld_tmf=False)
+#     print('World Index reconstruction complete')
+#     render_index(US_INDEX, 'us_index')
+#     render_index(WORLD_INDEX, 'world_index')
+#     print('Indicies reconstruction complete!' + '\n')
 
 
 
