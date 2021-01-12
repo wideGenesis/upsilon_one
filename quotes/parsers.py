@@ -18,6 +18,7 @@ import random
 from project_shared import *
 
 
+
 # ============================== Inflows GET ================================
 def get_flows(driver=None, img_out_path_=IMAGES_OUT_PATH):
     etfs = ['VCIT', 'SPY', 'VTI', 'VEA', 'VWO', 'QQQ', 'VXX', 'TLT', 'SHY', 'LQD']
