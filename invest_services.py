@@ -13,7 +13,7 @@ from time import sleep
 from charter.charter import *
 import undetected_chromedriver as uc
 
-proxy = "51.158.119.88:8811"
+proxy = "110.232.86.52:53281"
 chrome_options = uc.ChromeOptions()
 chrome_options.add_argument("--disable-blink-features=AutomationControlled")
 chrome_options.add_argument("--window-size=1920,1080")
