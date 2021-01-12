@@ -13,6 +13,7 @@ from time import sleep
 from charter.charter import *
 import undetected_chromedriver as uc
 
+proxy = "121.230.54.12:9999"
 chrome_options = uc.ChromeOptions()
 chrome_options.add_argument("--disable-blink-features=AutomationControlled")
 chrome_options.add_argument("--window-size=1920,1080")
@@ -27,6 +28,7 @@ chrome_options.add_argument('--ignore-certificate-errors')
 # chrome_options.add_argument(f'user-agent={agent_rotation}')
 chrome_options.add_argument("--enable-javascript")
 chrome_options.add_argument("--no-sandbox")
+chrome_options.add_argument('--proxy-server={}'.format(proxy))
 chrome_options.add_argument("user-data-dir=/home/upsilonsfather/.config/google-chrome")
 # chrome_options.add_argument('--profile-directory=Default')
 # ============================== Main  =============================
