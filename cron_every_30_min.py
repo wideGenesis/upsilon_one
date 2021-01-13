@@ -13,6 +13,8 @@ from charter.charter import *
 
 if __name__ == '__main__':
     debug(f"### Start cron every 30 min scheduler ###")
-    get_tw_charts(driver=chrome_init())
-    get_finviz_treemaps(driver=chrome_init())
-    get_coins360_treemaps(driver=chrome_init())
+    img_out_path = PROJECT_HOME_DIR + '/' + IMAGES_OUT_PATH
+    debug(img_out_path)
+    get_tw_charts(driver=chrome_init(), img_out_path_=img_out_path)
+    get_finviz_treemaps(driver=chrome_init(), img_out_path_=img_out_path)
+    get_coins360_treemaps(driver=chrome_init(), img_out_path_=img_out_path)

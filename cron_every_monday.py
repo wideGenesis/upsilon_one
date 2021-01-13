@@ -13,4 +13,6 @@ from charter.charter import *
 
 if __name__ == '__main__':
     debug(f"### Start cron every 720 min scheduler ###")
-    get_economics(ag=agents())
+    img_out_path = PROJECT_HOME_DIR + '/' + IMAGES_OUT_PATH
+    debug(img_out_path)
+    get_economics(ag=agents(), img_out_path_=img_out_path)

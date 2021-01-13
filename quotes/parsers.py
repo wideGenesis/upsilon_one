@@ -18,7 +18,6 @@ import random
 from project_shared import *
 
 
-
 # ============================== Inflows GET ================================
 def get_flows(driver=None, img_out_path_=IMAGES_OUT_PATH):
     etfs = ['VCIT', 'SPY', 'VTI', 'VEA', 'VWO', 'QQQ', 'VXX', 'TLT', 'SHY', 'LQD']
@@ -26,14 +25,14 @@ def get_flows(driver=None, img_out_path_=IMAGES_OUT_PATH):
         driver.get('https://www.etf.com/etfanalytics/etf-fund-flows-tool')
         sleep(10)
         html = driver.page_source
-        print(html)
+        debug(html)
         try:
             elem = driver.find_element_by_xpath(".//*[@id='edit-tickers']")
-            print('elem 1 has been located')
+            debug('elem 1 has been located')
         except Exception:
             return
         elem.send_keys("GLD, SPY, VTI, VEA, VWO, QQQ, VXX, TLT, SHY, LQD, VCIT")
-        print('keys has been send')
+        debug('keys has been send')
         sleep(0.7)
         today = date.today()
         day7 = timedelta(days=7)
@@ -49,16 +48,16 @@ def get_flows(driver=None, img_out_path_=IMAGES_OUT_PATH):
         try:
             WebDriverWait(driver, 10).until(
                 EC.element_to_be_clickable((By.XPATH, ".//*[@id='edit-submitbutton']"))).click()
-            print('Button has been clicked')
+            debug('Button has been clicked')
         except Exception as e1:
-            print('Button click error. Try to re-run the scraper', e1)
+            debug('Button click error. Try to re-run the scraper', e1)
             return
         sleep(8)
         try:
             elem = driver.find_element_by_xpath(".//*[@id='fundFlowsTitles']")
-            print('elem 2-Titles has been located')
+            debug('elem 2-Titles has been located')
         except Exception as e2:
-            print('Titles elem error. Try to re-run the scraper', e2)
+            debug('Titles elem error. Try to re-run the scraper', e2)
             return
         webdriver.ActionChains(driver).move_to_element(elem).perform()
         driver.execute_script("return arguments[0].scrollIntoView();", elem)
@@ -66,7 +65,7 @@ def get_flows(driver=None, img_out_path_=IMAGES_OUT_PATH):
 
         for etf in etfs:
             sleep(2)
-            print(etf)
+            debug(etf)
             tag = ".//*[@id=\'" + f'{etf}' + "_nf']"
             tag2 = ".//*[@id=\'container_" + f'{etf}' + "'" + "]"
             icon = driver.find_element_by_xpath(tag)  # ".//*[@id='{etf}_nf']"
@@ -79,11 +78,11 @@ def get_flows(driver=None, img_out_path_=IMAGES_OUT_PATH):
             image_stream = io.BytesIO(image)
             im = Image.open(image_stream)
             im.save(os.path.join(img_out_path_, f'inflows_{etf}.png'))
-    print('Get Fund Flows complete' + '\n')
+    debug('Get Fund Flows complete' + '\n')
 
 
 # ============================== ADVANCE/DECLINE GET ================================
-def advance_decline(ag=None):
+def advance_decline(ag=None, img_out_path_=IMAGES_OUT_PATH):
     headers = {'User-Agent': ag}
     url_ = 'https://www.marketwatch.com/tools/marketsummary?region=usa&screener=nasdaq'
     items_ = []
@@ -104,13 +103,13 @@ def advance_decline(ag=None):
         del items_[5:8]
         del items_[0]
     except TypeError as e02:
-        print(e02)
+        debug(e02)
         return
-    with open(os.path.join('results', 'img_out', 'adv.csv'), 'w+') as f:
+    with open(img_out_path_ + 'adv.csv', 'w+') as f:
         for rows_ in items_:
             write = csv.writer(f)
             write.writerow(rows_)
-    print('adv complete')
+    debug('adv complete')
 
 
 # ============================== FINVIZ TREEMAP GET ================================
@@ -133,9 +132,9 @@ def get_finviz_treemaps(driver=None, img_out_path_=IMAGES_OUT_PATH):
                 im = Image.open(image_stream)
                 im.save(img_path)
             except Exception as e03:
-                print(e03)
+                debug(e03)
                 return
-    print('Get Finviz Treemap complete' + '\n')
+    debug('Get Finviz Treemap complete' + '\n')
 
 
 # ============================== COIN360 TREEMAP GET ================================
@@ -152,9 +151,9 @@ def get_coins360_treemaps(driver=None, img_out_path_=IMAGES_OUT_PATH):
             im = Image.open(image_stream)
             im.save(img_path)
         except Exception as e04:
-            print(e04)
+            debug(e04)
             return
-    print('Get coin360 Treemap complete' + '\n')
+    debug('Get coin360 Treemap complete' + '\n')
 
 
 def get_economics(ag=None, img_out_path_=IMAGES_OUT_PATH):
@@ -186,7 +185,7 @@ def get_economics(ag=None, img_out_path_=IMAGES_OUT_PATH):
         df = pd.DataFrame(array)
         df.columns = ['Data', 'Country', 'Last', 'Previous', 'Reference', 'Unit']
     except Exception as e05:
-        print(e05)
+        debug(e05)
         return
     df = df.drop(df[(df.Country != 'Russia')
                     & (df.Country != 'China')
@@ -198,7 +197,7 @@ def get_economics(ag=None, img_out_path_=IMAGES_OUT_PATH):
                     & (df.Country != 'Japan')].index)
     filename = os.path.join(img_out_path_, 'economic_data.csv')
     df.to_csv(filename, index=False)
-    print('Get economics complete' + '\n')
+    debug('Get economics complete' + '\n')
 
 
 # ============================== TW GET ================================
@@ -223,13 +222,13 @@ def get_tw_charts(driver=None, img_out_path_=IMAGES_OUT_PATH):
                         'tv-dialog__close close-d1KI_uC8 dialog-close-3phLlAHH js-dialog__close')
                     driver.execute_script("arguments[0].click();", close_button1)
                 except Exception as e1:
-                    print(e1)
+                    debug(e1)
                 try:
                     close_button2 = driver.find_element_by_xpath("//button[@class='close-button-7uy97o5_']").click()
                     driver.execute_script("arguments[0].click();", close_button2)
                     sleep(3)
                 except Exception as e2:
-                    print(e2)
+                    debug(e2)
 
                 elem = driver.find_element_by_class_name("layout__area--top")
                 webdriver.ActionChains(driver).move_to_element(elem).click().perform()
@@ -245,13 +244,13 @@ def get_tw_charts(driver=None, img_out_path_=IMAGES_OUT_PATH):
                 # cropped = im.crop((56, 44, width - 320, height - 43))
                 # cropped.save(im_path, quality=100, subsampling=0)
     except Exception as e06:
-        print(e06)
+        debug(e06)
         return
-    print('Get TW Charts complete' + '\n')
+    debug('Get TW Charts complete' + '\n')
 
 
 # ============================== SMA50 GET ================================
-def get_sma50(ag=None):
+def get_sma50(ag=None, img_out_path_=IMAGES_OUT_PATH):
     """
     csv load last value
     future - chart # TODO Реализовать историю и графики
@@ -273,7 +272,7 @@ def get_sma50(ag=None):
             table = soup.find('td', {"class": "count-text"}).text.strip('Total:  ')
             items_[k] = int(table[:-3])
     except TypeError as e01:
-        print(e01)
+        debug(e01)
         return
     items_['NYSE Trending Stocks %'] = str(round(items_['NyseA'] * 100 / items_['NyseT'], 2)) + '%' + ' акций NYSE в тренде'
     items_['NASDAQ Trending Stocks %'] = str(round(items_['NasdA'] * 100 / items_['NasdT'], 2)) + '%' + ' акций NASDAQ в тренде'
@@ -284,28 +283,28 @@ def get_sma50(ag=None):
     items_.pop('NasdA')
     items_.pop('SPXT')
     items_.pop('SPXA')
-    with open(os.path.join('results', 'img_out', 'sma50.csv'), 'w+') as f:
+    with open(img_out_path_+'sma50.csv', 'w+') as f:
         write = csv.DictWriter(f, items_.keys())
         # write.writeheader()
         write.writerow(items_)
-    print('sma50 complete')
+    debug('sma50 complete')
 
 
 # ============================== Treasury Curve and Div Yield GET ================================
-def qt_curve():
+def qt_curve(img_out_path_=IMAGES_OUT_PATH):
     x = quandl.get("USTREASURY/YIELD", authtoken="gWq5SV_V-yFkXVMgrwwy", rows=1)
     x = str(x)
-    with open(os.path.join('results', 'img_out', 'treasury_curve.csv'), 'w+') as f:
+    with open(img_out_path_+'treasury_curve.csv', 'w+') as f:
         f.write(f'{x}')
-    print('qt_curve complete')
+    debug('qt_curve complete')
 
 
-def spx_yield():
+def spx_yield(img_out_path_=IMAGES_OUT_PATH):
     x = quandl.get("MULTPL/SP500_DIV_YIELD_MONTH", authtoken="gWq5SV_V-yFkXVMgrwwy", rows=1)
     x = str(x)
-    with open(os.path.join('results', 'img_out', 'spx_yield.csv'), 'w+') as f:
+    with open(img_out_path_+'spx_yield.csv', 'w+') as f:
         f.write(f'{x}')
-    print('spx_yield complete')
+    debug('spx_yield complete')
 
 
 def vix_curve(driver=None, img_out_path_=IMAGES_OUT_PATH):
@@ -316,26 +315,26 @@ def vix_curve(driver=None, img_out_path_=IMAGES_OUT_PATH):
             driver.get(url_)
             sleep(3)
             WebDriverWait(driver, 20).until(EC.element_to_be_clickable((By.XPATH, "//*[text()='VIX Index']"))).click()
-            print('Vix disabled, button has been clicked')
+            debug('Vix disabled, button has been clicked')
             sleep(4)
             WebDriverWait(driver, 20).until(
                 EC.element_to_be_clickable((By.CLASS_NAME, "highcharts-button-symbol"))).click()
-            print('Menu button has been clicked')
+            debug('Menu button has been clicked')
             sleep(5)
             WebDriverWait(driver, 20).until(
                 EC.element_to_be_clickable((By.XPATH, "//li[contains(text(),'Download PNG image')]"))).click()
-            print('PNG has been clicked')
+            debug('PNG has been clicked')
             sleep(5)
         im = Image.open('vix-futures-term-structu.png')
         im = im.crop((0, 120, 1200, 750))
         im.save(img_curve, quality=100, subsampling=0)
     except Exception as e61:
-        print(e61)
+        debug(e61)
         return
-    print('Vix_curve complete' + '\n')
+    debug('Vix_curve complete' + '\n')
 
 
-def vix_cont():
+def vix_cont(img_out_path_=IMAGES_OUT_PATH):
     vx1 = quandl.get("CHRIS/CBOE_VX1.4", authtoken="gWq5SV_V-yFkXVMgrwwy", rows=1)
     vx2 = quandl.get("CHRIS/CBOE_VX2.4", authtoken="gWq5SV_V-yFkXVMgrwwy", rows=1)
     vx1_c = vx1['Close'].to_list()
@@ -347,9 +346,9 @@ def vix_cont():
         vix = 'Contango'
     else:
         vix = 'Backwordation'
-    with open(os.path.join('results', 'img_out', 'vix_cont.csv'), 'w+') as f:
+    with open(img_out_path_+'vix_cont.csv', 'w+') as f:
         f.write(f'{vix}')
-    print('vix_cont complete')
+    debug('vix_cont complete')
 
 
 def users_count():
@@ -360,5 +359,5 @@ def users_count():
 
     with open(os.path.join('results', 'users.csv'), 'w+') as f:
         write = f.write(f'{int(users)}')
-    print(int(users))
+    debug(int(users))
     return users

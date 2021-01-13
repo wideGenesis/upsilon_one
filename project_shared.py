@@ -14,9 +14,9 @@ PYTHON_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pa
 sys.path.append(PYTHON_PATH)
 os.environ["PYTHONUNBUFFERED"] = "1"
 
-i_path, i_filename = os.path.split(__file__)
-print(f'##### {i_path}:{i_filename}')
-conf = yaml.safe_load(open(f'{i_path}/config/settings.yaml'))
+PROJECT_HOME_DIR, i_filename = os.path.split(__file__)
+print(f'##### {PROJECT_HOME_DIR}:{i_filename}')
+conf = yaml.safe_load(open(f'{PROJECT_HOME_DIR}/config/settings.yaml'))
 
 LOGS = conf['PATHS']['LOGS']
 WEBDRIVER = conf['PATHS']['WEBDRIVER']
@@ -48,8 +48,8 @@ LEVERAGED = conf['PORTFOLIOS']['LEVERAGED']
 TEST_ADM = conf['PORTFOLIOS']['TEST_ADM']
 
 # ============================== Charter ======================
-CHARTER_IMAGES_PATH = "" + i_path + "/" + conf['PATHS']['CHARTER_IMAGES_PATH']
-STATS_PATH = "" + i_path + "/" + conf['PATHS']['STATS_PATH']
+CHARTER_IMAGES_PATH = "" + PROJECT_HOME_DIR + "/" + conf['PATHS']['CHARTER_IMAGES_PATH']
+STATS_PATH = "" + PROJECT_HOME_DIR + "/" + conf['PATHS']['STATS_PATH']
 # *************** Settings for candlestick chart
 IMAGE_WIDTH = conf['CHARTER_CANDLE_CHART']['IMAGE_WIDTH']
 IMAGE_HEIGHT = conf['CHARTER_CANDLE_CHART']['IMAGE_HEIGHT']
@@ -164,7 +164,7 @@ def print_progress_bar(iteration, total, prefix='', suffix='', decimals=1, lengt
 
 def debug_init(file_name="debug.log"):
     global DEBUG_LOG_FILE
-    fname = f'{i_path}/log/{file_name}'
+    fname = f'{PROJECT_HOME_DIR}/log/{file_name}'
     DEBUG_LOG_FILE = open(fname,"a+")
 
 
