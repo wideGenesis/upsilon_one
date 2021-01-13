@@ -10,7 +10,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from PIL import Image
 
 
-# proxy = "186.233.98.173:23500"
+proxy = "81.177.167.92:3128"
 chrome_options = uc.ChromeOptions()
 chrome_options.add_argument("--disable-blink-features=AutomationControlled")
 chrome_options.add_argument("--window-size=1920,1080")
@@ -25,7 +25,7 @@ chrome_options.add_argument('--ignore-certificate-errors')
 # chrome_options.add_argument(f'user-agent={agent_rotation}')
 chrome_options.add_argument("--enable-javascript")
 chrome_options.add_argument("--no-sandbox")
-# chrome_options.add_argument('--proxy-server={}'.format(proxy))
+chrome_options.add_argument('--proxy-server={}'.format(proxy))
 # chrome_options.add_argument("user-data-dir=/home/upsilonsfather/.config/google-chrome")
 # chrome_options.add_argument('--profile-directory=Default')
 
