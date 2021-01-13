@@ -165,7 +165,7 @@ def print_progress_bar(iteration, total, prefix='', suffix='', decimals=1, lengt
 def debug_init(file_name="debug.log"):
     global DEBUG_LOG_FILE
     fname = f'{PROJECT_HOME_DIR}/log/{file_name}'
-    DEBUG_LOG_FILE = open(fname,"a+")
+    DEBUG_LOG_FILE = open(fname, "a")
 
 
 def debug_deinit():
