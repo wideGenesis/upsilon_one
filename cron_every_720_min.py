@@ -13,4 +13,4 @@ from charter.charter import *
 
 if __name__ == '__main__':
     debug(f"### Start cron every 720 min scheduler ###")
-    get_flows(driver=chrome_init())
+    # get_flows(driver=chrome_init())
