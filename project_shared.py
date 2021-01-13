@@ -167,7 +167,7 @@ def print_progress_bar(iteration, total, prefix='', suffix='', decimals=1, lengt
 def debug_init(file_name="debug.log"):
     global DEBUG_LOG_FILE
     fname = f'{LOGS_PATH}{file_name}'
-    bufsize = 0
+    bufsize = 1
     DEBUG_LOG_FILE = open(fname, "a", buffering=bufsize)
 
 
