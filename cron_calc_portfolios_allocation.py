@@ -12,6 +12,7 @@ from charter.charter import *
 
 
 if __name__ == '__main__':
+    debug_init(file_name="cron_scheduler.log")
     debug(f"### Start calc portfolio allocation ###")
     portfolio_args = {}
     allocator_end_date = date.today()
@@ -264,3 +265,4 @@ if __name__ == '__main__':
                                title="Leveraged portfolio",
                                filename="leveraged_portfolio_pie")
     save_portfolio_weights(name='leveraged', portfolio_weights=leveraged_weights)
+    debug_deinit()
