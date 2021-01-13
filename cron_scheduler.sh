@@ -37,6 +37,8 @@
 BASEDIR=/home/upsilonsfather/projects/ups_one
 LOGDIR=$BASEDIR/logs
 
+
+cd $BASEDIR
 source $BASEDIR/venv/bin/activate
 echo "[$(date +'%Y-%m-%d %H:%M:%S')]************* Start  cron scheduler *************" >> $LOGDIR/cron_scheduler.log
 if [ "$1" == "1" ]
