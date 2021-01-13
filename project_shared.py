@@ -182,6 +182,7 @@ def debug(print_string="", debug_type="NORMAL"):
     info = inspect.getframeinfo(frame)
     path, filename = os.path.split(info.filename)
     dt = datetime.datetime.now()
+    global DEBUG_LOG_FILE
     if DEBUG_LOG_FILE is not None:
         DEBUG_LOG_FILE.write(f'\r[{dt.strftime("%H:%M:%S")}]{filename}:{info.lineno}:{print_string}')
     else:
