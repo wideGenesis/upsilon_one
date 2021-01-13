@@ -184,10 +184,10 @@ def debug(print_string="", debug_type="NORMAL"):
     dt = datetime.datetime.now()
     global DEBUG_LOG_FILE
     if DEBUG_LOG_FILE is not None:
-        DEBUG_LOG_FILE.write(f'\r[{dt.strftime("%H:%M:%S")}]{filename}:{info.lineno}:{print_string}')
+        DEBUG_LOG_FILE.write(f'[{dt.strftime("%H:%M:%S")}]{filename}:{info.lineno}:{print_string}')
     else:
         if debug_type == "NORMAL":
-            print(f'\r[{dt.strftime("%H:%M:%S")}]{filename}:{info.lineno}:{print_string}')
+            print(f'[{dt.strftime("%H:%M:%S")}]{filename}:{info.lineno}:{print_string}')
         elif debug_type == "WARNING":
             print(f'{bcolors.WARNING}[{dt.strftime("%H:%M:%S")}]{filename}:{info.lineno}:{print_string}{bcolors.ENDC}')
         elif debug_type == "ERROR":
