@@ -18,6 +18,8 @@ PROJECT_HOME_DIR, i_filename = os.path.split(__file__)
 print(f'##### {PROJECT_HOME_DIR}:{i_filename}')
 conf = yaml.safe_load(open(f'{PROJECT_HOME_DIR}/config/settings.yaml'))
 
+LOGS_PATH = PROJECT_HOME_DIR + '/logs/'
+
 LOGS = conf['PATHS']['LOGS']
 WEBDRIVER = conf['PATHS']['WEBDRIVER']
 IMAGES_OUT_PATH = conf['PATHS']['IMAGES_OUT_PATH']
@@ -164,7 +166,7 @@ def print_progress_bar(iteration, total, prefix='', suffix='', decimals=1, lengt
 
 def debug_init(file_name="debug.log"):
     global DEBUG_LOG_FILE
-    fname = f'{PROJECT_HOME_DIR}/log/{file_name}'
+    fname = f'{LOGS_PATH}{file_name}'
     DEBUG_LOG_FILE = open(fname, "a")
 
 
