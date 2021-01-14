@@ -15,4 +15,5 @@ if __name__ == '__main__':
     # Every 125 min
     sleep(300)
     get_sma50(ag=agents(), img_out_path_=img_out_path)
+    debug("%%%%%%%%%%%%%%%Complete cron every 120\n\n\n")
     debug_deinit()

@@ -13,4 +13,5 @@ if __name__ == '__main__':
     get_finviz_treemaps(driver=firefox_init(), img_out_path_=img_out_path)
     # get_finviz_treemaps(driver=chrome_init(), img_out_path_=img_out_path)
     get_coins360_treemaps(driver=chrome_init(), img_out_path_=img_out_path)
+    debug("%%%%%%%%%%%%%%%Complete Cron Every 30\n\n\n")
     debug_deinit()

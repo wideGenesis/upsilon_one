@@ -57,5 +57,5 @@ if __name__ == '__main__':
     save_portfolio_bars(name=port_id, portfolio_bars=portfolio_bars)
     save_portfolio_returns(name=port_id, portfolio_returns=portfolio_returns)
     create_candle_portfolio_img(port_id=port_id, compare_ticker="QQQ", start_date=sd, end_date=ed)
-    debug("Complete update closes and capital returns")
+    debug("%%%%%%%%%%%%%%%Complete update closes and capital returns\n\n\n")
     debug_deinit()

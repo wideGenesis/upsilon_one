@@ -268,5 +268,5 @@ if __name__ == '__main__':
                                title="Leveraged portfolio",
                                filename="leveraged_portfolio_pie")
     save_portfolio_weights(name='leveraged', portfolio_weights=leveraged_weights)
-    debug(f"Complete calc portfolios")
+    debug("%%%%%%%%%%%%%%%Complete calc portfolios \n\n\n")
     debug_deinit()

@@ -11,4 +11,5 @@ if __name__ == '__main__':
     debug(img_out_path)
     get_etfdb_flows(driver=chrome_init(), img_out_path_=img_out_path)
     # get_flows(driver=chrome_init(), img_out_path_=img_out_path)
+    debug("%%%%%%%%%%%%%%%Complete cron every 720\n\n\n")
     debug_deinit()

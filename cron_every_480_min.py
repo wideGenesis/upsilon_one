@@ -10,4 +10,5 @@ if __name__ == '__main__':
     qt_curve(img_out_path_=img_out_path)
     spx_yield(img_out_path_=img_out_path)
     vix_cont(img_out_path_=img_out_path)
+    debug("%%%%%%%%%%%%%%%Comlete every 480\n\n\n")
     debug_deinit()
