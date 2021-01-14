@@ -38,8 +38,8 @@ def firefox_init(webdriver_path=WEBDRIVER, agent_rotation=agents(), headless=Tru
         '/webdriver/adblock_for_firefox-4.24.1-fx.xpi'
     driver.install_addon(str(os.path.abspath(p)), temporary=True)
     driver.maximize_window()
-    print(driver.execute_script("return navigator.userAgent"))
-    print('Firefox has been initialized')
+    debug(driver.execute_script("return navigator.userAgent"))
+    debug('Firefox has been initialized')
     sleep(1)
     return driver
 
@@ -77,6 +77,6 @@ def chrome_init(webdriver_path=WEBDRIVER, agent_rotation=agents(), chrome_option
     driver_path = os.path.join(webdriver_path, 'chromedriver_87')
     driver = webdriver.Chrome(driver_path, options=chrome_options)
     driver.execute_cdp_cmd('Network.setUserAgentOverride', {"userAgent": f'{agent_rotation}'})
-    print(driver.execute_script("return navigator.userAgent"))
-    print('Chrome has been initialized')
+    debug(driver.execute_script("return navigator.userAgent"))
+    debug('Chrome has been initialized')
     return driver
