@@ -15,7 +15,7 @@ sys.path.append(PYTHON_PATH)
 os.environ["PYTHONUNBUFFERED"] = "1"
 
 PROJECT_HOME_DIR, i_filename = os.path.split(__file__)
-print(f'##### {PROJECT_HOME_DIR}:{i_filename}')
+# print(f'##### {PROJECT_HOME_DIR}:{i_filename}')
 conf = yaml.safe_load(open(f'{PROJECT_HOME_DIR}/config/settings.yaml'))
 
 LOGS_PATH = PROJECT_HOME_DIR + '/logs/'
@@ -165,7 +165,7 @@ def print_progress_bar(iteration, total, prefix='', suffix='', decimals=1, lengt
 
 
 def debug_init(file_name="debug.log"):
-    print(f'%% Inint log file: {file_name}')
+    # print(f'%% Inint log file: {file_name}')
     global DEBUG_LOG_FILE
     fname = f'{LOGS_PATH}{file_name}'
     bufsize = 1
