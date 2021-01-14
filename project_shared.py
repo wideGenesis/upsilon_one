@@ -187,7 +187,7 @@ def debug(print_string="", debug_type="NORMAL"):
     dt = datetime.datetime.now()
     global DEBUG_LOG_FILE
     if DEBUG_LOG_FILE is not None:
-        DEBUG_LOG_FILE.write(f'[{dt.strftime("%H:%M:%S")}]{filename}:{info.lineno}:{print_string}')
+        DEBUG_LOG_FILE.write(f'[{dt.strftime("%H:%M:%S")}]{filename}:{info.lineno}:{print_string}\n')
     else:
         if debug_type == "NORMAL":
             print(f'[{dt.strftime("%H:%M:%S")}]{filename}:{info.lineno}:{print_string}')
