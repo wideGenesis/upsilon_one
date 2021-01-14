@@ -386,7 +386,11 @@ def portfolio_tester(init_cap=10000, port_id='parking', allocator_data_interval=
         save_portfolio_weights(name=port_id, portfolio_weights=weights)
 
     sd = real_start_date
-    create_candle_portfolio_img(port_id=port_id, compare_ticker=compare_ticker, start_date=sd, chart_type='Line')
+    create_candle_portfolio_img(port_id=port_id,
+                                compare_ticker=compare_ticker,
+                                start_date=sd,
+                                end_date=allocator_end_date,
+                                chart_type='Line')
 
 
 def main():
