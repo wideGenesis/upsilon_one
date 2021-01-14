@@ -12,7 +12,7 @@ def get_all_etf_holdings():
     ticker_data = {}
     request_count = 0
     t_len = len(ETF_FOR_SCRAPE)
-    if DEBUG_LOG_FILE is None:
+    if not is_debug_init():
         print_progress_bar(0, t_len, prefix='Progress:', suffix='Complete', length=50)
     for numb, etf in enumerate(ETF_FOR_SCRAPE):
         with requests.Session() as session:
@@ -52,7 +52,7 @@ def get_all_etf_holdings():
                                 ticker_data[ticker] = (sector, mkt_cap, exchange)
                     if count == ETF_FOR_SCRAPE[etf]:
                         break
-        if DEBUG_LOG_FILE is None:
+        if not is_debug_init():
             print_progress_bar(numb, t_len, prefix='Progress:', suffix=f'Complete:{etf}:{len(ticker_data)}    ', length=50)
         else:
             debug(f'Complete:{etf}:{len(ticker_data)}')
