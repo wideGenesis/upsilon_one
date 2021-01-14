@@ -109,7 +109,8 @@ def get_etfdb_flows(driver=None, img_out_path_=IMAGES_OUT_PATH):
     # 320 pixels from the right
     # 43 pixels from the bottom
     driver.quit()
-    print('get_etf_flows complete' + '\n')
+    debug('get_etf_flows complete' + '\n')
+
 
 def crop(img_path, img_path_save, a, b, c, d):
     # 56 pixels from the left
@@ -121,6 +122,8 @@ def crop(img_path, img_path_save, a, b, c, d):
     print(width, height)
     cropped = img.crop((a, b, width - c, height - d))
     cropped.save(img_path_save, quality=100, subsampling=0)
+
+
 # ============================== ADVANCE/DECLINE GET ================================
 def advance_decline(ag=None, img_out_path_=IMAGES_OUT_PATH):
     headers = {'User-Agent': ag}
