@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 BASEDIR=/home/upsilonsfather/projects/ups_one
-LOGDIR=BASEDIR/logs
+LOGDIR=$BASEDIR/logs
 
 amount=$(ps -ef | grep "python3" | grep "upsilon_bot.py" | wc -l)
 
