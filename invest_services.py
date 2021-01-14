@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 from project_shared import *
-from quotes.parsers_env import chrome_init, agents, chrome_opt
+from quotes.parsers_env import chrome_init, agents, chrome_opt, firefox_init
 from quotes.parsers import get_etfdb_flows, advance_decline, get_finviz_treemaps,\
     get_coins360_treemaps, get_economics, get_sma50, get_tw_charts, vix_curve, vix_cont, qt_curve, spx_yield
 from quotes.get_universe import *
@@ -17,7 +17,9 @@ import undetected_chromedriver as uc
 # ============================== Main  =============================
 def main():
 
-    get_etfdb_flows(driver=chrome_init())
+    # get_etfdb_flows(driver=chrome_init())
+    get_finviz_treemaps(driver=firefox_init())
+
     exit()
     # Это забирание вселенной по-старому
     # get_and_save_holdings(driver=chrome_init())
