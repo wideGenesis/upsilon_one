@@ -6,7 +6,7 @@ keyboard_0 = [
         Button.inline('\U0001F52C   ' + 'Анализ рынков', b'a1')
     ],
     [
-        Button.inline('\U0001F9EC   ' + 'Конструктор стратегий', b'a2')
+        Button.inline('\U0001F9EC   ' + 'Портфели', b'a2')
     ],
     # [
     #     Button.inline('\U0001F9F0   ' + 'Калькуляторы', b'a3')
@@ -66,7 +66,7 @@ keyboard_a2 = [
     #     Button.inline('\U0001F4BC  ' + 'Оценка/аудит портфеля', b'a2a2')
     # ],
     [
-        Button.inline('\U0001F4BC  ' + '"Парковочный" портфель без риска', b'a2a3')
+        Button.inline('\U0001F4BC  ' + '"Парковочный" портфель', b'a2a3')
     ],
     [
         Button.inline('\U0001F4BC  ' + 'Всепогодный портфель', b'a2a4')

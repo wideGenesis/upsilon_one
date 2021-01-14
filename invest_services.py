@@ -2,7 +2,7 @@
 
 from project_shared import *
 from quotes.parsers_env import chrome_init, agents, chrome_opt
-from quotes.parsers import get_flows, advance_decline, get_finviz_treemaps,\
+from quotes.parsers import get_etfdb_flows, advance_decline, get_finviz_treemaps,\
     get_coins360_treemaps, get_economics, get_sma50, get_tw_charts, vix_curve, vix_cont, qt_curve, spx_yield
 from quotes.get_universe import *
 from quotes.quote_loader import *
@@ -13,28 +13,28 @@ from time import sleep
 from charter.charter import *
 import undetected_chromedriver as uc
 
-proxy = "81.177.167.92:5139"
-chrome_options = uc.ChromeOptions()
-chrome_options.add_argument("--disable-blink-features=AutomationControlled")
-chrome_options.add_argument("--window-size=1920,1080")
-chrome_options.add_argument("--disable-gpu")
-chrome_options.add_experimental_option("excludeSwitches", ["enable-automation"])
-chrome_options.add_experimental_option('useAutomationExtension', False)
-chrome_options.add_argument("--proxy-server=direct://")
-chrome_options.add_argument("--start-maximized")
-chrome_options.add_argument("--headless")
-chrome_options.add_argument('--disable-dev-shm-usage')
-chrome_options.add_argument('--ignore-certificate-errors')
-# chrome_options.add_argument(f'user-agent={agent_rotation}')
-chrome_options.add_argument("--enable-javascript")
-chrome_options.add_argument("--no-sandbox")
-chrome_options.add_argument('--proxy-server={}'.format(proxy))
-# chrome_options.add_argument("user-data-dir=/home/upsilonsfather/.config/google-chrome")
-# chrome_options.add_argument('--profile-directory=Default')
+# proxy = "81.177.167.92:5139"
+# chrome_options = uc.ChromeOptions()
+# chrome_options.add_argument("--disable-blink-features=AutomationControlled")
+# chrome_options.add_argument("--window-size=1920,1080")
+# chrome_options.add_argument("--disable-gpu")
+# chrome_options.add_experimental_option("excludeSwitches", ["enable-automation"])
+# chrome_options.add_experimental_option('useAutomationExtension', False)
+# chrome_options.add_argument("--proxy-server=direct://")
+# chrome_options.add_argument("--start-maximized")
+# chrome_options.add_argument("--headless")
+# chrome_options.add_argument('--disable-dev-shm-usage')
+# chrome_options.add_argument('--ignore-certificate-errors')
+# # chrome_options.add_argument(f'user-agent={agent_rotation}')
+# chrome_options.add_argument("--enable-javascript")
+# chrome_options.add_argument("--no-sandbox")
+# # chrome_options.add_argument('--proxy-server={}'.format(proxy))
+# # chrome_options.add_argument("user-data-dir=/home/upsilonsfather/.config/google-chrome")
+# # chrome_options.add_argument('--profile-directory=Default')
 # ============================== Main  =============================
 def main():
 
-    get_flows(driver=uc.Chrome(options=chrome_options))
+    get_etfdb_flows(driver=chrome_init())
     exit()
     # Это забирание вселенной по-старому
     # get_and_save_holdings(driver=chrome_init())
@@ -95,7 +95,7 @@ def main():
 
     exit()
 
-    get_flows(driver=chrome_init())
+    # get_flows(driver=chrome_init())
     advance_decline(ag=agents())
     qt_curve()
     spx_yield()

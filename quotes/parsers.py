@@ -19,68 +19,108 @@ from project_shared import *
 
 
 # ============================== Inflows GET ================================
-def get_flows(driver=None, img_out_path_=IMAGES_OUT_PATH):
-    etfs = ['VCIT', 'SPY', 'VTI', 'VEA', 'VWO', 'QQQ', 'VXX', 'TLT', 'SHY', 'LQD']
-    with driver:
-        driver.get('https://www.etf.com/etfanalytics/etf-fund-flows-tool')
-        sleep(10)
-        html = driver.page_source
-        debug(html)
-        try:
-            elem = driver.find_element_by_xpath(".//*[@id='edit-tickers']")
-            debug('elem 1 has been located')
-        except Exception:
-            return
-        elem.send_keys("GLD, SPY, VTI, VEA, VWO, QQQ, VXX, TLT, SHY, LQD, VCIT")
-        debug('keys has been send')
-        sleep(0.7)
-        today = date.today()
-        day7 = timedelta(days=7)
-        delta = today - day7
-        start_d = delta.strftime("%Y-%m-%d")
-        end_d = today.strftime("%Y-%m-%d")
-        elem = driver.find_element_by_xpath(".//*[@id='edit-startdate-datepicker-popup-0']")
-        elem.send_keys(start_d)
-        sleep(1)
-        elem = driver.find_element_by_xpath(".//*[@id='edit-enddate-datepicker-popup-0']")
-        elem.send_keys(end_d)
-        sleep(1)
-        try:
-            WebDriverWait(driver, 10).until(
-                EC.element_to_be_clickable((By.XPATH, ".//*[@id='edit-submitbutton']"))).click()
-            debug('Button has been clicked')
-        except Exception as e1:
-            debug('Button click error. Try to re-run the scraper', e1)
-            return
-        sleep(8)
-        try:
-            elem = driver.find_element_by_xpath(".//*[@id='fundFlowsTitles']")
-            debug('elem 2-Titles has been located')
-        except Exception as e2:
-            debug('Titles elem error. Try to re-run the scraper', e2)
-            return
-        webdriver.ActionChains(driver).move_to_element(elem).perform()
-        driver.execute_script("return arguments[0].scrollIntoView();", elem)
-        sleep(1)
+# def get_flows(driver=None, img_out_path_=IMAGES_OUT_PATH):
+#     etfs = ['VCIT', 'SPY', 'VTI', 'VEA', 'VWO', 'QQQ', 'VXX', 'TLT', 'SHY', 'LQD']
+#     with driver:
+#         driver.get('https://www.etf.com/etfanalytics/etf-fund-flows-tool')
+#         sleep(10)
+#         html = driver.page_source
+#         debug(html)
+#         try:
+#             elem = driver.find_element_by_xpath(".//*[@id='edit-tickers']")
+#             debug('elem 1 has been located')
+#         except Exception:
+#             return
+#         elem.send_keys("GLD, SPY, VTI, VEA, VWO, QQQ, VXX, TLT, SHY, LQD, VCIT")
+#         debug('keys has been send')
+#         sleep(0.7)
+#         today = date.today()
+#         day7 = timedelta(days=7)
+#         delta = today - day7
+#         start_d = delta.strftime("%Y-%m-%d")
+#         end_d = today.strftime("%Y-%m-%d")
+#         elem = driver.find_element_by_xpath(".//*[@id='edit-startdate-datepicker-popup-0']")
+#         elem.send_keys(start_d)
+#         sleep(1)
+#         elem = driver.find_element_by_xpath(".//*[@id='edit-enddate-datepicker-popup-0']")
+#         elem.send_keys(end_d)
+#         sleep(1)
+#         try:
+#             WebDriverWait(driver, 10).until(
+#                 EC.element_to_be_clickable((By.XPATH, ".//*[@id='edit-submitbutton']"))).click()
+#             debug('Button has been clicked')
+#         except Exception as e1:
+#             debug('Button click error. Try to re-run the scraper', e1)
+#             return
+#         sleep(8)
+#         try:
+#             elem = driver.find_element_by_xpath(".//*[@id='fundFlowsTitles']")
+#             debug('elem 2-Titles has been located')
+#         except Exception as e2:
+#             debug('Titles elem error. Try to re-run the scraper', e2)
+#             return
+#         webdriver.ActionChains(driver).move_to_element(elem).perform()
+#         driver.execute_script("return arguments[0].scrollIntoView();", elem)
+#         sleep(1)
+#
+#         for etf in etfs:
+#             sleep(2)
+#             debug(etf)
+#             tag = ".//*[@id=\'" + f'{etf}' + "_nf']"
+#             tag2 = ".//*[@id=\'container_" + f'{etf}' + "'" + "]"
+#             icon = driver.find_element_by_xpath(tag)  # ".//*[@id='{etf}_nf']"
+#             driver.execute_script("arguments[0].click();", icon)
+#             sleep(3)
+#             graph = driver.find_element_by_xpath(tag2)  # ".//*[@id='container_{etf}']"
+#             # driver.execute_script("return arguments[0].scrollIntoView();", graph)
+#             sleep(1)
+#             image = graph.screenshot_as_png
+#             image_stream = io.BytesIO(image)
+#             im = Image.open(image_stream)
+#             im.save(os.path.join(img_out_path_, f'inflows_{etf}.png'))
+#     debug('Get Fund Flows complete' + '\n')
 
+def get_etfdb_flows(driver=None, img_out_path_=IMAGES_OUT_PATH):
+    etfs = ['SPY', 'VTI', 'VEA', 'VWO', 'QQQ', 'VXX', 'TLT', 'SHY', 'LQD', 'VCIT']
+    with driver:
         for etf in etfs:
-            sleep(2)
-            debug(etf)
-            tag = ".//*[@id=\'" + f'{etf}' + "_nf']"
-            tag2 = ".//*[@id=\'container_" + f'{etf}' + "'" + "]"
-            icon = driver.find_element_by_xpath(tag)  # ".//*[@id='{etf}_nf']"
-            driver.execute_script("arguments[0].click();", icon)
-            sleep(3)
-            graph = driver.find_element_by_xpath(tag2)  # ".//*[@id='container_{etf}']"
-            # driver.execute_script("return arguments[0].scrollIntoView();", graph)
-            sleep(1)
-            image = graph.screenshot_as_png
+
+            driver.get(f'https://etfdb.com/etf/{etf}/#fund-flows')
+            img_path = os.path.join(img_out_path_, f'inflows_{etf}' + '.png')
+            # html = driver.page_source
+            # debug(html)
+            # 'fund-flow-chart-container'
+            sleep(5)
+            chart = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.XPATH, ".//*[@id='fund-flows']")))
+            # chart = driver.find_element_by_xpath()
+            # chart = driver.find_element_by_class_name("col-md-12")
+            driver.execute_script("return arguments[0].scrollIntoView();", chart)
+            image = chart.screenshot_as_png
             image_stream = io.BytesIO(image)
             im = Image.open(image_stream)
-            im.save(os.path.join(img_out_path_, f'inflows_{etf}.png'))
-    debug('Get Fund Flows complete' + '\n')
+            im.save(img_path)
+            debug(etf)
+            img = Image.open(img_path)
+            width, height = img.size
+            cropped = img.crop((1, 130, width - 1, height - 45))
+            cropped.save(img_path, quality=100, subsampling=0)
+    # 56 pixels from the left
+    # 44 pixels from the top
+    # 320 pixels from the right
+    # 43 pixels from the bottom
+    driver.quit()
+    print('get_etf_flows complete' + '\n')
 
-
+def crop(img_path, img_path_save, a, b, c, d):
+    # 56 pixels from the left
+    # 44 pixels from the top
+    # 320 pixels from the right
+    # 43 pixels from the bottom
+    img = Image.open(img_path)
+    width, height = img.size
+    print(width, height)
+    cropped = img.crop((a, b, width - c, height - d))
+    cropped.save(img_path_save, quality=100, subsampling=0)
 # ============================== ADVANCE/DECLINE GET ================================
 def advance_decline(ag=None, img_out_path_=IMAGES_OUT_PATH):
     headers = {'User-Agent': ag}
