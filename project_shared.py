@@ -173,8 +173,9 @@ def debug_init(file_name="debug.log"):
 
 def debug_deinit():
     global DEBUG_LOG_FILE
-    DEBUG_LOG_FILE.close()
-    DEBUG_LOG_FILE = None
+    if DEBUG_LOG_FILE is not None:
+        DEBUG_LOG_FILE.close()
+        DEBUG_LOG_FILE = None
 
 
 def debug(print_string="", debug_type="NORMAL"):

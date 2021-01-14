@@ -26,7 +26,7 @@ class WebHandler:
     async def success_payment_handler(self, request):
         if request.match_info.get("token") == self.payment_token:
             request_json = await request.json()
-            # print("JSON:" + str(request_json))
+            # debug("JSON:" + str(request_json))
             order_id = str(request_json['order_id'])
             summa = str(request_json['summa'])
             data = ":" + order_id + ":" + summa + ":"
@@ -38,12 +38,12 @@ class WebHandler:
             try:
                 rsa.verify(data.encode(), sign, self.pubkey)
             except:
-                print("Verification failed")
+                debug("Verification failed")
                 return web.Response(status=403)
 
             value = shared.ORDER_MAP.get(order_id)
             if value is not None:
-                print("Send message \"payment is ok\"")
+                debug("Send message \"payment is ok\"")
                 sender_id, message_id = value
                 # удаляем платежное сообщение в чате, чтобы клиент не нажимал на него еще
                 await self.client.delete_messages(sender_id, message_id)
@@ -82,7 +82,7 @@ class WebHandler:
                 await sql.db_save_expired_data(expired_data, subscribe_level, sender_id, self.engine)
                 return web.Response(status=200)
             else:
-                print("Global SenderID is None")
+                debug("Global SenderID is None")
                 return web.Response(status=403)
         else:
             return web.Response(status=403)
@@ -108,7 +108,7 @@ async def send_to_handler(event, client_, owner=None):
         else:
             await client_.send_message(sender_id, 'Order dismissed!')
     except ValueError as e:
-        print(e, 'Some errors from send_to()')
+        debug(e, 'Some errors from send_to()')
 
 
 async def publish_to_handler(event, client_, owner=None):
@@ -116,14 +116,14 @@ async def publish_to_handler(event, client_, owner=None):
     try:
         channel = await client_.get_entity('https://t.me/' + str(parse[1]))
     except ValueError as e:
-        print(e, 'Can\'t get channel entity')
+        debug(e, 'Can\'t get channel entity')
     try:
         if int(event.input_sender.user_id) == int(owner):
             await client_.send_message(channel, parse[2])
         else:
             await client_.send_message(event.input_sender, 'Order dismissed!')
     except ValueError as e:
-        print(e, 'Some errors from publish_to()')
+        debug(e, 'Some errors from publish_to()')
 
 
 async def dialog_flow_handler(event, client_):
@@ -145,7 +145,7 @@ async def dialog_flow_handler(event, client_):
                                        '  \n' + dialogflow_answer)
             # TODO Внимание! изменить айди чата при деплое
         except ValueError as e:
-            print(e, 'Dialogflow response failure')
+            debug(e, 'Dialogflow response failure')
             await client_.send_message(sender_id, fallback)
 
 
@@ -158,20 +158,20 @@ async def quotes_to_handler(event, client_, limit=20):
     try:
         ss.stock_download()
     except Exception as e0:
-        print(e0)
+        debug(e0)
     try:
         msg1 = ss.stock_description()
     except Exception as e1:
-        print(e1)
+        debug(e1)
         msg1 = 'Описание для ETF недоступно'
     try:
         ss.stock_snapshot()
     except Exception as e2:
-        print(e2)
+        debug(e2)
     try:
         msg2 = ss.stock_stat()
     except Exception as e3:
-        print(e3)
+        debug(e3)
         msg2 = 'Статистика недоступна'
 
     await client_.send_message(event.input_sender, msg2)
@@ -187,7 +187,7 @@ async def news_to_handler(event, client_, limit=20):
     try:
         msg = ss.stock_news()
     except Exception as e4:
-        print(e4)
+        debug(e4)
         msg = 'Новости недоступны'
     await client_.send_message(event.input_sender, f'Последние новости с упоминанием {stock}')
     await client_.send_message(event.input_sender, msg)

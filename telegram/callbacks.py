@@ -545,16 +545,16 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
         else:
             PAYMENT_AGGREGATOR_TIMER = time.time()
             aggregator_status = PAYMENT_AGGREGATOR.get_status()
-        # print(aggregator_status)
+        # debug(aggregator_status)
         if aggregator_status == 'error':
-            # print("Error description:" + PAYMENT_AGGREGATOR.get_last_error())
+            # debug("Error description:" + PAYMENT_AGGREGATOR.get_last_error())
             await client.send_message(event.input_sender, 'Упс. Что-то пошло не так.',
                                       buttons=buttons.keyboard_subscription_start)
             await event.edit()
         else:
-            # print("user_id=" + str(sender_id.user_id))
+            # debug("user_id=" + str(sender_id.user_id))
             order_id = str(uuid.uuid4()).replace('-', '')
-            print("OrderId:" + order_id)
+            debug("OrderId:" + order_id)
             summa = ""
             kbd_label = ""
             if event.data == b'kss1':
@@ -570,9 +570,9 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
                 summa = str(shared.SUBSCRIBES[shared.TARIFF_PROFESSIONAL_ID].get_cost())
                 kbd_label = "Оплатить ($" + str(shared.SUBSCRIBES[shared.TARIFF_PROFESSIONAL_ID].get_cost()) + ')'
 
-            print("Summa:" + summa)
+            debug("Summa:" + summa)
             payment_link = PAYMENT_AGGREGATOR.get_payment_link(order_id, summa)
-            print(payment_link)
+            debug(payment_link)
             kbd_payment_button = buttons.generate_payment_button(kbd_label, payment_link)
 
             paymsg = await client.send_message(event.input_sender,

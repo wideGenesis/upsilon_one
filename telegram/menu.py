@@ -10,7 +10,7 @@ from project_shared import *
 async def start_menu(event, client, engine=None):
     referral = str(event.original_update.message.message).split(' ')
     user_profile = await sql.user_search(event.original_update.message.peer_id.user_id, engine)
-    print("User_profile:" + str(user_profile))
+    debug("User_profile:" + str(user_profile))
     if len(referral) > 1:
         user_profile = await sql.user_search(referral[1], engine)
         inc = user_profile[13] + 1
@@ -70,13 +70,13 @@ async def profile_menu(event, client, engine=None):
     user_profile = await sql.user_search(sender_id.user_id, engine)
     expired_date = ""
     if user_profile[11] is None:
-        print("None")
+        debug("None")
         expired_date = "None"
     else:
-        print("In user_profile = " + str(user_profile[11]))
+        debug("In user_profile = " + str(user_profile[11]))
         ed = user_profile[11]
         expired_date = ed.strftime("%d.%m.%Y")
-        print("expired_date=" + expired_date)
+        debug("expired_date=" + expired_date)
     await client.send_message(event.input_sender,
                               f'\U0001F464 : {user_profile[3]}' + '\n' +
                               f'Имя: {user_profile[5]}' + '\n' +

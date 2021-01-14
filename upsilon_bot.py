@@ -127,19 +127,22 @@ def main():
     shared.create_subscribes(TARIFF_IMAGES)
 
     # Стартуем веб сервер с отдельным event loop
-    print("_____Running db init_____", '\n')
+    debug("_____Running db init_____", '\n')
     loop_db = asyncio.get_event_loop()
     loop_db.run_until_complete(init_db())
-    print("_____Running web server_____", '\n')
+    debug("_____Running web server_____", '\n')
     loop = asyncio.get_event_loop()
     loop.run_until_complete(webserver_starter())
-    print("__Running telethon client__", '\n')
+    debug("__Running telethon client__", '\n')
 
     # Старт клиента Телетон
     client.run_until_disconnected()
 
 
 if __name__ == '__main__':
-    print("__Ignition sequence start__", '\n')
+    debug_init(file_name="bot.log")
+    debug("__Ignition sequence start__", '\n')
     # print(sys.path)
     main()
+    debug_deinit()
+
