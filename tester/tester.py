@@ -379,7 +379,7 @@ def portfolio_tester(init_cap=10000, port_id='parking', allocator_data_interval=
 
         weights = calc_portfolio(portfolio_args)
 
-        debug(f'allo [{allocator_end_date.strftime("%Y %b")}]:{weights}')
+        debug(f'[{portfolio_args["port_id"]}][{allocator_end_date.strftime("%Y %b")}]:{weights}')
         save_portfolio_weights(name=port_id, portfolio_weights=weights)
 
     sd = real_start_date

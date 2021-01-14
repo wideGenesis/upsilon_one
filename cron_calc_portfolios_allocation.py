@@ -66,6 +66,7 @@ if __name__ == '__main__':
     create_portfolio_pie_image(weights=parking_weights,
                                title="Parking portfolio",
                                filename="parking_portfolio_pie")
+    debug(f'[{portfolio_args["port_id"]}]: {parking_weights}')
     save_portfolio_weights(name='parking', portfolio_weights=parking_weights)
 
     debug(f"Start calc allweather portfolio")
@@ -116,6 +117,7 @@ if __name__ == '__main__':
     create_portfolio_pie_image(weights=allweather_weights,
                                title="Allweather portfolio",
                                filename="allweather_portfolio_pie")
+    debug(f'[{portfolio_args["port_id"]}]: {allweather_weights}')
     save_portfolio_weights(name='allweather', portfolio_weights=allweather_weights)
 
     debug(f"Start calc balanced portfolio")
@@ -166,6 +168,7 @@ if __name__ == '__main__':
     create_portfolio_pie_image(weights=balanced_weights,
                                title="Balanced portfolio",
                                filename="balanced_portfolio_pie")
+    debug(f'[{portfolio_args["port_id"]}]: {balanced_weights}')
     save_portfolio_weights(name='balanced', portfolio_weights=balanced_weights)
 
     debug(f"Start calc aggressive portfolio")
@@ -216,6 +219,7 @@ if __name__ == '__main__':
     create_portfolio_pie_image(weights=aggressive_weights,
                                title="Aggressive portfolio",
                                filename="aggressive_portfolio_pie")
+    debug(f'[{portfolio_args["port_id"]}]: {aggressive_weights}')
     save_portfolio_weights(name='aggressive', portfolio_weights=aggressive_weights)
 
     debug(f"Start calc leveraged portfolio")
@@ -267,6 +271,7 @@ if __name__ == '__main__':
     create_portfolio_pie_image(weights=leveraged_weights,
                                title="Leveraged portfolio",
                                filename="leveraged_portfolio_pie")
+    debug(f'[{portfolio_args["port_id"]}]: {leveraged_weights}')
     save_portfolio_weights(name='leveraged', portfolio_weights=leveraged_weights)
     debug("%%%%%%%%%%%%%%%Complete calc portfolios \n\n\n")
     debug_deinit()
