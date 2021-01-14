@@ -50,31 +50,31 @@ then
 elif [ "$1" == '30' ]
 then
   echo "#Every $1 [$(date +'%Y-%m-%d %H:%M:%S')]"  >> $LOGDIR/cron_scheduler.log
-  python3 $BASEDIR/cron_every_30_min.py  >> $LOGDIR/cron_scheduler.log 2>&1 &
+  python3 $BASEDIR/cron_every_30_min.py  >> $LOGDIR/cron_scheduler.log
 elif [ "$1" == '120' ]
 then
   echo "#Every $1 [$(date +'%Y-%m-%d %H:%M:%S')]"  >> $LOGDIR/cron_scheduler.log
-  python3 $BASEDIR/cron_every_120_min.py  >> $LOGDIR/cron_scheduler.log 2>&1 &
+  python3 $BASEDIR/cron_every_120_min.py  >> $LOGDIR/cron_scheduler.log
 elif [ "$1" == '480' ]
 then
   echo "#Every $1 [$(date +'%Y-%m-%d %H:%M:%S')]"  >> $LOGDIR/cron_scheduler.log
-  python3 $BASEDIR/cron_every_480_min.py  >> $LOGDIR/cron_scheduler.log 2>&1 &
+  python3 $BASEDIR/cron_every_480_min.py  >> $LOGDIR/cron_scheduler.log
 elif [ "$1" == '720' ]
 then
   echo "#Every $1 [$(date +'%Y-%m-%d %H:%M:%S')]"  >> $LOGDIR/cron_scheduler.log
-  python3 $BASEDIR/cron_every_720_min.py  >> $LOGDIR/cron_scheduler.log 2>&1 &
+  python3 $BASEDIR/cron_every_720_min.py  >> $LOGDIR/cron_scheduler.log
 elif [ "$1" == 'MONDAY' ]
 then
   echo "#Every $1 [$(date +'%Y-%m-%d %H:%M:%S')]"  >> $LOGDIR/cron_scheduler.log
-  python3 $BASEDIR/cron_every_monday.py  >> $LOGDIR/cron_scheduler.log 2>&1 &
+  python3 $BASEDIR/cron_every_monday.py  >> $LOGDIR/cron_scheduler.log
 elif [ "$1" == 'EVERYDAY' ]
 then
   echo "#Every $1 [$(date +'%Y-%m-%d %H:%M:%S')]"  >> $LOGDIR/cron_scheduler.log
-  python3 $BASEDIR/cron_update_closes_capital_returns.py  >> $LOGDIR/cron_scheduler.log 2>&1 &
+  python3 $BASEDIR/cron_update_closes_capital_returns.py  >> $LOGDIR/cron_scheduler.log
 elif [ "$1" == 'FIRST_DAY_OF_MONTH' ]
 then
   echo "#Every $1 [$(date +'%Y-%m-%d %H:%M:%S')]"  >> $LOGDIR/cron_scheduler.log
-  python3 $BASEDIR/cron_get_universe_holdings.py  >> $LOGDIR/cron_scheduler.log 2>&1
-  python3 $BASEDIR/cron_calc_portfolios_allocation.py  >> $LOGDIR/cron_scheduler.log 2>&1
+  python3 $BASEDIR/cron_get_universe_holdings.py  >> $LOGDIR/cron_scheduler.log
+  python3 $BASEDIR/cron_calc_portfolios_allocation.py  >> $LOGDIR/cron_scheduler.log
 fi
 deactivate
