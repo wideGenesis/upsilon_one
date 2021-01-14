@@ -7,6 +7,7 @@ from time import sleep
 
 
 def get_all_etf_holdings():
+    global DEBUG_LOG_FILE
     debug("ETF_FOR_SCRAPE:" + str(ETF_FOR_SCRAPE))
     ticker_data = {}
     request_count = 0
