@@ -15,7 +15,7 @@ if __name__ == '__main__':
 
     # ======================================== P A R K I N G ========================================
     portfolio_args['port_id'] = 'parking'
-    portfolio_args['etf_only'] = True
+    portfolio_args['etf_only'] = False
     portfolio_args['cor_perc'] = 0.9
     portfolio_args['sat_perc'] = 0.1
     # ********************* Parking cor *********************
@@ -30,7 +30,7 @@ if __name__ == '__main__':
     portfolio_args['cor_linkage_'] = 'ward'
     portfolio_args['cor_risk_measure_'] = 'variance'
     portfolio_args['cor_graphs_show'] = False
-    portfolio_args['cor_selector_type'] = 14
+    portfolio_args['cor_selector_type'] = 13
     portfolio_args['cor_selector_adjustment'] = False
     portfolio_args['cor_selector_p1'] = 21
     portfolio_args['cor_selector_p2'] = 126
@@ -49,7 +49,7 @@ if __name__ == '__main__':
     portfolio_args['sat_linkage_'] = 'ward'
     portfolio_args['sat_risk_measure_'] = 'variance'
     portfolio_args['sat_graphs_show'] = False
-    portfolio_args['sat_selector_type'] = 1
+    portfolio_args['sat_selector_type'] = 21
     portfolio_args['sat_selector_adjustment'] = False
     portfolio_args['sat_selector_p1'] = 21
     portfolio_args['sat_selector_p2'] = 63
@@ -64,7 +64,7 @@ if __name__ == '__main__':
 
     # ======================================== A L L W E A T H E R ========================================
     portfolio_args['port_id'] = 'allweather'
-    portfolio_args['etf_only'] = True
+    portfolio_args['etf_only'] = False
     portfolio_args['cor_perc'] = 0.8
     portfolio_args['sat_perc'] = 0.2
     # ********************* Allweather cor *********************
@@ -79,7 +79,7 @@ if __name__ == '__main__':
     portfolio_args['cor_linkage_'] = 'ward'
     portfolio_args['cor_risk_measure_'] = 'variance'
     portfolio_args['cor_graphs_show'] = False
-    portfolio_args['cor_selector_type'] = 14
+    portfolio_args['cor_selector_type'] = 13
     portfolio_args['cor_selector_adjustment'] = False
     portfolio_args['cor_selector_p1'] = 21
     portfolio_args['cor_selector_p2'] = 126
@@ -98,7 +98,7 @@ if __name__ == '__main__':
     portfolio_args['sat_linkage_'] = 'ward'
     portfolio_args['sat_risk_measure_'] = 'variance'
     portfolio_args['sat_graphs_show'] = False
-    portfolio_args['sat_selector_type'] = 1
+    portfolio_args['sat_selector_type'] = 21
     portfolio_args['sat_selector_adjustment'] = False
     portfolio_args['sat_selector_p1'] = 21
     portfolio_args['sat_selector_p2'] = 63
@@ -113,7 +113,7 @@ if __name__ == '__main__':
 
     # ======================================== B A L A N C E D ========================================
     portfolio_args['port_id'] = 'balanced'
-    portfolio_args['etf_only'] = True
+    portfolio_args['etf_only'] = False
     portfolio_args['cor_perc'] = 0.7
     portfolio_args['sat_perc'] = 0.3
     # ********************* Balanced cor *********************
@@ -128,7 +128,7 @@ if __name__ == '__main__':
     portfolio_args['cor_linkage_'] = 'ward'
     portfolio_args['cor_risk_measure_'] = 'variance'
     portfolio_args['cor_graphs_show'] = False
-    portfolio_args['cor_selector_type'] = 14
+    portfolio_args['cor_selector_type'] = 13
     portfolio_args['cor_selector_adjustment'] = False
     portfolio_args['cor_selector_p1'] = 21
     portfolio_args['cor_selector_p2'] = 126
@@ -147,7 +147,7 @@ if __name__ == '__main__':
     portfolio_args['sat_linkage_'] = 'ward'
     portfolio_args['sat_risk_measure_'] = 'variance'
     portfolio_args['sat_graphs_show'] = False
-    portfolio_args['sat_selector_type'] = 1
+    portfolio_args['sat_selector_type'] = 21
     portfolio_args['sat_selector_adjustment'] = False
     portfolio_args['sat_selector_p1'] = 21
     portfolio_args['sat_selector_p2'] = 63
@@ -162,7 +162,7 @@ if __name__ == '__main__':
 
     # ======================================== A G G R E S S I V E ========================================
     portfolio_args['port_id'] = 'aggressive'
-    portfolio_args['etf_only'] = True
+    portfolio_args['etf_only'] = False
     portfolio_args['cor_perc'] = 0.7
     portfolio_args['sat_perc'] = 0.3
     # ********************* Aggressive cor *********************
@@ -177,7 +177,7 @@ if __name__ == '__main__':
     portfolio_args['cor_linkage_'] = 'ward'
     portfolio_args['cor_risk_measure_'] = 'variance'
     portfolio_args['cor_graphs_show'] = False
-    portfolio_args['cor_selector_type'] = 14
+    portfolio_args['cor_selector_type'] = 13
     portfolio_args['cor_selector_adjustment'] = False
     portfolio_args['cor_selector_p1'] = 21
     portfolio_args['cor_selector_p2'] = 126
@@ -190,13 +190,13 @@ if __name__ == '__main__':
     portfolio_args['sat_selector_end_date'] = selector_end_date
     portfolio_args['sat_etf_list'] = None
     portfolio_args['sat_cap_filter'] = 5000000000
-    portfolio_args['sat_assets_to_hold'] = 15
+    portfolio_args['sat_assets_to_hold'] = 7
     portfolio_args['sat_cov_method'] = 'semi'
     portfolio_args['sat_herc'] = False
     portfolio_args['sat_linkage_'] = 'ward'
     portfolio_args['sat_risk_measure_'] = 'variance'
     portfolio_args['sat_graphs_show'] = False
-    portfolio_args['sat_selector_type'] = 0
+    portfolio_args['sat_selector_type'] = 21
     portfolio_args['sat_selector_adjustment'] = False
     portfolio_args['sat_selector_p1'] = 63
     portfolio_args['sat_selector_p2'] = 63
@@ -211,8 +211,8 @@ if __name__ == '__main__':
 
     # ======================================== L E V E R A G E D ========================================
     portfolio_args['port_id'] = 'leveraged'
-    portfolio_args['is_aliased'] = True
-    portfolio_args['etf_only'] = True
+    portfolio_args['is_aliased'] = False
+    portfolio_args['etf_only'] = False
     portfolio_args['cor_perc'] = 0.65
     portfolio_args['sat_perc'] = 0.35
     # ********************* Leveraged cor *********************
@@ -246,7 +246,7 @@ if __name__ == '__main__':
     portfolio_args['sat_linkage_'] = 'ward'
     portfolio_args['sat_risk_measure_'] = 'variance'
     portfolio_args['sat_graphs_show'] = False
-    portfolio_args['sat_selector_type'] = 1
+    portfolio_args['sat_selector_type'] = 21
     portfolio_args['sat_selector_adjustment'] = False
     portfolio_args['sat_selector_p1'] = 21
     portfolio_args['sat_selector_p2'] = 63
