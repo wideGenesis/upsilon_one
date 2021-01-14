@@ -20,3 +20,4 @@ gitpush.sh
 webdriver/chromedriver_87.exe
 webdriver/geckodriver_0_28.exe
 chromedriver.exe
+/results/
