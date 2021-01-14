@@ -79,6 +79,7 @@ elif [ "$1" == 'FIRST_DAY_OF_MONTH' ]
 then
   echo "#Every $1 [$(date +'%Y-%m-%d %H:%M:%S')]"  >> $LOGDIR/cron_scheduler.log
   python3 $BASEDIR/cron_get_universe_holdings.py  >> $LOGDIR/cron_scheduler.log   2>&1 &
+  sleep 120
   python3 $BASEDIR/cron_calc_portfolios_allocation.py  >> $LOGDIR/cron_scheduler.log   2>&1 &
 fi
 deactivate
