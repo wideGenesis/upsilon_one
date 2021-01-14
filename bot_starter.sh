@@ -6,7 +6,7 @@ LOGDIR=$BASEDIR/logs
 source $BASEDIR/venv/bin/activate
 echo "[$(date +'%Y-%m-%d %H:%M:%S')]************* Start bot *************" > $LOGDIR/bot.log
 cd $BASEDIR
-python3 $BASEDIR/upsilon_bot.py > $LOGDIR/bot.log 2>&1 &
+python3 $BASEDIR/upsilon_bot.py > $LOGDIR/bot.log &
 deactivate
 if [[ -f $BASEDIR/do_not_restart.txt ]]
 then
