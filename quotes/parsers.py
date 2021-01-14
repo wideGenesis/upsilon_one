@@ -367,6 +367,7 @@ def qt_curve(ag=None, img_out_path_=IMAGES_OUT_PATH):
         write = csv.DictWriter(f, msg.keys())
         write.writeheader()
         write.writerow(msg)
+    debug('qt_curve complete')
 
 
 def spx_yield(img_out_path_=IMAGES_OUT_PATH):
