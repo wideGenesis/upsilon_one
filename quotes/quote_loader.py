@@ -114,7 +114,8 @@ def update_universe_prices1(exclude_sectors=EXCLUDE_SECTORS, not_exclude_tickers
 
         today = date.today()
         # в самом  простом случае апдейтить таблицу надо с последней даты в таблице по сегодняшнюю
-        print_progress_bar(0, t_len, prefix='Progress:', suffix='Complete', length=50)
+        if not is_debug_init():
+            print_progress_bar(0, t_len, prefix='Progress:', suffix='Complete', length=50)
         for count, ticker in enumerate(tickers, start=1):
             # print("### Try update ticker:" + str(ticker))
             if ticker_lookup(ticker):
@@ -127,18 +128,26 @@ def update_universe_prices1(exclude_sectors=EXCLUDE_SECTORS, not_exclude_tickers
             else:
                 # print("(ticker not exist) Start date:" + str(start_table_date) + "; End date:" + str(today))
                 download_quotes_to_db(ticker, start_table_date, today, is_update)
-            print_progress_bar(count, t_len, prefix='Progress:', suffix=f'Complete:{ticker}:[{count}:{t_len}]   ',
-                               length=50)
+            if not is_debug_init():
+                print_progress_bar(count, t_len, prefix='Progress:', suffix=f'Complete:{ticker}:[{count}:{t_len}]   ',
+                                   length=50)
+            else:
+                debug(f'Complete:{ticker}:[{count}:{t_len}]')
     else:
         debug("__Table is not exists__")
         create_quotes_table()
-        print_progress_bar(0, t_len, prefix='Progress:', suffix='Complete', length=50)
+        if not is_debug_init():
+            print_progress_bar(0, t_len, prefix='Progress:', suffix='Complete', length=50)
         for count, ticker in enumerate(tickers, start=1):
             start_date = date.fromisoformat(DEFAULT_START_QUOTES_DATE)
             end_date = date.today()
             download_quotes_to_db(ticker, start_date, end_date, is_update)
-            print_progress_bar(count, t_len, prefix='Progress:', suffix=f'Complete:{ticker}:[{count}:{t_len}]   ',
-                               length=50)
+            if not is_debug_init():
+                print_progress_bar(count, t_len, prefix='Progress:', suffix=f'Complete:{ticker}:[{count}:{t_len}]   ',
+                                   length=50)
+            else:
+                debug(f'Complete:{ticker}:[{count}:{t_len}]')
+    debug("Complete update_universe_prices1")
 
 
 def eod_update_universe_prices(exclude_sectors=EXCLUDE_SECTORS, not_exclude_tickers=NOT_EXCLUDE_TICKERS):
