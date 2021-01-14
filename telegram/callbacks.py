@@ -25,7 +25,6 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
     sender_id = event.original_update.user_id
     entity = await client.get_input_entity(sender_id)
 
-    raise ValueError
     # ============================== Главное меню 1 уровень=============================
     if event.data == b'a1':
         await client.send_message(event.input_sender, 'Анализ рынков', buttons=buttons.keyboard_a1)
