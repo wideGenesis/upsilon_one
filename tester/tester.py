@@ -346,7 +346,8 @@ def portfolio_tester(init_cap=10000, port_id='parking', allocator_data_interval=
 
     td = date.today()
     while_date = datetime.date(td.year, td.month, 1)
-    while allocator_end_date <= while_date:
+    while allocator_end_date < while_date:
+        # debug(f'allocator_end_date={allocator_end_date} : while_date={while_date}')
         allocator_end_date = add_months(allocator_end_date, 1)
         selector_end_date = add_months(selector_end_date, 1)
         alloctor_start_date = add_months(allocator_end_date, -allocator_data_interval)

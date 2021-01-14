@@ -14,8 +14,12 @@ if __name__ == '__main__':
     debug(f"### Start calc portfolio allocation ###")
     portfolio_args = {}
     allocator_end_date = date.today()
+    if allocator_end_date.day != 1:
+        allocator_end_date = datetime.date(allocator_end_date.year, allocator_end_date.month, 1)
     alloctor_start_date = add_months(allocator_end_date, -3)
     selector_end_date = date.today()
+    if selector_end_date.day != 1:
+        selector_end_date = datetime.date(selector_end_date.year, selector_end_date.month, 1)
     selector_start_date = add_months(allocator_end_date, -12)
 
     debug(f"Start calc parking portfolio")
