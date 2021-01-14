@@ -18,6 +18,7 @@ if __name__ == '__main__':
     selector_end_date = date.today()
     selector_start_date = add_months(allocator_end_date, -12)
 
+    debug(f"Start calc parking portfolio")
     # ======================================== P A R K I N G ========================================
     portfolio_args['port_id'] = 'parking'
     portfolio_args['etf_only'] = False
@@ -67,6 +68,7 @@ if __name__ == '__main__':
                                filename="parking_portfolio_pie")
     save_portfolio_weights(name='parking', portfolio_weights=parking_weights)
 
+    debug(f"Start calc allweather portfolio")
     # ======================================== A L L W E A T H E R ========================================
     portfolio_args['port_id'] = 'allweather'
     portfolio_args['etf_only'] = False
@@ -116,6 +118,7 @@ if __name__ == '__main__':
                                filename="allweather_portfolio_pie")
     save_portfolio_weights(name='allweather', portfolio_weights=allweather_weights)
 
+    debug(f"Start calc balanced portfolio")
     # ======================================== B A L A N C E D ========================================
     portfolio_args['port_id'] = 'balanced'
     portfolio_args['etf_only'] = False
@@ -165,6 +168,7 @@ if __name__ == '__main__':
                                filename="balanced_portfolio_pie")
     save_portfolio_weights(name='balanced', portfolio_weights=balanced_weights)
 
+    debug(f"Start calc aggressive portfolio")
     # ======================================== A G G R E S S I V E ========================================
     portfolio_args['port_id'] = 'aggressive'
     portfolio_args['etf_only'] = False
@@ -214,6 +218,7 @@ if __name__ == '__main__':
                                filename="aggressive_portfolio_pie")
     save_portfolio_weights(name='aggressive', portfolio_weights=aggressive_weights)
 
+    debug(f"Start calc leveraged portfolio")
     # ======================================== L E V E R A G E D ========================================
     portfolio_args['port_id'] = 'leveraged'
     portfolio_args['is_aliased'] = False
@@ -263,4 +268,5 @@ if __name__ == '__main__':
                                title="Leveraged portfolio",
                                filename="leveraged_portfolio_pie")
     save_portfolio_weights(name='leveraged', portfolio_weights=leveraged_weights)
+    debug(f"Complete calc portfolios")
     debug_deinit()

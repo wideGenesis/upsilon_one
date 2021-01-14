@@ -11,7 +11,8 @@ def get_all_etf_holdings():
     ticker_data = {}
     request_count = 0
     t_len = len(ETF_FOR_SCRAPE)
-    print_progress_bar(0, t_len, prefix='Progress:', suffix='Complete', length=50)
+    if DEBUG_LOG_FILE is None:
+        print_progress_bar(0, t_len, prefix='Progress:', suffix='Complete', length=50)
     for numb, etf in enumerate(ETF_FOR_SCRAPE):
         with requests.Session() as session:
             url = f'https://eodhistoricaldata.com/api/fundamentals/{etf}.US'
@@ -50,9 +51,10 @@ def get_all_etf_holdings():
                                 ticker_data[ticker] = (sector, mkt_cap, exchange)
                     if count == ETF_FOR_SCRAPE[etf]:
                         break
-        print_progress_bar(numb, t_len, prefix='Progress:', suffix=f'Complete:{etf}:{len(ticker_data)}    ', length=50)
-        # if DEBUG_LOG_FILE is not None:
-        #     debug(f'Complete:{etf}:{len(ticker_data)}    ')
+        if DEBUG_LOG_FILE is None:
+            print_progress_bar(numb, t_len, prefix='Progress:', suffix=f'Complete:{etf}:{len(ticker_data)}    ', length=50)
+        else:
+            debug(f'Complete:{etf}:{len(ticker_data)}')
     debug("Complete get_all_etf_holdings")
     return ticker_data
 
