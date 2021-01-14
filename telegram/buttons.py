@@ -38,9 +38,9 @@ keyboard_a1 = [
     [
         Button.inline('\U0001F43B  ' + 'Рынок РФ', b'a1a3')
     ],
-    # [
-    #     Button.inline('\U0001F504  ' + 'ETF сантимент', b'a1a4')
-    # ],
+    [
+        Button.inline('\U0001F504  ' + 'ETF сантимент', b'a1a4')
+    ],
     [
         Button.inline('\U0001F30D  ' + 'Мировые рынки в картах', b'a1a5')
     ],
