@@ -18,7 +18,8 @@ import undetected_chromedriver as uc
 def main():
 
     # get_etfdb_flows(driver=chrome_init())
-    get_finviz_treemaps(driver=firefox_init())
+    # get_finviz_treemaps(driver=firefox_init())
+    qt_curve(ag=agents())
 
     exit()
     # Это забирание вселенной по-старому

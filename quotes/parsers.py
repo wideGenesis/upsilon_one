@@ -333,13 +333,40 @@ def get_sma50(ag=None, img_out_path_=IMAGES_OUT_PATH):
     debug('sma50 complete')
 
 
-# ============================== Treasury Curve and Div Yield GET ================================
-def qt_curve(img_out_path_=IMAGES_OUT_PATH):
-    x = quandl.get("USTREASURY/YIELD", authtoken="gWq5SV_V-yFkXVMgrwwy", rows=1)
-    x = str(x)
-    with open(img_out_path_+'treasury_curve.csv', 'w+') as f:
-        f.write(f'{x}')
-    debug('qt_curve complete')
+# # ============================== Treasury Curve and Div Yield GET ================================
+# def qt_curve(img_out_path_=IMAGES_OUT_PATH):
+#     x = quandl.get("USTREASURY/YIELD", authtoken="gWq5SV_V-yFkXVMgrwwy", rows=1)
+#     print(x)
+#     x = str(x)
+#     with open(img_out_path_+'treasury_curve.csv', 'w+') as f:
+#         f.write(f'{x}')
+#     debug('qt_curve complete')
+
+def qt_curve(ag=None, img_out_path_=IMAGES_OUT_PATH):
+    headers = {'User-Agent': ag}
+    xml = 'https://data.treasury.gov/feed.svc/DailyTreasuryYieldCurveRateData?$filter=month(NEW_DATE)%20eq%201%20and%20year(NEW_DATE)%20eq%202021'
+    html = requests.get(xml, headers=headers).text
+    soup = BeautifulSoup(html, "xml")
+    _date = soup.findAll('NEW_DATE')[-1].text.split('T')[0]
+    _1m = soup.findAll('BC_1MONTH')[-1].text
+    _2m = soup.findAll('BC_2MONTH')[-1].text
+    _3m = soup.findAll('BC_3MONTH')[-1].text
+    _6m = soup.findAll('BC_6MONTH')[-1].text
+    _1y = soup.findAll('BC_1YEAR')[-1].text
+    _2y = soup.findAll('BC_2YEAR')[-1].text
+    _3y = soup.findAll('BC_3YEAR')[-1].text
+    _5y = soup.findAll('BC_5YEAR')[-1].text
+    _7y = soup.findAll('BC_7YEAR')[-1].text
+    _10y = soup.findAll('BC_10YEAR')[-1].text
+    _20y = soup.findAll('BC_20YEAR')[-1].text
+    _30y = soup.findAll('BC_30YEAR')[-1].text
+    msg = {'Date': _date, '1M': _1m, '2M': _2m, '3M': _3m, '6M': _6m, '1Y': _1y, '2Y': _2y, '3Y': _3y, '5Y': _5y,
+           '7Y': _7y, '10Y': _10y, '20Y': _20y, '30Y': _30y}
+
+    with open(img_out_path_ + 'treasury_curve.csv', 'w+') as f:
+        write = csv.DictWriter(f, msg.keys())
+        write.writeheader()
+        write.writerow(msg)
 
 
 def spx_yield(img_out_path_=IMAGES_OUT_PATH):

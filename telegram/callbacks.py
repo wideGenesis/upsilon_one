@@ -166,19 +166,14 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
                                   buttons=buttons.keyboard_us_market_back)
     elif event.data == b'us4':
         message = await client.send_message(entity=entity, message='Загрузка...')
-        msg0 = 'Date 1M 2M 3M 6M 1Y 2Y 3Y 5Y 7Y 10Y 20Y 30Y'
-        await client.send_message(entity=entity, message=msg0)
         filename4 = os.path.join(img_path, 'treasury_curve.csv')
         with open(filename4, newline='') as f4:
             data4 = csv.reader(f4, delimiter=',')
             for row4 in data4:
-                if row4 == 0:
-                    continue
-            else:
-                row4 = str(row4).strip("[']")
+                row4 = str(row4).replace("'", "").strip("[]")
                 await client.send_message(entity=entity, message=f'{row4}')
 
-        msg01 = 'Date SP500_DIV_YIELD'
+        msg01 = 'SP500 DIV YIELD'
         await client.send_message(entity=entity, message=msg01)
         filename5 = os.path.join(img_path, 'spx_yield.csv')
         temp = []
