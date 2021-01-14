@@ -51,6 +51,9 @@ def get_all_etf_holdings():
                     if count == ETF_FOR_SCRAPE[etf]:
                         break
         print_progress_bar(numb, t_len, prefix='Progress:', suffix=f'Complete:{etf}:{len(ticker_data)}    ', length=50)
+        if DEBUG_LOG_FILE is not None:
+            debug(f'Complete:{etf}:{len(ticker_data)}    ')
+    debug("Complete get_all_etf_holdings")
     return ticker_data
 
 
