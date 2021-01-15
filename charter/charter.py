@@ -73,12 +73,13 @@ def create_portfolio_pie_image(weights, title, filename):
 
 
 def create_candle_portfolio_img(port_id, compare_ticker=None,
-                                start_date=None, end_date=date.today(), chart_type='Candlestic'):
+                                start_date=None, end_date=date.today(),
+                                chart_type='Candlestic', chart_path=CHARTER_IMAGES_PATH):
     port_quotes = None
     compare_ticker_quotes = None
     port_quotes = psql.get_portfolio_bars(port_id, start_date, end_date)
     compare_ticker_quotes = get_ytd_data_by_ticker(compare_ticker, start_date, end_date)
-    fin.create_chart(port_id, port_quotes, compare_ticker, compare_ticker_quotes, chart_type)
+    fin.create_chart(port_id, port_quotes, compare_ticker, compare_ticker_quotes, chart_type, chart_path)
 
 
 def main():

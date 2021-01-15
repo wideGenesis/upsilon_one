@@ -390,7 +390,8 @@ def portfolio_tester(init_cap=10000, port_id='parking', allocator_data_interval=
                                 compare_ticker=compare_ticker,
                                 start_date=sd,
                                 end_date=allocator_end_date,
-                                chart_type='Line')
+                                chart_type='Line',
+                                chart_path=TESTER_RESULT_PATH)
 
 
 def main():

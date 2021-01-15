@@ -8,7 +8,8 @@ from functools import reduce
 setLicenseCode("DEVP-2LTF-FD2N-G76T-2691-3A31")
 
 
-def create_chart(ticker, data, compare_ticker=None, compare_data=None, chart_type='Candlestic'):
+def create_chart(ticker, data, compare_ticker=None, compare_data=None, chart_type='Candlestic',
+                 chart_path=CHARTER_IMAGES_PATH):
     extra_days = EXTRA_DAYS
 
     time_stamps = []
@@ -81,7 +82,7 @@ def create_chart(ticker, data, compare_ticker=None, compare_data=None, chart_typ
 
     m.addComparison(compare_close_data, COMPARISON_LINE_COLOR, compare_ticker)
 
-    filename = f'{ticker}_port_chart_over_{compare_ticker}.png'
+    filename = f'{chart_path}/{ticker}_port_chart_over_{compare_ticker}.png'
     m.makeChart(filename)
 
 
