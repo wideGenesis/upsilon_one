@@ -19,9 +19,19 @@ def main():
 
     # get_etfdb_flows(driver=chrome_init())
     # get_finviz_treemaps(driver=firefox_init())
-    qt_curve(ag=agents())
-
+    # qt_curve(ag=agents())
+    # advance_decline(ag=agents())
+    # qt_curve()
+    # spx_yield()
+    # vix_cont()
+    get_sma50(ag=agents())
     exit()
+
+    # get_economics(ag=agents())
+    # get_tw_charts(driver=chrome_init())
+    # vix_curve(driver=chrome_init())
+    # get_coins360_treemaps(driver=chrome_init())
+
     # Это забирание вселенной по-старому
     # get_and_save_holdings(driver=chrome_init())
     # update_universe_prices()
@@ -66,7 +76,6 @@ def main():
     # save_portfolio_bars(name="leveraged", portfolio_bars=portfolio_bars)
     # create_candle_portfolio_img(port_id="leveraged", compare_ticker="QQQ", start_date=sd, end_date=ed)
     #
-    # exit()
 
     # start_test_date - первая дата на которую будет вычеслена первая аллокация, далее эта дата смещается на месяц
     # data_interval -- за какой период времени на RP будут подаваться данные -3 значит за 3 месяца
@@ -79,20 +88,6 @@ def main():
     # port_id = 'leveraged'
     # portfolio_tester(port_id=port_id, data_interval=data_interval, start_test_date=start_test_date)
 
-    exit()
-
-    # get_flows(driver=chrome_init())
-    advance_decline(ag=agents())
-    qt_curve()
-    spx_yield()
-    vix_cont()
-    get_sma50(ag=agents())
-    get_economics(ag=agents())
-    get_tw_charts(driver=chrome_init())
-
-    vix_curve(driver=chrome_init())
-    get_finviz_treemaps(driver=chrome_init())
-    get_coins360_treemaps(driver=chrome_init())
 
     # schedule.every(720).minutes.do(lambda: get_flows(driver=chrome_init()))
     # schedule.every(120).minutes.do(lambda: advance_decline(ag=agents()))
