@@ -60,27 +60,27 @@ then
 elif [ "$1" == '120' ]
 then
   echo "#Every $1 [$(date +'%Y-%m-%d %H:%M:%S')]"  >> $LOGDIR/$LOG_FILE_NAME
-  python3 $BASEDIR/cron_every_120_min.py  >> $LOGDIR/$LOG_FILE_NAME  2>&1 &
+  python3 $BASEDIR/cron_every_120_min.py --fname=$LOG_FILE_NAME >> $LOGDIR/$LOG_FILE_NAME  2>&1 &
 elif [ "$1" == '480' ]
 then
   echo "#Every $1 [$(date +'%Y-%m-%d %H:%M:%S')]"  >> $LOGDIR/$LOG_FILE_NAME
-  python3 $BASEDIR/cron_every_480_min.py  >> $LOGDIR/$LOG_FILE_NAME  2>&1 &
+  python3 $BASEDIR/cron_every_480_min.py  --fname=$LOG_FILE_NAME >> $LOGDIR/$LOG_FILE_NAME  2>&1 &
 elif [ "$1" == '720' ]
 then
   echo "#Every $1 [$(date +'%Y-%m-%d %H:%M:%S')]"  >> $LOGDIR/$LOG_FILE_NAME
-  python3 $BASEDIR/cron_every_720_min.py  >> $LOGDIR/$LOG_FILE_NAME  2>&1 &
+  python3 $BASEDIR/cron_every_720_min.py  --fname=$LOG_FILE_NAME >> $LOGDIR/$LOG_FILE_NAME  2>&1 &
 elif [ "$1" == 'MONDAY' ]
 then
   echo "#Every $1 [$(date +'%Y-%m-%d %H:%M:%S')]"  >> $LOGDIR/$LOG_FILE_NAME
-  python3 $BASEDIR/cron_every_monday.py  >> $LOGDIR/$LOG_FILE_NAME  2>&1 &
+  python3 $BASEDIR/cron_every_monday.py --fname=$LOG_FILE_NAME >> $LOGDIR/$LOG_FILE_NAME  2>&1 &
 elif [ "$1" == 'EVERYDAY' ]
 then
   echo "#Every $1 [$(date +'%Y-%m-%d %H:%M:%S')]"  >> $LOGDIR/$LOG_FILE_NAME
-  python3 $BASEDIR/cron_update_closes_capital_returns.py  >> $LOGDIR/"$LOG_FILE_NAME"  2>&1 &
+  python3 $BASEDIR/cron_update_closes_capital_returns.py --fname=$LOG_FILE_NAME >> $LOGDIR/"$LOG_FILE_NAME"  2>&1 &
 elif [ "$1" == 'FIRST_DAY_OF_MONTH' ]
 then
   echo "#Every $1 [$(date +'%Y-%m-%d %H:%M:%S')]"  >> $LOGDIR/$LOG_FILE_NAME
-  python3 $BASEDIR/cron_calc_portfolios_allocation.py  >> $LOGDIR/$LOG_FILE_NAME   2>&1 &
+  python3 $BASEDIR/cron_calc_portfolios_allocation.py --fname=$LOG_FILE_NAME >> $LOGDIR/$LOG_FILE_NAME   2>&1 &
 fi
 deactivate
 

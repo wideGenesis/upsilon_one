@@ -9,7 +9,6 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Set log filename')
     parser.add_argument("--fname", default="cron_scheduler.log", help="This is the 'a' variable")
     args = parser.parse_args()
-    args = parser.parse_args()
     log_file_name = args.fname
 
     debug_init(file_name=log_file_name)
