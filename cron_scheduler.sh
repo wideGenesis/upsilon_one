@@ -56,7 +56,7 @@ then
 elif [ "$1" == '30' ]
 then
   echo "#Every $1 [$(date +'%Y-%m-%d %H:%M:%S')]"  >> $LOGDIR/$LOG_FILE_NAME
-  python3 $BASEDIR/cron_every_30_min.py  >> $LOGDIR/$LOG_FILE_NAME 2>&1 &
+  python3 $BASEDIR/cron_every_30_min.py --fname=$LOG_FILE_NAME >> $LOGDIR/$LOG_FILE_NAME 2>&1 &
 elif [ "$1" == '120' ]
 then
   echo "#Every $1 [$(date +'%Y-%m-%d %H:%M:%S')]"  >> $LOGDIR/$LOG_FILE_NAME
