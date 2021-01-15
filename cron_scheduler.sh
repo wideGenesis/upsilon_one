@@ -37,49 +37,57 @@
 BASEDIR=/home/upsilonsfather/projects/ups_one
 LOGDIR=$BASEDIR/logs
 
-if [[ ! -f $LOGDIR/cron_bot_restarter.log ]]
+LOG_FILE_NAME='cron_scheduler_'$(date +%Y_%m_%d)'.log'
+
+if [[ ! -f $LOGDIR/$LOG_FILE_NAME ]]
 then
-   echo "Create log + $(date +'%Y-%m-%d %H:%M:%S')" > $LOGDIR/cron_scheduler.log
+   echo "Create log + $(date +'%Y-%m-%d %H:%M:%S')" > $LOGDIR/$LOG_FILE_NAME
 fi
 
 cd $BASEDIR
 source $BASEDIR/venv/bin/activate
-echo "[$(date +'%Y-%m-%d %H:%M:%S')]************* Start  cron scheduler *************" >> $LOGDIR/cron_scheduler.log
+echo "[$(date +'%Y-%m-%d %H:%M:%S')]************* Start  cron scheduler *************" >> $LOGDIR/$LOG_FILE_NAME
 if [ "$1" == "1" ]
 then
-  echo "#Every  $1 [$(date +'%Y-%m-%d %H:%M:%S')]"  >> $LOGDIR/cron_scheduler.log
+  echo "#Every  $1 [$(date +'%Y-%m-%d %H:%M:%S')]"  >> $LOGDIR/$LOG_FILE_NAME
 elif [ "$1" == '5' ]
 then
-  echo "#Every $1 [$(date +'%Y-%m-%d %H:%M:%S')]"  >> $LOGDIR/cron_scheduler.log
+  echo "#Every $1 [$(date +'%Y-%m-%d %H:%M:%S')]"  >> $LOGDIR/$LOG_FILE_NAME
 elif [ "$1" == '30' ]
 then
-  echo "#Every $1 [$(date +'%Y-%m-%d %H:%M:%S')]"  >> $LOGDIR/cron_scheduler.log
-  python3 $BASEDIR/cron_every_30_min.py  >> $LOGDIR/cron_scheduler.log 2>&1 &
+  echo "#Every $1 [$(date +'%Y-%m-%d %H:%M:%S')]"  >> $LOGDIR/$LOG_FILE_NAME
+  python3 $BASEDIR/cron_every_30_min.py  >> $LOGDIR/$LOG_FILE_NAME 2>&1 &
 elif [ "$1" == '120' ]
 then
-  echo "#Every $1 [$(date +'%Y-%m-%d %H:%M:%S')]"  >> $LOGDIR/cron_scheduler.log
-  python3 $BASEDIR/cron_every_120_min.py  >> $LOGDIR/cron_scheduler.log  2>&1 &
+  echo "#Every $1 [$(date +'%Y-%m-%d %H:%M:%S')]"  >> $LOGDIR/$LOG_FILE_NAME
+  python3 $BASEDIR/cron_every_120_min.py  >> $LOGDIR/$LOG_FILE_NAME  2>&1 &
 elif [ "$1" == '480' ]
 then
-  echo "#Every $1 [$(date +'%Y-%m-%d %H:%M:%S')]"  >> $LOGDIR/cron_scheduler.log
-  python3 $BASEDIR/cron_every_480_min.py  >> $LOGDIR/cron_scheduler.log  2>&1 &
+  echo "#Every $1 [$(date +'%Y-%m-%d %H:%M:%S')]"  >> $LOGDIR/$LOG_FILE_NAME
+  python3 $BASEDIR/cron_every_480_min.py  >> $LOGDIR/$LOG_FILE_NAME  2>&1 &
 elif [ "$1" == '720' ]
 then
-  echo "#Every $1 [$(date +'%Y-%m-%d %H:%M:%S')]"  >> $LOGDIR/cron_scheduler.log
-  python3 $BASEDIR/cron_every_720_min.py  >> $LOGDIR/cron_scheduler.log  2>&1 &
+  echo "#Every $1 [$(date +'%Y-%m-%d %H:%M:%S')]"  >> $LOGDIR/$LOG_FILE_NAME
+  python3 $BASEDIR/cron_every_720_min.py  >> $LOGDIR/$LOG_FILE_NAME  2>&1 &
 elif [ "$1" == 'MONDAY' ]
 then
-  echo "#Every $1 [$(date +'%Y-%m-%d %H:%M:%S')]"  >> $LOGDIR/cron_scheduler.log
-  python3 $BASEDIR/cron_every_monday.py  >> $LOGDIR/cron_scheduler.log  2>&1 &
+  echo "#Every $1 [$(date +'%Y-%m-%d %H:%M:%S')]"  >> $LOGDIR/$LOG_FILE_NAME
+  python3 $BASEDIR/cron_every_monday.py  >> $LOGDIR/$LOG_FILE_NAME  2>&1 &
 elif [ "$1" == 'EVERYDAY' ]
 then
-  echo "#Every $1 [$(date +'%Y-%m-%d %H:%M:%S')]"  >> $LOGDIR/cron_scheduler.log
-  python3 $BASEDIR/cron_update_closes_capital_returns.py  >> $LOGDIR/cron_scheduler.log  2>&1 &
+  echo "#Every $1 [$(date +'%Y-%m-%d %H:%M:%S')]"  >> $LOGDIR/$LOG_FILE_NAME
+  python3 $BASEDIR/cron_update_closes_capital_returns.py  >> $LOGDIR/"$LOG_FILE_NAME"  2>&1 &
 elif [ "$1" == 'FIRST_DAY_OF_MONTH' ]
 then
-  echo "#Every $1 [$(date +'%Y-%m-%d %H:%M:%S')]"  >> $LOGDIR/cron_scheduler.log
-#  python3 $BASEDIR/cron_get_universe_holdings.py  >> $LOGDIR/cron_scheduler.log   2>&1 &
-#  sleep 120
-  python3 $BASEDIR/cron_calc_portfolios_allocation.py  >> $LOGDIR/cron_scheduler.log   2>&1 &
+  echo "#Every $1 [$(date +'%Y-%m-%d %H:%M:%S')]"  >> $LOGDIR/$LOG_FILE_NAME
+  python3 $BASEDIR/cron_calc_portfolios_allocation.py  >> $LOGDIR/$LOG_FILE_NAME   2>&1 &
 fi
 deactivate
+
+OLD_LOG_FILE_NAME='cron_scheduler_'$(date --date="$date -10 day" +%Y_%m_%d)'.log'
+
+if [[ -f $LOGDIR/$OLD_LOG_FILE_NAME ]]
+then
+	echo "Try delete " $OLD_LOG_FILE_NAME
+	rm $BASEDIR/$OLD_LOG_FILE_NAME
+fi
