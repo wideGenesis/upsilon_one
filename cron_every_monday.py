@@ -10,5 +10,5 @@ if __name__ == '__main__':
     img_out_path = PROJECT_HOME_DIR + '/' + IMAGES_OUT_PATH
     debug(img_out_path)
     get_economics(ag=agents(), img_out_path_=img_out_path)
-    debug("%%%%%%%%%%%%%%%Complete every monday")
+    debug("%%%%%%%%%%%%%%%Complete every monday\n\n\n")
     debug_deinit()

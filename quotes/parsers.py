@@ -240,7 +240,7 @@ def get_economics(ag=None, img_out_path_=IMAGES_OUT_PATH):
                     & (df.Country != 'Japan')].index)
     filename = os.path.join(img_out_path_, 'economic_data.csv')
     df.to_csv(filename, index=False)
-    debug('Get economics complete' + '\n')
+    debug('Get economics complete')
 
 
 # ============================== TW GET ================================
