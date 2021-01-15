@@ -310,6 +310,7 @@ def get_sma50(ag=None, img_out_path_=IMAGES_OUT_PATH):
     items_ = {}
     try:
         for k, v in urls_d.items():
+            sleep(1)
             debug(f'Try get key: {k}')
             html = requests.get(v, headers=headers).text
             soup = BeautifulSoup(html, "html.parser")
