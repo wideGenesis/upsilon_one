@@ -13,7 +13,7 @@ def get_all_etf_holdings():
     t_len = len(ETF_FOR_SCRAPE)
     if not is_debug_init():
         print_progress_bar(0, t_len, prefix='Progress:', suffix='Complete', length=50)
-    for numb, etf in enumerate(ETF_FOR_SCRAPE):
+    for numb, etf in enumerate(ETF_FOR_SCRAPE, start=1):
         with requests.Session() as session:
             url = f'https://eodhistoricaldata.com/api/fundamentals/{etf}.US'
             params = {'api_token': EOD_API_KEY, 'filter': 'ETF_Data::Holdings'}
@@ -34,9 +34,11 @@ def get_all_etf_holdings():
                         if ticker not in ticker_data:
                             sector, mkt_cap, exchange = get_data_by_ticker(ticker, session)
                             request_count += 1
-                            # debug(f'{ticker}:{exchange}')
-                            if ((sector not in EXCLUDE_SECTORS and sector is not None)
-                                or ticker in NOT_EXCLUDE_TICKERS) and exchange in VALID_EXCHANGE:
+                            # debug(f'{ticker}:{etf}')
+                            if (((sector not in EXCLUDE_SECTORS and sector is not None)
+                                or ticker in NOT_EXCLUDE_TICKERS)
+                                    and ticker not in EXCLUDE_TICKERS and exchange in VALID_EXCHANGE):
+                                # debug(f'INSERT {ticker}:{etf}', "WARNING")
                                 ticker_data[ticker] = (sector, mkt_cap, exchange)
                     else:
                         # debug(f'Cant get Code for company:ETF:{etf}:{company}')
@@ -46,13 +48,15 @@ def get_all_etf_holdings():
                             sector, mkt_cap, exchange = get_data_by_ticker(ticker, session)
                             request_count += 1
                             # debug(f'{ticker}:{exchange}')
-                            if ((sector not in EXCLUDE_SECTORS and sector is not None)
-                                or ticker in NOT_EXCLUDE_TICKERS) and exchange in VALID_EXCHANGE:
+                            if (((sector not in EXCLUDE_SECTORS and sector is not None)
+                                or ticker in NOT_EXCLUDE_TICKERS)
+                                    and ticker not in EXCLUDE_TICKERS and exchange in VALID_EXCHANGE):
                                 ticker_data[ticker] = (sector, mkt_cap, exchange)
                     if count == ETF_FOR_SCRAPE[etf]:
                         break
         if not is_debug_init():
-            print_progress_bar(numb, t_len, prefix='Progress:', suffix=f'Complete:{etf}:{len(ticker_data)}    ', length=50)
+            print_progress_bar(numb, t_len, prefix='Progress:', suffix=f'Complete:{etf}:{len(ticker_data)}    ',
+                               length=50)
         else:
             debug(f'Complete:{etf}:{len(ticker_data)}')
     debug("Complete get_all_etf_holdings")
