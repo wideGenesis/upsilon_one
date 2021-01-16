@@ -136,7 +136,19 @@ async def dialog_flow_handler(event, client_):
         sender_id = await event.get_input_sender()
     if not any(value in event.text for value in
                ('/start', '/help', '/publish_to', '/to', 'Главное меню', 'Профиль', 'Помощь', 'Donate', '/q', '/n',
-                '/about')):
+                '/about', '/goals', '/skills', '/future',
+                '/instruction00',
+                '/instruction01',
+                '/instruction02',
+                '/instruction03',
+                '/instruction04',
+                '/instruction05',
+                '/instruction06',
+                '/instruction07',
+                '/instruction08',
+                '/instruction09',
+                '/instruction10',
+                )):
         user_message = event.text
         project_id = 'common-bot-1'
         try:
@@ -197,3 +209,34 @@ async def news_to_handler(event, client_, limit=20):
 
 async def about_handler(event, client_):
     await client_.send_message(event.input_sender, ins.about)
+
+
+async def goals_handler(event, client_):
+    await client_.send_message(event.input_sender, ins.goals)
+
+
+async def skills_handler(event, client_):
+    await client_.send_message(event.input_sender, ins.skills)
+
+
+async def future_handler(event, client_):
+    await client_.send_message(event.input_sender, ins.future)
+
+
+async def instructions_handler(event, client_):
+    pattern = event.original_update.message.message
+    pattern = str(pattern).strip('/')
+    if pattern == 'instruction00':
+        await client_.send_message(event.input_sender, ins.instruction00)
+    elif pattern == 'instruction01':
+        await client_.send_message(event.input_sender, ins.instruction01)
+    elif pattern == 'instruction02':
+        await client_.send_message(event.input_sender, ins.instruction02)
+    elif pattern == 'instruction03':
+        await client_.send_message(event.input_sender, ins.instruction03)
+    elif pattern == 'instruction04':
+        await client_.send_message(event.input_sender, ins.instruction04)
+    elif pattern == 'instruction05':
+        await client_.send_message(event.input_sender, ins.instruction05)
+    elif pattern == 'instruction06':
+        await client_.send_message(event.input_sender, ins.instruction06)
