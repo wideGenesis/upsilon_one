@@ -92,6 +92,13 @@ async def callback(event):
                                      engine=engine)
 
 
+# ============================== Instructions ===============================
+@client.on(events.NewMessage(pattern='/about'))
+async def about(event):
+    await handlers.about_handler(event, client)
+
+
+
 # ============================== Main  =============================
 # Стартуем вебсервер для прослушки приходящих событий об успешных платежах
 async def webserver_starter():

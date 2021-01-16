@@ -10,6 +10,7 @@ from telegram import sql_queries as sql
 from telegram import ai
 from telegram import shared
 from quotes.stock_quotes_news import StockStat
+from telegram import instructions as ins
 from project_shared import *
 
 
@@ -134,7 +135,8 @@ async def dialog_flow_handler(event, client_):
     except ValueError as e:
         sender_id = await event.get_input_sender()
     if not any(value in event.text for value in
-               ('/start', '/help', '/publish_to', '/to', 'Главное меню', 'Профиль', 'Помощь', 'Donate', '/q', '/n')):
+               ('/start', '/help', '/publish_to', '/to', 'Главное меню', 'Профиль', 'Помощь', 'Donate', '/q', '/n',
+                '/about')):
         user_message = event.text
         project_id = 'common-bot-1'
         try:
@@ -191,3 +193,7 @@ async def news_to_handler(event, client_, limit=20):
         msg = 'Новости недоступны'
     await client_.send_message(event.input_sender, f'Последние новости с упоминанием {stock}')
     await client_.send_message(event.input_sender, msg)
+
+
+async def about_handler(event, client_):
+    await client_.send_message(event.input_sender, ins.about)
