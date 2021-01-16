@@ -46,7 +46,7 @@ def update_portfolio_allocation(port_id, weights, table_name=PORTFOLIO_ALLOCATIO
                     debug(f'Exception: {oe}', "WARNING")
                     sleep(0.9)
                     errCode = update_portfolio_allocation(port_id=port_id, weights=weights,
-                                                          recursion_count=recursion_count+1)
+                                                          recursion_count=recursion_count + 1)
                     return errCode
                 else:
                     debug(f'Exception: {oe}', "WARNING")
@@ -140,7 +140,7 @@ def get_portfolio_returns(port_id, start_date=None, end_date=date.today(),
 
 
 def get_portfolio_returns_df(port_id, start_date=None, end_date=date.today(),
-                          table_name=PORTFOLIO_RETURNS_TABLE_NAME, engine=engine):
+                             table_name=PORTFOLIO_RETURNS_TABLE_NAME, engine=engine):
     with engine.connect() as connection:
         if is_table_exist(table_name):
             query_string = f'SELECT rdate, ret FROM {table_name} ' \
@@ -283,3 +283,96 @@ def get_portfolio_bars_ti(port_id, time_interval=None, interval_type="Y",
             query_string += f' ORDER BY bdate ASC'
             q_result = connection.execute(query_string)
             return q_result.fetchall() if q_result.rowcount > 0 else None
+
+
+# ============================================ Historical allocations ============================================
+def create_hist_port_allocation_table(table_name=HIST_PORT_ALLOCATION_TABLE_NAME, engine=engine):
+    with engine.connect() as connection:
+        if not is_table_exist(table_name):
+            transaction = connection.begin()
+            create_query = f'CREATE TABLE {table_name} ' \
+                           f'(port_id VARCHAR(100) NOT NULL, ' \
+                           f'adate DATE, ' \
+                           f'ticker VARCHAR(6), ' \
+                           f'weight DOUBLE, ' \
+                           f'PRIMARY KEY(port_id, adate, ticker, weight)' \
+                           f')'
+            connection.execute(create_query)
+            transaction.commit()
+
+
+def update_hist_port_allocation(port_id, weights, allo_date=date.today(), overwrite=False,
+                                table_name=HIST_PORT_ALLOCATION_TABLE_NAME, engine=engine,
+                                recursion_count=0):
+    if recursion_count == RECURSION_DEPTH:
+        return -1
+    with engine.connect() as connection:
+        if is_table_exist(table_name):
+            transaction = connection.begin()
+            if overwrite:
+                try:
+                    del_query = f'DELETE FROM {table_name} WHERE port_id=\'{port_id}\' AND adate=\'{str(allo_date)}\''
+                    connection.execute(del_query)
+                except sqlalchemy.exc.OperationalError as oe:
+                    if oe.orig.args[0] == 1213:
+                        debug(f'Exception: {oe}', "WARNING")
+                        sleep(0.9)
+                        errCode = update_hist_port_allocation(port_id=port_id, weights=weights, allo_date=allo_date,
+                                                              recursion_count=recursion_count + 1)
+                        return errCode
+                    else:
+                        debug(f'Exception: {oe}', "WARNING")
+                        return -1
+
+                for ticker in weights:
+                    try:
+                        ins_query = f'INSERT INTO {table_name} (port_id, adate, ticker, weight) ' \
+                                    f'VALUES (\'{port_id}\', \'{str(allo_date)}\', \'{ticker}\', \'{weights[ticker]}\')'
+                        connection.execute(ins_query)
+                    except sqlalchemy.exc.OperationalError as oe:
+                        if oe.orig.args[0] == 1213:
+                            debug(f'Exception: {oe}', "WARNING")
+                            sleep(0.9)
+                            errCode = update_hist_port_allocation(port_id=port_id, weights=weights, allo_date=allo_date,
+                                                                  recursion_count=recursion_count + 1)
+                            return errCode
+                        else:
+                            debug(f'Exception: {oe}', "WARNING")
+                            return -1
+                transaction.commit()
+                return 0
+            else:  #не перезаписываем по умолчанию
+                sel_query = f'SELECT * from {table_name} ' \
+                            f'WHERE port_id=\'{port_id}\' AND adate=\'{str(allo_date)}\''
+
+                q_result = connection.execute(sel_query)
+                if q_result.rowcount == 0:
+                    for ticker in weights:
+                        try:
+                            ins_query = f'INSERT INTO {table_name} (port_id, adate, ticker, weight) ' \
+                                        f'VALUES (\'{port_id}\', \'{str(allo_date)}\', \'{ticker}\', \'{weights[ticker]}\')'
+                            connection.execute(ins_query)
+                        except sqlalchemy.exc.OperationalError as oe:
+                            if oe.orig.args[0] == 1213:
+                                debug(f'Exception: {oe}', "WARNING")
+                                sleep(0.9)
+                                errCode = update_hist_port_allocation(port_id=port_id, weights=weights,
+                                                                      allo_date=allo_date,
+                                                                      recursion_count=recursion_count + 1)
+                                return errCode
+                            else:
+                                debug(f'Exception: {oe}', "WARNING")
+                                return -1
+                transaction.commit()
+                return 0
+
+
+def get_hist_port_allocation(port_id, allo_date, table_name=HIST_PORT_ALLOCATION_TABLE_NAME, engine=engine):
+    with engine.connect() as connection:
+        if is_table_exist(table_name):
+            get_query = f'SELECT ticker, weight ' \
+                        f'FROM {table_name} ' \
+                        f'WHERE port_id=\'{port_id}\' AND adate=\'{str(allo_date)}\''
+            get_result = connection.execute(get_query)
+            return get_result.fetchall() if get_result.rowcount > 0 else None
+
