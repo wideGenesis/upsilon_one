@@ -250,7 +250,6 @@ async def instructions_handler(event, client_):
 async def portfolio_candle_chart_handler(event, client_):
     pattern = event.original_update.message.message
     pattern = str(pattern).strip('/').split('_')[1]
-    debug(f'Pattern={pattern}')
     if pattern == 'parking':
         await client_.send_file(event.input_sender, CHARTER_IMAGES_PATH + 'parking_port_chart_over_TLT.png')
     elif pattern == 'allweather':
