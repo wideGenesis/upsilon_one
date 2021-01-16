@@ -148,6 +148,11 @@ async def dialog_flow_handler(event, client_):
                 '/instruction08',
                 '/instruction09',
                 '/instruction10',
+                '/chart_parking',
+                '/chart_allweather',
+                '/chart_balanced',
+                '/chart_aggressive',
+                '/chart_leveraged',
                 )):
         user_message = event.text
         project_id = 'common-bot-1'
@@ -240,3 +245,19 @@ async def instructions_handler(event, client_):
         await client_.send_message(event.input_sender, ins.instruction05)
     elif pattern == 'instruction06':
         await client_.send_message(event.input_sender, ins.instruction06)
+
+
+async def portfolio_candle_chart_handler(event, client_):
+    pattern = event.original_update.message.message
+    pattern = str(pattern).strip('/').split('_')[1]
+    debug(f'Pattern={pattern}')
+    if pattern == 'parking':
+        await client_.send_file(event.input_sender, CHARTER_IMAGES_PATH + 'parking_port_chart_over_TLT.png')
+    elif pattern == 'allweather':
+        await client_.send_file(event.input_sender, CHARTER_IMAGES_PATH + 'allweather_port_chart_over_SPY.png')
+    elif pattern == 'balanced':
+        await client_.send_file(event.input_sender, CHARTER_IMAGES_PATH + 'balanced_port_chart_over_QQQ.png')
+    elif pattern == 'aggressive':
+        await client_.send_file(event.input_sender, CHARTER_IMAGES_PATH + 'aggressive_port_chart_over_QQQ.png')
+    elif pattern == 'leveraged':
+        await client_.send_file(event.input_sender, CHARTER_IMAGES_PATH + 'leveraged_port_chart_over_QQQ.png')

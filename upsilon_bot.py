@@ -117,6 +117,12 @@ async def future(event):
 async def instructions(event):
     await handlers.instructions_handler(event, client)
 
+
+@client.on(events.NewMessage(pattern='^/chart_(parking|allweather|balanced|aggressive|leveraged)$'))
+async def instructions(event):
+    await handlers.portfolio_candle_chart_handler(event, client)
+
+
 # ============================== Main  =============================
 # Стартуем вебсервер для прослушки приходящих событий об успешных платежах
 async def webserver_starter():
