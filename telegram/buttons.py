@@ -66,7 +66,7 @@ keyboard_a2 = [
     #     Button.inline('\U0001F4BC  ' + 'Оценка/аудит портфеля', b'a2a2')
     # ],
     [
-        Button.inline('\U0001F4BC  ' + '"Парковочный" портфель', b'a2a3')
+        Button.inline('\U0001F4BC  ' + 'Парковочный портфель', b'a2a3')
     ],
     [
         Button.inline('\U0001F4BC  ' + 'Всепогодный портфель', b'a2a4')
