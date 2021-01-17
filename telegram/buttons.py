@@ -138,12 +138,12 @@ keyboard_a4_back = [
 ]
 
 keyboard_a5 = [
-    [
-        Button.inline('\U0001F50D   ' + 'Как ... /instruction01', b'a5a1')
-    ],
-    [
-        Button.inline('\U0001F50D   ' + 'Что ... /instruction02', b'a5a2')
-    ],
+    # [
+    #     Button.inline('\U0001F50D   ' + 'Как ... /instruction01', b'a5a1')
+    # ],
+    # [
+    #     Button.inline('\U0001F50D   ' + 'Что ... /instruction02', b'a5a2')
+    # ],
     [
         Button.inline('\U0001F519  ' + 'Назад', b'main')
     ]

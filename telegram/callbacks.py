@@ -13,6 +13,7 @@ from telegram import menu
 from telegram import shared
 from payments.payagregator import PaymentAgregator
 from project_shared import *
+from telegram import instructions as ins
 from quotes.stock_quotes_news import fin_news
 
 PAYMENT_AGGREGATOR = None
@@ -30,7 +31,7 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
         await client.send_message(event.input_sender, 'Анализ рынков', buttons=buttons.keyboard_a1)
         await event.edit()
     elif event.data == b'a2':
-        await client.send_message(event.input_sender, 'Конструктор портфелей', buttons=buttons.keyboard_a2)
+        await client.send_message(event.input_sender, 'Портфели', buttons=buttons.keyboard_a2)
         await event.edit()
     # elif event.data == b'a3':
     #     await client.send_message(event.input_sender, 'Калькуляторы', buttons=buttons.keyboard_a3)
@@ -39,7 +40,7 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
         await client.send_message(event.input_sender, 'Управление', buttons=buttons.keyboard_a4)
         await event.edit()
     elif event.data == b'a5':
-        await client.send_message(event.input_sender, 'Инструкции', buttons=buttons.keyboard_a5)
+        await client.send_message(event.input_sender, ins.instructions_main, buttons=buttons.keyboard_a5)
         await event.edit()
     # elif event.data == b'a6':
     #     await client.send_message(event.input_sender, 'Образование', buttons=buttons.keyboard_a6)
@@ -287,7 +288,7 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
     #     await client.send_message(event.input_sender, 'Подходит ли вам трейдинг? /instruction10',
     #                               buttons=buttons.keyboard_a2_back)
     elif event.data == b'a2a-1':
-        await client.send_message(event.input_sender, 'Конструктор стратегий', buttons=buttons.keyboard_a2)
+        await client.send_message(event.input_sender, 'Портфели', buttons=buttons.keyboard_a2)
         await event.edit()
 
     # ============================== Калькуляторы =============================
@@ -344,21 +345,23 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
         await event.edit()
 
     # ============================== Инструкции =============================
-    elif event.data == b'a5a1':
-        message = await client.send_message(entity=entity, message='Загрузка...')
-        await client.edit_message(message, 'Как ... /instruction01')
-        await event.edit()
-        await client.send_message(event.input_sender, 'Как ... /instruction01',
-                                  buttons=buttons.keyboard_a5_back)
-    elif event.data == b'a5a2':
-        message = await client.send_message(entity=entity, message='Загрузка...')
-        await client.edit_message(message, 'Что ... /instruction02')
-        await event.edit()
-        await client.send_message(event.input_sender, 'Что ... /instruction02',
-                                  buttons=buttons.keyboard_a5_back)
-    elif event.data == b'a5a-1':
-        await client.send_message(event.input_sender, 'Инструкции', buttons=buttons.keyboard_a5)
-        await event.edit()
+    # elif event.data == b'a5a1':
+    #     message = await client.send_message(entity=entity, message='Загрузка...')
+    #     await client.edit_message(message, 'Как ... /instruction01')
+    #     await event.edit()
+    #     await client.send_message(event.input_sender, 'Как ... /instruction01',
+    #                               buttons=buttons.keyboard_a5_back)
+    # elif event.data == b'a5a2':
+    #     message = await client.send_message(entity=entity, message='Загрузка...')
+    #     await client.edit_message(message, 'Что ... /instruction02')
+    #     await event.edit()
+    #     await client.send_message(event.input_sender, 'Что ... /instruction02',
+    #                               buttons=buttons.keyboard_a5_back)
+    # elif event.data == b'a5a-1':
+    #     await client.send_message(event.input_sender, 'Инструкции')
+    #     await client.send_message(event.input_sender, 'Текст', buttons=buttons.keyboard_a5_back)
+    #
+    #     await event.edit()
 
     # ============================== Образовательные программы =============================
     elif event.data == b'a6a1':
