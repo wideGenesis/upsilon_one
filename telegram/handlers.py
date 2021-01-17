@@ -148,6 +148,16 @@ async def dialog_flow_handler(event, client_):
                 '/instruction08',
                 '/instruction09',
                 '/instruction10',
+                '/instruction11',
+                '/instruction12',
+                '/instruction13',
+                '/instruction14',
+                '/instruction15',
+                '/instruction16',
+                '/instruction17',
+                '/instruction18',
+                '/instruction19',
+
                 '/chart_parking',
                 '/chart_allweather',
                 '/chart_balanced',
@@ -245,6 +255,32 @@ async def instructions_handler(event, client_):
         await client_.send_message(event.input_sender, ins.instruction05)
     elif pattern == 'instruction06':
         await client_.send_message(event.input_sender, ins.instruction06)
+    elif pattern == 'instruction07':
+        await client_.send_message(event.input_sender, ins.instruction07)
+    elif pattern == 'instruction08':
+        await client_.send_message(event.input_sender, ins.instruction08)
+    elif pattern == 'instruction09':
+        await client_.send_message(event.input_sender, ins.instruction09)
+    elif pattern == 'instruction10':
+        await client_.send_message(event.input_sender, ins.instruction10)
+    elif pattern == 'instruction11':
+        await client_.send_message(event.input_sender, ins.instruction11)
+    elif pattern == 'instruction12':
+        await client_.send_message(event.input_sender, ins.instruction12)
+    elif pattern == 'instruction13':
+        await client_.send_message(event.input_sender, ins.instruction13)
+    elif pattern == 'instruction14':
+        await client_.send_message(event.input_sender, ins.instruction14)
+    elif pattern == 'instruction15':
+        await client_.send_message(event.input_sender, ins.instruction15)
+    elif pattern == 'instruction16':
+        await client_.send_message(event.input_sender, ins.instruction16)
+    elif pattern == 'instruction17':
+        await client_.send_message(event.input_sender, ins.instruction17)
+    elif pattern == 'instruction18':
+        await client_.send_message(event.input_sender, ins.instruction18)
+    elif pattern == 'instruction19':
+        await client_.send_message(event.input_sender, ins.instruction19)
 
 
 async def portfolio_candle_chart_handler(event, client_):

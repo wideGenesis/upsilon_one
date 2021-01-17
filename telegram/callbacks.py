@@ -13,6 +13,7 @@ from telegram import menu
 from telegram import shared
 from payments.payagregator import PaymentAgregator
 from project_shared import *
+from telegram import instructions as ins
 from quotes.stock_quotes_news import fin_news
 
 PAYMENT_AGGREGATOR = None
@@ -30,7 +31,7 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
         await client.send_message(event.input_sender, 'Анализ рынков', buttons=buttons.keyboard_a1)
         await event.edit()
     elif event.data == b'a2':
-        await client.send_message(event.input_sender, 'Конструктор портфелей', buttons=buttons.keyboard_a2)
+        await client.send_message(event.input_sender, 'Портфели', buttons=buttons.keyboard_a2)
         await event.edit()
     # elif event.data == b'a3':
     #     await client.send_message(event.input_sender, 'Калькуляторы', buttons=buttons.keyboard_a3)
@@ -39,7 +40,7 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
         await client.send_message(event.input_sender, 'Управление', buttons=buttons.keyboard_a4)
         await event.edit()
     elif event.data == b'a5':
-        await client.send_message(event.input_sender, 'Инструкции', buttons=buttons.keyboard_a5)
+        await client.send_message(event.input_sender, ins.instructions_main, buttons=buttons.keyboard_a5)
         await event.edit()
     # elif event.data == b'a6':
     #     await client.send_message(event.input_sender, 'Образование', buttons=buttons.keyboard_a6)
@@ -66,7 +67,9 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
         await client.send_file(entity, img_path + 'coins_treemap.png')
         await client.edit_message(message, 'Рынок криптовалют')
         await event.edit()
-        await client.send_message(event.input_sender, 'Как интерпритировать графики выше? /instruction01',
+        await client.send_message(event.input_sender, 'Как интерпретировать графики выше? \n '
+                                                      '/instruction07 \n'
+                                                      '/instruction04',
                                   buttons=buttons.keyboard_a1_back)
     elif event.data == b'a1a3':
         message = await client.send_message(entity=entity, message='Загрузка...')
@@ -74,11 +77,12 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
         await client.send_file(entity, img_path + 'rtsi.png')
         await client.edit_message(message, 'Рынок РФ')
         await event.edit()
-        await client.send_message(event.input_sender, 'Как интерпритировать графики выше? /instruction01',
+        await client.send_message(event.input_sender, 'Как интерпретировать графики выше? \n'
+                                                      '/instruction08',
                                   buttons=buttons.keyboard_a1_back)
     elif event.data == b'a1a4':
         message = await client.send_message(entity=entity, message='Загрузка...')
-        await client.send_message(entity=entity, message='Денежные потоки в миллионах USD')
+        await client.send_message(entity=entity, message='Денежные потоки в USD')
         await client.send_message(entity=entity, message='Денежные потоки SPY')
         await client.send_file(entity, img_path + 'inflows_SPY.png')
         await client.send_message(entity=entity, message='Денежные потоки QQQ')
@@ -101,7 +105,8 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
         await client.send_file(entity, img_path + 'inflows_TLT.png')
         await client.edit_message(message, 'Ежедневные денежные потоки основных ETF за месяц')
         await event.edit()
-        await client.send_message(event.input_sender, 'Как интерпритировать денежные потоки? /instruction02',
+        await client.send_message(event.input_sender, 'Как интерпретировать денежные потоки? \n'
+                                                      '/instruction09',
                                   buttons=buttons.keyboard_a1_back)
     elif event.data == b'a1a5':
         message = await client.send_message(entity=entity, message='Загрузка...')
@@ -112,7 +117,8 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
         await client.send_file(entity, img_path + 'global_treemap_ytd.png')
         await client.edit_message(message, 'Мировые рынки в картах')
         await event.edit()
-        await client.send_message(event.input_sender, 'Как ? /instruction02',
+        await client.send_message(event.input_sender, 'Как интерпретировать тепловые карты? \n'
+                                                      '/instruction04',
                                   buttons=buttons.keyboard_a1_back)
     elif event.data == b'a1a6':
         await client.send_message(event.input_sender, 'Основные макро индикаторы', buttons=buttons.keyboard_core_macro)
@@ -132,14 +138,17 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
                 r1 = str(row1).strip("['']").replace("'", "")
                 await client.send_message(entity=entity, message=f'{r1}')
         await client.edit_message(message, 'Количество растущих/падающих акций и объёмы за сегодня')
-        await client.send_message(event.input_sender, 'Как ? /instruction02', buttons=buttons.keyboard_us_market_back)
+        await client.send_message(event.input_sender, 'Как интепритировать статистику торгов? \n'
+                                                      '/instruction01',
+                                  buttons=buttons.keyboard_us_market_back)
         await event.edit()
     elif event.data == b'us2':
         message = await client.send_message(entity=entity, message='Загрузка...')
         await client.send_file(entity, img_path + 'sectors.png')
         await client.edit_message(message, 'Общая картина рынка')
         await event.edit()
-        await client.send_message(event.input_sender, 'Как интерпритировать графики выше? /instruction02',
+        await client.send_message(event.input_sender, 'Как интерпретировать графики выше? \n'
+                                                      '/instruction02',
                                   buttons=buttons.keyboard_us_market_back)
     elif event.data == b'us6':
         message = await client.send_message(entity=entity, message='Загрузка...')
@@ -151,7 +160,8 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
                 await client.send_message(entity=entity, message=f'{r2}')
         await client.edit_message(message, 'Моментум в акциях')
         await event.edit()
-        await client.send_message(event.input_sender, 'Как интерпритировать моментум? /instruction02',
+        await client.send_message(event.input_sender, 'Как интерпретировать моментум? \n'
+                                                      '/instruction03',
                                   buttons=buttons.keyboard_us_market_back)
 
     elif event.data == b'us3':
@@ -162,7 +172,8 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
         await client.send_file(entity, img_path + 'treemap_ytd.png')
         await client.edit_message(message, 'Тепловые карты')
         await event.edit()
-        await client.send_message(event.input_sender, 'Как интерпритировать карты? /instruction02',
+        await client.send_message(event.input_sender, 'Как интерпретировать тепловые карты? \n'
+                                                      '/instruction04',
                                   buttons=buttons.keyboard_us_market_back)
     elif event.data == b'us4':
         message = await client.send_message(entity=entity, message='Загрузка...')
@@ -185,7 +196,7 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
         await client.send_message(entity=entity, message=f'{temp[2]}')
         await client.edit_message(message, 'Кривая доходности и дивиденды')
         await event.edit()
-        await client.send_message(event.input_sender, 'Как интерпритировать кривую доходности? /instruction02',
+        await client.send_message(event.input_sender, 'Как интерпретировать кривую доходности? /instruction05',
                                   buttons=buttons.keyboard_us_market_back)
     elif event.data == b'us5':
         message = await client.send_message(entity=entity, message='Загрузка...')
@@ -198,7 +209,7 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
         await client.send_file(entity, img_path + 'vix_curve.png')
         await client.edit_message(message, 'Кривая волатильности')
         await event.edit()
-        await client.send_message(event.input_sender, 'Как интерпритировать кривую волатильности? /instruction02',
+        await client.send_message(event.input_sender, 'Как интерпретировать кривую волатильности? /instruction06',
                                   buttons=buttons.keyboard_us_market_back)
 
     # ============================== Конструктор стратегий =============================
@@ -221,11 +232,14 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
         await client.send_message(event.input_sender, 'Текущая структура портфеля')
         await client.send_file(entity, CHARTER_IMAGES_PATH + 'parking_portfolio_pie.png')
         await client.send_message(event.input_sender, 'Подробная статистика стратегии')
-        await client.send_file(entity, STATS_PATH + 'parking_watermark.pdf')
-        await client.send_message(event.input_sender, 'Симуляция доходности портфеля на 10 лет')
+        await client.send_file(entity, STATS_PATH + 'parking.pdf')
+        await client.send_message(event.input_sender, 'Симуляция доходности портфеля на 10 лет \n '
+                                                      'Как интерпретировать результаты симуляций Монте-Карло?'
+                                                      ' - /instruction19')
         await client.send_file(entity, STATS_PATH + 'parking.png')
         await client.send_file(entity, STATS_PATH + 'parking2.png')
-        await client.send_message(event.input_sender, 'Кому и когда покупать парковочный портфель? /instruction05',
+        await client.send_message(event.input_sender, 'Кому и когда покупать парковочный портфель? \n'
+                                                      '/instruction14 \n End of Day График - /chart_parking',
                                   buttons=buttons.keyboard_a2_back)
     elif event.data == b'a2a4':
         message = await client.send_message(entity=entity, message='Загрузка...')
@@ -234,11 +248,14 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
         await client.send_message(event.input_sender, 'Текущая структура портфеля')
         await client.send_file(entity, CHARTER_IMAGES_PATH + 'allweather_portfolio_pie.png')
         await client.send_message(event.input_sender, 'Подробная статистика стратегии')
-        await client.send_file(entity, STATS_PATH + 'allweather_watermark.pdf')
-        await client.send_message(event.input_sender, 'Симуляция доходности портфеля на 10 лет')
+        await client.send_file(entity, STATS_PATH + 'allweather.pdf')
+        await client.send_message(event.input_sender, 'Симуляция доходности портфеля на 10 лет \n '
+                                                      'Как интерпретировать результаты симуляций Монте-Карло?'
+                                                      ' - /instruction19')
         await client.send_file(entity, STATS_PATH + 'allweather.png')
         await client.send_file(entity, STATS_PATH + 'allweather2.png')
-        await client.send_message(event.input_sender, 'Кому и когда покупать всепогодный портфель? /instruction06',
+        await client.send_message(event.input_sender, 'Кому и когда покупать всепогодный портфель? \n'
+                                                      '/instruction15 \n End of Day График - /chart_allweather',
                                   buttons=buttons.keyboard_a2_back)
     elif event.data == b'a2a5':
         message = await client.send_message(entity=entity, message='Загрузка...')
@@ -247,11 +264,14 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
         await client.send_message(event.input_sender, 'Текущая структура портфеля')
         await client.send_file(entity, CHARTER_IMAGES_PATH + 'balanced_portfolio_pie.png')
         await client.send_message(event.input_sender, 'Подробная статистика стратегии')
-        await client.send_file(entity, STATS_PATH + 'balanced_watermark.pdf')
-        await client.send_message(event.input_sender, 'Симуляция доходности портфеля на 10 лет')
+        await client.send_file(entity, STATS_PATH + 'balanced.pdf')
+        await client.send_message(event.input_sender, 'Симуляция доходности портфеля на 10 лет \n '
+                                                      'Как интерпретировать результаты симуляций Монте-Карло?'
+                                                      ' - /instruction19')
         await client.send_file(entity, STATS_PATH + 'balanced.png')
         await client.send_file(entity, STATS_PATH + 'balanced2.png')
-        await client.send_message(event.input_sender, 'Кому и когда покупать сбалансированный портфель? /instruction07',
+        await client.send_message(event.input_sender, 'Кому и когда покупать сбалансированный портфель? \n'
+                                                      '/instruction16 \n End of Day График - /chart_balanced',
                                   buttons=buttons.keyboard_a2_back)
 
     elif event.data == b'a2a6':
@@ -261,11 +281,14 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
         await client.send_message(event.input_sender, 'Текущая структура портфеля')
         await client.send_file(entity, CHARTER_IMAGES_PATH + 'aggressive_portfolio_pie.png')
         await client.send_message(event.input_sender, 'Подробная статистика стратегии')
-        await client.send_file(entity, STATS_PATH + 'aggressive_watermark.pdf')
-        await client.send_message(event.input_sender, 'Симуляция доходности портфеля на 10 лет')
+        await client.send_file(entity, STATS_PATH + 'aggressive.pdf')
+        await client.send_message(event.input_sender, 'Симуляция доходности портфеля на 10 лет \n '
+                                                      'Как интерпретировать результаты симуляций Монте-Карло?'
+                                                      ' - /instruction19')
         await client.send_file(entity, STATS_PATH + 'aggressive.png')
         await client.send_file(entity, STATS_PATH + 'aggressive2.png')
-        await client.send_message(event.input_sender, 'Кому и когда покупать агрессивный портфель? /instruction08',
+        await client.send_message(event.input_sender, 'Кому и когда покупать агрессивный портфель? \n'
+                                                      '/instruction17 \n End of Day График - /chart_aggressive',
                                   buttons=buttons.keyboard_a2_back)
     elif event.data == b'a2a7':
         message = await client.send_message(entity=entity, message='Загрузка...')
@@ -274,11 +297,14 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
         await client.send_message(event.input_sender, 'Текущая структура портфеля')
         await client.send_file(entity, CHARTER_IMAGES_PATH + 'leveraged_portfolio_pie.png')
         await client.send_message(event.input_sender, 'Подробная статистика стратегии')
-        await client.send_file(entity, STATS_PATH + 'leveraged_watermark.pdf')
-        await client.send_message(event.input_sender, 'Симуляция доходности портфеля на 10 лет')
+        await client.send_file(entity, STATS_PATH + 'leveraged.pdf')
+        await client.send_message(event.input_sender, 'Симуляция доходности портфеля на 10 лет \n '
+                                                      'Как интерпретировать результаты симуляций Монте-Карло?'
+                                                      ' - /instruction19')
         await client.send_file(entity, STATS_PATH + 'leveraged.png')
         await client.send_file(entity, STATS_PATH + 'leveraged2.png')
-        await client.send_message(event.input_sender, 'Кому и когда покупать плечевой портфель? /instruction09',
+        await client.send_message(event.input_sender, 'Кому и когда покупать плечевой портфель? \n'
+                                                      '/instruction18 \n End of Day График - /chart_leveraged',
                                   buttons=buttons.keyboard_a2_back)
     # elif event.data == b'a2a8':
     #     message = await client.send_message(entity=entity, message='Загрузка...')
@@ -287,7 +313,7 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
     #     await client.send_message(event.input_sender, 'Подходит ли вам трейдинг? /instruction10',
     #                               buttons=buttons.keyboard_a2_back)
     elif event.data == b'a2a-1':
-        await client.send_message(event.input_sender, 'Конструктор стратегий', buttons=buttons.keyboard_a2)
+        await client.send_message(event.input_sender, 'Портфели', buttons=buttons.keyboard_a2)
         await event.edit()
 
     # ============================== Калькуляторы =============================
@@ -344,21 +370,23 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
         await event.edit()
 
     # ============================== Инструкции =============================
-    elif event.data == b'a5a1':
-        message = await client.send_message(entity=entity, message='Загрузка...')
-        await client.edit_message(message, 'Как ... /instruction01')
-        await event.edit()
-        await client.send_message(event.input_sender, 'Как ... /instruction01',
-                                  buttons=buttons.keyboard_a5_back)
-    elif event.data == b'a5a2':
-        message = await client.send_message(entity=entity, message='Загрузка...')
-        await client.edit_message(message, 'Что ... /instruction02')
-        await event.edit()
-        await client.send_message(event.input_sender, 'Что ... /instruction02',
-                                  buttons=buttons.keyboard_a5_back)
-    elif event.data == b'a5a-1':
-        await client.send_message(event.input_sender, 'Инструкции', buttons=buttons.keyboard_a5)
-        await event.edit()
+    # elif event.data == b'a5a1':
+    #     message = await client.send_message(entity=entity, message='Загрузка...')
+    #     await client.edit_message(message, 'Как ... /instruction01')
+    #     await event.edit()
+    #     await client.send_message(event.input_sender, 'Как ... /instruction01',
+    #                               buttons=buttons.keyboard_a5_back)
+    # elif event.data == b'a5a2':
+    #     message = await client.send_message(entity=entity, message='Загрузка...')
+    #     await client.edit_message(message, 'Что ... /instruction02')
+    #     await event.edit()
+    #     await client.send_message(event.input_sender, 'Что ... /instruction02',
+    #                               buttons=buttons.keyboard_a5_back)
+    # elif event.data == b'a5a-1':
+    #     await client.send_message(event.input_sender, 'Инструкции')
+    #     await client.send_message(event.input_sender, 'Текст', buttons=buttons.keyboard_a5_back)
+    #
+    #     await event.edit()
 
     # ============================== Образовательные программы =============================
     elif event.data == b'a6a1':
@@ -438,7 +466,7 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
                     new_row = ',  '.join(row)
                     await client.send_message(entity=entity, message=f'{new_row}')
         await event.edit()
-        await client.send_message(event.input_sender, '________________________', buttons=buttons.keyboard_core_macro)
+        await client.send_message(event.input_sender, 'Процентная ставка \n /instruction10', buttons=buttons.keyboard_core_macro)
     elif event.data == b'cm2':
         await client.send_message(entity=entity, message='Interest Rates')
         await client.send_message(entity=entity, message='Data, Country, Last, Previous, Reference, Unit')
@@ -450,7 +478,7 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
                     new_row = ',  '.join(row)
                     await client.send_message(entity=entity, message=f'{new_row}')
         await event.edit()
-        await client.send_message(event.input_sender, '________________________', buttons=buttons.keyboard_core_macro)
+        await client.send_message(event.input_sender, 'Уровень инфляции \n /instruction11', buttons=buttons.keyboard_core_macro)
     elif event.data == b'cm3':
         await client.send_message(entity=entity, message='Interest Rates')
         await client.send_message(entity=entity, message='Data, Country, Last, Previous, Reference, Unit')
@@ -462,7 +490,7 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
                     new_row = ',  '.join(row)
                     await client.send_message(entity=entity, message=f'{new_row}')
         await event.edit()
-        await client.send_message(event.input_sender, '________________________', buttons=buttons.keyboard_core_macro)
+        await client.send_message(event.input_sender, 'Уровень безработицы \n /instruction13', buttons=buttons.keyboard_core_macro)
     elif event.data == b'cm4':
         await client.send_message(entity=entity, message='Interest Rates')
         await client.send_message(entity=entity, message='Data, Country, Last, Previous, Reference, Unit')
@@ -474,7 +502,7 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
                     new_row = ',  '.join(row)
                     await client.send_message(entity=entity, message=f'{new_row}')
         await event.edit()
-        await client.send_message(event.input_sender, '________________________', buttons=buttons.keyboard_core_macro)
+        await client.send_message(event.input_sender, 'Композитный индекс менеджеров по закупка \n /instruction12', buttons=buttons.keyboard_core_macro)
     elif event.data == b'cm-1':
         await client.send_message(event.input_sender, 'Назад', buttons=buttons.keyboard_core_macro_back)
         await event.edit()
