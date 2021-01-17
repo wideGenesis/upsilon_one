@@ -336,6 +336,9 @@ def get_sma50(ag=None, img_out_path_=IMAGES_OUT_PATH):
 
 
 # # ============================== Treasury Curve and Div Yield GET ================================
+
+
+
 # def qt_curve(img_out_path_=IMAGES_OUT_PATH):
 #     x = quandl.get("USTREASURY/YIELD", authtoken="gWq5SV_V-yFkXVMgrwwy", rows=1)
 #     print(x)
