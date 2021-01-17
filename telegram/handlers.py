@@ -269,7 +269,7 @@ async def instructions_handler(event, client_):
         await client_.send_message(event.input_sender, ins.instruction12)
     elif pattern == 'instruction13':
         await client_.send_message(event.input_sender, ins.instruction13)
-    elif pattern == 'instruction014':
+    elif pattern == 'instruction14':
         await client_.send_message(event.input_sender, ins.instruction14)
     elif pattern == 'instruction15':
         await client_.send_message(event.input_sender, ins.instruction15)
