@@ -128,54 +128,59 @@ async def publish_to_handler(event, client_, owner=None):
 
 
 async def dialog_flow_handler(event, client_):
-    no_match = ['\U0001F9D0', '\U0001F633', 'Ясно', 'Мы должны подумать над этим']
-    fallback = random.choice(no_match)
-    try:
-        sender_id = event.input_sender
-    except ValueError as e:
-        sender_id = await event.get_input_sender()
-    if not any(value in event.text for value in
-               ('/start', '/help', '/publish_to', '/to', 'Главное меню', 'Профиль', 'Помощь', 'Donate', '/q', '/n',
-                '/about', '/goals', '/skills', '/future',
-                '/instruction00',
-                '/instruction01',
-                '/instruction02',
-                '/instruction03',
-                '/instruction04',
-                '/instruction05',
-                '/instruction06',
-                '/instruction07',
-                '/instruction08',
-                '/instruction09',
-                '/instruction10',
-                '/instruction11',
-                '/instruction12',
-                '/instruction13',
-                '/instruction14',
-                '/instruction15',
-                '/instruction16',
-                '/instruction17',
-                '/instruction18',
-                '/instruction19',
-
-                '/chart_parking',
-                '/chart_allweather',
-                '/chart_balanced',
-                '/chart_aggressive',
-                '/chart_leveraged',
-                )):
-        user_message = event.text
-        project_id = 'common-bot-1'
+    msg_text = event.message.text
+    if msg_text == '' or msg_text is None:
+        msg = 'Я воспринимаю только текст и ничего кроме текста.'
+        await client_.send_message(event.input_sender, msg)
+    else:
+        no_match = ['\U0001F9D0', '\U0001F633', 'Ясно', 'Мы должны подумать над этим']
+        fallback = random.choice(no_match)
         try:
-            dialogflow_answer = ai.detect_intent_texts(project_id, sender_id.user_id, user_message, 'ru-RU')
-            await client_.send_message(sender_id, dialogflow_answer)
-            await client_.send_message(-1001262211476, str(sender_id.user_id) +
-                                       '  \n' + str(event.text) +
-                                       '  \n' + dialogflow_answer)
-            # TODO Внимание! изменить айди чата при деплое
+            sender_id = event.input_sender
         except ValueError as e:
-            debug(e, 'Dialogflow response failure')
-            await client_.send_message(sender_id, fallback)
+            sender_id = await event.get_input_sender()
+        if not any(value in event.text for value in
+                   ('/start', '/help', '/publish_to', '/to', 'Главное меню', 'Профиль', 'Помощь', 'Donate', '/q', '/n',
+                    '/about', '/goals', '/skills', '/future',
+                    '/instruction00',
+                    '/instruction01',
+                    '/instruction02',
+                    '/instruction03',
+                    '/instruction04',
+                    '/instruction05',
+                    '/instruction06',
+                    '/instruction07',
+                    '/instruction08',
+                    '/instruction09',
+                    '/instruction10',
+                    '/instruction11',
+                    '/instruction12',
+                    '/instruction13',
+                    '/instruction14',
+                    '/instruction15',
+                    '/instruction16',
+                    '/instruction17',
+                    '/instruction18',
+                    '/instruction19',
+
+                    '/chart_parking',
+                    '/chart_allweather',
+                    '/chart_balanced',
+                    '/chart_aggressive',
+                    '/chart_leveraged',
+                    )):
+            user_message = event.text
+            project_id = 'common-bot-1'
+            try:
+                dialogflow_answer = ai.detect_intent_texts(project_id, sender_id.user_id, user_message, 'ru-RU')
+                await client_.send_message(sender_id, dialogflow_answer)
+                await client_.send_message(-1001262211476, str(sender_id.user_id) +
+                                           '  \n' + str(event.text) +
+                                           '  \n' + dialogflow_answer)
+                # TODO Внимание! изменить айди чата при деплое
+            except ValueError as e:
+                debug(e, 'Dialogflow response failure')
+                await client_.send_message(sender_id, fallback)
 
 
 async def quotes_to_handler(event, client_, limit=20):
