@@ -32,8 +32,8 @@ balanced = get_portfolio_returns_df('balanced', start_date=None, end_date=date.t
 aggressive = get_portfolio_returns_df('aggressive', start_date=None, end_date=date.today())
 leveraged = get_portfolio_returns_df('leveraged', start_date=None, end_date=date.today())
 
-quantstats_pdf(port_rets_df=parking, bench='TLT', filename='parking', title='Parking Strategy')
-quantstats_pdf(port_rets_df=allweather, bench='SPY', filename='allweather', title='All Weather Strategy')
-quantstats_pdf(port_rets_df=balanced, bench='QQQ', filename='balanced', title='Balanced Strategy')
+# quantstats_pdf(port_rets_df=parking, bench='TLT', filename='parking', title='Parking Strategy')
+# quantstats_pdf(port_rets_df=allweather, bench='SPY', filename='allweather', title='All Weather Strategy')
+# quantstats_pdf(port_rets_df=balanced, bench='QQQ', filename='balanced', title='Balanced Strategy')
 quantstats_pdf(port_rets_df=aggressive, bench='QQQ', filename='aggressive', title='Aggressive Strategy')
 quantstats_pdf(port_rets_df=leveraged, bench='QQQ', filename='leveraged', title='Leveraged Strategy')

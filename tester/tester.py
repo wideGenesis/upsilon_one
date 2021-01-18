@@ -296,7 +296,7 @@ def portfolio_tester(init_cap=10000, port_id='parking', allocator_data_interval=
         portfolio_args['etf_only'] = True
         portfolio_args['cor_perc'] = 0.99
         portfolio_args['sat_perc'] = 0.01
-        # ********************* Leveraged cor *********************
+        # ********************* TEST ADM cor *********************
         portfolio_args['cor_alloctor_start_date'] = alloctor_start_date
         portfolio_args['cor_allocator_end_date'] = allocator_end_date
         portfolio_args['cor_selector_start_date'] = selector_start_date
@@ -318,7 +318,7 @@ def portfolio_tester(init_cap=10000, port_id='parking', allocator_data_interval=
         portfolio_args['cor_selector_p2'] = 126
         portfolio_args['cor_selector_c_p1'] = 1
         portfolio_args['cor_selector_c_p2'] = 3
-        # ********************* Leveraged sat *********************
+        # ********************* TEST ADM sat *********************
         portfolio_args['sat_alloctor_start_date'] = alloctor_start_date
         portfolio_args['sat_allocator_end_date'] = allocator_end_date
         portfolio_args['sat_selector_start_date'] = selector_start_date
@@ -395,14 +395,14 @@ def portfolio_tester(init_cap=10000, port_id='parking', allocator_data_interval=
 
 
 def main():
-    portfolio_tester(init_cap=10000, port_id='aggressive', allocator_data_interval=3, selector_data_interval=12,
-                     start_test_date=datetime.date(2020, 7, 1))
+    # portfolio_tester(init_cap=10000, port_id='aggressive', allocator_data_interval=3, selector_data_interval=12,
+    #                  start_test_date=datetime.date(2020, 7, 1))
     pass
 
 
 if __name__ == '__main__':
     # main()
-    mp.set_start_method('spawn')
+    # mp.set_start_method('spawn')
     q = mp.Queue()
     p1 = mp.Process(target=portfolio_tester, args=(100000, 'parking', 3, 12, datetime.date(2020, 7, 1),))
     p1.start()
@@ -410,9 +410,9 @@ if __name__ == '__main__':
     p2.start()
     p3 = mp.Process(target=portfolio_tester, args=(100000, 'balanced', 3, 12, datetime.date(2020, 7, 1),))
     p3.start()
-    p4 = mp.Process(target=portfolio_tester, args=(100000, 'aggressive', 3, 12, datetime.date(2020, 7, 1),))
+    p4 = mp.Process(target=portfolio_tester, args=(100000, 'aggressive', 3, 12, datetime.date(2015, 7, 1),))
     p4.start()
-    p5 = mp.Process(target=portfolio_tester, args=(100000, 'leveraged', 3, 12,  datetime.date(2020, 7, 1),))
+    p5 = mp.Process(target=portfolio_tester, args=(100000, 'leveraged', 3, 12,  datetime.date(2015, 7, 1),))
     p5.start()
 
     # p6 = mp.Process(target=portfolio_tester, args=(100000, 'test_adm', 3, 12,  datetime.date(2010, 3, 1),))

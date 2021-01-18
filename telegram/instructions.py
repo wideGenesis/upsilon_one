@@ -427,8 +427,8 @@ instructions_main = '**Инструкции** \n \n' \
                     'Сбалансированный портфель - /instruction16 End of Day График - /chart_balanced \n \n' \
                     'Агрессивный портфель - /instruction17 End of Day График - /chart_aggressive \n \n' \
                     'Плечевой портфель - /instruction18 End of Day График - /chart_leveraged \n \n' \
-                    'Как интерпретировать результаты симуляций Монте-Карло? - /instruction19' \
-                    'Минимальный депозит - /mindepo'
+                    'Как интерпретировать результаты симуляций Монте-Карло? - /instruction19 \n \n' \
+                    'Минимальный депозит - /mindepo \n \n'
 
 
 mindepo = '**Минимальный депозит - $5000** \n' \
