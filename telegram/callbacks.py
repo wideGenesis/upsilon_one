@@ -467,7 +467,8 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
                     new_row = ',  '.join(row)
                     await client.send_message(entity=entity, message=f'{new_row}')
         await event.edit()
-        await client.send_message(event.input_sender, 'Процентная ставка \n /instruction10', buttons=buttons.keyboard_core_macro)
+        await client.send_message(event.input_sender, 'Процентная ставка \n /instruction10',
+                                  buttons=buttons.keyboard_core_macro_back)
     elif event.data == b'cm2':
         await client.send_message(entity=entity, message='Interest Rates')
         await client.send_message(entity=entity, message='Data, Country, Last, Previous, Reference, Unit')
@@ -479,7 +480,8 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
                     new_row = ',  '.join(row)
                     await client.send_message(entity=entity, message=f'{new_row}')
         await event.edit()
-        await client.send_message(event.input_sender, 'Уровень инфляции \n /instruction11', buttons=buttons.keyboard_core_macro)
+        await client.send_message(event.input_sender, 'Уровень инфляции \n /instruction11',
+                                  buttons=buttons.keyboard_core_macro_back)
     elif event.data == b'cm3':
         await client.send_message(entity=entity, message='Interest Rates')
         await client.send_message(entity=entity, message='Data, Country, Last, Previous, Reference, Unit')
@@ -491,7 +493,8 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
                     new_row = ',  '.join(row)
                     await client.send_message(entity=entity, message=f'{new_row}')
         await event.edit()
-        await client.send_message(event.input_sender, 'Уровень безработицы \n /instruction13', buttons=buttons.keyboard_core_macro)
+        await client.send_message(event.input_sender, 'Уровень безработицы \n /instruction13',
+                                  buttons=buttons.keyboard_core_macro_back)
     elif event.data == b'cm4':
         await client.send_message(entity=entity, message='Interest Rates')
         await client.send_message(entity=entity, message='Data, Country, Last, Previous, Reference, Unit')
@@ -503,9 +506,10 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
                     new_row = ',  '.join(row)
                     await client.send_message(entity=entity, message=f'{new_row}')
         await event.edit()
-        await client.send_message(event.input_sender, 'Композитный индекс менеджеров по закупка \n /instruction12', buttons=buttons.keyboard_core_macro)
+        await client.send_message(event.input_sender, 'Композитный индекс менеджеров по закупка \n /instruction12',
+                                  buttons=buttons.keyboard_core_macro_back)
     elif event.data == b'cm-1':
-        await client.send_message(event.input_sender, 'Назад', buttons=buttons.keyboard_core_macro_back)
+        await client.send_message(event.input_sender, 'Назад', buttons=buttons.keyboard_core_macro)
         await event.edit()
     elif event.data == b'cm-2':
         await client.send_message(event.input_sender, 'Назад', buttons=buttons.keyboard_a1)
