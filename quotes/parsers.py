@@ -424,4 +424,4 @@ def users_count():
     with open(os.path.join('results', 'users.csv'), 'w+') as f:
         write = f.write(f'{int(users)}')
     debug(int(users))
-    return users
+

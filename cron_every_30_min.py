@@ -1,7 +1,7 @@
 from project_shared import *
 import argparse
 from quotes.parsers_env import chrome_init, firefox_init
-from quotes.parsers import get_tw_charts, get_finviz_treemaps, get_coins360_treemaps
+from quotes.parsers import get_tw_charts, get_finviz_treemaps, get_coins360_treemaps, users_count
 from charter.charter import *
 
 
@@ -19,5 +19,6 @@ if __name__ == '__main__':
     get_finviz_treemaps(driver=firefox_init(), img_out_path_=img_out_path)
     # get_finviz_treemaps(driver=chrome_init(), img_out_path_=img_out_path)
     get_coins360_treemaps(driver=chrome_init(), img_out_path_=img_out_path)
+    users_count()
     debug("%%%%%%%%%%%%%%%Complete Cron Every 30\n\n\n")
     debug_deinit()

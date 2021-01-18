@@ -1,4 +1,5 @@
 from time import sleep
+import csv
 from datetime import datetime
 from telegram import sql_queries as sql
 from telethon.tl.custom import Button
@@ -89,6 +90,12 @@ async def profile_menu(event, client, engine=None):
     #                           f'Приглашено: __{user_profile[9]}__' + '\n' +
     #                           f'Уровень подписки: __{user_profile[10]}__' + '\n' +
     #                           f'Пользователей бота __{int(users_count())}__', buttons=keyboard_z1)
+    count = int
+    filename = os.path.join(RESULTS_PATH, 'users.csv')
+    with open(filename, newline='') as f:
+        data = csv.reader(f, delimiter=',')
+        for row in data:
+            count = str(row).strip("['']")
     await client.send_message(event.input_sender,
                               f'\U0001F464 : {user_profile[3]}' + '\n' +
                               f'Имя: {user_profile[5]}' + '\n' +
@@ -96,8 +103,10 @@ async def profile_menu(event, client, engine=None):
                               f'Баланс: __{user_profile[8]}__' + '\n' +
                               f'Подписка действительна до: __' + expired_date + '__' + '\n' +
                               f'Приглашено: __{user_profile[9]}__' + '\n' +
-                              f'Уровень подписки: __{user_profile[10]}__' + '\n', buttons=keyboard_z1)
+                              f'Уровень подписки: __{user_profile[10]}__' + '\n' +
+                              f'Пользователей бота: __{count}__', buttons=keyboard_z1)
 
 
+                
 async def donate_menu(event, client):
     await client.send_message(event.input_sender, '# TODO')
