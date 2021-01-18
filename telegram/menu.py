@@ -62,8 +62,8 @@ async def tools_menu(event, client):
 
 async def profile_menu(event, client, engine=None):
     keyboard_z1 = [
-        [Button.inline('\U0001F305	  ' + 'Мои цели', b'z10')],
-        [Button.inline('\U0001F516	  ' + 'Подписки', b'z1')],
+        # [Button.inline('\U0001F305	  ' + 'Мои цели', b'z10')],
+        # [Button.inline('\U0001F516	  ' + 'Подписки', b'z1')],
         [Button.inline('\U0001F91D	  ' + 'Пригласить друга', b'z2')],
         [Button.inline('\U0001F519    ' + 'В главное меню', b'main')]
     ]
@@ -80,6 +80,15 @@ async def profile_menu(event, client, engine=None):
         ed = user_profile[11]
         expired_date = ed.strftime("%d.%m.%Y")
         debug("expired_date=" + expired_date)
+    # await client.send_message(event.input_sender,
+    #                           f'\U0001F464 : {user_profile[3]}' + '\n' +
+    #                           f'Имя: {user_profile[5]}' + '\n' +
+    #                           '\n' +
+    #                           f'Баланс: __{user_profile[8]}__' + '\n' +
+    #                           f'Подписка действительна до: __' + expired_date + '__' + '\n' +
+    #                           f'Приглашено: __{user_profile[9]}__' + '\n' +
+    #                           f'Уровень подписки: __{user_profile[10]}__' + '\n' +
+    #                           f'Пользователей бота __{int(users_count())}__', buttons=keyboard_z1)
     await client.send_message(event.input_sender,
                               f'\U0001F464 : {user_profile[3]}' + '\n' +
                               f'Имя: {user_profile[5]}' + '\n' +
@@ -87,8 +96,7 @@ async def profile_menu(event, client, engine=None):
                               f'Баланс: __{user_profile[8]}__' + '\n' +
                               f'Подписка действительна до: __' + expired_date + '__' + '\n' +
                               f'Приглашено: __{user_profile[9]}__' + '\n' +
-                              f'Уровень подписки: __{user_profile[10]}__' + '\n' +
-                              f'Пользователей бота __{int(users_count())}__', buttons=keyboard_z1)
+                              f'Уровень подписки: __{user_profile[10]}__' + '\n', buttons=keyboard_z1)
 
 
 async def donate_menu(event, client):
