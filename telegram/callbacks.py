@@ -31,7 +31,8 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
         await client.send_message(event.input_sender, 'Анализ рынков', buttons=buttons.keyboard_a1)
         await event.edit()
     elif event.data == b'a2':
-        await client.send_message(event.input_sender, 'Портфели', buttons=buttons.keyboard_a2)
+        await client.send_message(event.input_sender, 'Портфели Минимальный депозит - /mindepo',
+                                  buttons=buttons.keyboard_a2)
         await event.edit()
     # elif event.data == b'a3':
     #     await client.send_message(event.input_sender, 'Калькуляторы', buttons=buttons.keyboard_a3)

@@ -51,9 +51,9 @@ async def start_menu(event, client, engine=None):
     # await client.send_file(entity, 'telegram/fish_swarm.gif')
     await client.send_message(entity, 'Приветствую вас! Я Ипсилон — самый продвинутый ИИ '
                                       'для трейдинга и управления инвестициями. \n \n'
-                                      'Об Ипсилоне - /about \n'
+                                      'Обо мне - /about \n'
                                       'Цели - /goals \n'
-                                      'Навыки Ипсилона - /skills \n', buttons=keyboard_start)
+                                      'Мои навыки - /skills \n', buttons=keyboard_start)
 
 
 async def tools_menu(event, client):

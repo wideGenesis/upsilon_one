@@ -162,6 +162,7 @@ async def dialog_flow_handler(event, client_):
                     '/instruction17',
                     '/instruction18',
                     '/instruction19',
+                    '/mindepo',
 
                     '/chart_parking',
                     '/chart_allweather',
@@ -286,6 +287,8 @@ async def instructions_handler(event, client_):
         await client_.send_message(event.input_sender, ins.instruction18)
     elif pattern == 'instruction19':
         await client_.send_message(event.input_sender, ins.instruction19)
+    elif pattern == 'mindepo':
+        await client_.send_message(event.input_sender, ins.mindepo)
 
 
 async def portfolio_candle_chart_handler(event, client_):
