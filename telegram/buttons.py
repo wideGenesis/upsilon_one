@@ -120,11 +120,11 @@ keyboard_a3_back = [
     ]
 ]
 keyboard_a4 = [
+    # [
+    #     Button.inline('\U0001F4A1 ' + 'Маркетплейс управляющих', b'a4a1')
+    # ],
     [
-        Button.inline('\U0001F4A1 ' + 'Маркетплейс управляющих', b'a4a1')
-    ],
-    [
-        Button.inline('\U0001F6E1   ' + 'Стать управляющим', b'a4a2')
+        Button.inline('\U0001F6E1   ' + 'Регистрация управляющего', b'a4a2')
     ],
     [
         Button.inline('\U0001F519  ' + 'Назад', b'main')
@@ -133,7 +133,7 @@ keyboard_a4 = [
 
 keyboard_a4_back = [
     [
-        Button.inline('\U0001F519  ' + 'Назад', b'a4a-1')
+        Button.inline('\U0001F519  ' + 'Назад', b'a4a-0')
     ]
 ]
 

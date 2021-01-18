@@ -356,20 +356,21 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
         await event.edit()
 
     # ============================== Управление =============================
-    elif event.data == b'a4a1':
-        message = await client.send_message(entity=entity, message='Загрузка...')
-        await client.edit_message(message, 'Маркетплейс управляющих')
-        await event.edit()
-        await client.send_message(event.input_sender, 'Все об управлени активами. /instruction16',
-                                  buttons=buttons.keyboard_a4_back)
+    # elif event.data == b'a4a1':
+    #     message = await client.send_message(entity=entity, message='Загрузка...')
+    #     await client.edit_message(message, 'Маркетплейс управляющих')
+    #     await event.edit()
+    #     await client.send_message(event.input_sender, 'Все об управлени активами. /instruction16',
+    #                               buttons=buttons.keyboard_a4_back)
     elif event.data == b'a4a2':
         message = await client.send_message(entity=entity, message='Загрузка...')
-        await client.edit_message(message, 'Стать управляющим')
+        await client.edit_message(message, 'Регистрация управляющего')
         await event.edit()
-        await client.send_message(event.input_sender, 'Стать управляющим',
+        await client.send_message(event.input_sender, ins.managers_form,
                                   buttons=buttons.keyboard_a4_back)
-    elif event.data == b'a4a-1':
-        await client.send_message(event.input_sender, 'Управление', buttons=buttons.keyboard_a4)
+
+    elif event.data == b'a4a-0':
+        await client.send_message(event.input_sender, 'Регистрация управляющего', buttons=buttons.keyboard_a4)
         await event.edit()
 
     # ============================== Инструкции =============================

@@ -163,6 +163,8 @@ async def dialog_flow_handler(event, client_):
                     '/instruction18',
                     '/instruction19',
                     '/mindepo',
+                    '/managers_form',
+                    'Анкета регистрации управляющего',
 
                     '/chart_parking',
                     '/chart_allweather',
@@ -289,6 +291,8 @@ async def instructions_handler(event, client_):
         await client_.send_message(event.input_sender, ins.instruction19)
     elif pattern == 'mindepo':
         await client_.send_message(event.input_sender, ins.mindepo)
+    elif pattern == 'managers_form':
+        await client_.send_message(event.input_sender, ins.managers_form)
 
 
 async def portfolio_candle_chart_handler(event, client_):
@@ -304,3 +308,11 @@ async def portfolio_candle_chart_handler(event, client_):
         await client_.send_file(event.input_sender, CHARTER_IMAGES_PATH + 'aggressive_port_chart_over_QQQ.png')
     elif pattern == 'leveraged':
         await client_.send_file(event.input_sender, CHARTER_IMAGES_PATH + 'leveraged_port_chart_over_QQQ.png')
+
+
+async def managers_form_handler(event, client_):
+    # msg_text = event.message.text
+    sender_id = await event.get_input_sender()
+    user_message = event.text
+    await client_.send_message(sender_id, 'Запрос на регистрацию принят')
+    await client_.send_message(-1001262211476, str(sender_id.user_id) + '  \n' + str(user_message))
