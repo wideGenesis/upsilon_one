@@ -151,7 +151,7 @@
 #     await client.send_file(entity, IMAGES_OUT_PATH + 'treemap.png')
 #     await client.edit_message(message, 'Анализ рынка США')
 #     await event.edit()
-#     await client.send_message(event.input_sender, 'Как интерпритировать графики выше? /instruction01',
+#     await client.send_message(event.input_sender, 'Как интерпретировать графики выше? /instruction01',
 #                               buttons=buttons.keyboard_a1_back)
 # elif event.data == b'a1a2':
 #     message = await client.send_message(entity=entity, message='Загрузка...')
@@ -161,7 +161,7 @@
 #     await client.send_file(entity, IMAGES_OUT_PATH + 'coins_treemap.png')
 #     await client.edit_message(message, 'Рынок криптовалют')
 #     await event.edit()
-#     await client.send_message(event.input_sender, 'Как интерпритировать графики выше? /instruction01',
+#     await client.send_message(event.input_sender, 'Как интерпретировать графики выше? /instruction01',
 #                               buttons=buttons.keyboard_a1_back)
 # elif event.data == b'a1a3':
 #     message = await client.send_message(entity=entity, message='Загрузка...')
@@ -169,7 +169,7 @@
 #     await client.send_file(entity, IMAGES_OUT_PATH + 'rtsi.png')
 #     await client.edit_message(message, 'Рынок РФ')
 #     await event.edit()
-#     await client.send_message(event.input_sender, 'Как интерпритировать графики выше? /instruction01',
+#     await client.send_message(event.input_sender, 'Как интерпретировать графики выше? /instruction01',
 #                               buttons=buttons.keyboard_a1_back)
 # elif event.data == b'a1a4':
 #     message = await client.send_message(entity=entity, message='Загрузка...')
@@ -194,7 +194,7 @@
 #     await client.send_file(entity, IMAGES_OUT_PATH + 'inflows_TLT.png')
 #     await client.edit_message(message, 'Ежедневные денежные потоки основных ETF за месяц')
 #     await event.edit()
-#     await client.send_message(event.input_sender, 'Как интерпритировать денежные потоки? /instruction02',
+#     await client.send_message(event.input_sender, 'Как интерпретировать денежные потоки? /instruction02',
 #                               buttons=buttons.keyboard_a1_back)
 # elif event.data == b'a1a5':
 #     message = await client.send_message(entity=entity, message='Загрузка...')
