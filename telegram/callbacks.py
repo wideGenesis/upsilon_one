@@ -219,6 +219,7 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
         message = await client.send_message(entity=entity, message='Загрузка...')
         await client.edit_message(message, 'Ключевые статистики акций компании')
         await event.edit()
+        await client.send_message(entity=entity, message=ins.instruction21)
         await client.send_message(event.input_sender, 'Как интерпретировать ключевые статистики? \n'
                                                       '/instruction22',
                                   buttons=buttons.keyboard_us_market_back)
