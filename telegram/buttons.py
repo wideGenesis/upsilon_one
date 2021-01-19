@@ -23,9 +23,9 @@ keyboard_0 = [
     # [
     #     Button.inline('\U0001F92F   ' + 'Налоги', b'a7')
     # ],
-    # [
-    #     Button.inline('\U0001F5C3   ' + 'Агрегатор новостей', b'a8')
-    # ]
+    [
+        Button.inline('\U0001F5C3   ' + 'Новости и блоги', b'a8')
+    ]
 ]
 
 keyboard_a1 = [
@@ -199,7 +199,10 @@ keyboard_a8 = [
         Button.inline('\U0001F5DE  ' + 'Последние новости', b'a9a1')
     ],
     [
-        Button.inline('\U0001F4B1   ' + 'Последние статьи в блогах', b'a9a2')
+        Button.inline('\U0001F4B1   ' + 'Последние статьи в блогах ', b'a9a2')
+    ],
+    [
+        Button.inline('\U0001F50D	' + 'Последние новости компании', b'a9a3')
     ],
     [
         Button.inline('\U0001F519  ' + 'Назад', b'main')
@@ -254,6 +257,9 @@ keyboard_us_market = [
     ],
     [
         Button.inline('\U0001F4C9   ' + 'Кривая волатильности', b'us5')
+    ],
+    [
+        Button.inline('\U0001F9ED   ' + 'Ключевые статистики компании', b'us7')
     ],
     [
         Button.inline('\U0001F519  ' + 'Назад', b'cm-2')

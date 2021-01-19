@@ -50,9 +50,9 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
     # elif event.data == b'a7':
     #     await client.send_message(event.input_sender, 'Налоги', buttons=buttons.keyboard_a7)
     #     await event.edit()
-    # elif event.data == b'a8':
-    #     await client.send_message(event.input_sender, 'Агрегатор новостей', buttons=buttons.keyboard_a8)
-    #     await event.edit()
+    elif event.data == b'a8':
+        await client.send_message(event.input_sender, 'Агрегатор новостей', buttons=buttons.keyboard_a8)
+        await event.edit()
     elif event.data == b'main':
         await client.send_message(event.input_sender, 'Главное меню', buttons=buttons.keyboard_0)
         await event.edit()
@@ -213,6 +213,14 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
         await client.edit_message(message, 'Кривая волатильности')
         await event.edit()
         await client.send_message(event.input_sender, 'Как интерпретировать кривую волатильности? /instruction06',
+                                  buttons=buttons.keyboard_us_market_back)
+
+    elif event.data == b'us7':
+        message = await client.send_message(entity=entity, message='Загрузка...')
+        await client.edit_message(message, 'Ключевые статистики акций компании')
+        await event.edit()
+        await client.send_message(event.input_sender, 'Как интерпретировать ключевые статистики? \n'
+                                                      '/instruction22',
                                   buttons=buttons.keyboard_us_market_back)
 
     # ============================== Конструктор стратегий =============================
@@ -442,6 +450,11 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
         msg2 = fin_news(blogs=True)
         message = await client.send_message(entity=entity, message='Последние статьи в блогах')
         await client.send_message(entity=entity, message=msg2, buttons=buttons.keyboard_a8_back)
+
+    elif event.data == b'a9a3':
+        msg3 = fin_news(blogs=True)
+        message = await client.send_message(entity=entity, message='Последние новости компании')
+        await client.send_message(entity=entity, message=ins.instruction20, buttons=buttons.keyboard_a8_back)
 
     elif event.data == b'a8a-1':
         await client.send_message(event.input_sender, 'Агрегатор новостей', buttons=buttons.keyboard_a8)
