@@ -74,20 +74,52 @@ def get_etf_holdings(etf):
         parsed_json = json.loads(request_result.text)
         for company in parsed_json:
             ticker = parsed_json[company].get('Code', None)
-            sector = parsed_json[company].get('Sector', None)
             if ticker is not None:
-                mkt_cap = get_mkt_cap(ticker, session)
-                if (sector not in EXCLUDE_SECTORS and sector is not None) or ticker in NOT_EXCLUDE_TICKERS:
+                sector, mkt_cap, exchange = get_data_by_ticker(ticker, session)
+                if (((sector not in EXCLUDE_SECTORS and sector is not None)
+                     or ticker in NOT_EXCLUDE_TICKERS)
+                        and ticker not in EXCLUDE_TICKERS and exchange in VALID_EXCHANGE):
                     holdings[ticker] = (sector, mkt_cap)
             else:
-                debug(f'Cant get Code for company:ETF:{etf}:{company}')
                 ticker = lookup_ticker_by_name(company_name=company, sess=session)
-                if ticker is not None:
-                    sector = get_sector(ticker, session)
-                    mkt_cap = get_mkt_cap(ticker, session)
-                    holdings[ticker] = (sector, mkt_cap)
+                if ticker is not None and ticker not in holdings:
+                    sector, mkt_cap, exchange = get_data_by_ticker(ticker, session)
+                    if (((sector not in EXCLUDE_SECTORS and sector is not None)
+                         or ticker in NOT_EXCLUDE_TICKERS)
+                            and ticker not in EXCLUDE_TICKERS and exchange in VALID_EXCHANGE):
+                        holdings[ticker] = (sector, mkt_cap, exchange)
     debug(str(holdings))
     return holdings
+
+
+def get_index_constituent(index):
+    debug("#Start get ETF holdings")
+    session = requests.Session()
+    holdings = {}
+    url = f'https://eodhistoricaldata.com/api/fundamentals/{index}.INDEX'
+    params = {'api_token': EOD_API_KEY, 'filter': 'ETF_Data::Holdings'}
+    request_result = session.get(url, params=params)
+    if request_result.status_code == requests.codes.ok:
+        parsed_json = json.loads(request_result.text)
+        for company in parsed_json:
+            ticker = parsed_json[company].get('Code', None)
+            if ticker is not None:
+                sector, mkt_cap, exchange = get_data_by_ticker(ticker, session)
+                if (((sector not in EXCLUDE_SECTORS and sector is not None)
+                     or ticker in NOT_EXCLUDE_TICKERS)
+                        and ticker not in EXCLUDE_TICKERS and exchange in VALID_EXCHANGE):
+                    holdings[ticker] = (sector, mkt_cap)
+            else:
+                ticker = lookup_ticker_by_name(company_name=company, sess=session)
+                if ticker is not None and ticker not in holdings:
+                    sector, mkt_cap, exchange = get_data_by_ticker(ticker, session)
+                    if (((sector not in EXCLUDE_SECTORS and sector is not None)
+                         or ticker in NOT_EXCLUDE_TICKERS)
+                            and ticker not in EXCLUDE_TICKERS and exchange in VALID_EXCHANGE):
+                        holdings[ticker] = (sector, mkt_cap, exchange)
+    debug(str(holdings))
+    return holdings
+
 
 
 def get_market_cap(ticker):
@@ -137,6 +169,24 @@ def get_sector(ticker, sess):
 
 def get_data_by_ticker(ticker, sess):
     session = sess
+    sector = ""
+    mkt_cap = 0
+    exchange = ""
+    url = f'https://eodhistoricaldata.com/api/fundamentals/{ticker}.US'
+    params = {'api_token': EOD_API_KEY}
+    request_result = session.get(url, params=params)
+    if request_result.status_code == requests.codes.ok:
+        parsed_json = json.loads(request_result.text)
+        if parsed_json.get('General', None) is not None:
+            sector = parsed_json['General'].get('Sector', None)
+            exchange = parsed_json['General'].get('Exchange', None)
+            if parsed_json.get('Highlights', None) is not None:
+                mkt_cap = parsed_json['Highlights'].get('MarketCapitalization', 0)
+    return sector, mkt_cap, exchange
+
+
+def get_tickerdata(ticker):
+    session = requests.Session()
     sector = ""
     mkt_cap = 0
     exchange = ""

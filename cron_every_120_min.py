@@ -1,7 +1,7 @@
 import argparse
 from project_shared import *
 from quotes.parsers_env import chrome_init, agents
-from quotes.parsers import advance_decline, vix_curve, get_sma50
+from quotes.parsers import advance_decline, vix_curve, get_sma50, users_count
 from time import sleep
 from charter.charter import *
 
@@ -21,5 +21,6 @@ if __name__ == '__main__':
     # Every 125 min
     # sleep(300)
     get_sma50(ag=agents(), img_out_path_=img_out_path)
+    users_count()
     debug("%%%%%%%%%%%%%%%Complete cron every 120\n\n\n")
     debug_deinit()
