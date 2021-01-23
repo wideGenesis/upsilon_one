@@ -21,6 +21,8 @@ webdriver/chromedriver_87.exe
 webdriver/geckodriver_0_28.exe
 chromedriver.exe
 /results/*
+**/results
+**/results/
 results/img_out/*
 results/port_images/*
 results/strategy_stats/*
