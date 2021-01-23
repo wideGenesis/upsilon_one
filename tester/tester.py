@@ -28,7 +28,7 @@ def find_start_date(port_id, data_interval, start_test_date):
     elif port_id == 'test_adm':
         min_dat, ticker = find_min_date(TEST_ADM)
     elif port_id == 'test_stacks_only':
-        return datetime.date(2008, 1, 1)
+        return start_test_date
 
     if min_dat is not None and ticker is not None:
         if min_dat.day > 1:
@@ -356,7 +356,7 @@ def portfolio_tester(init_cap=10000, port_id='parking', allocator_data_interval=
         portfolio_args['sat_selector_start_date'] = selector_start_date
         portfolio_args['sat_selector_end_date'] = selector_end_date
         portfolio_args['sat_etf_list'] = None
-        portfolio_args['sat_cap_filter'] = 20000000000
+        portfolio_args['sat_cap_filter'] = 5000000000
         portfolio_args['sat_assets_to_hold'] = 20
         portfolio_args['sat_cov_method'] = 'semi'
         portfolio_args['sat_herc'] = False
