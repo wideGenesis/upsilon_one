@@ -127,6 +127,7 @@ scs==2.1.2
 seaborn==0.11.1
 selenium==3.141.0
 selenium-wire==2.1.2
+simfin==0.8.1
 six==1.15.0
 sortedcontainers==2.3.0
 soupsieve==2.1
@@ -144,6 +145,7 @@ threadpoolctl==2.1.0
 tornado==6.1
 traitlets==5.0.5
 typing-extensions==3.7.4.3
+undetected-chromedriver==1.5.2
 urllib3==1.26.2
 urwid==2.1.2
 user-agent==0.1.9
