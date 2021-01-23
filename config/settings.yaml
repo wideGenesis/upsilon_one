@@ -1,6 +1,7 @@
 PATHS:
   HOLDINGS: 'quotes/holdings/'
   YAHOO_PATH: 'quotes/yahoo_data/'
+  SIMFIN_PATH: 'quotes/sim_fin_data/'
   COINS_DATA: 'quotes/coins/'
   COMMON_IMG_PATH: 'img/'
   RESULTS_PATH: 'results/'
@@ -38,6 +39,7 @@ SQL:
 SQL_TABLE_NAMES:
   QUOTE_TABLE_NAME: 'quotes'
   UNIVERSE_TABLE_NAME: 'universe'
+  HIST_UNIVERSE_TABLE_NAME: 'historical_universe'
   TINKOFF_UNIVERSE_TABLE_NAME: 'tinkoff_universe'
   PORTFOLIO_ALLOCATION_TABLE_NAME: 'allocations'
   HIST_PORT_ALLOCATION_TABLE_NAME: 'hist_allocations'

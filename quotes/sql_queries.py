@@ -441,3 +441,115 @@ def find_min_date(tisker_list, table_name=QUOTE_TABLE_NAME):
             return md, ticker
         else:
             debug(f'Can\'t find table: {table_name}!')
+
+
+def find_min_date_by_ticker(ticker, table_name=QUOTE_TABLE_NAME):
+    with engine.connect() as connection:
+        if is_table_exist(table_name):
+            if ticker_lookup(ticker):
+                sql_query = f'SELECT min(q.dateTime) FROM {table_name} q ' \
+                            f'WHERE q.ticker=\'{ticker}\''
+                result = connection.execute(sql_query)
+                if result.rowcount > 0:
+                    md = result.cursor.fetchone()[0]
+                    return md
+                else:
+                    return None
+        else:
+            debug(f'Can\'t find table: {table_name}!')
+
+
+def find_max_date_by_ticker(ticker, table_name=QUOTE_TABLE_NAME):
+    with engine.connect() as connection:
+        if is_table_exist(table_name):
+            if ticker_lookup(ticker):
+                sql_query = f'SELECT max(q.dateTime) FROM {table_name} q ' \
+                            f'WHERE q.ticker=\'{ticker}\''
+                result = connection.execute(sql_query)
+                if result.rowcount > 0:
+                    md = result.cursor.fetchone()[0]
+                    return md
+                else:
+                    return None
+        else:
+            debug(f'Can\'t find table: {table_name}!')
+
+
+# ******************** HISTORICAL UNIVERSE ********************
+def create_hist_universe_table(table_name=HIST_UNIVERSE_TABLE_NAME, engine=engine):
+    with engine.connect() as connection:
+        if not is_table_exist(table_name):
+            transaction = connection.begin()
+            create_query = f'CREATE TABLE {table_name} ' \
+                           f'udate DATE NOT NULL, ' \
+                           f'(ticker VARCHAR(6) NOT NULL, ' \
+                           f'mkt_cap BIGINT, ' \
+                           f'sector VARCHAR(100), ' \
+                           f'exchange VARCHAR(20), ' \
+                           f'PRIMARY KEY(dateTime, ticker)' \
+                           f')'
+            connection.execute(create_query)
+            transaction.commit()
+
+
+def append_universe_by_date(universe, universe_date, table_name=HIST_UNIVERSE_TABLE_NAME, engine=engine):
+    with engine.connect() as connection:
+        if is_table_exist(table_name):
+            transaction = connection.begin()
+            try:
+                for ticker in universe:
+                    sector, mkt_cap, exchange = universe[ticker]
+                    insert_query = f'INSERT INTO {table_name} (udate, ticker, mkt_cap, sector, exchange) ' \
+                                   f'VALUES (\'{str(universe_date)}\', ' \
+                                   f'\'{ticker}\', \'{mkt_cap}\', \'{sector}\', \'{exchange}\')'
+                    connection.execute(insert_query)
+                transaction.commit()
+            except Exception as e:
+                debug(e)
+                transaction.rollback()
+        else:
+            debug(f'Can\'t find table: {table_name}!')
+
+
+def get_universe_by_date(universe_date, cap_filter=0, u_table_name=HIST_UNIVERSE_TABLE_NAME, engine=engine):
+    with engine.connect() as connection:
+        if is_table_exist(u_table_name):
+            res = list()
+            del_query = f'SELECT ticker FROM  {u_table_name} ' \
+                        f'WHERE udate=\'{str(universe_date)}\' and mkt_cap > \'{cap_filter}\' AND u.mkt_cap IS NOT NULL'
+            result = connection.execute(del_query)
+            if result.rowcount > 0:
+                for t in result.fetchall():
+                    res.append(t[0])
+                return res
+            else:
+                return None
+        else:
+            debug(f'Can\'t find table: {u_table_name}!')
+
+
+def get_closes_universe_by_date_df(universe_date, q_table_name=QUOTE_TABLE_NAME, u_table_name=HIST_UNIVERSE_TABLE_NAME,
+                                   cap_filter=0, etf_list=None, start_date=None, end_date=date.today(), engine=engine):
+    with engine.connect() as connection:
+        closes = None
+        dat = {}
+        tickers = get_universe_by_date(universe_date, cap_filter, u_table_name, engine)
+        for ticker in tickers:
+            query_string = f'SELECT q.dateTime, q.close FROM {q_table_name} q' \
+                           f' WHERE q.ticker=\'{ticker}\''
+            if start_date is not None:
+                query_string += f' AND q.dateTime >= \'{str(start_date)}\' '
+            if end_date is not None:
+                query_string += f' AND q.dateTime <= \'{str(end_date)}\' '
+            q_result = connection.execute(query_string)
+            if q_result.rowcount > 0:
+                rows = q_result.fetchall()
+                c0 = []
+                c1 = []
+                for row in rows:
+                    c0.append(row[0])
+                    c1.append(row[1])
+                series = pd.Series(c1, index=c0)
+                dat[ticker] = series
+        closes = pd.DataFrame(dat)
+    return closes

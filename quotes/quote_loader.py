@@ -85,8 +85,12 @@ def update_universe_prices(exclude_sectors=EXCLUDE_SECTORS, not_exclude_tickers=
             print_progress_bar(count, t_len, prefix='Progress:', suffix=f'Complete:{ticker}', length=50)
 
 
-def update_universe_prices1(exclude_sectors=EXCLUDE_SECTORS, not_exclude_tickers=NOT_EXCLUDE_TICKERS):
-    tickers = get_universe()
+def update_universe_prices1(universe=None):
+    tickers = []
+    if universe is None:
+        tickers = get_universe()
+    else:
+        tickers = universe
     t_len = len(tickers)
 
     # ==================== Теперь проапдейтим/закачаем данные по OHLC по всем тикерам вселенной
@@ -150,8 +154,12 @@ def update_universe_prices1(exclude_sectors=EXCLUDE_SECTORS, not_exclude_tickers
     debug("Complete update_universe_prices1")
 
 
-def eod_update_universe_prices(exclude_sectors=EXCLUDE_SECTORS, not_exclude_tickers=NOT_EXCLUDE_TICKERS):
-    tickers = get_universe()
+def eod_update_universe_prices(universe=None):
+    tickers = []
+    if universe is None:
+        tickers = get_universe()
+    else:
+        tickers = universe
     t_len = len(tickers)
     # ==================== Теперь проапдейтим/закачаем данные по OHLC по всем тикерам вселенной
     # Проверяем есть ли таблица, если нет ее надо создать
@@ -187,12 +195,12 @@ def eod_update_universe_prices(exclude_sectors=EXCLUDE_SECTORS, not_exclude_tick
                 if (end_table_date - td) != today:
                     is_update = True
                     # print("(ticker exist) Start date:" + str(end_table_date) + "; End date:" + str(today))
-                    get_historical_prices(ticker, end_table_date, today, is_update)
+                    get_historical_adjprices(ticker, end_table_date, today, is_update)
                 # else:
                 #     print("Nothing to update. The table is up to date.")
             else:
                 # print("(ticker not exist) Start date:" + str(start_table_date) + "; End date:" + str(today))
-                get_historical_prices(ticker, start_table_date, today, is_update)
+                get_historical_adjprices(ticker, start_table_date, today, is_update)
             print_progress_bar(count, t_len, prefix='Progress:', suffix=f'Complete:{ticker}:[{count}:{t_len}]   ',
                                length=50)
     else:
@@ -204,9 +212,11 @@ def eod_update_universe_prices(exclude_sectors=EXCLUDE_SECTORS, not_exclude_tick
                 sleep(3)
             start_date = date.fromisoformat(DEFAULT_START_QUOTES_DATE)
             end_date = date.today()
-            get_historical_prices(ticker, start_date, end_date, is_update)
+            get_historical_adjprices(ticker, start_date, end_date, is_update)
             print_progress_bar(count, t_len, prefix='Progress:', suffix=f'Complete:{ticker}:[{count}:{t_len}]   ',
                                length=50)
+    debug("Complete eod_update_universe_prices")
+
 
 
 def main():

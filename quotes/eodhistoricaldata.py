@@ -93,11 +93,11 @@ def get_etf_holdings(etf):
 
 
 def get_index_constituent(index):
-    debug("#Start get ETF holdings")
+    debug("#Start get INDEX Constituents")
     session = requests.Session()
     holdings = {}
-    url = f'https://eodhistoricaldata.com/api/fundamentals/{index}.INDEX'
-    params = {'api_token': EOD_API_KEY, 'filter': 'ETF_Data::Holdings'}
+    url = f'https://eodhistoricaldata.com/api/fundamentals/{index}.INDX'
+    params = {'api_token': EOD_API_KEY, 'filter': 'Components'}
     request_result = session.get(url, params=params)
     if request_result.status_code == requests.codes.ok:
         parsed_json = json.loads(request_result.text)
@@ -119,7 +119,6 @@ def get_index_constituent(index):
                         holdings[ticker] = (sector, mkt_cap, exchange)
     debug(str(holdings))
     return holdings
-
 
 
 def get_market_cap(ticker):
@@ -286,6 +285,31 @@ def get_historical_prices(ticker, from_date, end_date, is_update=False):
         for split in parsed_json:
             debug(f'Split[{ticker}]:' + split['date'] + ":::" + split['split'])
 
+    insert_quotes(ticker, prices, is_update)
+
+
+def get_historical_adjprices(ticker, from_date, end_date, is_update=False):
+    # debug("#Start get Historical Prices")
+    session = requests.Session()
+    prices = {}
+    url = f'https://eodhistoricaldata.com/api/technical/{ticker}.US'
+    params = {'api_token': EOD_API_KEY,
+              'from': from_date.strftime("%Y-%m-%d"),
+              'to': end_date.strftime("%Y-%m-%d"),
+              'order':  'd',
+              'fmt': 'json',
+              'function': 'splitadjusted'}
+    try:
+        request_result = session.get(url, params=params)
+    except Exception as e:
+        # print(e, 'Waiting 10 sec')
+        sleep(15)
+        request_result = session.get(url, params=params)
+    if request_result.status_code == requests.codes.ok:
+        parsed_json = json.loads(request_result.text)
+        for bar in parsed_json:
+            prices[bar['date']] = (bar['open'], bar['high'], bar['low'], bar['close'], bar['close'],
+                                   bar['volume'], 0)
     insert_quotes(ticker, prices, is_update)
 
 
