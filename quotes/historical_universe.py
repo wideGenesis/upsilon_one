@@ -12,7 +12,7 @@ import pandas as pd
 def create_nasdaq_hist_universe():
     # ++++ Подгрузим исторические события - когда добавлялись тикеры, а когда удалялись
     # переформатируем насвой лад - нужно что бы дата была ключем
-    with open('nasdaq_100_histirical_events.json') as json_file:
+    with open('nasdaq_100_historical_events.json') as json_file:
         hist_events = json.load(json_file)
     result_events = {}
     global_universe = []
@@ -33,12 +33,14 @@ def create_nasdaq_hist_universe():
     for key, value in result_events.items():
         debug(f"Date[{key.strftime('%Y-%m-%d')}]: {value}")
 
-    # ++++ Заберем текущие конституенты
+    # ++++ Заберем текущие конституенты индекса NDX
+    # Это и будет текущей вселенной
     curr_universe = get_index_constituent('NDX')
 
     debug(f"len(curr_universe)={len(curr_universe)}")
     debug(f"curr_universe:{curr_universe}")
 
+    # ++++ Все соберем в global_universe для того что бы по всем данным обновлять цены.
     for ticker in curr_universe.keys():
         if ticker not in global_universe:
             global_universe.append(ticker)
@@ -46,19 +48,17 @@ def create_nasdaq_hist_universe():
     debug(f"len(global_universe)={len(global_universe)}")
     debug(f"global_universe:{global_universe}")
 
-    # eod_update_universe_prices(global_universe)
-    # chck_data(global_universe)
+    # ++++ Обновляем цены по всем тикерам из global_universe
+    eod_update_universe_prices(global_universe)
 
+    # ++++ Подгружаем данные SimFin для поиска исторических маркет капов
     sf.set_api_key('free')
     sf.set_data_dir(SIMFIN_PATH)
     df_all = sf.load_shareprices(variant='daily', market='us')
 
-    # final_date = datetime.datetime.strptime('2017-04-14', "%Y-%m-%d").date()
-    # for ticker in global_universe:
-    #     find_mktcap(df_all, final_date, ticker, -25)
-    #
-    # return
-    # ++++ Основной цикл создания исторических вселенных
+    # ++++ Далее идут основные расчеты  ++++++++++++++
+    # для начала подготовим стартовые даты и все такое
+    # потом если сегодня не первое число месяца, то расчитаем вселенную для текущего месяца
     final_date = datetime.datetime.strptime(DEFAULT_START_QUOTES_DATE, "%Y-%m-%d").date()
     debug(f"Final Date[{final_date.strftime('%Y-%m-%d')}]")
     cur_universe_date = date.today()
@@ -72,7 +72,6 @@ def create_nasdaq_hist_universe():
                 for ticker, cmd in event.items():
                     if cmd == 'Remove':
                         sector, mkt_cap, exchange = get_tickerdata(ticker)
-                        find_mktcap(cur_universe_date, ticker)
                         if (((sector not in EXCLUDE_SECTORS and sector is not None)
                              or ticker in NOT_EXCLUDE_TICKERS)
                                 and ticker not in EXCLUDE_TICKERS and exchange in VALID_EXCHANGE):
@@ -82,7 +81,7 @@ def create_nasdaq_hist_universe():
                         if ticker in curr_universe:
                             debug(f"Remove ticker: {ticker}")
                             curr_universe.pop(ticker)
-                # result_events.pop(ev_date)
+    # Добавим во вселенную тикеры из исключенных секторов MA, V, PYPL
     sector, mkt_cap, exchange = get_tickerdata("MA")
     curr_universe["MA"] = (sector, mkt_cap, exchange)
     sector, mkt_cap, exchange = get_tickerdata("V`")
@@ -91,12 +90,21 @@ def create_nasdaq_hist_universe():
     curr_universe["PYPL"] = (sector, mkt_cap, exchange)
     # Проверка на достаточность данных в тикерах
     # Данных должно быть за 12 месяцев до текущей даты вселенной cur_universe_date
-    universe_to_save = check_enough_data(curr_universe, cur_universe_date)
-    save_universe(cur_universe_date, curr_universe)
+    checked_universe = check_enough_data(curr_universe, cur_universe_date)
+
+    # ++++ Взять все исторические маркет капы
+    universe_to_save = {}
+    for ticker, value in checked_universe.items():
+        hist_mkt_cap = find_mktcap(df_all, cur_universe_date, ticker, value[1])
+        new_value = (value[0], hist_mkt_cap, value[2])
+        universe_to_save[ticker] = new_value
+
+    # Сохраним ткущую вселенную в БД
+    save_universe(cur_universe_date, universe_to_save)
 
     debug(f"Universe for date [{cur_universe_date.strftime('%Y-%m-%d')}]: {universe_to_save}")
-    # return
 
+    # ++++ Основной цикл создания исторических вселенных
     while cur_universe_date >= final_date:
         prev_universe_date = cur_universe_date
         cur_universe_date = date(cur_universe_date.year, cur_universe_date.month, 1) - td
@@ -106,7 +114,6 @@ def create_nasdaq_hist_universe():
                 for ticker, cmd in event.items():
                     if cmd == 'Remove':
                         sector, mkt_cap, exchange = get_tickerdata(ticker)
-                        mkt_cap = find_mktcap(df_all, cur_universe_date, ticker, mkt_cap)
                         if (((sector not in EXCLUDE_SECTORS and sector is not None)
                              or ticker in NOT_EXCLUDE_TICKERS)
                                 and ticker not in EXCLUDE_TICKERS and exchange in VALID_EXCHANGE):
@@ -117,6 +124,7 @@ def create_nasdaq_hist_universe():
                             debug(f"Remove ticker: {ticker}")
                             curr_universe.pop(ticker)
 
+        # Добавим во вселенную тикеры из исключенных секторов MA, V, PYPL
         sector, mkt_cap, exchange = get_tickerdata("MA")
         curr_universe["MA"] = (sector, mkt_cap, exchange)
         sector, mkt_cap, exchange = get_tickerdata("V`")
@@ -125,7 +133,18 @@ def create_nasdaq_hist_universe():
         curr_universe["PYPL"] = (sector, mkt_cap, exchange)
         # Проверка на достаточность данных в тикерах
         # Данных должно быть за 12 месяцев до текущей даты вселенной cur_universe_date
-        universe_to_save = check_enough_data(curr_universe, cur_universe_date)
+        checked_universe = check_enough_data(curr_universe, cur_universe_date)
+
+        # ++++ Взять все исторические маркет капы
+        universe_to_save = {}
+        for ticker, value in checked_universe.items():
+            hist_mkt_cap = find_mktcap(df_all, cur_universe_date, ticker, value[1])
+            new_value = (value[0], hist_mkt_cap, value[2])
+            universe_to_save[ticker] = new_value
+
+        # Сохраним ткущую вселенную в БД
+        save_universe(cur_universe_date, universe_to_save)
+
         debug(f"Universe for date [{cur_universe_date.strftime('%Y-%m-%d')}]: {curr_universe}")
 
 

@@ -27,6 +27,8 @@ def find_start_date(port_id, data_interval, start_test_date):
         min_dat, ticker = find_min_date(LEVERAGED)
     elif port_id == 'test_adm':
         min_dat, ticker = find_min_date(TEST_ADM)
+    elif port_id == 'test_stacks_only':
+        return datetime.date(2008, 1, 1)
 
     if min_dat is not None and ticker is not None:
         if min_dat.day > 1:
@@ -37,12 +39,12 @@ def find_start_date(port_id, data_interval, start_test_date):
         if start_test_date >= min_dat:
             return start_test_date
         else:
-            debug(f'[{port_id}][{ticker}]: You must start test from:{min_dat}', "WARNING")
+            debug(f'[{port_id}][{ticker}]: You must start test from:{min_dat}', WARNING)
             return min_dat
     elif min_dat is None and ticker is not None:
-        debug(f'[{port_id}]: Can\'t find data for ticker :{ticker}', "ERROR")
+        debug(f'[{port_id}]: Can\'t find data for ticker :{ticker}', ERROR)
     elif min_dat is None and ticker is None:
-        debug(f'[{port_id}]: Can\'t lookup ticker!', "ERROR")
+        debug(f'[{port_id}]: Can\'t lookup ticker!', ERROR)
 
 
 def portfolio_tester(init_cap=10000, port_id='parking', allocator_data_interval=3, selector_data_interval=1, start_test_date=datetime.date(2008, 1, 1)):
@@ -339,6 +341,36 @@ def portfolio_tester(init_cap=10000, port_id='parking', allocator_data_interval=
         portfolio_args['sat_selector_c_p2'] = 3
         compare_ticker = "QQQ"
 
+    elif port_id == 'test_stacks_only':
+
+        # ======================================== TEST STOCKS ONLY ========================================
+        portfolio_args['port_id'] = 'test_stacks_only'
+        portfolio_args['is_aliased'] = False
+        portfolio_args['etf_only'] = False
+        portfolio_args['stacks_only'] = True
+        portfolio_args['cor_perc'] = 0.99
+        portfolio_args['sat_perc'] = 0.01
+        # ********************* TEST STOCKS ONLY *********************
+        portfolio_args['sat_alloctor_start_date'] = alloctor_start_date
+        portfolio_args['sat_allocator_end_date'] = allocator_end_date
+        portfolio_args['sat_selector_start_date'] = selector_start_date
+        portfolio_args['sat_selector_end_date'] = selector_end_date
+        portfolio_args['sat_etf_list'] = None
+        portfolio_args['sat_cap_filter'] = 20000000000
+        portfolio_args['sat_assets_to_hold'] = 20
+        portfolio_args['sat_cov_method'] = 'semi'
+        portfolio_args['sat_herc'] = False
+        portfolio_args['sat_linkage_'] = 'ward'
+        portfolio_args['sat_risk_measure_'] = 'variance'
+        portfolio_args['sat_graphs_show'] = False
+        portfolio_args['sat_selector_type'] = 21
+        portfolio_args['sat_selector_adjustment'] = False
+        portfolio_args['sat_selector_p1'] = 21
+        portfolio_args['sat_selector_p2'] = 63
+        portfolio_args['sat_selector_c_p1'] = 1
+        portfolio_args['sat_selector_c_p2'] = 3
+        compare_ticker = "QQQ"
+
     weights = calc_portfolio(portfolio_args)
 
     debug(f'Start allo({port_id}) [{allocator_end_date}]:{weights}')
@@ -404,23 +436,27 @@ if __name__ == '__main__':
     # main()
     # mp.set_start_method('spawn')
     q = mp.Queue()
-    p1 = mp.Process(target=portfolio_tester, args=(100000, 'parking', 3, 12, datetime.date(2020, 7, 1),))
-    p1.start()
-    p2 = mp.Process(target=portfolio_tester, args=(100000, 'allweather', 3, 12, datetime.date(2020, 7, 1),))
-    p2.start()
-    p3 = mp.Process(target=portfolio_tester, args=(100000, 'balanced', 3, 12, datetime.date(2020, 7, 1),))
-    p3.start()
-    p4 = mp.Process(target=portfolio_tester, args=(100000, 'aggressive', 3, 12, datetime.date(2015, 7, 1),))
-    p4.start()
-    p5 = mp.Process(target=portfolio_tester, args=(100000, 'leveraged', 3, 12,  datetime.date(2015, 7, 1),))
-    p5.start()
+    # p1 = mp.Process(target=portfolio_tester, args=(100000, 'parking', 3, 12, datetime.date(2020, 7, 1),))
+    # p1.start()
+    # p2 = mp.Process(target=portfolio_tester, args=(100000, 'allweather', 3, 12, datetime.date(2020, 7, 1),))
+    # p2.start()
+    # p3 = mp.Process(target=portfolio_tester, args=(100000, 'balanced', 3, 12, datetime.date(2020, 7, 1),))
+    # p3.start()
+    # p4 = mp.Process(target=portfolio_tester, args=(100000, 'aggressive', 3, 12, datetime.date(2015, 7, 1),))
+    # p4.start()
+    # p5 = mp.Process(target=portfolio_tester, args=(100000, 'leveraged', 3, 12,  datetime.date(2015, 7, 1),))
+    # p5.start()
 
     # p6 = mp.Process(target=portfolio_tester, args=(100000, 'test_adm', 3, 12,  datetime.date(2010, 3, 1),))
     # p6.start()
 
-    p1.join()
-    p2.join()
-    p3.join()
-    p4.join()
-    p5.join()
+    p7 = mp.Process(target=portfolio_tester, args=(100000, 'test_stacks_only', 3, 12,  datetime.date(2008, 1, 1),))
+    p7.start()
+
+    # p1.join()
+    # p2.join()
+    # p3.join()
+    # p4.join()
+    # p5.join()
     # p6.join()
+    p7.join()

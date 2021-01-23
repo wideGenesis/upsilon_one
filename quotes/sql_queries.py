@@ -481,12 +481,12 @@ def create_hist_universe_table(table_name=HIST_UNIVERSE_TABLE_NAME, engine=engin
         if not is_table_exist(table_name):
             transaction = connection.begin()
             create_query = f'CREATE TABLE {table_name} ' \
-                           f'udate DATE NOT NULL, ' \
-                           f'(ticker VARCHAR(6) NOT NULL, ' \
+                           f'(udate DATE NOT NULL, ' \
+                           f'ticker VARCHAR(6) NOT NULL, ' \
                            f'mkt_cap BIGINT, ' \
                            f'sector VARCHAR(100), ' \
                            f'exchange VARCHAR(20), ' \
-                           f'PRIMARY KEY(dateTime, ticker)' \
+                           f'PRIMARY KEY(udate, ticker)' \
                            f')'
             connection.execute(create_query)
             transaction.commit()
@@ -505,7 +505,7 @@ def append_universe_by_date(universe, universe_date, table_name=HIST_UNIVERSE_TA
                     connection.execute(insert_query)
                 transaction.commit()
             except Exception as e:
-                debug(e)
+                debug(e, "ERROR")
                 transaction.rollback()
         else:
             debug(f'Can\'t find table: {table_name}!')
@@ -516,7 +516,7 @@ def get_universe_by_date(universe_date, cap_filter=0, u_table_name=HIST_UNIVERSE
         if is_table_exist(u_table_name):
             res = list()
             del_query = f'SELECT ticker FROM  {u_table_name} ' \
-                        f'WHERE udate=\'{str(universe_date)}\' and mkt_cap > \'{cap_filter}\' AND u.mkt_cap IS NOT NULL'
+                        f'WHERE udate=\'{str(universe_date)}\' and mkt_cap > \'{cap_filter}\' AND mkt_cap IS NOT NULL'
             result = connection.execute(del_query)
             if result.rowcount > 0:
                 for t in result.fetchall():

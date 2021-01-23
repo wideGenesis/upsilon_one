@@ -108,7 +108,7 @@ def get_index_constituent(index):
                 if (((sector not in EXCLUDE_SECTORS and sector is not None)
                      or ticker in NOT_EXCLUDE_TICKERS)
                         and ticker not in EXCLUDE_TICKERS and exchange in VALID_EXCHANGE):
-                    holdings[ticker] = (sector, mkt_cap)
+                    holdings[ticker] = (sector, mkt_cap, exchange)
             else:
                 ticker = lookup_ticker_by_name(company_name=company, sess=session)
                 if ticker is not None and ticker not in holdings:

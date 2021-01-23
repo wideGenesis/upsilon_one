@@ -30,3 +30,4 @@ vix-futures-term-structu.png
 geckodriver.log
 quotes/sim_fin_data/download/us-shareprices-daily.zip
 quotes/sim_fin_data/us-shareprices-daily.csv
+tester/Tests/test_stacks_only_port_chart_over_QQQ.png
