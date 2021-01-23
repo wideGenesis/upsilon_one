@@ -27,7 +27,7 @@ def find_start_date(port_id, data_interval, start_test_date):
         min_dat, ticker = find_min_date(LEVERAGED)
     elif port_id == 'test_adm':
         min_dat, ticker = find_min_date(TEST_ADM)
-    elif port_id == 'test_stacks_only':
+    elif port_id == 'test_stacks_only' or port_id == 'tinkoff_portfolio':
         return start_test_date
 
     if min_dat is not None and ticker is not None:
@@ -363,6 +363,36 @@ def portfolio_tester(init_cap=10000, port_id='parking', allocator_data_interval=
         portfolio_args['sat_linkage_'] = 'ward'
         portfolio_args['sat_risk_measure_'] = 'variance'
         portfolio_args['sat_graphs_show'] = False
+        portfolio_args['sat_selector_type'] = 20
+        portfolio_args['sat_selector_adjustment'] = False
+        portfolio_args['sat_selector_p1'] = 21
+        portfolio_args['sat_selector_p2'] = 63
+        portfolio_args['sat_selector_c_p1'] = 1
+        portfolio_args['sat_selector_c_p2'] = 3
+        compare_ticker = "QQQ"
+
+    elif port_id == 'tinkoff_portfolio':
+
+        # ======================================== TINKOFF PORTFOLIO ========================================
+        portfolio_args['port_id'] = 'tinkoff_portfolio'
+        portfolio_args['is_aliased'] = False
+        portfolio_args['etf_only'] = False
+        portfolio_args['stacks_only'] = True
+        portfolio_args['cor_perc'] = 0.99
+        portfolio_args['sat_perc'] = 0.01
+        # ********************* TINKOFF PORTFOLIO *********************
+        portfolio_args['sat_alloctor_start_date'] = alloctor_start_date
+        portfolio_args['sat_allocator_end_date'] = allocator_end_date
+        portfolio_args['sat_selector_start_date'] = selector_start_date
+        portfolio_args['sat_selector_end_date'] = selector_end_date
+        portfolio_args['sat_etf_list'] = None
+        portfolio_args['sat_cap_filter'] = 5000000000
+        portfolio_args['sat_assets_to_hold'] = 15
+        portfolio_args['sat_cov_method'] = 'semi'
+        portfolio_args['sat_herc'] = False
+        portfolio_args['sat_linkage_'] = 'ward'
+        portfolio_args['sat_risk_measure_'] = 'variance'
+        portfolio_args['sat_graphs_show'] = False
         portfolio_args['sat_selector_type'] = 21
         portfolio_args['sat_selector_adjustment'] = False
         portfolio_args['sat_selector_p1'] = 21
@@ -450,8 +480,11 @@ if __name__ == '__main__':
     # p6 = mp.Process(target=portfolio_tester, args=(100000, 'test_adm', 3, 12,  datetime.date(2010, 3, 1),))
     # p6.start()
 
-    p7 = mp.Process(target=portfolio_tester, args=(100000, 'test_stacks_only', 3, 12,  datetime.date(2008, 1, 1),))
-    p7.start()
+    # p7 = mp.Process(target=portfolio_tester, args=(100000, 'test_stacks_only', 3, 12,  datetime.date(2008, 1, 1),))
+    # p7.start()
+
+    p8 = mp.Process(target=portfolio_tester, args=(100000, 'tinkoff_portfolio', 3, 12,  datetime.date(2020, 7, 1),))
+    p8.start()
 
     # p1.join()
     # p2.join()
@@ -459,4 +492,5 @@ if __name__ == '__main__':
     # p4.join()
     # p5.join()
     # p6.join()
-    p7.join()
+    # p7.join()
+    p8.join()

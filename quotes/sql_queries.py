@@ -409,11 +409,11 @@ def get_all_universe(table_name=UNIVERSE_TABLE_NAME, engine=engine):
     with engine.connect() as connection:
         if is_table_exist(table_name):
             res = {}
-            del_query = "SELECT ticker, sector, mkt_cap FROM " + table_name
+            del_query = "SELECT ticker, sector, mkt_cap, exchange FROM " + table_name
             result = connection.execute(del_query)
             if result.rowcount > 0:
                 for t in result.fetchall():
-                    res[t[0]] = (t[1], t[2])
+                    res[t[0]] = (t[1], t[2], t[2])
                 return res
             else:
                 return None
@@ -534,6 +534,7 @@ def get_closes_universe_by_date_df(universe_date, q_table_name=QUOTE_TABLE_NAME,
         closes = None
         dat = {}
         tickers = get_universe_by_date(universe_date, cap_filter, u_table_name, engine)
+        debug(f"Universe size: {len(tickers)}")
         for ticker in tickers:
             query_string = f'SELECT q.dateTime, q.close FROM {q_table_name} q' \
                            f' WHERE q.ticker=\'{ticker}\''

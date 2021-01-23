@@ -19,13 +19,13 @@ def get_and_save_tinkoff_universe():
             count = 0
             for inst in parsed_json['payload']['instruments']:
                 if inst['currency'] == 'USD' and inst['ticker'] in universe:
-                    res[inst['ticker']] = (universe[inst['ticker']][0], universe[inst['ticker']][1])
+                    res[inst['ticker']] = (universe[inst['ticker']][0], universe[inst['ticker']][1], universe[inst['ticker']][2])
                     count += 1
             debug(f'Result: {res}')
             debug(f'Count: {count}')
         else:
-            debug(f'Can\'t get json: {request_result.status_code}', "WARNING")
-            debug(f'Can\'t get json: {request_result.text}', "WARNING")
+            debug(f'Can\'t get json: {request_result.status_code}', WARNING)
+            debug(f'Can\'t get json: {request_result.text}', WARNING)
         if len(res) > 0:
             # ++++++++ положим все в базу ++++++++
             if is_table_exist(TINKOFF_UNIVERSE_TABLE_NAME):

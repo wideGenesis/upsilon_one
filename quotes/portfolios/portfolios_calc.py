@@ -55,18 +55,22 @@ def calc_portfolio(portfolio_args):
             return core
 
     # Расчет COR части портфеля
-    # sat_closes = get_closes_universe_df(cap_filter=portfolio_args['sat_cap_filter'],
-    #                                     etf_list=portfolio_args['sat_etf_list'],
-    #                                     start_date=portfolio_args['sat_selector_start_date'],
-    #                                     end_date=portfolio_args['sat_selector_end_date'])
-    td = timedelta(days=1)
-    universe_date = portfolio_args['sat_selector_end_date'] - td
-    debug(f'Try get universe closes to {str(universe_date)}')
-    sat_closes = get_closes_universe_by_date_df(universe_date=universe_date,
-                                                cap_filter=portfolio_args['sat_cap_filter'],
-                                                etf_list=portfolio_args['sat_etf_list'],
-                                                start_date=portfolio_args['sat_selector_start_date'],
-                                                end_date=portfolio_args['sat_selector_end_date'])
+    sat_closes = {}
+    if portfolio_args['port_id'] == 'tinkoff_portfolio':
+        sat_closes = get_closes_universe_df(u_table_name=TINKOFF_UNIVERSE_TABLE_NAME,
+                                            cap_filter=portfolio_args['sat_cap_filter'],
+                                            etf_list=portfolio_args['sat_etf_list'],
+                                            start_date=portfolio_args['sat_selector_start_date'],
+                                            end_date=portfolio_args['sat_selector_end_date'])
+    else:
+        td = timedelta(days=1)
+        universe_date = portfolio_args['sat_selector_end_date'] - td
+        debug(f'Try get universe closes to {str(universe_date)}')
+        sat_closes = get_closes_universe_by_date_df(universe_date=universe_date,
+                                                    cap_filter=portfolio_args['sat_cap_filter'],
+                                                    etf_list=portfolio_args['sat_etf_list'],
+                                                    start_date=portfolio_args['sat_selector_start_date'],
+                                                    end_date=portfolio_args['sat_selector_end_date'])
 
     sat_rp = RiskParityAllocator(closes=sat_closes,
                                  cov_method=portfolio_args['sat_cov_method'],
