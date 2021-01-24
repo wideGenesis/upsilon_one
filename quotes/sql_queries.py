@@ -121,6 +121,7 @@ def get_closes_universe_df(q_table_name=QUOTE_TABLE_NAME, u_table_name=UNIVERSE_
             closes = pd.DataFrame(dat)
             return closes
         tickers = get_universe(u_table_name, engine)
+        # tickers = get_universe_capweighted(u_table_name, engine)
         for ticker in tickers:
             query_string = f'SELECT q.dateTime, q.close FROM {q_table_name} q, {u_table_name} u' \
                            f' WHERE q.ticker=\'{ticker}\' AND q.ticker=u.ticker AND u.mkt_cap > \'{cap_filter}\'' \
@@ -436,6 +437,26 @@ def get_universe(table_name=UNIVERSE_TABLE_NAME, engine=engine):
             if result.rowcount > 0:
                 for t in result.fetchall():
                     res.append(t[0])
+                return res
+            else:
+                return None
+        else:
+            debug(f'Can\'t find table: {table_name}!')
+
+
+def get_universe_capweighted(table_name=UNIVERSE_TABLE_NAME, engine=engine):
+    with engine.connect() as connection:
+        if is_table_exist(table_name):
+            res = list()
+            del_query = f'SELECT ticker FROM {table_name} ' \
+                        f'ORDER BY mkt_cap DESC'
+            result = connection.execute(del_query)
+            if result.rowcount > 0:
+                query_result = result.fetchall()
+                for count, ticker in enumerate(query_result):
+                    res.append(ticker[0])
+                    if count >= round(len(query_result)/2):
+                        break
                 return res
             else:
                 return None
