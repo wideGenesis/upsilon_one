@@ -38,7 +38,8 @@ def main():
 
     # Это уже формирование вселенной по-новому, через апи
     # eod_get_and_save_holdings()
-    update_universe_prices1()
+    universe = ['KDP']
+    update_universe_prices1(universe)
     exit()
     # parking_weights = parking_portfolio()
     # allweather_weights = allweather_portfolio()

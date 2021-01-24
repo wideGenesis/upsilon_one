@@ -356,19 +356,19 @@ def portfolio_tester(init_cap=10000, port_id='parking', allocator_data_interval=
         portfolio_args['sat_selector_start_date'] = selector_start_date
         portfolio_args['sat_selector_end_date'] = selector_end_date
         portfolio_args['sat_etf_list'] = None
-        portfolio_args['sat_cap_filter'] = 5000000000
-        portfolio_args['sat_assets_to_hold'] = 20
-        portfolio_args['sat_cov_method'] = 'semi'
+        portfolio_args['sat_cap_filter'] = 20000000000
+        portfolio_args['sat_assets_to_hold'] = 15
+        portfolio_args['sat_cov_method'] = 'mcd'
         portfolio_args['sat_herc'] = False
         portfolio_args['sat_linkage_'] = 'ward'
-        portfolio_args['sat_risk_measure_'] = 'variance'
+        portfolio_args['sat_risk_measure_'] = 'standard_deviation'
         portfolio_args['sat_graphs_show'] = False
-        portfolio_args['sat_selector_type'] = 20
+        portfolio_args['sat_selector_type'] = 21
         portfolio_args['sat_selector_adjustment'] = False
         portfolio_args['sat_selector_p1'] = 21
         portfolio_args['sat_selector_p2'] = 63
         portfolio_args['sat_selector_c_p1'] = 1
-        portfolio_args['sat_selector_c_p2'] = 3
+        portfolio_args['sat_selector_c_p2'] = 6
         compare_ticker = "QQQ"
 
     elif port_id == 'tinkoff_portfolio':
@@ -417,7 +417,7 @@ def portfolio_tester(init_cap=10000, port_id='parking', allocator_data_interval=
         pend_date = add_months(pend_date, 1)
         pstart_date = add_months(pend_date, -1)
 
-        ohlc = get_ohlc_dict_by_port_id(port_id, start_date=pstart_date, end_date=pend_date)
+        ohlc = get_ohlc_dict_by_port_id_h(port_id, start_date=pstart_date, end_date=pend_date)
         if len(ohlc) == 0:
             break
         portfolio_bars, returns = returns_calc(init_capital=in_cap, ohlc=ohlc)
@@ -480,11 +480,11 @@ if __name__ == '__main__':
     # p6 = mp.Process(target=portfolio_tester, args=(100000, 'test_adm', 3, 12,  datetime.date(2010, 3, 1),))
     # p6.start()
 
-    # p7 = mp.Process(target=portfolio_tester, args=(100000, 'test_stacks_only', 3, 12,  datetime.date(2008, 1, 1),))
-    # p7.start()
+    p7 = mp.Process(target=portfolio_tester, args=(100000, 'test_stacks_only', 3, 12,  datetime.date(2018, 6, 1),))
+    p7.start()
 
-    p8 = mp.Process(target=portfolio_tester, args=(100000, 'tinkoff_portfolio', 3, 12,  datetime.date(2020, 7, 1),))
-    p8.start()
+    # p8 = mp.Process(target=portfolio_tester, args=(100000, 'tinkoff_portfolio', 3, 12,  datetime.date(2020, 7, 1),))
+    # p8.start()
 
     # p1.join()
     # p2.join()
@@ -492,5 +492,5 @@ if __name__ == '__main__':
     # p4.join()
     # p5.join()
     # p6.join()
-    # p7.join()
-    p8.join()
+    p7.join()
+    # p8.join()

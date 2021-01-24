@@ -49,7 +49,7 @@ def create_nasdaq_hist_universe():
     debug(f"global_universe:{global_universe}")
 
     # ++++ Обновляем цены по всем тикерам из global_universe
-    eod_update_universe_prices(global_universe)
+    # eod_update_universe_prices(global_universe)
 
     # ++++ Подгружаем данные SimFin для поиска исторических маркет капов
     sf.set_api_key('free')
@@ -90,7 +90,7 @@ def create_nasdaq_hist_universe():
     curr_universe["PYPL"] = (sector, mkt_cap, exchange)
     # Проверка на достаточность данных в тикерах
     # Данных должно быть за 12 месяцев до текущей даты вселенной cur_universe_date
-    checked_universe = check_enough_data(curr_universe, cur_universe_date)
+    checked_universe = check_enough_data(curr_universe, cur_universe_date, is_last=True)
 
     # ++++ Взять все исторические маркет капы
     universe_to_save = {}
@@ -148,15 +148,20 @@ def create_nasdaq_hist_universe():
         debug(f"Universe for date [{cur_universe_date.strftime('%Y-%m-%d')}]: {curr_universe}")
 
 
-def check_enough_data(universe, universe_data):
-    check_data = add_months(universe_data, -12)
+def check_enough_data(universe, universe_data, is_last=False):
+    check_data_min = add_months(universe_data, -12)
+    if is_last:
+        td = timedelta(days=7)
+        check_data_max = universe_data - td
+    else:
+        check_data_max = add_months(universe_data, 1)
     res_universe = universe.copy()
     for item in universe.items():
         min_ticker_date = find_min_date_by_ticker(item[0])
         max_ticker_date = find_max_date_by_ticker(item[0])
         # debug(f"{item[0]}: {str(min_ticker_date)}")
         if min_ticker_date is not None and max_ticker_date is not None:
-            if min_ticker_date > check_data or max_ticker_date < universe_data:
+            if min_ticker_date > check_data_min or max_ticker_date < check_data_max:
                 res_universe.pop(item[0])
         else:
             res_universe.pop(item[0])

@@ -154,8 +154,10 @@ def get_closes_by_ticker_list(ticker_list, start_date=None, end_date=date.today(
             start_date = end_date - td
 
         for ticker in ticker_list:
-            query_string = f'SELECT q.dateTime, q.close FROM {q_table_name} q, {u_table_name} u' \
-                           f' WHERE q.ticker=\'{ticker}\' AND q.ticker=u.ticker '
+            # query_string = f'SELECT q.dateTime, q.close FROM {q_table_name} q, {u_table_name} u' \
+            #                f' WHERE q.ticker=\'{ticker}\' AND q.ticker=u.ticker '
+            query_string = f'SELECT q.dateTime, q.close FROM {q_table_name} q ' \
+                           f' WHERE q.ticker=\'{ticker}\' '
             if start_date is not None:
                 query_string += f' AND q.dateTime >= \'{str(start_date)}\' '
             if end_date is not None:
@@ -189,6 +191,42 @@ def get_ohlc_dict_by_port_id(port_id, start_date=None, end_date=date.today(),
                        f'FROM {q_table_name} q, {u_table_name} u, {weight_table} w' \
                        f' WHERE q.ticker=u.ticker ' \
                        f' AND q.ticker=w.ticker AND u.ticker=w.ticker ' \
+                       f' AND w.port_id=\'{port_id}\''
+        if start_date is not None:
+            query_string += f' AND q.dateTime >= \'{str(start_date)}\' '
+        if end_date is not None:
+            query_string += f' AND q.dateTime < \'{str(end_date)}\' '
+        query_string += f' ORDER BY q.dateTime ASC'
+
+        q_result = connection.execute(query_string)
+        if q_result.rowcount > 0:
+            rows = q_result.fetchall()
+            for row in rows:
+                ticker, dat, o, h, l, c, weight, ac = row
+                if ticker in ohlc:
+                    ohlc[ticker].append((dat, o, h, l, c, weight, ac))
+                else:
+                    ohlc[ticker] = [(dat, o, h, l, c, weight, ac)]
+    return ohlc
+
+
+def get_ohlc_dict_by_port_id_h(port_id, start_date=None, end_date=date.today(),
+                                 q_table_name=QUOTE_TABLE_NAME, u_table_name=UNIVERSE_TABLE_NAME,
+                                 engine=engine):
+    with engine.connect() as connection:
+        weight_table = PORTFOLIO_ALLOCATION_TABLE_NAME
+        ohlc = {}
+        if start_date is None:
+            td = timedelta(365)
+            start_date = end_date - td
+        # query_string = f'SELECT q.ticker, q.dateTime, q.open, q.high, q.low, q.close, w.weight, q.adj_close ' \
+        #                f'FROM {q_table_name} q, {u_table_name} u, {weight_table} w' \
+        #                f' WHERE q.ticker=u.ticker ' \
+        #                f' AND q.ticker=w.ticker AND u.ticker=w.ticker ' \
+        #                f' AND w.port_id=\'{port_id}\''
+        query_string = f'SELECT q.ticker, q.dateTime, q.open, q.high, q.low, q.close, w.weight, q.adj_close ' \
+                       f'FROM {q_table_name} q, {weight_table} w' \
+                       f' WHERE q.ticker=w.ticker ' \
                        f' AND w.port_id=\'{port_id}\''
         if start_date is not None:
             query_string += f' AND q.dateTime >= \'{str(start_date)}\' '
@@ -515,12 +553,18 @@ def get_universe_by_date(universe_date, cap_filter=0, u_table_name=HIST_UNIVERSE
     with engine.connect() as connection:
         if is_table_exist(u_table_name):
             res = list()
+            # del_query = f'SELECT ticker FROM  {u_table_name} ' \
+            #             f'WHERE udate=\'{str(universe_date)}\' and mkt_cap > \'{cap_filter}\' AND mkt_cap IS NOT NULL'
             del_query = f'SELECT ticker FROM  {u_table_name} ' \
-                        f'WHERE udate=\'{str(universe_date)}\' and mkt_cap > \'{cap_filter}\' AND mkt_cap IS NOT NULL'
+                        f'WHERE udate=\'{str(universe_date)}\'  AND mkt_cap IS NOT NULL ' \
+                        f'ORDER BY mkt_cap DESC'
             result = connection.execute(del_query)
             if result.rowcount > 0:
-                for t in result.fetchall():
-                    res.append(t[0])
+                query_result = result.fetchall()
+                for count, ticker in enumerate(query_result):
+                    res.append(ticker[0])
+                    if count >= round(len(query_result)/2):
+                        break
                 return res
             else:
                 return None
@@ -554,3 +598,4 @@ def get_closes_universe_by_date_df(universe_date, q_table_name=QUOTE_TABLE_NAME,
                 dat[ticker] = series
         closes = pd.DataFrame(dat)
     return closes
+
