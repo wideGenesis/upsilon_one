@@ -47,7 +47,7 @@ def create_nasdaq_hist_universe():
 
     debug(f"len(global_universe)={len(global_universe)}")
     debug(f"global_universe:{global_universe}")
-
+    exit(0)
     # ++++ Обновляем цены по всем тикерам из global_universe
     # eod_update_universe_prices(global_universe)
 

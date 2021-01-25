@@ -573,17 +573,17 @@ def append_universe_by_date(universe, universe_date, table_name=HIST_UNIVERSE_TA
 def get_universe_by_date(universe_date, cap_filter=0, u_table_name=HIST_UNIVERSE_TABLE_NAME, engine=engine):
     with engine.connect() as connection:
         if is_table_exist(u_table_name):
-            res = list()
+            res = {}
             # del_query = f'SELECT ticker FROM  {u_table_name} ' \
             #             f'WHERE udate=\'{str(universe_date)}\' and mkt_cap > \'{cap_filter}\' AND mkt_cap IS NOT NULL'
-            del_query = f'SELECT ticker FROM  {u_table_name} ' \
+            del_query = f'SELECT ticker, mkt_cap FROM  {u_table_name} ' \
                         f'WHERE udate=\'{str(universe_date)}\'  AND mkt_cap IS NOT NULL ' \
                         f'ORDER BY mkt_cap DESC'
             result = connection.execute(del_query)
             if result.rowcount > 0:
                 query_result = result.fetchall()
-                for count, ticker in enumerate(query_result):
-                    res.append(ticker[0])
+                for count, item in enumerate(query_result):
+                    res[item[0]] = item[1]
                     if count >= round(len(query_result)/2):
                         break
                 return res
@@ -598,9 +598,9 @@ def get_closes_universe_by_date_df(universe_date, q_table_name=QUOTE_TABLE_NAME,
     with engine.connect() as connection:
         closes = None
         dat = {}
-        tickers = get_universe_by_date(universe_date, cap_filter, u_table_name, engine)
-        debug(f"Universe size: {len(tickers)}")
-        for ticker in tickers:
+        universe = get_universe_by_date(universe_date, cap_filter, u_table_name, engine)
+        debug(f"Universe size: {len(universe)}")
+        for ticker, mkt_cap in universe.items():
             query_string = f'SELECT q.dateTime, q.close FROM {q_table_name} q' \
                            f' WHERE q.ticker=\'{ticker}\''
             if start_date is not None:
@@ -616,7 +616,8 @@ def get_closes_universe_by_date_df(universe_date, q_table_name=QUOTE_TABLE_NAME,
                     c0.append(row[0])
                     c1.append(row[1])
                 series = pd.Series(c1, index=c0)
-                dat[ticker] = series
+                dat[ticker] = (mkt_cap, series)
         closes = pd.DataFrame(dat)
+        debug(f'Closes={closes}', WARNING)
     return closes
 

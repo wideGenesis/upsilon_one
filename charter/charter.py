@@ -5,6 +5,16 @@ from datetime import date, timedelta
 from project_shared import *
 
 
+def create_chart_img(ticker, start_date=None, end_date=date.today(),
+                     chart_type='Candlestic', chart_path=CHARTER_IMAGES_PATH):
+    ticker_quotes = None
+    ticker_quotes = get_year_data_by_ticker(ticker, start_date=start_date, end_date=end_date)
+    if ticker_quotes is not None:
+        fin.create_simple_chart(ticker, ticker_quotes, chart_type=chart_type, chart_path=chart_path)
+    else:
+        debug("WARNING: Can't create chart!")
+
+
 def get_year_data_by_ticker(ticker, start_date=None, end_date=date.today()):
     if sql.is_table_exist(QUOTE_TABLE_NAME):
         quotes = None

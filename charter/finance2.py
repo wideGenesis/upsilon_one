@@ -86,6 +86,77 @@ def create_chart(ticker, data, compare_ticker=None, compare_data=None, chart_typ
     m.makeChart(filename)
 
 
+def create_simple_chart(ticker, data, chart_type='Candlestic', chart_path=CHARTER_IMAGES_PATH):
+    extra_days = EXTRA_DAYS
+
+    time_stamps = []
+    high_data = []
+    low_data = []
+    open_data = []
+    close_data = []
+    volume_data = []
+
+    dt = date.today()
+    for quote in data:
+        dt = date.fromisoformat(str(quote[0]))
+        time_stamps.append(chartTime(dt.year, dt.month, dt.day))
+        open_data.append(float(quote[1]))
+        high_data.append(float(quote[2]))
+        low_data.append(float(quote[3]))
+        close_data.append(float(quote[4]))
+
+    i = 0
+    td = timedelta(1)
+    while i < extra_days:
+        dt = dt + td
+        time_stamps.append(chartTime(dt.year, dt.month, dt.day))
+        i += 1
+
+    m = FinanceChart(IMAGE_WIDTH)
+
+    m.setData(timeStamps=time_stamps, highData=high_data, lowData=low_data, openData=open_data, closeData=close_data,
+              volData=volume_data, extraPoints=extra_days)
+
+    title_ticker = ""
+    for i, c in enumerate(ticker):
+        title_ticker += c.upper() if i == 0 else c
+
+    title_str = f'{title_ticker}'
+    m.addPlotAreaTitle(Center, "<*font=arial.ttf,size=12,color=0x5fffffff*>%s" % title_str)
+
+    # m.setLogScale(True)
+    m.setLegendStyle("normal", 8, Transparent, 0xC4D6FF)
+    m.setXAxisStyle("normal", 8, AXIS_FONT_COLOR, 0)
+    m.setYAxisStyle("normal", 8, AXIS_FONT_COLOR, 0)
+
+    # m.setMargins(leftMargin=20, topMargin=7, rightMargin=35, bottomMargin=25)
+    m.setPlotAreaStyle(bgColor=CHART_BACKGROUND_COLOR,
+                       majorHGridColor=GRID_LINE_COLOR,
+                       majorVGridColor=GRID_LINE_COLOR,
+                       minorHGridColor=GRID_LINE_COLOR,
+                       minorVGridColor=GRID_LINE_COLOR)
+    m.setPlotAreaBorder(Transparent, 0)
+    m.addText(130, 130, "(c) @UpsilonBot", "arialbd.ttf", 32, WATERMARK_TEXT_COLOR)
+
+    main_chart = m.addMainChart(IMAGE_HEIGHT)
+
+    m.setPercentageAxis()
+    # main_chart.setClipping(True)
+    main_chart.setBackground(OUTER_BACKGROUND_COLOR)
+
+    if chart_type == 'Candlestic':
+        csl = m.addCandleStick(-1, -1)
+        csl.getDataSet(0).setDataColor(CANDLE_UP_COLOR, CANDLE_SHADOW_COLOR)
+        csl.getDataSet(1).setDataColor(CANDLE_DOWN_COLOR, CANDLE_SHADOW_COLOR)
+    elif chart_type == 'Bar':
+        m.addHLOC(CANDLE_UP_COLOR, CANDLE_DOWN_COLOR)
+    elif chart_type == 'Line':
+        m.addCloseLine(CANDLE_UP_COLOR)
+
+    filename = f'{chart_path}/{ticker}.png'
+    m.makeChart(filename)
+
+
 def create_excess_histogram(ticker, data, compare_ticker, compare_data):
     labels = []
     bars1 = []
@@ -192,7 +263,7 @@ def create_portfolio_donut(portfolio_data=None, title="", filename="pie"):
 
     title = pie_chart.addTitle(title, "timesbi.ttf", 18, P_TITLE_FONT_COLOR)
     title.setMargin2(0, 0, 8, 8)
-    pie_chart.addLine(10, title.getHeight()-2, pie_chart.getWidth() - 11, title.getHeight(), P_TITLE_FONT_COLOR, 2)
+    pie_chart.addLine(10, title.getHeight() - 2, pie_chart.getWidth() - 11, title.getHeight(), P_TITLE_FONT_COLOR, 2)
     pie_chart.setDonutSize(160, 200, 110, 0)
     pie_chart.setStartAngle(85)
     # pie_chart.setTransparentColor(20)
