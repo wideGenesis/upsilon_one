@@ -47,9 +47,9 @@ def create_nasdaq_hist_universe():
 
     debug(f"len(global_universe)={len(global_universe)}")
     debug(f"global_universe:{global_universe}")
-    exit(0)
+
     # ++++ Обновляем цены по всем тикерам из global_universe
-    # eod_update_universe_prices(global_universe)
+    eod_update_universe_prices(global_universe)
 
     # ++++ Подгружаем данные SimFin для поиска исторических маркет капов
     sf.set_api_key('free')
@@ -135,6 +135,9 @@ def create_nasdaq_hist_universe():
         # Данных должно быть за 12 месяцев до текущей даты вселенной cur_universe_date
         checked_universe = check_enough_data(curr_universe, cur_universe_date)
 
+        if cur_universe_date.year == 2018 and cur_universe_date.month == 6:
+            checked_universe.pop('KDP')
+
         # ++++ Взять все исторические маркет капы
         universe_to_save = {}
         for ticker, value in checked_universe.items():
@@ -145,7 +148,7 @@ def create_nasdaq_hist_universe():
         # Сохраним ткущую вселенную в БД
         save_universe(cur_universe_date, universe_to_save)
 
-        debug(f"Universe for date [{cur_universe_date.strftime('%Y-%m-%d')}]: {curr_universe}")
+        debug(f"Universe for date [{cur_universe_date.strftime('%Y-%m-%d')}]: {universe_to_save}")
 
 
 def check_enough_data(universe, universe_data, is_last=False):
