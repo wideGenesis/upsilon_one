@@ -30,23 +30,23 @@ def create_nasdaq_hist_universe():
         else:
             result_events[event_date] = upd
 
-    for key, value in result_events.items():
-        debug(f"Date[{key.strftime('%Y-%m-%d')}]: {value}")
+    # for key, value in result_events.items():
+    # debug(f"Date[{key.strftime('%Y-%m-%d')}]: {value}")
 
     # ++++ Заберем текущие конституенты индекса NDX
     # Это и будет текущей вселенной
     curr_universe = get_index_constituent('NDX')
 
-    debug(f"len(curr_universe)={len(curr_universe)}")
-    debug(f"curr_universe:{curr_universe}")
+    # debug(f"len(curr_universe)={len(curr_universe)}")
+    # debug(f"curr_universe:{curr_universe}")
 
     # ++++ Все соберем в global_universe для того что бы по всем данным обновлять цены.
     for ticker in curr_universe.keys():
         if ticker not in global_universe:
             global_universe.append(ticker)
 
-    debug(f"len(global_universe)={len(global_universe)}")
-    debug(f"global_universe:{global_universe}")
+    # debug(f"len(global_universe)={len(global_universe)}")
+    # debug(f"global_universe:{global_universe}")
 
     # ++++ Обновляем цены по всем тикерам из global_universe
     eod_update_universe_prices(global_universe)
@@ -60,13 +60,13 @@ def create_nasdaq_hist_universe():
     # для начала подготовим стартовые даты и все такое
     # потом если сегодня не первое число месяца, то расчитаем вселенную для текущего месяца
     final_date = datetime.datetime.strptime(DEFAULT_START_QUOTES_DATE, "%Y-%m-%d").date()
-    debug(f"Final Date[{final_date.strftime('%Y-%m-%d')}]")
+    # debug(f"Final Date[{final_date.strftime('%Y-%m-%d')}]")
     cur_universe_date = date.today()
     prev_universe_date = date.today()
     td = timedelta(1)
     if cur_universe_date.day > 1:
         cur_universe_date = date(cur_universe_date.year, cur_universe_date.month, 1) - td
-        debug(f'Current universe date: {cur_universe_date.strftime("%Y-%m-%d")}')
+        # debug(f'Current universe date: {cur_universe_date.strftime("%Y-%m-%d")}')
         for ev_date, event in result_events.items():
             if cur_universe_date <= ev_date < prev_universe_date:
                 for ticker, cmd in event.items():
@@ -75,11 +75,11 @@ def create_nasdaq_hist_universe():
                         if (((sector not in EXCLUDE_SECTORS and sector is not None)
                              or ticker in NOT_EXCLUDE_TICKERS)
                                 and ticker not in EXCLUDE_TICKERS and exchange in VALID_EXCHANGE):
-                            debug(f"Add ticker: {ticker}")
+                            # debug(f"Add ticker: {ticker}")
                             curr_universe[ticker] = (sector, mkt_cap, exchange)
                     if cmd == "Add":
                         if ticker in curr_universe:
-                            debug(f"Remove ticker: {ticker}")
+                            # debug(f"Remove ticker: {ticker}")
                             curr_universe.pop(ticker)
     # Добавим во вселенную тикеры из исключенных секторов MA, V, PYPL
     sector, mkt_cap, exchange = get_tickerdata("MA")
@@ -108,7 +108,7 @@ def create_nasdaq_hist_universe():
     while cur_universe_date >= final_date:
         prev_universe_date = cur_universe_date
         cur_universe_date = date(cur_universe_date.year, cur_universe_date.month, 1) - td
-        debug(f'Current universe date: {cur_universe_date.strftime("%Y-%m-%d")}')
+        # debug(f'Current universe date: {cur_universe_date.strftime("%Y-%m-%d")}')
         for ev_date, event in result_events.items():
             if cur_universe_date <= ev_date < prev_universe_date:
                 for ticker, cmd in event.items():
@@ -117,11 +117,11 @@ def create_nasdaq_hist_universe():
                         if (((sector not in EXCLUDE_SECTORS and sector is not None)
                              or ticker in NOT_EXCLUDE_TICKERS)
                                 and ticker not in EXCLUDE_TICKERS and exchange in VALID_EXCHANGE):
-                            debug(f"Add ticker: {ticker}")
+                            # debug(f"Add ticker: {ticker}")
                             curr_universe[ticker] = (sector, mkt_cap, exchange)
                     if cmd == "Add":
                         if ticker in curr_universe:
-                            debug(f"Remove ticker: {ticker}")
+                            # debug(f"Remove ticker: {ticker}")
                             curr_universe.pop(ticker)
 
         # Добавим во вселенную тикеры из исключенных секторов MA, V, PYPL
@@ -176,18 +176,18 @@ def chck_data(universe):
     for ticker in universe:
         min_ticker_date = find_min_date_by_ticker(ticker)
         max_ticker_date = find_max_date_by_ticker(ticker)
-        debug(f"{ticker}: {str(min_ticker_date)} - {str(max_ticker_date)}")
+        # debug(f"{ticker}: {str(min_ticker_date)} - {str(max_ticker_date)}")
         if min_ticker_date is None or max_ticker_date is None:
             ticker_list.append(ticker)
-    debug(f"len={len(ticker_list)}")
+    # debug(f"len={len(ticker_list)}")
 
 
 def find_mktcap(df_all, universe_date, ticker, cur_mkt_cap):
-    debug(f"Find market cap for {ticker}")
+    # debug(f"Find market cap for {ticker}")
     indx = df_all.index
     is_in = indx.isin([ticker], level='Ticker').any()
     if not is_in:
-        debug("Ticker not found")
+        # debug("Ticker not found")
         return cur_mkt_cap
     df_cap = df_all.loc[ticker, [CLOSE, SHARES_OUTSTANDING]]
     df_cap = df_cap.dropna()
@@ -201,13 +201,13 @@ def find_mktcap(df_all, universe_date, ticker, cur_mkt_cap):
         close = dbyd[CLOSE]
         so = dbyd[SHARES_OUTSTANDING]
         mkt_cap = close * so
-        debug(f"{ticker} : Market Cap={mkt_cap}")
+        # debug(f"{ticker} : Market Cap={mkt_cap}")
     elif ud < min_date:
         dbyd = df_cap.loc[min_date]
         close = dbyd[CLOSE]
         so = dbyd[SHARES_OUTSTANDING]
         mkt_cap = close * so
-        debug(f"{ticker} : Market Cap={mkt_cap}")
+        # debug(f"{ticker} : Market Cap={mkt_cap}")
     elif min_date <= ud <= max_date:
         dbyd = df_cap.loc[ud:]
         ud = dbyd.index[0]
@@ -215,7 +215,7 @@ def find_mktcap(df_all, universe_date, ticker, cur_mkt_cap):
         close = dbyd[CLOSE]
         so = dbyd[SHARES_OUTSTANDING]
         mkt_cap = close * so
-        debug(f"{ticker} : Market Cap={mkt_cap}")
+        # debug(f"{ticker} : Market Cap={mkt_cap}")
     elif ud > max_date:
         mkt_cap = cur_mkt_cap
     return mkt_cap
