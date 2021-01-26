@@ -363,7 +363,7 @@ def portfolio_tester(init_cap=10000, port_id='parking', allocator_data_interval=
         portfolio_args['sat_selector_end_date'] = selector_end_date
         portfolio_args['sat_etf_list'] = None
         # portfolio_args['sat_cap_filter'] = 20000000000
-        portfolio_args['sat_cap_filter'] = '30%'
+        portfolio_args['sat_cap_filter'] = '20%'
         portfolio_args['sat_assets_to_hold'] = 15
         portfolio_args['sat_cov_method'] = 'mcd'
         portfolio_args['sat_herc'] = False
@@ -377,7 +377,7 @@ def portfolio_tester(init_cap=10000, port_id='parking', allocator_data_interval=
         portfolio_args['sat_selector_c_p1'] = 1
         portfolio_args['sat_selector_c_p2'] = 6
 
-        portfolio_args['sat_cap_weight'] = 0
+        portfolio_args['sat_cap_weight'] = 1
         compare_ticker = "QQQ"
 
     elif port_id == 'tinkoff_portfolio':
@@ -489,7 +489,7 @@ if __name__ == '__main__':
     # p6 = mp.Process(target=portfolio_tester, args=(100000, 'test_adm', 3, 12,  datetime.date(2010, 3, 1),))
     # p6.start()
 
-    p7 = mp.Process(target=portfolio_tester, args=(100000, 'test_stacks_only', 3, 12,  datetime.date(2008, 6, 1),))
+    p7 = mp.Process(target=portfolio_tester, args=(100000, 'test_stacks_only', 3, 12,  datetime.date(2020, 11, 1),))
     p7.start()
 
     # p8 = mp.Process(target=portfolio_tester, args=(100000, 'tinkoff_portfolio', 3, 12,  datetime.date(2020, 7, 1),))
