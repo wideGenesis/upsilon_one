@@ -78,6 +78,7 @@ def calc_portfolio(portfolio_args):
                                             start_date=portfolio_args['sat_selector_start_date'],
                                             end_date=portfolio_args['sat_selector_end_date'])
 
+    # Тут создаем и инициализируем класс, который занимется селекцией и аллокацией
     sat_rp = RiskParityAllocator(closes=sat_closes,
                                  cov_method=portfolio_args['sat_cov_method'],
                                  herc=portfolio_args['sat_herc'],
