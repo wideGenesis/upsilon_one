@@ -371,3 +371,74 @@ def returns_calc(init_capital=100000, ohlc=None):
     # debug(cap_ohlc.values())
     # debug(returns)
     return cap_ohlc.values(), returns
+#
+#
+# def impulse_cap_sorting(filename=None):
+#     df = pd.read_csv(os.path.join(HOLDINGS, filename), index_col='Date', parse_dates=True)
+#     columns = df.columns.tolist()
+#     mcap_mtum = df.copy()
+#     last = df.iloc[[-1]]
+#     for col in columns:
+#         cap_mom = 0.5*last[col] * 0.5*get_market_cap(col)
+#         print(col, '\n')
+#         mcap_mtum[col+'_cap_mom'] = cap_mom
+#         mcap_mtum.drop(columns={col}, axis=1, inplace=True)
+#     mcap_mtum.dropna(inplace=True)
+#     last_sorted = mcap_mtum.T.sort_values(mcap_mtum.last_valid_index(), ascending=False).T
+#     last_sorted.to_csv(os.path.join(HOLDINGS, 'sorted_' + filename))
+#     return last_sorted
+#
+#
+# def index_calc(filename=None, qty=25, limit_1=12, limit_2=5, iterator=0.0018, qld_tmf=False):
+#     xpath = os.path.join(HOLDINGS, filename)
+#     df = pd.read_csv(xpath)
+#     df = df.T
+#     df['Ticker'] = df.index
+#     split = df['Ticker'].str.split('_', n=1, expand=True)
+#     df['Ticker'] = split[0]
+#     df.drop(['Date'], inplace=True)
+#     df.set_index('Ticker', inplace=True)
+#     df['Market Cap'] = df[0]
+#     df.drop(columns=[0], axis=1, inplace=True)
+#     df.drop('GOOG', axis=0, inplace=True, errors='ignore')
+#     df['Port cap'] = df['Market Cap'].iloc[0:qty].sum(axis=0)
+#     df['Weight'] = df['Market Cap'] * 100 / df['Port cap']
+#     df.drop(df.index[qty:200], axis=0, inplace=True)
+#     df.sort_values('Weight', inplace=True, ascending=False)
+#     df.loc[df['Weight'] <= limit_1, 'Weight_Stage1'] = df['Weight']
+#     df.loc[df['Weight'] >= limit_1, 'Excess_from_Stage1'] = df['Weight'] - limit_1
+#     df.loc[df['Weight'] >= limit_1, 'Weight_Stage1'] = limit_1
+#
+#     df['Exccess_SUM'] = df['Excess_from_Stage1'].iloc[0:qty].sum(axis=0)
+#     df['Final_Weight'] = df['Weight_Stage1']
+#     excess = df.iloc[1].Exccess_SUM  # TODO ЧТО И ЗАЧЕМ ЭТО?
+#     excc = int(round(excess))
+#     while excc > 0:
+#         excc = excc - 1
+#         for index, row in df.iterrows():
+#             df.loc[df['Final_Weight'] <= limit_2, 'Final_Weight'] = df['Final_Weight'] + iterator
+#     df['FINAL_SUM_CONTROL'] = df['Final_Weight'].iloc[0:qty].sum(axis=0)
+#     df['Final_Weight'] = df['Final_Weight'].astype(float).round(2)
+#     df.drop(columns=[
+#         'Market Cap',
+#         'Port cap',
+#         'Weight',
+#         'Weight_Stage1',
+#         'Excess_from_Stage1',
+#         'Exccess_SUM',
+#
+#     ], axis=1, inplace=True)
+#     control_sum = df.iloc[1].FINAL_SUM_CONTROL
+#     w_qld_tmf = (100 - control_sum)
+#     print('Sum of weights is \n', df['FINAL_SUM_CONTROL'])
+#     df.drop(columns=['FINAL_SUM_CONTROL'], axis=1, inplace=True)
+#     dtemp = df.to_dict()
+#     d = dtemp['Final_Weight']
+#     if qld_tmf:
+#         d.update({'TMF': round(w_qld_tmf, 2)}) #, 'TQQQ': round(w_qld_tmf, 2)})
+#     else:
+#         pass
+#     print('Mom*Cap Weights is \n', d)
+#     path = os.path.join(HOLDINGS, 'weigths_' + filename)
+#     df.to_csv(path, index=False)
+#     return d
