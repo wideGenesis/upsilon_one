@@ -54,7 +54,6 @@ def calc_portfolio(portfolio_args):
         if portfolio_args['etf_only']:
             return core
 
-    # Расчет SAT части портфеля
     sat_closes = {}
     mkt_caps = {}
     if portfolio_args['port_id'] == 'tinkoff_portfolio':
@@ -67,11 +66,19 @@ def calc_portfolio(portfolio_args):
         td = timedelta(days=1)
         universe_date = portfolio_args['sat_selector_end_date'] - td
         debug(f'Try get universe closes to {str(universe_date)}')
+
+        sat_closes = get_closes_universe_by_date_df(universe_date=universe_date,
+                                                    cap_filter=portfolio_args['sat_cap_filter'],
+                                                    etf_list=portfolio_args['sat_etf_list'],
+                                                    start_date=portfolio_args['sat_selector_start_date'],
+                                                    end_date=portfolio_args['sat_selector_end_date'])
+
         sat_closes, mkt_caps = get_closes_universe_by_date_df(universe_date=universe_date,
                                                               cap_filter=portfolio_args['sat_cap_filter'],
                                                               etf_list=portfolio_args['sat_etf_list'],
                                                               start_date=portfolio_args['sat_selector_start_date'],
                                                               end_date=portfolio_args['sat_selector_end_date'])
+
     elif portfolio_args['port_id'] != 'tinkoff_portfolio' and portfolio_args['port_id'] != 'test_stacks_only':
         sat_closes = get_closes_universe_df(cap_filter=portfolio_args['sat_cap_filter'],
                                             etf_list=portfolio_args['sat_etf_list'],
@@ -111,7 +118,11 @@ def calc_portfolio(portfolio_args):
                        sat_perc=portfolio_args['sat_perc'])
     return weights
 
-#
+
+
+
+
+
 # def parking_portfolio(start_date=None, end_date=date.today(), **kwargs):
 #     # cor_closes = get_closes_universe_df(cap_filter=200000000000, etf_list=PARKING)
 #     cor_closes = get_closes_universe_df(etf_list=PARKING, start_date=start_date, end_date=end_date)
