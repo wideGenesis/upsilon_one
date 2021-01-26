@@ -188,6 +188,8 @@ class RiskParityAllocator:
             total_cap = sum(final_dict.values())
             for k, v in final_dict.items():
                 mcaps.update({k: v / total_cap})
+            print('mcaps', mcaps)
+
             pr_weight = 1 - self.cap_weight
             cap_rp = {k: self.cap_weight * mcaps[k] + pr_weight * w[k] for k in w}
             w = cap_rp
