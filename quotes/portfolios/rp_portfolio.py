@@ -309,6 +309,9 @@ class RiskParityAllocator:
                 mom2 = ((df2[col].iloc[-1] - df2[col].iloc[0]) / df2[col].iloc[0])
                 performance_df[col] = 0.5 * mom1 + 0.5 * mom2
 
+            elif self.selector_type == 100:  # 'Head of Universe'
+                performance_df[col] = df[col]
+
             # elif self.selector_type == 14:  # Down GLS Calendar zs
             #
             #     dn = 0
