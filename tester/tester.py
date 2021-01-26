@@ -370,14 +370,14 @@ def portfolio_tester(init_cap=10000, port_id='parking', allocator_data_interval=
         portfolio_args['sat_linkage_'] = 'ward'
         portfolio_args['sat_risk_measure_'] = 'standard_deviation'
         portfolio_args['sat_graphs_show'] = False
-        portfolio_args['sat_selector_type'] = 100
+        portfolio_args['sat_selector_type'] = 21
         portfolio_args['sat_selector_adjustment'] = False
         portfolio_args['sat_selector_p1'] = 21
         portfolio_args['sat_selector_p2'] = 63
         portfolio_args['sat_selector_c_p1'] = 1
         portfolio_args['sat_selector_c_p2'] = 6
 
-        portfolio_args['sat_cap_weight'] = 1
+        portfolio_args['sat_cap_weight'] = 0.99
         compare_ticker = "QQQ"
 
     elif port_id == 'tinkoff_portfolio':
@@ -489,7 +489,7 @@ if __name__ == '__main__':
     # p6 = mp.Process(target=portfolio_tester, args=(100000, 'test_adm', 3, 12,  datetime.date(2010, 3, 1),))
     # p6.start()
 
-    p7 = mp.Process(target=portfolio_tester, args=(100000, 'test_stacks_only', 3, 12,  datetime.date(2020, 11, 1),))
+    p7 = mp.Process(target=portfolio_tester, args=(100000, 'test_stacks_only', 3, 12,  datetime.date(2008, 11, 1),))
     p7.start()
 
     # p8 = mp.Process(target=portfolio_tester, args=(100000, 'tinkoff_portfolio', 3, 12,  datetime.date(2020, 7, 1),))
