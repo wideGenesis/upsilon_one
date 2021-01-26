@@ -209,9 +209,8 @@ class RiskParityAllocator:
             plt.title(title + ' Weights', size=20)
             plt.show()
 
-
         # print(w)
-        print('SUM', '\n', sum(w.values()))
+        # print('SUM', '\n', sum(w.values()))
         return w
 
     def selector(self):
