@@ -181,15 +181,14 @@ class RiskParityAllocator:
                 w.update({k: v})
 
         elif self.cap_weight > 0:
-            total_cap = sum(self.mkt_caps.values())
-            for k, v in self.mkt_caps.items():
-                mcaps.update({k: v / total_cap})
-            print('mcap', mcaps)
-            pr_weight = 1 - self.cap_weight
-            print('rp -', pr_weight, 'cap - ', self.cap_weight)
             for k, v in di[0].items():
                 w.update({k: v})
-            print('rp', w)
+
+            final_dict = {x: w[x] for x in w if x in self.mkt_caps}
+            total_cap = sum(final_dict.values())
+            for k, v in final_dict.items():
+                mcaps.update({k: v / total_cap})
+            pr_weight = 1 - self.cap_weight
             cap_rp = {k: self.cap_weight * mcaps[k] + pr_weight * w[k] for k in w}
             w = cap_rp
 
