@@ -574,17 +574,26 @@ def get_universe_by_date(universe_date, cap_filter=0, u_table_name=HIST_UNIVERSE
     with engine.connect() as connection:
         if is_table_exist(u_table_name):
             res = {}
+            absolute_filter = None
+            percent_filter = None
+            if isinstance(cap_filter, str):
+                percent_filter = int(cap_filter[:-1])
+            elif isinstance(cap_filter, int):
+                absolute_filter = cap_filter
             # del_query = f'SELECT ticker FROM  {u_table_name} ' \
             #             f'WHERE udate=\'{str(universe_date)}\' and mkt_cap > \'{cap_filter}\' AND mkt_cap IS NOT NULL'
             del_query = f'SELECT ticker, mkt_cap FROM  {u_table_name} ' \
-                        f'WHERE udate=\'{str(universe_date)}\'  AND mkt_cap IS NOT NULL ' \
-                        f'ORDER BY mkt_cap DESC'
+                        f'WHERE udate=\'{str(universe_date)}\'  ' \
+                        f'AND mkt_cap IS NOT NULL '
+            if absolute_filter is not None:
+                del_query += f'AND mkt_cap > \'{absolute_filter}\' '
+            del_query += f'ORDER BY mkt_cap DESC'
             result = connection.execute(del_query)
             if result.rowcount > 0:
                 query_result = result.fetchall()
                 for count, item in enumerate(query_result):
                     res[item[0]] = item[1]
-                    if count >= round(len(query_result)/2):
+                    if percent_filter is not None and count >= round((len(query_result)*percent_filter)/100):
                         break
                 return res
             else:
