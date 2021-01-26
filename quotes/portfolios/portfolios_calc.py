@@ -54,8 +54,8 @@ def calc_portfolio(portfolio_args):
         if portfolio_args['etf_only']:
             return core
 
-    # Расчет CORE части портфеля
     sat_closes = {}
+    mkt_caps = {}
     if portfolio_args['port_id'] == 'tinkoff_portfolio':
         sat_closes = get_closes_universe_df(u_table_name=TINKOFF_UNIVERSE_TABLE_NAME,
                                             cap_filter=portfolio_args['sat_cap_filter'],
@@ -66,11 +66,18 @@ def calc_portfolio(portfolio_args):
         td = timedelta(days=1)
         universe_date = portfolio_args['sat_selector_end_date'] - td
         debug(f'Try get universe closes to {str(universe_date)}')
+
         sat_closes = get_closes_universe_by_date_df(universe_date=universe_date,
                                                     cap_filter=portfolio_args['sat_cap_filter'],
                                                     etf_list=portfolio_args['sat_etf_list'],
                                                     start_date=portfolio_args['sat_selector_start_date'],
                                                     end_date=portfolio_args['sat_selector_end_date'])
+
+        sat_closes, mkt_caps = get_closes_universe_by_date_df(universe_date=universe_date,
+                                                              cap_filter=portfolio_args['sat_cap_filter'],
+                                                              etf_list=portfolio_args['sat_etf_list'],
+                                                              start_date=portfolio_args['sat_selector_start_date'],
+                                                              end_date=portfolio_args['sat_selector_end_date'])
 
     elif portfolio_args['port_id'] != 'tinkoff_portfolio' and portfolio_args['port_id'] != 'test_stacks_only':
         sat_closes = get_closes_universe_df(cap_filter=portfolio_args['sat_cap_filter'],
@@ -91,6 +98,7 @@ def calc_portfolio(portfolio_args):
                                  p2=portfolio_args['sat_selector_p2'],
                                  c_p1=portfolio_args['sat_selector_c_p1'],
                                  c_p2=portfolio_args['sat_selector_c_p2'],
+                                 mkt_caps=mkt_caps
                                  )
     sat_tickers = []
     sat_tickers = sat_rp.selector()

@@ -616,8 +616,7 @@ def get_closes_universe_by_date_df(universe_date, q_table_name=QUOTE_TABLE_NAME,
                     c0.append(row[0])
                     c1.append(row[1])
                 series = pd.Series(c1, index=c0)
-                dat[ticker] = (mkt_cap, series)
+                dat[ticker] = series
         closes = pd.DataFrame(dat)
-        debug(f'Closes={closes}', WARNING)
-    return closes
+    return closes, universe
 

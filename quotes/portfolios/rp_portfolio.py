@@ -41,6 +41,7 @@ class RiskParityAllocator:
         'c_p1',
         'c_p2',
 
+        'mkt_caps',
     ]
     """
     risk_measure supported string: 
@@ -75,6 +76,8 @@ class RiskParityAllocator:
                  c_p1: int = 1,
                  c_p2: int = 3,
 
+                 mkt_caps: dict = {},
+
                  ):
         self.asset_names_ = asset_names_
         self.closes = closes
@@ -98,6 +101,8 @@ class RiskParityAllocator:
         self.p2 = p2
         self.c_p1 = c_p1
         self.c_p2 = c_p2
+
+        self.mkt_caps = mkt_caps
 
     def closes_updater(self, new_closes=None):
         self.closes = new_closes
@@ -245,7 +250,7 @@ class RiskParityAllocator:
 
                 df2 = date_slicer(df_=df, c_period=self.c_p2)
                 mom2 = ((df2[col].iloc[-1] - df2[col].iloc[0]) / df2[col].iloc[0])
-                performance_df[col] = 0.5*mom1 + 0.5*mom2
+                performance_df[col] = 0.5 * mom1 + 0.5 * mom2
 
             elif self.selector_type == 13:  # %Ch 2 periods Calendar zs
                 df1 = date_slicer(df_=df, c_period=self.c_p1)
@@ -256,19 +261,19 @@ class RiskParityAllocator:
                 rets2 = df2[col].pct_change()
                 mom2 = ((df2[col].iloc[-1] - df2[col].iloc[0]) / df2[col].iloc[0])
                 zs_2 = (mom2 - rets2.mean()) / rets2.std()
-                performance_df[col] = 0.5*zs_1 + 0.5*zs_2
+                performance_df[col] = 0.5 * zs_1 + 0.5 * zs_2
 
 
             elif self.selector_type == 14:  # %Ch 2 periods Calendar
                 df1 = date_slicer(df_=df, c_period=self.c_p1)
                 mom1 = ((df1[col].iloc[-1] - df1[col].iloc[0]) / df1[col].iloc[0])
 
-                pct_df1 = date_slicer(df_=df, c_period=self.c_p1+1)
+                pct_df1 = date_slicer(df_=df, c_period=self.c_p1 + 1)
                 pct1 = ((pct_df1[col].iloc[-1] - pct_df1[col].iloc[0]) / pct_df1[col].iloc[0])
 
                 df2 = date_slicer(df_=df, c_period=self.c_p2)
                 mom2 = ((df2[col].iloc[-1] - df2[col].iloc[0]) / df2[col].iloc[0])
-                performance_df[col] = 0.4*mom1 + 0.4*mom2 + 0.2*pct1
+                performance_df[col] = 0.4 * mom1 + 0.4 * mom2 + 0.2 * pct1
 
             elif self.selector_type == 20:  # %Ch Calendar
                 df1 = date_slicer(df_=df, c_period=self.c_p1)
@@ -280,7 +285,7 @@ class RiskParityAllocator:
                 mom1 = ((df1[col].iloc[-1] - df1[col].iloc[0]) / df1[col].iloc[0])
                 df2 = date_slicer(df_=df, c_period=self.c_p2)
                 mom2 = ((df2[col].iloc[-1] - df2[col].iloc[0]) / df2[col].iloc[0])
-                performance_df[col] = 0.5*mom1 + 0.5*mom2
+                performance_df[col] = 0.5 * mom1 + 0.5 * mom2
 
             # elif self.selector_type == 14:  # Down GLS Calendar zs
             #
@@ -294,7 +299,6 @@ class RiskParityAllocator:
             #     sma_gls = gls.mean()
             #     zs_1 = (-1)*(sma_gls - rets1.mean()) / rets1.std()
             #     performance_df[col] = zs_1
-
 
         performance_df.dropna(inplace=True)
         performance_df.drop_duplicates(inplace=True)
