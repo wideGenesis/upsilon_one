@@ -92,7 +92,8 @@ def calc_portfolio(portfolio_args):
                                  p2=portfolio_args['sat_selector_p2'],
                                  c_p1=portfolio_args['sat_selector_c_p1'],
                                  c_p2=portfolio_args['sat_selector_c_p2'],
-                                 mkt_caps=mkt_caps
+                                 mkt_caps=mkt_caps,
+                                 cap_weight=portfolio_args['sat_cap_weight']
                                  )
     sat_tickers = []
     sat_tickers = sat_rp.selector()

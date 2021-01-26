@@ -42,6 +42,7 @@ class RiskParityAllocator:
         'c_p2',
 
         'mkt_caps',
+        'cap_weight'
     ]
     """
     risk_measure supported string: 
@@ -77,6 +78,7 @@ class RiskParityAllocator:
                  c_p2: int = 3,
 
                  mkt_caps: dict = {},
+                 cap_weight: int = 0,
 
                  ):
         self.asset_names_ = asset_names_
@@ -103,6 +105,7 @@ class RiskParityAllocator:
         self.c_p2 = c_p2
 
         self.mkt_caps = mkt_caps
+        self.cap_weight = cap_weight
 
     def closes_updater(self, new_closes=None):
         self.closes = new_closes
@@ -172,8 +175,20 @@ class RiskParityAllocator:
         y_pos = np.arange(len(weights.columns))
         di = rp.weights.to_dict(orient='records')
         w = {}
-        for k, v in di[0].items():
-            w.update({k: v})
+        if self.cap_weight == 0:
+            for k, v in di[0].items():
+                w.update({k: v})
+        elif self.cap_weight > 0:
+            caps = cap_weighting(self.mkt_caps)
+            pr_weight = 1 - self.cap_weight
+            for k, v in di[0].items():
+                w.update({k: v})
+            cap_rp = {k: self.cap_weight*caps[k] + pr_weight*w[k] for k in w}
+            for k, v in cap_rp.items():
+                w.update({k: v})
+        elif self.cap_weight > 1:
+            print('Control Error')
+            return
         if self.graphs_show:
             plt.figure(figsize=(17, 7))
             rp.plot_clusters(assets=self.asset_names_)
@@ -187,6 +202,7 @@ class RiskParityAllocator:
             plt.ylabel('Weights %', size=20)
             plt.title(title + ' Weights', size=20)
             plt.show()
+
 
         # print(w)
         return w
@@ -311,6 +327,15 @@ class RiskParityAllocator:
         return tickers_to_allocator
 
 
+def cap_weighting(caps):
+    total_cap = sum(caps.values())
+    w = {}
+    for k, v in caps.items():
+        w.update({k: v*100/total_cap})
+    print(w, '\n', sum(w.values()))
+    return w
+
+
 def date_slicer(df_=None, c_period=1):
     last_date_month = df_.index[-1].month
     df_.index = pd.to_datetime(df_.index)
@@ -388,7 +413,10 @@ def returns_calc(init_capital=100000, ohlc=None):
 #     last_sorted.to_csv(os.path.join(HOLDINGS, 'sorted_' + filename))
 #     return last_sorted
 #
-#
+
+
+
+#  {'GOOGL': 1283029991424, 'AAPL': 906594062400, 'AMZN': 834610860000, 'MSFT': 767776770000, 'FB': 570567760000}
 # def index_calc(filename=None, qty=25, limit_1=12, limit_2=5, iterator=0.0018, qld_tmf=False):
 #     xpath = os.path.join(HOLDINGS, filename)
 #     df = pd.read_csv(xpath)

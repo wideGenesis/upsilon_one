@@ -375,6 +375,8 @@ def portfolio_tester(init_cap=10000, port_id='parking', allocator_data_interval=
         portfolio_args['sat_selector_p2'] = 63
         portfolio_args['sat_selector_c_p1'] = 1
         portfolio_args['sat_selector_c_p2'] = 6
+
+        portfolio_args['sat_cap_weight'] = 0.5
         compare_ticker = "QQQ"
 
     elif port_id == 'tinkoff_portfolio':
