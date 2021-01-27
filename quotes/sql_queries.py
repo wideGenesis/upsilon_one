@@ -472,7 +472,7 @@ def get_all_universe(table_name=UNIVERSE_TABLE_NAME, engine=engine):
             result = connection.execute(del_query)
             if result.rowcount > 0:
                 for t in result.fetchall():
-                    res[t[0]] = (t[1], t[2], t[2])
+                    res[t[0]] = (t[1], t[2], t[3])
                 return res
             else:
                 return None
@@ -570,6 +570,36 @@ def append_universe_by_date(universe, universe_date, table_name=HIST_UNIVERSE_TA
             debug(f'Can\'t find table: {table_name}!')
 
 
+def get_all_universe_by_date(universe_date, cap_filter=0, u_table_name=HIST_UNIVERSE_TABLE_NAME, engine=engine):
+    with engine.connect() as connection:
+        if is_table_exist(u_table_name):
+            res = {}
+            absolute_filter = None
+            percent_filter = None
+            if isinstance(cap_filter, str):
+                percent_filter = int(cap_filter[:-1])
+            elif isinstance(cap_filter, int):
+                absolute_filter = cap_filter
+            del_query = f'SELECT ticker, sector, mkt_cap, exchange FROM  {u_table_name} ' \
+                        f'WHERE udate=\'{str(universe_date)}\'  ' \
+                        f'AND mkt_cap IS NOT NULL '
+            if absolute_filter is not None:
+                del_query += f'AND mkt_cap > \'{absolute_filter}\' '
+            del_query += f'ORDER BY mkt_cap DESC'
+            result = connection.execute(del_query)
+            if result.rowcount > 0:
+                query_result = result.fetchall()
+                for count, item in enumerate(query_result):
+                    res[item[0]] = (item[1], item[2], item[3])
+                    if percent_filter is not None and count >= round((len(query_result)*percent_filter)/100):
+                        break
+                return res
+            else:
+                return None
+        else:
+            debug(f'Can\'t find table: {u_table_name}!')
+
+
 def get_universe_by_date(universe_date, cap_filter=0, u_table_name=HIST_UNIVERSE_TABLE_NAME, engine=engine):
     with engine.connect() as connection:
         if is_table_exist(u_table_name):
@@ -580,15 +610,13 @@ def get_universe_by_date(universe_date, cap_filter=0, u_table_name=HIST_UNIVERSE
                 percent_filter = int(cap_filter[:-1])
             elif isinstance(cap_filter, int):
                 absolute_filter = cap_filter
-            # del_query = f'SELECT ticker FROM  {u_table_name} ' \
-            #             f'WHERE udate=\'{str(universe_date)}\' and mkt_cap > \'{cap_filter}\' AND mkt_cap IS NOT NULL'
-            del_query = f'SELECT ticker, mkt_cap FROM  {u_table_name} ' \
+            sel_query = f'SELECT ticker, mkt_cap FROM  {u_table_name} ' \
                         f'WHERE udate=\'{str(universe_date)}\'  ' \
                         f'AND mkt_cap IS NOT NULL '
             if absolute_filter is not None:
-                del_query += f'AND mkt_cap > \'{absolute_filter}\' '
-            del_query += f'ORDER BY mkt_cap DESC'
-            result = connection.execute(del_query)
+                sel_query += f'AND mkt_cap > \'{absolute_filter}\' '
+            sel_query += f'ORDER BY mkt_cap DESC'
+            result = connection.execute(sel_query)
             if result.rowcount > 0:
                 query_result = result.fetchall()
                 for count, item in enumerate(query_result):
@@ -608,7 +636,7 @@ def get_closes_universe_by_date_df(universe_date, q_table_name=QUOTE_TABLE_NAME,
         closes = None
         dat = {}
         universe = get_universe_by_date(universe_date, cap_filter, u_table_name, engine)
-        debug(f"Universe size: {len(universe)}")
+        # debug(f"Universe size: {len(universe)}")
         for ticker, mkt_cap in universe.items():
             query_string = f'SELECT q.dateTime, q.close FROM {q_table_name} q' \
                            f' WHERE q.ticker=\'{ticker}\''

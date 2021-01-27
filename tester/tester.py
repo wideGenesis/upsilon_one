@@ -363,21 +363,21 @@ def portfolio_tester(init_cap=10000, port_id='parking', allocator_data_interval=
         portfolio_args['sat_selector_end_date'] = selector_end_date
         portfolio_args['sat_etf_list'] = None
         # portfolio_args['sat_cap_filter'] = 20000000000
-        portfolio_args['sat_cap_filter'] = '20%'
-        portfolio_args['sat_assets_to_hold'] = 15
+        portfolio_args['sat_cap_filter'] = '35%'
+        portfolio_args['sat_assets_to_hold'] = 10
         portfolio_args['sat_cov_method'] = 'mcd'
         portfolio_args['sat_herc'] = False
         portfolio_args['sat_linkage_'] = 'ward'
         portfolio_args['sat_risk_measure_'] = 'standard_deviation'
         portfolio_args['sat_graphs_show'] = False
-        portfolio_args['sat_selector_type'] = 100
+        portfolio_args['sat_selector_type'] = 21
         portfolio_args['sat_selector_adjustment'] = False
         portfolio_args['sat_selector_p1'] = 21
         portfolio_args['sat_selector_p2'] = 63
         portfolio_args['sat_selector_c_p1'] = 1
         portfolio_args['sat_selector_c_p2'] = 6
 
-        portfolio_args['sat_cap_weight'] = 1
+        portfolio_args['sat_cap_weight'] = 0.8
         compare_ticker = "QQQ"
 
     elif port_id == 'tinkoff_portfolio':
@@ -395,8 +395,9 @@ def portfolio_tester(init_cap=10000, port_id='parking', allocator_data_interval=
         portfolio_args['sat_selector_start_date'] = selector_start_date
         portfolio_args['sat_selector_end_date'] = selector_end_date
         portfolio_args['sat_etf_list'] = None
-        portfolio_args['sat_cap_filter'] = 5000000000
-        portfolio_args['sat_assets_to_hold'] = 15
+        portfolio_args['sat_cap_filter'] = 0
+        # portfolio_args['sat_cap_filter'] = '100%'
+        portfolio_args['sat_assets_to_hold'] = 10
         portfolio_args['sat_cov_method'] = 'mcd'
         portfolio_args['sat_herc'] = False
         portfolio_args['sat_linkage_'] = 'ward'
@@ -408,11 +409,13 @@ def portfolio_tester(init_cap=10000, port_id='parking', allocator_data_interval=
         portfolio_args['sat_selector_p2'] = 63
         portfolio_args['sat_selector_c_p1'] = 1
         portfolio_args['sat_selector_c_p2'] = 3
+
+        portfolio_args['sat_cap_weight'] = 0.5
         compare_ticker = "QQQ"
 
     weights = calc_portfolio(portfolio_args)
 
-    debug(f'Start allo({port_id}) [{allocator_end_date}]:{weights}')
+    debug(f'Start allo({port_id}) [{allocator_end_date}]:{sorted(weights.items(), key=lambda x: x[1], reverse=True)}')
     save_portfolio_weights(name=port_id, portfolio_weights=weights)
 
     td = date.today()
@@ -453,7 +456,7 @@ def portfolio_tester(init_cap=10000, port_id='parking', allocator_data_interval=
 
         weights = calc_portfolio(portfolio_args)
 
-        debug(f'[{portfolio_args["port_id"]}][{allocator_end_date.strftime("%Y %b")}]:{weights}')
+        debug(f'[{portfolio_args["port_id"]}][{allocator_end_date.strftime("%Y %b")}]:{sorted(weights.items(), key=lambda x: x[1], reverse=True)}')
         save_portfolio_weights(name=port_id, portfolio_weights=weights)
 
     sd = real_start_date
@@ -489,11 +492,11 @@ if __name__ == '__main__':
     # p6 = mp.Process(target=portfolio_tester, args=(100000, 'test_adm', 3, 12,  datetime.date(2010, 3, 1),))
     # p6.start()
 
-    p7 = mp.Process(target=portfolio_tester, args=(100000, 'test_stacks_only', 3, 12,  datetime.date(2020, 11, 1),))
-    p7.start()
+    # p7 = mp.Process(target=portfolio_tester, args=(100000, 'test_stacks_only', 3, 12,  datetime.date(2008, 1, 1),))
+    # p7.start()
 
-    # p8 = mp.Process(target=portfolio_tester, args=(100000, 'tinkoff_portfolio', 3, 12,  datetime.date(2020, 7, 1),))
-    # p8.start()
+    p8 = mp.Process(target=portfolio_tester, args=(100000, 'tinkoff_portfolio', 3, 12,  datetime.date(2020, 1, 1),))
+    p8.start()
 
     # p1.join()
     # p2.join()
@@ -501,5 +504,5 @@ if __name__ == '__main__':
     # p4.join()
     # p5.join()
     # p6.join()
-    p7.join()
-    # p8.join()
+    # p7.join()
+    p8.join()

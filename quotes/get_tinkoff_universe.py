@@ -18,7 +18,7 @@ def get_and_save_tinkoff_universe():
             universe = get_all_universe()
             count = 0
             for inst in parsed_json['payload']['instruments']:
-                if inst['currency'] == 'USD' and inst['ticker'] in universe:
+                if inst['currency'] == 'USD' and inst['ticker'] in universe and inst['ticker'] not in ['AMZN', 'GOOGL']:
                     res[inst['ticker']] = (universe[inst['ticker']][0], universe[inst['ticker']][1], universe[inst['ticker']][2])
                     count += 1
             debug(f'Result: {res}')

@@ -57,11 +57,14 @@ def calc_portfolio(portfolio_args):
     sat_closes = {}
     mkt_caps = {}
     if portfolio_args['port_id'] == 'tinkoff_portfolio':
-        sat_closes = get_closes_universe_df(u_table_name=TINKOFF_UNIVERSE_TABLE_NAME,
-                                            cap_filter=portfolio_args['sat_cap_filter'],
-                                            etf_list=portfolio_args['sat_etf_list'],
-                                            start_date=portfolio_args['sat_selector_start_date'],
-                                            end_date=portfolio_args['sat_selector_end_date'])
+        td = timedelta(days=1)
+        universe_date = portfolio_args['sat_selector_end_date'] - td
+        sat_closes, mkt_caps = get_closes_universe_by_date_df(universe_date=universe_date,
+                                                              u_table_name=TINKOFF_HIST_UNIVERSE_TABLE_NAME,
+                                                              cap_filter=portfolio_args['sat_cap_filter'],
+                                                              etf_list=portfolio_args['sat_etf_list'],
+                                                              start_date=portfolio_args['sat_selector_start_date'],
+                                                              end_date=portfolio_args['sat_selector_end_date'])
     elif portfolio_args['port_id'] == 'test_stacks_only':
         td = timedelta(days=1)
         universe_date = portfolio_args['sat_selector_end_date'] - td
@@ -111,11 +114,6 @@ def calc_portfolio(portfolio_args):
                        sat=satellite,
                        sat_perc=portfolio_args['sat_perc'])
     return weights
-
-
-
-
-
 
 # def parking_portfolio(start_date=None, end_date=date.today(), **kwargs):
 #     # cor_closes = get_closes_universe_df(cap_filter=200000000000, etf_list=PARKING)
