@@ -176,6 +176,7 @@ class RiskParityAllocator:
         di = rp.weights.to_dict(orient='records')
         w = {}
         mcaps = {}
+        temp = {}
         if self.cap_weight == 0:
             for k, v in di[0].items():
                 w.update({k: v})
@@ -189,10 +190,28 @@ class RiskParityAllocator:
             # print('post_rp', w)
             # print('final', final_dict)
             total_cap = sum(final_dict.values())
-            # print('total', total_cap)
+            limit_1 = 0.15
             for k, v in final_dict.items():
                 mcaps.update({k: v / total_cap})
+            # print('mcaps before', mcaps)
+
+            # for value in mcaps.values():
+            #     if value >= limit_1:
+            #         value = limit_1
+            #     mcaps.update({k: v / total_cap})
+            for k in mcaps:
+                if mcaps[k] >= limit_1:
+                    temp.update({k: mcaps[k] - limit_1})
+                    excess = sum(temp.values())
+                    qty = excess / (len(mcaps.keys()) - len(temp.keys()))
+                    mcaps.update({k: limit_1})
+                    # print('Resizing')
+            for k1 in mcaps:
+                if mcaps[k1] < limit_1:
+                    mcaps.update({k1: mcaps[k1] + qty})
+            # print(qty)
             # print('mcaps', mcaps)
+            # print('exxcess', temp)
 
             pr_weight = 1 - self.cap_weight
             cap_rp = {k: self.cap_weight * mcaps[k] + pr_weight * w[k] for k in w}
