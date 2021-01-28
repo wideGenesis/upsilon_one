@@ -42,7 +42,8 @@ class RiskParityAllocator:
         'c_p2',
 
         'mkt_caps',
-        'cap_weight'
+        'cap_weight',
+        'cap_limit_1',
     ]
     """
     risk_measure supported string: 
@@ -77,10 +78,11 @@ class RiskParityAllocator:
                  c_p1: int = 1,
                  c_p2: int = 3,
 
-                 mkt_caps: dict = {},
+                 mkt_caps: dict = None,
                  cap_weight: int = 0,
-
+                 cap_limit_1: float = 0.13,
                  ):
+
         self.asset_names_ = asset_names_
         self.closes = closes
         self.returns = returns
@@ -106,6 +108,7 @@ class RiskParityAllocator:
 
         self.mkt_caps = mkt_caps
         self.cap_weight = cap_weight
+        self.cap_limit_1 = cap_limit_1
 
     def closes_updater(self, new_closes=None):
         self.closes = new_closes
@@ -185,33 +188,22 @@ class RiskParityAllocator:
             for k, v in di[0].items():
                 w.update({k: v})
 
-            # final_dict = {x: w[x] for x in w if x in self.mkt_caps}
             final_dict = {x: self.mkt_caps[x] for x in self.mkt_caps if x in w}
-            # print('post_rp', w)
-            # print('final', final_dict)
             total_cap = sum(final_dict.values())
-            limit_1 = 0.15
+
             for k, v in final_dict.items():
                 mcaps.update({k: v / total_cap})
-            # print('mcaps before', mcaps)
 
-            # for value in mcaps.values():
-            #     if value >= limit_1:
-            #         value = limit_1
-            #     mcaps.update({k: v / total_cap})
             for k in mcaps:
-                if mcaps[k] >= limit_1:
-                    temp.update({k: mcaps[k] - limit_1})
+                if mcaps[k] > self.cap_limit_1:
+                    temp.update({k: mcaps[k] - self.cap_limit_1})
                     excess = sum(temp.values())
                     qty = excess / (len(mcaps.keys()) - len(temp.keys()))
-                    mcaps.update({k: limit_1})
-                    # print('Resizing')
+                    mcaps.update({k: self.cap_limit_1})
+
             for k1 in mcaps:
-                if mcaps[k1] < limit_1:
+                if mcaps[k1] < self.cap_limit_1:
                     mcaps.update({k1: mcaps[k1] + qty})
-            # print(qty)
-            # print('mcaps', mcaps)
-            # print('exxcess', temp)
 
             pr_weight = 1 - self.cap_weight
             cap_rp = {k: self.cap_weight * mcaps[k] + pr_weight * w[k] for k in w}
@@ -225,7 +217,6 @@ class RiskParityAllocator:
             rp.plot_clusters(assets=self.asset_names_)
             plt.title(title, size=18)
             plt.xticks(rotation=45)
-
             plt.figure(figsize=(25, 7))
             plt.bar(list(weights.columns), weights.values[0])
             plt.xticks(y_pos, rotation=45, size=10)
@@ -234,8 +225,6 @@ class RiskParityAllocator:
             plt.title(title + ' Weights', size=20)
             plt.show()
 
-        # print(w)
-        # print('SUM', '\n', sum(w.values()))
         return w
 
     def selector(self):
