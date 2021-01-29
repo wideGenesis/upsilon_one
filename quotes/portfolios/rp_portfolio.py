@@ -28,6 +28,7 @@ class RiskParityAllocator:
         'angular_distance',
 
         'cov_method',
+        'detone',
         'graphs_show',
 
         'herc',
@@ -64,6 +65,7 @@ class RiskParityAllocator:
                  angular_distance: bool = True,
 
                  cov_method: str = 'empirical',
+                 detone: bool = False,
                  graphs_show: bool = True,
 
                  herc: bool = True,
@@ -92,6 +94,7 @@ class RiskParityAllocator:
         self.angular_distance = angular_distance
 
         self.cov_method = cov_method
+        self.detone = detone
         self.graphs_show = graphs_show
 
         self.herc = herc
@@ -135,7 +138,7 @@ class RiskParityAllocator:
             plt.show()
         return corr
 
-    def covariance(self):
+    def covariance(self, kde_bwidth=0.01):
         risk_est = RiskEstimators()
 
         if self.cov_method == 'empirical':
@@ -143,7 +146,17 @@ class RiskParityAllocator:
         elif self.cov_method == 'mcd':
             cov = risk_est.minimum_covariance_determinant(returns=self.returns, price_data=False, assume_centered=False)
         elif self.cov_method == 'semi':
-            cov = risk_est.semi_covariance(returns=self.returns, price_data=False, )
+            cov = risk_est.semi_covariance(returns=self.returns, price_data=False, threshold_return=0)
+        elif self.cov_method == 'shrinked':  # 'basic' 'lw' 'oas'
+            cov = risk_est.shrinked_covariance(returns=self.returns, price_data=False,
+                                               shrinkage_type='basic', assume_centered=False, basic_shrinkage=0.1)
+
+        elif self.cov_method == 'de':  # 'const_resid_eigen' 'spectral' 'target_shrink'
+            # Relation of number of observations T to the number of variables N (T/N)
+            tn_relation = self.closes.shape[0] / self.closes.shape[1]
+            cov_matrix = risk_est.empirical_covariance(returns=self.returns, price_data=False, assume_centered=False)
+            cov = risk_est.denoise_covariance(cov_matrix, tn_relation, denoise_method='const_resid_eigen',
+                                              detone=self.detone, market_component=1, kde_bwidth=kde_bwidth)
         else:
             exit()
         if self.graphs_show:
