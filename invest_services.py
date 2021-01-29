@@ -40,7 +40,7 @@ def main():
     # eod_get_and_save_holdings()
     universe = ['VIX']
     eod_update_universe_prices(universe)
-    # update_universe_prices1(universe)
+    update_universe_prices1(universe)
     exit()
     # parking_weights = parking_portfolio()
     # allweather_weights = allweather_portfolio()
