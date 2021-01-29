@@ -27,8 +27,10 @@ class RiskParityAllocator:
         'distance_metric',
         'angular_distance',
 
-        'cov_method',
-        'detone',
+        'cov_method',  # 'empirical' 'mcd' 'semi' 'shrinked' 'de'
+        'shrinkage_type',  # 'basic' 'lw' 'oas'
+        'denoise_method',  # 'const_resid_eigen' 'spectral' 'target_shrink'
+        'detone',  # True / False
         'graphs_show',
 
         'herc',
@@ -65,6 +67,8 @@ class RiskParityAllocator:
                  angular_distance: bool = True,
 
                  cov_method: str = 'empirical',
+                 shrinkage_type: str = 'basic',
+                 denoise_method: str = 'const_resid_eigen',
                  detone: bool = False,
                  graphs_show: bool = True,
 
@@ -94,6 +98,8 @@ class RiskParityAllocator:
         self.angular_distance = angular_distance
 
         self.cov_method = cov_method
+        self.shrinkage_type = shrinkage_type
+        self.denoise_method = denoise_method
         self.detone = detone
         self.graphs_show = graphs_show
 
@@ -149,13 +155,22 @@ class RiskParityAllocator:
             cov = risk_est.semi_covariance(returns=self.returns, price_data=False, threshold_return=0)
         elif self.cov_method == 'shrinked':  # 'basic' 'lw' 'oas'
             cov = risk_est.shrinked_covariance(returns=self.returns, price_data=False,
-                                               shrinkage_type='basic', assume_centered=False, basic_shrinkage=0.1)
+                                               shrinkage_type=self.shrinkage_type,
+                                               assume_centered=False, basic_shrinkage=0.1)
 
         elif self.cov_method == 'de':  # 'const_resid_eigen' 'spectral' 'target_shrink'
             # Relation of number of observations T to the number of variables N (T/N)
             tn_relation = self.closes.shape[0] / self.closes.shape[1]
+
             cov_matrix = risk_est.empirical_covariance(returns=self.returns, price_data=False, assume_centered=False)
-            cov = risk_est.denoise_covariance(cov_matrix, tn_relation, denoise_method='const_resid_eigen',
+            cov = risk_est.denoise_covariance(cov_matrix, tn_relation, denoise_method=self.denoise_method,
+                                              detone=self.detone, market_component=1, kde_bwidth=kde_bwidth)
+        elif self.cov_method == 'de2':  # 'const_resid_eigen' 'spectral' 'target_shrink'
+            # Relation of number of observations T to the number of variables N (T/N)
+            tn_relation = self.closes.shape[0] / self.closes.shape[1]
+
+            cov_matrix = risk_est.minimum_covariance_determinant(returns=self.returns, price_data=False, assume_centered=False)
+            cov = risk_est.denoise_covariance(cov_matrix, tn_relation, denoise_method=self.denoise_method,
                                               detone=self.detone, market_component=1, kde_bwidth=kde_bwidth)
         else:
             exit()

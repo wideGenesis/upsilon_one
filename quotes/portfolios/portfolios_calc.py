@@ -84,6 +84,9 @@ def calc_portfolio(portfolio_args):
     # Тут создаем и инициализируем класс, который занимется селекцией и аллокацией
     sat_rp = RiskParityAllocator(closes=sat_closes,
                                  cov_method=portfolio_args['sat_cov_method'],
+                                 shrinkage_type=portfolio_args['sat_shrinkage_type'],
+                                 denoise_method=portfolio_args['sat_denoise_method'],
+                                 detone=portfolio_args['sat_detone'],
                                  herc=portfolio_args['sat_herc'],
                                  linkage_=portfolio_args['sat_linkage_'],
                                  risk_measure_=portfolio_args['sat_risk_measure_'],
