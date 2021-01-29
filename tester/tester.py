@@ -57,6 +57,8 @@ def portfolio_tester(init_cap=10000, port_id='parking', allocator_data_interval=
     selector_end_date = real_start_date
     selector_start_date = add_months(allocator_end_date, -selector_data_interval)
     pend_date = real_start_date
+    vix_close = get_close_ticker_by_date('VIX', allocator_end_date)
+    debug(f'{allocator_end_date}:{vix_close}')
 
     portfolio_args = {}
     if port_id == 'parking':
@@ -376,8 +378,14 @@ def portfolio_tester(init_cap=10000, port_id='parking', allocator_data_interval=
         portfolio_args['sat_selector_p2'] = 63
         portfolio_args['sat_selector_c_p1'] = 1
         portfolio_args['sat_selector_c_p2'] = 6
-
-        portfolio_args['sat_cap_weight'] = 0.05
+        if vix_close < 15:
+            portfolio_args['sat_cap_weight'] = 0.8
+        elif 15 <= vix_close < 30:
+            portfolio_args['sat_cap_weight'] = 0.2
+        elif 30 <= vix_close < 50:
+            portfolio_args['sat_cap_weight'] = 0.5
+        elif vix_close >= 50:
+            portfolio_args['sat_cap_weight'] = 0.8
         portfolio_args['cap_limit_1'] = 0.13
         compare_ticker = "QQQ"
 
@@ -445,7 +453,9 @@ def portfolio_tester(init_cap=10000, port_id='parking', allocator_data_interval=
             debug("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%")
             in_cap = pb[-1][4]
 
-        # debug(f'{allocator_end_date}:{cash}')
+        vix_close = get_close_ticker_by_date('VIX', allocator_end_date)
+        debug(f'{allocator_end_date}:{vix_close}')
+
         portfolio_args['cor_alloctor_start_date'] = alloctor_start_date
         portfolio_args['cor_allocator_end_date'] = allocator_end_date
         portfolio_args['cor_selector_start_date'] = selector_start_date
@@ -454,6 +464,14 @@ def portfolio_tester(init_cap=10000, port_id='parking', allocator_data_interval=
         portfolio_args['sat_allocator_end_date'] = allocator_end_date
         portfolio_args['sat_selector_start_date'] = selector_start_date
         portfolio_args['sat_selector_end_date'] = selector_end_date
+        if vix_close < 15:
+            portfolio_args['sat_cap_weight'] = 0.8
+        elif 15 <= vix_close < 30:
+            portfolio_args['sat_cap_weight'] = 0.2
+        elif 30 <= vix_close < 50:
+            portfolio_args['sat_cap_weight'] = 0.5
+        elif vix_close >= 50:
+            portfolio_args['sat_cap_weight'] = 0.8
 
         weights = calc_portfolio(portfolio_args)
 

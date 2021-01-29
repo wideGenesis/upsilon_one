@@ -292,7 +292,11 @@ def get_historical_adjprices(ticker, from_date, end_date, is_update=False):
     # debug("#Start get Historical Prices")
     session = requests.Session()
     prices = {}
-    url = f'https://eodhistoricaldata.com/api/technical/{ticker}.US'
+    url = ''
+    if ticker == 'VIX':
+        url = f'https://eodhistoricaldata.com/api/technical/{ticker}.INDX'
+    else:
+        url = f'https://eodhistoricaldata.com/api/technical/{ticker}.US'
     params = {'api_token': EOD_API_KEY,
               'from': from_date.strftime("%Y-%m-%d"),
               'to': end_date.strftime("%Y-%m-%d"),

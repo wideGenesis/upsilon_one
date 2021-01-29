@@ -280,6 +280,22 @@ def get_closes_by_ticker_list_ti(ticker_list, time_interval=365,
     return closes
 
 
+def get_close_ticker_by_date(ticker, tdate=date.today(), q_table_name=QUOTE_TABLE_NAME, engine=engine):
+    with engine.connect() as connection:
+        pclose = None
+        if ticker_lookup(ticker):
+            query_string = f'SELECT close FROM {q_table_name} ' \
+                           f'WHERE ticker=\'{ticker}\' AND dateTime<=\'{str(tdate)}\' ' \
+                           f'ORDER BY dateTime DESC ' \
+                           f'LIMIT 1'
+            q_result = connection.execute(query_string)
+            if q_result.rowcount > 0:
+                pclose = q_result.fetchone()[0]
+        else:
+            debug(f'Can\'t find ticker: {ticker}!', ERROR)
+    return pclose
+
+
 # ******************** UNIVERSE ********************
 def create_universe_table(table_name=UNIVERSE_TABLE_NAME, engine=engine):
     with engine.connect() as connection:

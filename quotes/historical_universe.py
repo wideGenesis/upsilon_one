@@ -15,7 +15,7 @@ def create_nasdaq_hist_universe():
     with open('nasdaq_100_historical_events.json') as json_file:
         hist_events = json.load(json_file)
     result_events = {}
-    global_universe = []
+    global_universe = ['WMT', 'NEE', 'XEL']
     for item in hist_events:
         upd = {}
         event_date = datetime.datetime.strptime(item['date'], "%Y-%m-%d").date()
@@ -88,6 +88,12 @@ def create_nasdaq_hist_universe():
     curr_universe["V"] = (sector, mkt_cap, exchange)
     sector, mkt_cap, exchange = get_tickerdata("PYPL")
     curr_universe["PYPL"] = (sector, mkt_cap, exchange)
+    sector, mkt_cap, exchange = get_tickerdata("WMT")
+    curr_universe["WMT"] = (sector, mkt_cap, exchange)
+    sector, mkt_cap, exchange = get_tickerdata("NEE")
+    curr_universe["NEE"] = (sector, mkt_cap, exchange)
+    sector, mkt_cap, exchange = get_tickerdata("XEL")
+    curr_universe["XEL"] = (sector, mkt_cap, exchange)
     # Проверка на достаточность данных в тикерах
     # Данных должно быть за 12 месяцев до текущей даты вселенной cur_universe_date
     checked_universe = check_enough_data(curr_universe, cur_universe_date, is_last=True)
@@ -131,6 +137,12 @@ def create_nasdaq_hist_universe():
         curr_universe["V"] = (sector, mkt_cap, exchange)
         sector, mkt_cap, exchange = get_tickerdata("PYPL")
         curr_universe["PYPL"] = (sector, mkt_cap, exchange)
+        sector, mkt_cap, exchange = get_tickerdata("WMT")
+        curr_universe["WMT"] = (sector, mkt_cap, exchange)
+        sector, mkt_cap, exchange = get_tickerdata("NEE")
+        curr_universe["NEE"] = (sector, mkt_cap, exchange)
+        sector, mkt_cap, exchange = get_tickerdata("XEL")
+        curr_universe["XEL"] = (sector, mkt_cap, exchange)
         # Проверка на достаточность данных в тикерах
         # Данных должно быть за 12 месяцев до текущей даты вселенной cur_universe_date
         checked_universe = check_enough_data(curr_universe, cur_universe_date)
