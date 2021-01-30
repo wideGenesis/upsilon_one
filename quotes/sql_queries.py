@@ -120,12 +120,10 @@ def get_closes_universe_df(q_table_name=QUOTE_TABLE_NAME, u_table_name=UNIVERSE_
                     dat[ticker] = series
             closes = pd.DataFrame(dat)
             return closes
-        tickers = get_universe(u_table_name, engine)
-        # tickers = get_universe_capweighted(u_table_name, engine)
-        for ticker in tickers:
+        tickers = get_universe(cap_filter, u_table_name, engine)
+        for ticker, _ in tickers.items():
             query_string = f'SELECT q.dateTime, q.close FROM {q_table_name} q, {u_table_name} u' \
-                           f' WHERE q.ticker=\'{ticker}\' AND q.ticker=u.ticker AND u.mkt_cap > \'{cap_filter}\'' \
-                           f' AND u.mkt_cap IS NOT NULL'
+                           f' WHERE q.ticker=\'{ticker}\' AND q.ticker=u.ticker '
             if start_date is not None:
                 query_string += f' AND q.dateTime >= \'{str(start_date)}\' '
             if end_date is not None:
@@ -141,7 +139,7 @@ def get_closes_universe_df(q_table_name=QUOTE_TABLE_NAME, u_table_name=UNIVERSE_
                 series = pd.Series(c1, index=c0)
                 dat[ticker] = series
         closes = pd.DataFrame(dat)
-    return closes
+    return closes, tickers
 
 
 def get_closes_by_ticker_list(ticker_list, start_date=None, end_date=date.today(),
@@ -444,15 +442,28 @@ def eod_insert_universe_data(new_universe, table_name=UNIVERSE_TABLE_NAME, engin
             debug(f'Can\'t find table: {table_name}!')
 
 
-def get_universe(table_name=UNIVERSE_TABLE_NAME, engine=engine):
+def get_universe(cap_filter=0, table_name=UNIVERSE_TABLE_NAME, engine=engine):
     with engine.connect() as connection:
         if is_table_exist(table_name):
-            res = list()
-            del_query = "SELECT ticker FROM " + table_name
-            result = connection.execute(del_query)
+            absolute_filter = None
+            percent_filter = None
+            res = {}
+            if isinstance(cap_filter, str):
+                percent_filter = int(cap_filter[:-1])
+            elif isinstance(cap_filter, int):
+                absolute_filter = cap_filter
+            sel_query = f'SELECT ticker, mkt_cap FROM  {table_name} ' \
+                        f'WHERE mkt_cap IS NOT NULL '
+            if absolute_filter is not None:
+                sel_query += f'AND mkt_cap > \'{absolute_filter}\' '
+            sel_query += f'ORDER BY mkt_cap DESC'
+            result = connection.execute(sel_query)
             if result.rowcount > 0:
-                for t in result.fetchall():
-                    res.append(t[0])
+                query_result = result.fetchall()
+                for count, item in enumerate(query_result):
+                    res[item[0]] = item[1]
+                    if percent_filter is not None and count >= round((len(query_result)*percent_filter)/100):
+                        break
                 return res
             else:
                 return None

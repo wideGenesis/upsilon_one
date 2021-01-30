@@ -95,7 +95,12 @@ def portfolio_tester(init_cap=10000, port_id='parking', allocator_data_interval=
         portfolio_args['sat_etf_list'] = None
         portfolio_args['sat_cap_filter'] = 100000000000
         portfolio_args['sat_assets_to_hold'] = 4
-        portfolio_args['sat_cov_method'] = 'semi'
+
+        portfolio_args['sat_cov_method'] = 'de2'
+        portfolio_args['sat_shrinkage_type'] = 'lw'
+        portfolio_args['sat_denoise_method'] = 'const_resid_eigen'
+        portfolio_args['sat_detone'] = True
+
         portfolio_args['sat_herc'] = False
         portfolio_args['sat_linkage_'] = 'ward'
         portfolio_args['sat_risk_measure_'] = 'variance'
@@ -106,6 +111,15 @@ def portfolio_tester(init_cap=10000, port_id='parking', allocator_data_interval=
         portfolio_args['sat_selector_p2'] = 63
         portfolio_args['sat_selector_c_p1'] = 1
         portfolio_args['sat_selector_c_p2'] = 3
+        if vix_close < 15:
+            portfolio_args['sat_cap_weight'] = 0.8
+        elif 15 <= vix_close < 30:
+            portfolio_args['sat_cap_weight'] = 0.2
+        elif 30 <= vix_close < 50:
+            portfolio_args['sat_cap_weight'] = 0.5
+        elif vix_close >= 50:
+            portfolio_args['sat_cap_weight'] = 0.8
+        portfolio_args['cap_limit_1'] = 0.13
         compare_ticker = "TLT"
 
     elif port_id == 'allweather':
@@ -142,7 +156,12 @@ def portfolio_tester(init_cap=10000, port_id='parking', allocator_data_interval=
         portfolio_args['sat_etf_list'] = None
         portfolio_args['sat_cap_filter'] = 150000000000
         portfolio_args['sat_assets_to_hold'] = 6
-        portfolio_args['sat_cov_method'] = 'semi'
+
+        portfolio_args['sat_cov_method'] = 'de2'
+        portfolio_args['sat_shrinkage_type'] = 'lw'
+        portfolio_args['sat_denoise_method'] = 'const_resid_eigen'
+        portfolio_args['sat_detone'] = True
+
         portfolio_args['sat_herc'] = False
         portfolio_args['sat_linkage_'] = 'ward'
         portfolio_args['sat_risk_measure_'] = 'variance'
@@ -153,6 +172,15 @@ def portfolio_tester(init_cap=10000, port_id='parking', allocator_data_interval=
         portfolio_args['sat_selector_p2'] = 63
         portfolio_args['sat_selector_c_p1'] = 1
         portfolio_args['sat_selector_c_p2'] = 3
+        if vix_close < 15:
+            portfolio_args['sat_cap_weight'] = 0.8
+        elif 15 <= vix_close < 30:
+            portfolio_args['sat_cap_weight'] = 0.2
+        elif 30 <= vix_close < 50:
+            portfolio_args['sat_cap_weight'] = 0.5
+        elif vix_close >= 50:
+            portfolio_args['sat_cap_weight'] = 0.8
+        portfolio_args['cap_limit_1'] = 0.13
         compare_ticker = "SPY"
 
     elif port_id == 'balanced':
@@ -189,7 +217,12 @@ def portfolio_tester(init_cap=10000, port_id='parking', allocator_data_interval=
         portfolio_args['sat_etf_list'] = None
         portfolio_args['sat_cap_filter'] = 100000000000
         portfolio_args['sat_assets_to_hold'] = 7
-        portfolio_args['sat_cov_method'] = 'semi'
+
+        portfolio_args['sat_cov_method'] = 'de2'
+        portfolio_args['sat_shrinkage_type'] = 'lw'
+        portfolio_args['sat_denoise_method'] = 'const_resid_eigen'
+        portfolio_args['sat_detone'] = True
+
         portfolio_args['sat_herc'] = False
         portfolio_args['sat_linkage_'] = 'ward'
         portfolio_args['sat_risk_measure_'] = 'variance'
@@ -200,6 +233,15 @@ def portfolio_tester(init_cap=10000, port_id='parking', allocator_data_interval=
         portfolio_args['sat_selector_p2'] = 63
         portfolio_args['sat_selector_c_p1'] = 1
         portfolio_args['sat_selector_c_p2'] = 3
+        if vix_close < 15:
+            portfolio_args['sat_cap_weight'] = 0.8
+        elif 15 <= vix_close < 30:
+            portfolio_args['sat_cap_weight'] = 0.2
+        elif 30 <= vix_close < 50:
+            portfolio_args['sat_cap_weight'] = 0.5
+        elif vix_close >= 50:
+            portfolio_args['sat_cap_weight'] = 0.8
+        portfolio_args['cap_limit_1'] = 0.13
         compare_ticker = "QQQ"
 
     elif port_id == 'aggressive':
@@ -236,7 +278,12 @@ def portfolio_tester(init_cap=10000, port_id='parking', allocator_data_interval=
         portfolio_args['sat_etf_list'] = None
         portfolio_args['sat_cap_filter'] = 5000000000
         portfolio_args['sat_assets_to_hold'] = 7
-        portfolio_args['sat_cov_method'] = 'semi'
+
+        portfolio_args['sat_cov_method'] = 'de2'
+        portfolio_args['sat_shrinkage_type'] = 'lw'
+        portfolio_args['sat_denoise_method'] = 'const_resid_eigen'
+        portfolio_args['sat_detone'] = True
+
         portfolio_args['sat_herc'] = False
         portfolio_args['sat_linkage_'] = 'ward'
         portfolio_args['sat_risk_measure_'] = 'variance'
@@ -247,6 +294,15 @@ def portfolio_tester(init_cap=10000, port_id='parking', allocator_data_interval=
         portfolio_args['sat_selector_p2'] = 63
         portfolio_args['sat_selector_c_p1'] = 1
         portfolio_args['sat_selector_c_p2'] = 3
+        if vix_close < 15:
+            portfolio_args['sat_cap_weight'] = 0.8
+        elif 15 <= vix_close < 30:
+            portfolio_args['sat_cap_weight'] = 0.2
+        elif 30 <= vix_close < 50:
+            portfolio_args['sat_cap_weight'] = 0.5
+        elif vix_close >= 50:
+            portfolio_args['sat_cap_weight'] = 0.8
+        portfolio_args['cap_limit_1'] = 0.13
         compare_ticker = "QQQ"
 
     elif port_id == 'leveraged':
@@ -284,7 +340,12 @@ def portfolio_tester(init_cap=10000, port_id='parking', allocator_data_interval=
         portfolio_args['sat_etf_list'] = None
         portfolio_args['sat_cap_filter'] = 20000000000
         portfolio_args['sat_assets_to_hold'] = 9
-        portfolio_args['sat_cov_method'] = 'semi'
+
+        portfolio_args['sat_cov_method'] = 'de2'
+        portfolio_args['sat_shrinkage_type'] = 'lw'
+        portfolio_args['sat_denoise_method'] = 'const_resid_eigen'
+        portfolio_args['sat_detone'] = True
+
         portfolio_args['sat_herc'] = False
         portfolio_args['sat_linkage_'] = 'ward'
         portfolio_args['sat_risk_measure_'] = 'variance'
@@ -295,6 +356,15 @@ def portfolio_tester(init_cap=10000, port_id='parking', allocator_data_interval=
         portfolio_args['sat_selector_p2'] = 63
         portfolio_args['sat_selector_c_p1'] = 1
         portfolio_args['sat_selector_c_p2'] = 3
+        if vix_close < 15:
+            portfolio_args['sat_cap_weight'] = 0.8
+        elif 15 <= vix_close < 30:
+            portfolio_args['sat_cap_weight'] = 0.2
+        elif 30 <= vix_close < 50:
+            portfolio_args['sat_cap_weight'] = 0.5
+        elif vix_close >= 50:
+            portfolio_args['sat_cap_weight'] = 0.8
+        portfolio_args['cap_limit_1'] = 0.13
         compare_ticker = "QQQ"
 
     elif port_id == 'test_adm':
@@ -413,7 +483,12 @@ def portfolio_tester(init_cap=10000, port_id='parking', allocator_data_interval=
         portfolio_args['sat_cap_filter'] = 0
         # portfolio_args['sat_cap_filter'] = '100%'
         portfolio_args['sat_assets_to_hold'] = 10
-        portfolio_args['sat_cov_method'] = 'mcd'
+
+        portfolio_args['sat_cov_method'] = 'de2'
+        portfolio_args['sat_shrinkage_type'] = 'lw'
+        portfolio_args['sat_denoise_method'] = 'const_resid_eigen'
+        portfolio_args['sat_detone'] = True
+
         portfolio_args['sat_herc'] = False
         portfolio_args['sat_linkage_'] = 'ward'
         portfolio_args['sat_risk_measure_'] = 'standard_deviation'
@@ -425,12 +500,22 @@ def portfolio_tester(init_cap=10000, port_id='parking', allocator_data_interval=
         portfolio_args['sat_selector_c_p1'] = 1
         portfolio_args['sat_selector_c_p2'] = 3
 
-        portfolio_args['sat_cap_weight'] = 0.5
+        if vix_close < 15:
+            portfolio_args['sat_cap_weight'] = 0.8
+        elif 15 <= vix_close < 30:
+            portfolio_args['sat_cap_weight'] = 0.2
+        elif 30 <= vix_close < 50:
+            portfolio_args['sat_cap_weight'] = 0.5
+        elif vix_close >= 50:
+            portfolio_args['sat_cap_weight'] = 0.8
+
+        portfolio_args['cap_limit_1'] = 0.13
         compare_ticker = "QQQ"
 
     weights = calc_portfolio(portfolio_args)
 
-    debug(f'Start allo({port_id}) [{allocator_end_date}]:{sorted(weights.items(), key=lambda x: x[1], reverse=True)}')
+    debug(f'Start allo({port_id}) [{allocator_end_date}]:'
+          f'{sorted(weights.items(), key=lambda x: x[1], reverse=True)}')
     save_portfolio_weights(name=port_id, portfolio_weights=weights)
 
     td = date.today()
@@ -481,7 +566,8 @@ def portfolio_tester(init_cap=10000, port_id='parking', allocator_data_interval=
 
         weights = calc_portfolio(portfolio_args)
 
-        debug(f'[{portfolio_args["port_id"]}][{allocator_end_date.strftime("%Y %b")}]:{sorted(weights.items(), key=lambda x: x[1], reverse=True)}')
+        debug(f'[{portfolio_args["port_id"]}][{allocator_end_date.strftime("%Y %b")}]:'
+              f'{sorted(weights.items(), key=lambda x: x[1], reverse=True)}')
         save_portfolio_weights(name=port_id, portfolio_weights=weights)
 
     sd = real_start_date
@@ -503,31 +589,32 @@ if __name__ == '__main__':
     # main()
     # mp.set_start_method('spawn')
     q = mp.Queue()
-    # p1 = mp.Process(target=portfolio_tester, args=(100000, 'parking', 3, 12, datetime.date(2020, 7, 1),))
-    # p1.start()
-    # p2 = mp.Process(target=portfolio_tester, args=(100000, 'allweather', 3, 12, datetime.date(2020, 7, 1),))
-    # p2.start()
-    # p3 = mp.Process(target=portfolio_tester, args=(100000, 'balanced', 3, 12, datetime.date(2020, 7, 1),))
-    # p3.start()
-    # p4 = mp.Process(target=portfolio_tester, args=(100000, 'aggressive', 3, 12, datetime.date(2015, 7, 1),))
-    # p4.start()
-    # p5 = mp.Process(target=portfolio_tester, args=(100000, 'leveraged', 3, 12,  datetime.date(2015, 7, 1),))
+    p1 = mp.Process(target=portfolio_tester, args=(100000, 'parking', 3, 12, datetime.date(2020, 7, 1),))
+    p1.start()
+    p2 = mp.Process(target=portfolio_tester, args=(100000, 'allweather', 3, 12, datetime.date(2020, 7, 1),))
+    p2.start()
+    p3 = mp.Process(target=portfolio_tester, args=(100000, 'balanced', 3, 12, datetime.date(2020, 7, 1),))
+    p3.start()
+    p4 = mp.Process(target=portfolio_tester, args=(100000, 'aggressive', 3, 12, datetime.date(2020, 7, 1),))
+    p4.start()
+    # p5 = mp.Process(target=portfolio_tester, args=(100000, 'leveraged', 3, 12,  datetime.date(2020, 7, 1),))
     # p5.start()
 
     # p6 = mp.Process(target=portfolio_tester, args=(100000, 'test_adm', 3, 12,  datetime.date(2010, 3, 1),))
     # p6.start()
 
-    p7 = mp.Process(target=portfolio_tester, args=(100000, 'test_stacks_only', 3, 12,  datetime.date(2019, 1, 1),))
-    p7.start()
+    # p7 = mp.Process(target=portfolio_tester, args=(100000, 'test_stacks_only', 3, 12,  datetime.date(2019, 1, 1),))
+    # p7.start()
 
     # p8 = mp.Process(target=portfolio_tester, args=(100000, 'tinkoff_portfolio', 3, 12,  datetime.date(2020, 1, 1),))
     # p8.start()
 
-    # p1.join()
-    # p2.join()
-    # p3.join()
-    # p4.join()
+    p1.join()
+    p2.join()
+    p3.join()
+    p4.join()
     # p5.join()
     # p6.join()
-    p7.join()
+    # p7.join()
     # p8.join()
+

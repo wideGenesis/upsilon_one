@@ -76,10 +76,10 @@ def calc_portfolio(portfolio_args):
                                                               end_date=portfolio_args['sat_selector_end_date'])
 
     elif portfolio_args['port_id'] != 'tinkoff_portfolio' and portfolio_args['port_id'] != 'test_stacks_only':
-        sat_closes = get_closes_universe_df(cap_filter=portfolio_args['sat_cap_filter'],
-                                            etf_list=portfolio_args['sat_etf_list'],
-                                            start_date=portfolio_args['sat_selector_start_date'],
-                                            end_date=portfolio_args['sat_selector_end_date'])
+        sat_closes, mkt_caps = get_closes_universe_df(cap_filter=portfolio_args['sat_cap_filter'],
+                                                      etf_list=portfolio_args['sat_etf_list'],
+                                                      start_date=portfolio_args['sat_selector_start_date'],
+                                                      end_date=portfolio_args['sat_selector_end_date'])
 
     # Тут создаем и инициализируем класс, который занимется селекцией и аллокацией
     sat_rp = RiskParityAllocator(closes=sat_closes,

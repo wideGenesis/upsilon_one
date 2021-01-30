@@ -2,6 +2,7 @@ import json
 from datetime import timedelta, date, datetime
 from project_shared import *
 from quotes.sql_queries import *
+from quotes.eodhistoricaldata import *
 import pandas as pd
 
 
@@ -18,6 +19,14 @@ def create_tinkoff_historical_universe():
         for ticker in global_universe:
             if ticker not in current_tinkoff_universe:
                 universe_to_save.pop(ticker)
+
+        sector, mkt_cap, exchange = get_tickerdata("WMT")
+        universe_to_save["WMT"] = (sector, mkt_cap, exchange)
+        sector, mkt_cap, exchange = get_tickerdata("NEE")
+        universe_to_save["NEE"] = (sector, mkt_cap, exchange)
+        sector, mkt_cap, exchange = get_tickerdata("XEL")
+        universe_to_save["XEL"] = (sector, mkt_cap, exchange)
+
         # Сохраним ткущую вселенную в БД
         save_universe(cur_universe_date, universe_to_save)
         debug(f"TU [{cur_universe_date.strftime('%Y-%m-%d')}]:[{len(universe_to_save)}] {universe_to_save}")
@@ -31,6 +40,12 @@ def create_tinkoff_historical_universe():
         for ticker in global_universe:
             if ticker not in current_tinkoff_universe:
                 universe_to_save.pop(ticker)
+        sector, mkt_cap, exchange = get_tickerdata("WMT")
+        universe_to_save["WMT"] = (sector, mkt_cap, exchange)
+        sector, mkt_cap, exchange = get_tickerdata("NEE")
+        universe_to_save["NEE"] = (sector, mkt_cap, exchange)
+        sector, mkt_cap, exchange = get_tickerdata("XEL")
+        universe_to_save["XEL"] = (sector, mkt_cap, exchange)
         # Сохраним ткущую вселенную в БД
         save_universe(cur_universe_date, universe_to_save)
         debug(f"TU [{cur_universe_date.strftime('%Y-%m-%d')}]:[{len(universe_to_save)}] {universe_to_save}")
