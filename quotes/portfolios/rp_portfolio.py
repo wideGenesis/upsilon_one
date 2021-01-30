@@ -172,6 +172,16 @@ class RiskParityAllocator:
             cov_matrix = risk_est.minimum_covariance_determinant(returns=self.returns, price_data=False, assume_centered=False)
             cov = risk_est.denoise_covariance(cov_matrix, tn_relation, denoise_method=self.denoise_method,
                                               detone=self.detone, market_component=1, kde_bwidth=kde_bwidth)
+
+        elif self.cov_method == 'de3':  # 'const_resid_eigen' 'spectral' 'target_shrink'
+            # Relation of number of observations T to the number of variables N (T/N)
+            tn_relation = self.closes.shape[0] / self.closes.shape[1]
+
+            cov_matrix = risk_est.shrinked_covariance(returns=self.returns, price_data=False,
+                                               shrinkage_type='lw',
+                                               assume_centered=False, basic_shrinkage=0.1)
+            cov = risk_est.denoise_covariance(cov_matrix, tn_relation, denoise_method=self.denoise_method,
+                                              detone=self.detone, market_component=1, kde_bwidth=kde_bwidth)
         else:
             exit()
         if self.graphs_show:
