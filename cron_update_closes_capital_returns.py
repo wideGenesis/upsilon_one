@@ -11,13 +11,13 @@ if __name__ == '__main__':
     args = parser.parse_args()
     log_file_name = args.fname
 
-    # debug_init(file_name=log_file_name)
+    debug_init(file_name=log_file_name)
     debug(f"### Start update universe prices ###")
-    # update_universe_prices1()
+    update_universe_prices1()
 
     debug(f"### Start update VIX prices ###")
     universe = ['VIX']
-    # eod_update_universe_prices(universe)
+    eod_update_universe_prices(universe)
 
     td = timedelta(days=365)
     ed = date.today()
