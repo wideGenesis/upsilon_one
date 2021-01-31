@@ -27,11 +27,13 @@ if __name__ == '__main__':
     if selector_end_date.day != 1:
         selector_end_date = datetime.date(selector_end_date.year, selector_end_date.month, 1)
     selector_start_date = add_months(allocator_end_date, -12)
+    vix_close = get_close_ticker_by_date('VIX', allocator_end_date)
 
     debug(f"Start calc parking portfolio")
     # ======================================== P A R K I N G ========================================
     portfolio_args['port_id'] = 'parking'
     portfolio_args['etf_only'] = False
+    portfolio_args['stocks_only'] = False
     portfolio_args['cor_perc'] = 0.9
     portfolio_args['sat_perc'] = 0.1
     # ********************* Parking cor *********************
@@ -60,7 +62,10 @@ if __name__ == '__main__':
     portfolio_args['sat_etf_list'] = None
     portfolio_args['sat_cap_filter'] = 100000000000
     portfolio_args['sat_assets_to_hold'] = 4
-    portfolio_args['sat_cov_method'] = 'semi'
+    portfolio_args['sat_cov_method'] = 'de2'
+    portfolio_args['sat_shrinkage_type'] = 'lw'
+    portfolio_args['sat_denoise_method'] = 'const_resid_eigen'
+    portfolio_args['sat_detone'] = True
     portfolio_args['sat_herc'] = False
     portfolio_args['sat_linkage_'] = 'ward'
     portfolio_args['sat_risk_measure_'] = 'variance'
@@ -71,6 +76,15 @@ if __name__ == '__main__':
     portfolio_args['sat_selector_p2'] = 63
     portfolio_args['sat_selector_c_p1'] = 1
     portfolio_args['sat_selector_c_p2'] = 3
+    if vix_close < 15:
+        portfolio_args['sat_cap_weight'] = 0.8
+    elif 15 <= vix_close < 30:
+        portfolio_args['sat_cap_weight'] = 0.2
+    elif 30 <= vix_close < 50:
+        portfolio_args['sat_cap_weight'] = 0.5
+    elif vix_close >= 50:
+        portfolio_args['sat_cap_weight'] = 0.8
+    portfolio_args['cap_limit_1'] = 0.13
 
     parking_weights = calc_portfolio(portfolio_args)
     create_portfolio_pie_image(weights=parking_weights,
@@ -83,6 +97,7 @@ if __name__ == '__main__':
     # ======================================== A L L W E A T H E R ========================================
     portfolio_args['port_id'] = 'allweather'
     portfolio_args['etf_only'] = False
+    portfolio_args['stocks_only'] = False
     portfolio_args['cor_perc'] = 0.8
     portfolio_args['sat_perc'] = 0.2
     # ********************* Allweather cor *********************
@@ -92,7 +107,10 @@ if __name__ == '__main__':
     portfolio_args['cor_selector_end_date'] = selector_end_date
     portfolio_args['cor_etf_list'] = ALL_WEATHER
     portfolio_args['cor_assets_to_hold'] = 4
-    portfolio_args['cor_cov_method'] = 'semi'
+    portfolio_args['sat_cov_method'] = 'de2'
+    portfolio_args['sat_shrinkage_type'] = 'lw'
+    portfolio_args['sat_denoise_method'] = 'const_resid_eigen'
+    portfolio_args['sat_detone'] = True
     portfolio_args['cor_herc'] = False
     portfolio_args['cor_linkage_'] = 'ward'
     portfolio_args['cor_risk_measure_'] = 'variance'
@@ -122,6 +140,15 @@ if __name__ == '__main__':
     portfolio_args['sat_selector_p2'] = 63
     portfolio_args['sat_selector_c_p1'] = 1
     portfolio_args['sat_selector_c_p2'] = 3
+    if vix_close < 15:
+        portfolio_args['sat_cap_weight'] = 0.8
+    elif 15 <= vix_close < 30:
+        portfolio_args['sat_cap_weight'] = 0.2
+    elif 30 <= vix_close < 50:
+        portfolio_args['sat_cap_weight'] = 0.5
+    elif vix_close >= 50:
+        portfolio_args['sat_cap_weight'] = 0.8
+    portfolio_args['cap_limit_1'] = 0.13
 
     allweather_weights = calc_portfolio(portfolio_args)
     create_portfolio_pie_image(weights=allweather_weights,
@@ -134,6 +161,7 @@ if __name__ == '__main__':
     # ======================================== B A L A N C E D ========================================
     portfolio_args['port_id'] = 'balanced'
     portfolio_args['etf_only'] = False
+    portfolio_args['stocks_only'] = False
     portfolio_args['cor_perc'] = 0.7
     portfolio_args['sat_perc'] = 0.3
     # ********************* Balanced cor *********************
@@ -162,7 +190,10 @@ if __name__ == '__main__':
     portfolio_args['sat_etf_list'] = None
     portfolio_args['sat_cap_filter'] = 100000000000
     portfolio_args['sat_assets_to_hold'] = 7
-    portfolio_args['sat_cov_method'] = 'semi'
+    portfolio_args['sat_cov_method'] = 'de2'
+    portfolio_args['sat_shrinkage_type'] = 'lw'
+    portfolio_args['sat_denoise_method'] = 'const_resid_eigen'
+    portfolio_args['sat_detone'] = True
     portfolio_args['sat_herc'] = False
     portfolio_args['sat_linkage_'] = 'ward'
     portfolio_args['sat_risk_measure_'] = 'variance'
@@ -173,6 +204,15 @@ if __name__ == '__main__':
     portfolio_args['sat_selector_p2'] = 63
     portfolio_args['sat_selector_c_p1'] = 1
     portfolio_args['sat_selector_c_p2'] = 3
+    if vix_close < 15:
+        portfolio_args['sat_cap_weight'] = 0.8
+    elif 15 <= vix_close < 30:
+        portfolio_args['sat_cap_weight'] = 0.2
+    elif 30 <= vix_close < 50:
+        portfolio_args['sat_cap_weight'] = 0.5
+    elif vix_close >= 50:
+        portfolio_args['sat_cap_weight'] = 0.8
+    portfolio_args['cap_limit_1'] = 0.13
 
     balanced_weights = calc_portfolio(portfolio_args)
     create_portfolio_pie_image(weights=balanced_weights,
@@ -185,6 +225,7 @@ if __name__ == '__main__':
     # ======================================== A G G R E S S I V E ========================================
     portfolio_args['port_id'] = 'aggressive'
     portfolio_args['etf_only'] = False
+    portfolio_args['stocks_only'] = False
     portfolio_args['cor_perc'] = 0.7
     portfolio_args['sat_perc'] = 0.3
     # ********************* Aggressive cor *********************
@@ -213,7 +254,10 @@ if __name__ == '__main__':
     portfolio_args['sat_etf_list'] = None
     portfolio_args['sat_cap_filter'] = 5000000000
     portfolio_args['sat_assets_to_hold'] = 7
-    portfolio_args['sat_cov_method'] = 'semi'
+    portfolio_args['sat_cov_method'] = 'de2'
+    portfolio_args['sat_shrinkage_type'] = 'lw'
+    portfolio_args['sat_denoise_method'] = 'const_resid_eigen'
+    portfolio_args['sat_detone'] = True
     portfolio_args['sat_herc'] = False
     portfolio_args['sat_linkage_'] = 'ward'
     portfolio_args['sat_risk_measure_'] = 'variance'
@@ -224,6 +268,15 @@ if __name__ == '__main__':
     portfolio_args['sat_selector_p2'] = 63
     portfolio_args['sat_selector_c_p1'] = 1
     portfolio_args['sat_selector_c_p2'] = 3
+    if vix_close < 15:
+        portfolio_args['sat_cap_weight'] = 0.8
+    elif 15 <= vix_close < 30:
+        portfolio_args['sat_cap_weight'] = 0.2
+    elif 30 <= vix_close < 50:
+        portfolio_args['sat_cap_weight'] = 0.5
+    elif vix_close >= 50:
+        portfolio_args['sat_cap_weight'] = 0.8
+    portfolio_args['cap_limit_1'] = 0.13
 
     aggressive_weights = calc_portfolio(portfolio_args)
     create_portfolio_pie_image(weights=aggressive_weights,
@@ -237,6 +290,7 @@ if __name__ == '__main__':
     portfolio_args['port_id'] = 'leveraged'
     portfolio_args['is_aliased'] = False
     portfolio_args['etf_only'] = False
+    portfolio_args['stocks_only'] = False
     portfolio_args['cor_perc'] = 0.65
     portfolio_args['sat_perc'] = 0.35
     # ********************* Leveraged cor *********************
@@ -265,7 +319,10 @@ if __name__ == '__main__':
     portfolio_args['sat_etf_list'] = None
     portfolio_args['sat_cap_filter'] = 20000000000
     portfolio_args['sat_assets_to_hold'] = 9
-    portfolio_args['sat_cov_method'] = 'semi'
+    portfolio_args['sat_cov_method'] = 'de2'
+    portfolio_args['sat_shrinkage_type'] = 'lw'
+    portfolio_args['sat_denoise_method'] = 'const_resid_eigen'
+    portfolio_args['sat_detone'] = True
     portfolio_args['sat_herc'] = False
     portfolio_args['sat_linkage_'] = 'ward'
     portfolio_args['sat_risk_measure_'] = 'variance'
@@ -276,6 +333,15 @@ if __name__ == '__main__':
     portfolio_args['sat_selector_p2'] = 63
     portfolio_args['sat_selector_c_p1'] = 1
     portfolio_args['sat_selector_c_p2'] = 3
+    if vix_close < 15:
+        portfolio_args['sat_cap_weight'] = 0.8
+    elif 15 <= vix_close < 30:
+        portfolio_args['sat_cap_weight'] = 0.2
+    elif 30 <= vix_close < 50:
+        portfolio_args['sat_cap_weight'] = 0.5
+    elif vix_close >= 50:
+        portfolio_args['sat_cap_weight'] = 0.8
+    portfolio_args['cap_limit_1'] = 0.13
 
     leveraged_weights = calc_portfolio(portfolio_args)
     create_portfolio_pie_image(weights=leveraged_weights,

@@ -27,7 +27,7 @@ def find_start_date(port_id, data_interval, start_test_date):
         min_dat, ticker = find_min_date(LEVERAGED)
     elif port_id == 'test_adm':
         min_dat, ticker = find_min_date(TEST_ADM)
-    elif port_id == 'test_stacks_only' or port_id == 'tinkoff_portfolio':
+    elif port_id == 'test_stocks_only' or port_id == 'tinkoff_portfolio':
         return start_test_date
 
     if min_dat is not None and ticker is not None:
@@ -66,7 +66,7 @@ def portfolio_tester(init_cap=10000, port_id='parking', allocator_data_interval=
         # ======================================== P A R K I N G ========================================
         portfolio_args['port_id'] = 'parking'
         portfolio_args['etf_only'] = False
-        portfolio_args['stacks_only'] = False
+        portfolio_args['stocks_only'] = False
         portfolio_args['cor_perc'] = 0.9
         portfolio_args['sat_perc'] = 0.1
         # ********************* Parking cor *********************
@@ -127,7 +127,7 @@ def portfolio_tester(init_cap=10000, port_id='parking', allocator_data_interval=
         # ======================================== A L L W E A T H E R ========================================
         portfolio_args['port_id'] = 'allweather'
         portfolio_args['etf_only'] = False
-        portfolio_args['stacks_only'] = False
+        portfolio_args['stocks_only'] = False
         portfolio_args['cor_perc'] = 0.8
         portfolio_args['sat_perc'] = 0.2
         # ********************* Allweather cor *********************
@@ -188,7 +188,7 @@ def portfolio_tester(init_cap=10000, port_id='parking', allocator_data_interval=
         # ======================================== B A L A N C E D ========================================
         portfolio_args['port_id'] = 'balanced'
         portfolio_args['etf_only'] = False
-        portfolio_args['stacks_only'] = False
+        portfolio_args['stocks_only'] = False
         portfolio_args['cor_perc'] = 0.7
         portfolio_args['sat_perc'] = 0.3
         # ********************* Balanced cor *********************
@@ -249,7 +249,7 @@ def portfolio_tester(init_cap=10000, port_id='parking', allocator_data_interval=
         # ======================================== A G G R E S S I V E ========================================
         portfolio_args['port_id'] = 'aggressive'
         portfolio_args['etf_only'] = False
-        portfolio_args['stacks_only'] = False
+        portfolio_args['stocks_only'] = False
         portfolio_args['cor_perc'] = 0.7
         portfolio_args['sat_perc'] = 0.3
         # ********************* Aggressive cor *********************
@@ -311,7 +311,7 @@ def portfolio_tester(init_cap=10000, port_id='parking', allocator_data_interval=
         portfolio_args['port_id'] = 'leveraged'
         portfolio_args['is_aliased'] = False
         portfolio_args['etf_only'] = False
-        portfolio_args['stacks_only'] = False
+        portfolio_args['stocks_only'] = False
         portfolio_args['cor_perc'] = 0.65
         portfolio_args['sat_perc'] = 0.35
         # ********************* Leveraged cor *********************
@@ -373,7 +373,7 @@ def portfolio_tester(init_cap=10000, port_id='parking', allocator_data_interval=
         portfolio_args['port_id'] = 'test_adm'
         portfolio_args['is_aliased'] = False
         portfolio_args['etf_only'] = True
-        portfolio_args['stacks_only'] = False
+        portfolio_args['stocks_only'] = False
         portfolio_args['cor_perc'] = 0.99
         portfolio_args['sat_perc'] = 0.01
         # ********************* TEST ADM cor *********************
@@ -419,13 +419,13 @@ def portfolio_tester(init_cap=10000, port_id='parking', allocator_data_interval=
         portfolio_args['sat_selector_c_p2'] = 3
         compare_ticker = "QQQ"
 
-    elif port_id == 'test_stacks_only':
+    elif port_id == 'test_stocks_only':
 
         # ======================================== TEST STOCKS ONLY ========================================
-        portfolio_args['port_id'] = 'test_stacks_only'
+        portfolio_args['port_id'] = 'test_stocks_only'
         portfolio_args['is_aliased'] = False
         portfolio_args['etf_only'] = False
-        portfolio_args['stacks_only'] = True
+        portfolio_args['stocks_only'] = True
         portfolio_args['cor_perc'] = 0.99
         portfolio_args['sat_perc'] = 0.01
         # ********************* TEST STOCKS ONLY *********************
@@ -471,7 +471,7 @@ def portfolio_tester(init_cap=10000, port_id='parking', allocator_data_interval=
         portfolio_args['port_id'] = 'tinkoff_portfolio'
         portfolio_args['is_aliased'] = False
         portfolio_args['etf_only'] = False
-        portfolio_args['stacks_only'] = True
+        portfolio_args['stocks_only'] = True
         portfolio_args['cor_perc'] = 0.99
         portfolio_args['sat_perc'] = 0.01
         # ********************* TINKOFF PORTFOLIO *********************
@@ -597,13 +597,13 @@ if __name__ == '__main__':
     p3.start()
     p4 = mp.Process(target=portfolio_tester, args=(100000, 'aggressive', 3, 12, datetime.date(2020, 7, 1),))
     p4.start()
-    # p5 = mp.Process(target=portfolio_tester, args=(100000, 'leveraged', 3, 12,  datetime.date(2020, 7, 1),))
-    # p5.start()
+    p5 = mp.Process(target=portfolio_tester, args=(100000, 'leveraged', 3, 12,  datetime.date(2020, 7, 1),))
+    p5.start()
 
     # p6 = mp.Process(target=portfolio_tester, args=(100000, 'test_adm', 3, 12,  datetime.date(2010, 3, 1),))
     # p6.start()
 
-    p7 = mp.Process(target=portfolio_tester, args=(100000, 'test_stacks_only', 3, 12,  datetime.date(2018, 1, 1),))
+    p7 = mp.Process(target=portfolio_tester, args=(100000, 'test_stocks_only', 3, 12,  datetime.date(2018, 1, 1),))
     p7.start()
 
     # p8 = mp.Process(target=portfolio_tester, args=(100000, 'tinkoff_portfolio', 3, 12,  datetime.date(2020, 1, 1),))
@@ -613,8 +613,8 @@ if __name__ == '__main__':
     p2.join()
     p3.join()
     p4.join()
-    # p5.join()
+    p5.join()
     # p6.join()
-    # p7.join()
+    p7.join()
     # p8.join()
 

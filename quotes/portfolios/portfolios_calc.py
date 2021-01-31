@@ -10,11 +10,11 @@ from quotes.portfolios.rp_portfolio import *
 
 
 def calc_portfolio(portfolio_args):
-    if portfolio_args['etf_only'] and portfolio_args['stacks_only']:
+    if portfolio_args['etf_only'] and portfolio_args['stocks_only']:
         debug('Incorrect calculation parameters', WARNING)
 
     # Расчет COR части портфеля
-    if not portfolio_args['stacks_only']:
+    if not portfolio_args['stocks_only']:
         cor_closes = get_closes_universe_df(etf_list=portfolio_args['cor_etf_list'],
                                             start_date=portfolio_args['cor_selector_start_date'],
                                             end_date=portfolio_args['cor_selector_end_date'])
@@ -65,7 +65,7 @@ def calc_portfolio(portfolio_args):
                                                               etf_list=portfolio_args['sat_etf_list'],
                                                               start_date=portfolio_args['sat_selector_start_date'],
                                                               end_date=portfolio_args['sat_selector_end_date'])
-    elif portfolio_args['port_id'] == 'test_stacks_only':
+    elif portfolio_args['port_id'] == 'test_stocks_only':
         td = timedelta(days=1)
         universe_date = portfolio_args['sat_selector_end_date'] - td
         debug(f'Try get universe closes to {str(universe_date)}')
@@ -75,7 +75,7 @@ def calc_portfolio(portfolio_args):
                                                               start_date=portfolio_args['sat_selector_start_date'],
                                                               end_date=portfolio_args['sat_selector_end_date'])
 
-    elif portfolio_args['port_id'] != 'tinkoff_portfolio' and portfolio_args['port_id'] != 'test_stacks_only':
+    elif portfolio_args['port_id'] != 'tinkoff_portfolio' and portfolio_args['port_id'] != 'test_stocks_only':
         sat_closes, mkt_caps = get_closes_universe_df(cap_filter=portfolio_args['sat_cap_filter'],
                                                       etf_list=portfolio_args['sat_etf_list'],
                                                       start_date=portfolio_args['sat_selector_start_date'],
@@ -110,7 +110,7 @@ def calc_portfolio(portfolio_args):
     sat_rp.closes_updater(new_closes=sat_list)
     sat_rp.calc_returns()
     satellite = sat_rp.allocator()
-    if portfolio_args['stacks_only']:
+    if portfolio_args['stocks_only']:
         return satellite
 
     weights = core_sat(cor=core,
