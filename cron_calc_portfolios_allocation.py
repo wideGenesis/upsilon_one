@@ -31,6 +31,7 @@ if __name__ == '__main__':
         selector_end_date = datetime.date(selector_end_date.year, selector_end_date.month, 1)
     selector_start_date = add_months(allocator_end_date, -12)
     vix_close = get_close_ticker_by_date('VIX', allocator_end_date)
+    td = timedelta(days=1)
 
     debug(f"Start calc parking portfolio")
     # ======================================== P A R K I N G ========================================
@@ -94,7 +95,7 @@ if __name__ == '__main__':
                                title="Parking portfolio",
                                filename="parking_portfolio_pie")
     debug(f'[{portfolio_args["port_id"]}]: {parking_weights}')
-    save_portfolio_weights(name='parking', portfolio_weights=parking_weights)
+    save_portfolio_weights(name='parking', portfolio_weights=parking_weights, allocation_date=(allocator_end_date-td))
 
     debug(f"Start calc allweather portfolio")
     # ======================================== A L L W E A T H E R ========================================
@@ -158,7 +159,9 @@ if __name__ == '__main__':
                                title="Allweather portfolio",
                                filename="allweather_portfolio_pie")
     debug(f'[{portfolio_args["port_id"]}]: {allweather_weights}')
-    save_portfolio_weights(name='allweather', portfolio_weights=allweather_weights)
+    save_portfolio_weights(name='allweather',
+                           portfolio_weights=allweather_weights,
+                           allocation_date=(allocator_end_date-td))
 
     debug(f"Start calc balanced portfolio")
     # ======================================== B A L A N C E D ========================================
@@ -222,7 +225,7 @@ if __name__ == '__main__':
                                title="Balanced portfolio",
                                filename="balanced_portfolio_pie")
     debug(f'[{portfolio_args["port_id"]}]: {balanced_weights}')
-    save_portfolio_weights(name='balanced', portfolio_weights=balanced_weights)
+    save_portfolio_weights(name='balanced', portfolio_weights=balanced_weights, allocation_date=(allocator_end_date-td))
 
     debug(f"Start calc aggressive portfolio")
     # ======================================== A G G R E S S I V E ========================================
@@ -286,7 +289,9 @@ if __name__ == '__main__':
                                title="Aggressive portfolio",
                                filename="aggressive_portfolio_pie")
     debug(f'[{portfolio_args["port_id"]}]: {aggressive_weights}')
-    save_portfolio_weights(name='aggressive', portfolio_weights=aggressive_weights)
+    save_portfolio_weights(name='aggressive',
+                           portfolio_weights=aggressive_weights,
+                           allocation_date=(allocator_end_date-td))
 
     debug(f"Start calc leveraged portfolio")
     # ======================================== L E V E R A G E D ========================================
@@ -351,7 +356,9 @@ if __name__ == '__main__':
                                title="Leveraged portfolio",
                                filename="leveraged_portfolio_pie")
     debug(f'[{portfolio_args["port_id"]}]: {leveraged_weights}')
-    save_portfolio_weights(name='leveraged', portfolio_weights=leveraged_weights)
+    save_portfolio_weights(name='leveraged',
+                           portfolio_weights=leveraged_weights,
+                           allocation_date=(allocator_end_date-td))
 
     # ****************************************** ПОРТФЕЛИ ТОЛЬКО НА АКЦИЯХ ******************************************
 
