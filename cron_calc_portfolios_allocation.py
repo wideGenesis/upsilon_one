@@ -4,6 +4,7 @@ from quotes.portfolios.portfolios_calc import *
 from quotes.portfolios.portfolios_save import *
 from charter.charter import *
 from quotes.get_universe import *
+from quotes.quote_loader import *
 
 
 if __name__ == '__main__':
@@ -12,7 +13,9 @@ if __name__ == '__main__':
     args = parser.parse_args()
     log_file_name = args.fname
 
-    debug_init(file_name=log_file_name)
+    # debug_init(file_name=log_file_name)
+
+    # ****************************************** СТАРЫЕ ПОРТФЕЛИ ******************************************
 
     debug(f"### Start eod_get_and_save_holdings ###")
     eod_get_and_save_holdings()
@@ -349,5 +352,79 @@ if __name__ == '__main__':
                                filename="leveraged_portfolio_pie")
     debug(f'[{portfolio_args["port_id"]}]: {leveraged_weights}')
     save_portfolio_weights(name='leveraged', portfolio_weights=leveraged_weights)
+
+    # ****************************************** ПОРТФЕЛИ ТОЛЬКО НА АКЦИЯХ ******************************************
+
+    # ++++++++++++++++++++++++++++++++++++++++++++ Сначала рассчитаем вселенную
+    # ++++ Заберем текущие конституенты индекса NDX
+    # Это и будет текущей вселенной
+    debug("Get NDX constituents")
+    curr_universe = get_index_constituent('NDX')
+
+    # ++++ Обновляем цены по всем тикерам из curr_universe
+    debug("Get NDX constituents prices")
+    eod_update_universe_prices(curr_universe)
+
+    # ++++ Далее идут основные расчеты  ++++++++++++++
+    # расчитаем вселенную для текущего месяца
+    cur_universe_date = date.today()
+    td = timedelta(1)
+    if cur_universe_date.day > 1:
+        cur_universe_date = date(cur_universe_date.year, cur_universe_date.month, 1) - td
+        debug(f'Current universe date: {cur_universe_date.strftime("%Y-%m-%d")}')
+
+    need_update_prices = []
+    if "MA" not in curr_universe:
+        sector, mkt_cap, exchange = get_tickerdata("MA")
+        curr_universe["MA"] = (sector, mkt_cap, exchange)
+        need_update_prices.append("MA")
+    if "V" not in curr_universe:
+        sector, mkt_cap, exchange = get_tickerdata("V")
+        curr_universe["V"] = (sector, mkt_cap, exchange)
+        need_update_prices.append("V")
+    if "PYPL" not in curr_universe:
+        sector, mkt_cap, exchange = get_tickerdata("PYPL")
+        curr_universe["PYPL"] = (sector, mkt_cap, exchange)
+        need_update_prices.append("PYPL")
+    if "WMT" not in curr_universe:
+        sector, mkt_cap, exchange = get_tickerdata("WMT")
+        curr_universe["WMT"] = (sector, mkt_cap, exchange)
+        need_update_prices.append("WMT")
+    if "NEE" not in curr_universe:
+        sector, mkt_cap, exchange = get_tickerdata("NEE")
+        curr_universe["NEE"] = (sector, mkt_cap, exchange)
+        need_update_prices.append("NEE")
+    if "XEL" not in curr_universe:
+        sector, mkt_cap, exchange = get_tickerdata("XEL")
+        curr_universe["XEL"] = (sector, mkt_cap, exchange)
+        need_update_prices.append("XEL")
+
+    # Заберем данные по вновь добавленным тикерам
+    eod_update_universe_prices(need_update_prices)
+
+    # Проверка на достаточность данных в тикерах
+    # Данных должно быть за 12 месяцев до текущей даты вселенной cur_universe_date
+    check_data_min = add_months(cur_universe_date, -12)
+    td = timedelta(days=7)
+    check_data_max = cur_universe_date - td
+    universe_to_save = curr_universe.copy()
+    for item in curr_universe.items():
+        min_ticker_date = find_min_date_by_ticker(item[0])
+        max_ticker_date = find_max_date_by_ticker(item[0])
+        if min_ticker_date is not None and max_ticker_date is not None:
+            if min_ticker_date > check_data_min or max_ticker_date < check_data_max:
+                universe_to_save.pop(item[0])
+        else:
+            universe_to_save.pop(item[0])
+
+    # Сохраним ткущую вселенную в БД
+    if not is_table_exist(HIST_UNIVERSE_TABLE_NAME):
+        create_hist_universe_table(HIST_UNIVERSE_TABLE_NAME)
+    append_universe_by_date(universe_to_save, cur_universe_date)
+
+    debug(f"Universe for date [{cur_universe_date.strftime('%Y-%m-%d')}]: {universe_to_save}")
+
+    # ++++++++++++++++++++++++++++++++++++++++++++ Теперь рассчитаем портфели
+
     debug("%%%%%%%%%%%%%%%Complete calc portfolios \n\n\n")
     debug_deinit()
