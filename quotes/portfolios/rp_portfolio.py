@@ -448,3 +448,49 @@ def returns_calc(init_capital=100000, ohlc=None):
     # debug(cap_ohlc.values())
     # debug(returns)
     return cap_ohlc.values(), returns
+
+
+def returns_calc_w(init_capital=100000, data=None):
+    res_ohlc = {}
+    res_ret = {}
+    shares = 0
+    in_cap = init_capital
+    # Расчет OHLC
+    for did in data:
+        cap_ohlc = {}
+        for ticker in data[did]:
+            for count, dohlcwac in enumerate(data[did][ticker]):
+                if count == 0:
+                    shares = int((in_cap * dohlcwac[5]) / dohlcwac[4])
+                cap_in_open = round(shares * dohlcwac[1], 2)
+                cap_in_hi = round(shares * dohlcwac[2], 2)
+                cap_in_low = round(shares * dohlcwac[3], 2)
+                cap_in_close = round(shares * dohlcwac[4], 2)
+                cap_in_adjclose = round(shares * dohlcwac[6], 2)
+                if dohlcwac[0] not in cap_ohlc:
+                    cap_ohlc[dohlcwac[0]] = (dohlcwac[0], cap_in_open, cap_in_hi, cap_in_low, cap_in_close, cap_in_adjclose)
+                else:
+                    cap_ohlc[dohlcwac[0]] = (dohlcwac[0],
+                                             round(cap_ohlc[dohlcwac[0]][1] + cap_in_open, 2),
+                                             round(cap_ohlc[dohlcwac[0]][2] + cap_in_hi, 2),
+                                             round(cap_ohlc[dohlcwac[0]][3] + cap_in_low, 2),
+                                             round(cap_ohlc[dohlcwac[0]][4] + cap_in_close, 2),
+                                             round(cap_ohlc[dohlcwac[0]][5] + cap_in_adjclose, 2))
+        # Расчет Returns
+        returns = {}
+        prev_ohlc_date = -1
+        for i, ohlc_date in enumerate(cap_ohlc):
+            if i > 0:
+                last_close = cap_ohlc[ohlc_date][-1]
+                prev_close = cap_ohlc[prev_ohlc_date][-1]
+                ret = round((last_close - prev_close) / prev_close, 4)
+                returns[ohlc_date] = ret
+            prev_ohlc_date = ohlc_date
+
+        c_val = list(cap_ohlc.values())
+        cash = round(in_cap - c_val[0][4], 2)
+        if cash > 0:
+            in_cap = round(c_val[-1][4] + cash, 2)
+        res_ohlc.update(cap_ohlc)
+        res_ret.update(returns)
+    return res_ohlc.values(), res_ret

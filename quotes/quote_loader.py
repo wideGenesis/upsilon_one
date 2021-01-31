@@ -88,7 +88,7 @@ def update_universe_prices(exclude_sectors=EXCLUDE_SECTORS, not_exclude_tickers=
 def update_universe_prices1(universe=None):
     tickers = []
     if universe is None:
-        tickers = get_universe()
+        tickers = get_universe_for_update()
     else:
         tickers = universe
     t_len = len(tickers)
@@ -157,7 +157,7 @@ def update_universe_prices1(universe=None):
 def eod_update_universe_prices(universe=None):
     tickers = []
     if universe is None:
-        tickers = get_universe()
+        tickers = get_universe_for_update()
     else:
         tickers = universe
     t_len = len(tickers)

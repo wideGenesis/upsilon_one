@@ -218,11 +218,6 @@ def get_ohlc_dict_by_port_id_h(port_id, start_date=None, end_date=date.today(),
         if start_date is None:
             td = timedelta(365)
             start_date = end_date - td
-        # query_string = f'SELECT q.ticker, q.dateTime, q.open, q.high, q.low, q.close, w.weight, q.adj_close ' \
-        #                f'FROM {q_table_name} q, {u_table_name} u, {weight_table} w' \
-        #                f' WHERE q.ticker=u.ticker ' \
-        #                f' AND q.ticker=w.ticker AND u.ticker=w.ticker ' \
-        #                f' AND w.port_id=\'{port_id}\''
         query_string = f'SELECT q.ticker, q.dateTime, q.open, q.high, q.low, q.close, w.weight, q.adj_close ' \
                        f'FROM {q_table_name} q, {weight_table} w' \
                        f' WHERE q.ticker=w.ticker ' \
@@ -243,6 +238,77 @@ def get_ohlc_dict_by_port_id_h(port_id, start_date=None, end_date=date.today(),
                 else:
                     ohlc[ticker] = [(dat, o, h, l, c, weight, ac)]
     return ohlc
+
+
+def get_ohlc_dict_by_port_id_w(port_id, start_date=None, end_date=date.today(),
+                               q_table_name=QUOTE_TABLE_NAME, engine=engine):
+    with engine.connect() as connection:
+        res = {}
+        td = timedelta(days=1)
+        if start_date is None:
+            ytd = timedelta(365)
+            start_date = end_date - ytd
+        curr_date = start_date
+        count = 0
+        while curr_date < end_date:
+            allo_date = curr_date
+            if curr_date.day > 1:
+                allo_date = datetime.date(curr_date.year, curr_date.month, 1)
+            allo_date -= td
+            allo = get_port_allocation_by_date(port_id=port_id, allo_date=allo_date)
+
+            e_date = add_months(curr_date, 1)
+            e_date = datetime.date(e_date.year, e_date.month, 1)
+            if e_date > end_date:
+                e_date = end_date
+            ohlc = {}
+            for ticker, weight in allo.items():
+                query_string = f'SELECT q.dateTime, q.open, q.high, q.low, q.close, q.adj_close ' \
+                               f' FROM {q_table_name} q ' \
+                               f' WHERE q.ticker=\'{ticker}\' ' \
+                               f' AND q.dateTime >= \'{str(curr_date)}\' ' \
+                               f' AND q.dateTime < \'{str(e_date)}\' ' \
+                               f' ORDER BY q.dateTime ASC'
+                q_result = connection.execute(query_string)
+                if q_result.rowcount > 0:
+                    rows = q_result.fetchall()
+                    for row in rows:
+                        dat, o, h, l, c, ac = row
+                        if ticker in ohlc:
+                            ohlc[ticker].append((dat, o, h, l, c, weight, ac))
+                        else:
+                            ohlc[ticker] = [(dat, o, h, l, c, weight, ac)]
+            res[count] = ohlc
+            count += 1
+            curr_date = e_date
+    return res
+
+
+def get_port_allocation_by_date(port_id, allo_date, table_name=HIST_PORT_ALLOCATION_TABLE_NAME, engine=engine):
+    with engine.connect() as connection:
+        if is_table_exist(table_name):
+            res={}
+            get_query = f'SELECT ticker, weight ' \
+                        f'FROM {table_name} ' \
+                        f'WHERE port_id=\'{port_id}\' AND adate=\'{str(allo_date)}\''
+            get_result = connection.execute(get_query)
+            if get_result.rowcount > 0 :
+                rows = get_result.fetchall()
+                for row in rows:
+                    ticker, weight = row
+                    res[ticker] = weight
+            else:
+                get_query = f'SELECT ticker, weight ' \
+                            f'FROM {table_name} ' \
+                            f'WHERE port_id=\'{port_id}\' ' \
+                            f'AND adate=(SELECT min(a.adate) FROM {table_name} a WHERE a.port_id=\'{port_id}\')'
+                get_result = connection.execute(get_query)
+                if get_result.rowcount > 0 :
+                    rows = get_result.fetchall()
+                    for row in rows:
+                        ticker, weight = row
+                        res[ticker] = weight
+            return res
 
 
 def get_closes_by_ticker_list_ti(ticker_list, time_interval=365,
@@ -464,6 +530,25 @@ def get_universe(cap_filter=0, table_name=UNIVERSE_TABLE_NAME, engine=engine):
                     res[item[0]] = item[1]
                     if percent_filter is not None and count >= round((len(query_result)*percent_filter)/100):
                         break
+                return res
+            else:
+                return None
+        else:
+            debug(f'Can\'t find table: {table_name}!')
+
+
+def get_universe_for_update(table_name=UNIVERSE_TABLE_NAME, engine=engine):
+    with engine.connect() as connection:
+        if is_table_exist(table_name):
+            absolute_filter = None
+            percent_filter = None
+            res = []
+            sel_query = f'SELECT ticker FROM  {table_name} '
+            result = connection.execute(sel_query)
+            if result.rowcount > 0:
+                query_result = result.fetchall()
+                for item in query_result:
+                    res.append(item[0])
                 return res
             else:
                 return None
