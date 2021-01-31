@@ -187,7 +187,7 @@ def eod_update_universe_prices(universe=None):
         today = date.today()
         # в самом  простом случае апдейтить таблицу надо с последней даты в таблице по сегодняшнюю
         print_progress_bar(0, t_len, prefix='Progress:', suffix='Complete', length=50)
-        for count, ticker in enumerate(tickers):
+        for count, ticker in enumerate(tickers, start=1):
             # print("### Try update ticker:" + str(ticker))
             if count > 0 and count % 15 == 0:
                 sleep(3)
