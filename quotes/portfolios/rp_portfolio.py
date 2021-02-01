@@ -232,15 +232,15 @@ class RiskParityAllocator:
             for k, v in final_dict.items():
                 mcaps.update({k: v / total_cap})
 
-            debug(f"MCAPS={mcaps}")
+            # debug(f"MCAPS={mcaps}")
             for k in mcaps:
                 if mcaps[k] > self.cap_limit_1:
                     temp.update({k: mcaps[k] - self.cap_limit_1})
-                    debug(f"temp={temp}")
+                    # debug(f"temp={temp}")
                     excess = sum(temp.values())
-                    debug(f"excess={excess}")
-                    debug(f"len(mcaps.keys()={len(mcaps.keys())}")
-                    debug(f"len(temp.keys()={len(temp.keys())}")
+                    # debug(f"excess={excess}")
+                    # debug(f"len(mcaps.keys()={len(mcaps.keys())}")
+                    # debug(f"len(temp.keys()={len(temp.keys())}")
                     qty = excess / (len(mcaps.keys()) - len(temp.keys()))
                     mcaps.update({k: self.cap_limit_1})
 

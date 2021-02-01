@@ -20,6 +20,10 @@ if __name__ == '__main__':
     debug(f"### Start eod_get_and_save_holdings ###")
     eod_get_and_save_holdings()
 
+    universe = ['VIX']
+    eod_update_universe_prices(universe)
+    update_universe_prices1()
+
     debug(f"### Start calc portfolio allocation ###")
     portfolio_args = {}
     allocator_end_date = date.today()
