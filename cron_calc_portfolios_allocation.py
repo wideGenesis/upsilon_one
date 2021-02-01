@@ -376,9 +376,8 @@ if __name__ == '__main__':
     # расчитаем вселенную для текущего месяца
     cur_universe_date = date.today()
     td = timedelta(1)
-    if cur_universe_date.day > 1:
-        cur_universe_date = date(cur_universe_date.year, cur_universe_date.month, 1) - td
-        debug(f'Current universe date: {cur_universe_date.strftime("%Y-%m-%d")}')
+    cur_universe_date = date(cur_universe_date.year, cur_universe_date.month, 1) - td
+    debug(f'Current universe date: {cur_universe_date.strftime("%Y-%m-%d")}')
 
     need_update_prices = []
     if "MA" not in curr_universe:

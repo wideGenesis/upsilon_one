@@ -49,7 +49,7 @@ def create_nasdaq_hist_universe():
     # debug(f"global_universe:{global_universe}")
 
     # ++++ Обновляем цены по всем тикерам из global_universe
-    eod_update_universe_prices(global_universe)
+    # eod_update_universe_prices(global_universe)
 
     # ++++ Подгружаем данные SimFin для поиска исторических маркет капов
     sf.set_api_key('free')
@@ -60,6 +60,7 @@ def create_nasdaq_hist_universe():
     # для начала подготовим стартовые даты и все такое
     # потом если сегодня не первое число месяца, то расчитаем вселенную для текущего месяца
     final_date = datetime.datetime.strptime(DEFAULT_START_QUOTES_DATE, "%Y-%m-%d").date()
+    # final_date = datetime.datetime.strptime("2020-10-31", "%Y-%m-%d").date()
     # debug(f"Final Date[{final_date.strftime('%Y-%m-%d')}]")
     cur_universe_date = date.today()
     prev_universe_date = date.today()
@@ -81,19 +82,39 @@ def create_nasdaq_hist_universe():
                         if ticker in curr_universe:
                             # debug(f"Remove ticker: {ticker}")
                             curr_universe.pop(ticker)
+    else:
+        cur_universe_date = date(cur_universe_date.year, cur_universe_date.month, 1) - td
+
     # Добавим во вселенную тикеры из исключенных секторов MA, V, PYPL
-    sector, mkt_cap, exchange = get_tickerdata("MA")
-    curr_universe["MA"] = (sector, mkt_cap, exchange)
-    sector, mkt_cap, exchange = get_tickerdata("V`")
-    curr_universe["V"] = (sector, mkt_cap, exchange)
-    sector, mkt_cap, exchange = get_tickerdata("PYPL")
-    curr_universe["PYPL"] = (sector, mkt_cap, exchange)
-    sector, mkt_cap, exchange = get_tickerdata("WMT")
-    curr_universe["WMT"] = (sector, mkt_cap, exchange)
-    sector, mkt_cap, exchange = get_tickerdata("NEE")
-    curr_universe["NEE"] = (sector, mkt_cap, exchange)
-    sector, mkt_cap, exchange = get_tickerdata("XEL")
-    curr_universe["XEL"] = (sector, mkt_cap, exchange)
+    need_update_prices = []
+    if "MA" not in curr_universe:
+        sector, mkt_cap, exchange = get_tickerdata("MA")
+        curr_universe["MA"] = (sector, mkt_cap, exchange)
+        need_update_prices.append("MA")
+    if "V" not in curr_universe:
+        sector, mkt_cap, exchange = get_tickerdata("V")
+        curr_universe["V"] = (sector, mkt_cap, exchange)
+        need_update_prices.append("V")
+    if "PYPL" not in curr_universe:
+        sector, mkt_cap, exchange = get_tickerdata("PYPL")
+        curr_universe["PYPL"] = (sector, mkt_cap, exchange)
+        need_update_prices.append("PYPL")
+    if "WMT" not in curr_universe:
+        sector, mkt_cap, exchange = get_tickerdata("WMT")
+        curr_universe["WMT"] = (sector, mkt_cap, exchange)
+        need_update_prices.append("WMT")
+    if "NEE" not in curr_universe:
+        sector, mkt_cap, exchange = get_tickerdata("NEE")
+        curr_universe["NEE"] = (sector, mkt_cap, exchange)
+        need_update_prices.append("NEE")
+    if "XEL" not in curr_universe:
+        sector, mkt_cap, exchange = get_tickerdata("XEL")
+        curr_universe["XEL"] = (sector, mkt_cap, exchange)
+        need_update_prices.append("XEL")
+
+    # Заберем данные по вновь добавленным тикерам
+    eod_update_universe_prices(need_update_prices)
+
     # Проверка на достаточность данных в тикерах
     # Данных должно быть за 12 месяцев до текущей даты вселенной cur_universe_date
     checked_universe = check_enough_data(curr_universe, cur_universe_date, is_last=True)
@@ -131,18 +152,32 @@ def create_nasdaq_hist_universe():
                             curr_universe.pop(ticker)
 
         # Добавим во вселенную тикеры из исключенных секторов MA, V, PYPL
-        sector, mkt_cap, exchange = get_tickerdata("MA")
-        curr_universe["MA"] = (sector, mkt_cap, exchange)
-        sector, mkt_cap, exchange = get_tickerdata("V`")
-        curr_universe["V"] = (sector, mkt_cap, exchange)
-        sector, mkt_cap, exchange = get_tickerdata("PYPL")
-        curr_universe["PYPL"] = (sector, mkt_cap, exchange)
-        sector, mkt_cap, exchange = get_tickerdata("WMT")
-        curr_universe["WMT"] = (sector, mkt_cap, exchange)
-        sector, mkt_cap, exchange = get_tickerdata("NEE")
-        curr_universe["NEE"] = (sector, mkt_cap, exchange)
-        sector, mkt_cap, exchange = get_tickerdata("XEL")
-        curr_universe["XEL"] = (sector, mkt_cap, exchange)
+        # Добавим во вселенную тикеры из исключенных секторов MA, V, PYPL
+        need_update_prices = []
+        if "MA" not in curr_universe:
+            sector, mkt_cap, exchange = get_tickerdata("MA")
+            curr_universe["MA"] = (sector, mkt_cap, exchange)
+            need_update_prices.append("MA")
+        if "V" not in curr_universe:
+            sector, mkt_cap, exchange = get_tickerdata("V")
+            curr_universe["V"] = (sector, mkt_cap, exchange)
+            need_update_prices.append("V")
+        if "PYPL" not in curr_universe:
+            sector, mkt_cap, exchange = get_tickerdata("PYPL")
+            curr_universe["PYPL"] = (sector, mkt_cap, exchange)
+            need_update_prices.append("PYPL")
+        if "WMT" not in curr_universe:
+            sector, mkt_cap, exchange = get_tickerdata("WMT")
+            curr_universe["WMT"] = (sector, mkt_cap, exchange)
+            need_update_prices.append("WMT")
+        if "NEE" not in curr_universe:
+            sector, mkt_cap, exchange = get_tickerdata("NEE")
+            curr_universe["NEE"] = (sector, mkt_cap, exchange)
+            need_update_prices.append("NEE")
+        if "XEL" not in curr_universe:
+            sector, mkt_cap, exchange = get_tickerdata("XEL")
+            curr_universe["XEL"] = (sector, mkt_cap, exchange)
+            need_update_prices.append("XEL")
         # Проверка на достаточность данных в тикерах
         # Данных должно быть за 12 месяцев до текущей даты вселенной cur_universe_date
         checked_universe = check_enough_data(curr_universe, cur_universe_date)
