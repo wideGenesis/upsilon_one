@@ -200,11 +200,12 @@ def create_nasdaq_hist_universe():
 
 def check_enough_data(universe, universe_data, is_last=False):
     check_data_min = add_months(universe_data, -12)
+    td = timedelta(days=7)
     if is_last:
-        td = timedelta(days=7)
         check_data_max = universe_data - td
     else:
         check_data_max = add_months(universe_data, 1)
+        check_data_max -= td
     res_universe = universe.copy()
     for item in universe.items():
         min_ticker_date = find_min_date_by_ticker(item[0])
