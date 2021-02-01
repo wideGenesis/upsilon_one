@@ -80,14 +80,7 @@ if __name__ == '__main__':
     portfolio_args['sat_selector_p2'] = 63
     portfolio_args['sat_selector_c_p1'] = 1
     portfolio_args['sat_selector_c_p2'] = 3
-    if vix_close < 15:
-        portfolio_args['sat_cap_weight'] = 0.8
-    elif 15 <= vix_close < 30:
-        portfolio_args['sat_cap_weight'] = 0.2
-    elif 30 <= vix_close < 50:
-        portfolio_args['sat_cap_weight'] = 0.5
-    elif vix_close >= 50:
-        portfolio_args['sat_cap_weight'] = 0.8
+    portfolio_args['sat_cap_weight'] = 0
     portfolio_args['cap_limit_1'] = 0.13
 
     parking_weights = calc_portfolio(portfolio_args)
@@ -144,14 +137,7 @@ if __name__ == '__main__':
     portfolio_args['sat_selector_p2'] = 63
     portfolio_args['sat_selector_c_p1'] = 1
     portfolio_args['sat_selector_c_p2'] = 3
-    if vix_close < 15:
-        portfolio_args['sat_cap_weight'] = 0.8
-    elif 15 <= vix_close < 30:
-        portfolio_args['sat_cap_weight'] = 0.2
-    elif 30 <= vix_close < 50:
-        portfolio_args['sat_cap_weight'] = 0.5
-    elif vix_close >= 50:
-        portfolio_args['sat_cap_weight'] = 0.8
+    portfolio_args['sat_cap_weight'] = 0
     portfolio_args['cap_limit_1'] = 0.13
 
     allweather_weights = calc_portfolio(portfolio_args)
@@ -210,14 +196,7 @@ if __name__ == '__main__':
     portfolio_args['sat_selector_p2'] = 63
     portfolio_args['sat_selector_c_p1'] = 1
     portfolio_args['sat_selector_c_p2'] = 3
-    if vix_close < 15:
-        portfolio_args['sat_cap_weight'] = 0.8
-    elif 15 <= vix_close < 30:
-        portfolio_args['sat_cap_weight'] = 0.2
-    elif 30 <= vix_close < 50:
-        portfolio_args['sat_cap_weight'] = 0.5
-    elif vix_close >= 50:
-        portfolio_args['sat_cap_weight'] = 0.8
+    portfolio_args['sat_cap_weight'] = 0
     portfolio_args['cap_limit_1'] = 0.13
 
     balanced_weights = calc_portfolio(portfolio_args)
@@ -274,14 +253,7 @@ if __name__ == '__main__':
     portfolio_args['sat_selector_p2'] = 63
     portfolio_args['sat_selector_c_p1'] = 1
     portfolio_args['sat_selector_c_p2'] = 3
-    if vix_close < 15:
-        portfolio_args['sat_cap_weight'] = 0.8
-    elif 15 <= vix_close < 30:
-        portfolio_args['sat_cap_weight'] = 0.2
-    elif 30 <= vix_close < 50:
-        portfolio_args['sat_cap_weight'] = 0.5
-    elif vix_close >= 50:
-        portfolio_args['sat_cap_weight'] = 0.8
+    portfolio_args['sat_cap_weight'] = 0
     portfolio_args['cap_limit_1'] = 0.13
 
     aggressive_weights = calc_portfolio(portfolio_args)
@@ -341,14 +313,7 @@ if __name__ == '__main__':
     portfolio_args['sat_selector_p2'] = 63
     portfolio_args['sat_selector_c_p1'] = 1
     portfolio_args['sat_selector_c_p2'] = 3
-    if vix_close < 15:
-        portfolio_args['sat_cap_weight'] = 0.8
-    elif 15 <= vix_close < 30:
-        portfolio_args['sat_cap_weight'] = 0.2
-    elif 30 <= vix_close < 50:
-        portfolio_args['sat_cap_weight'] = 0.5
-    elif vix_close >= 50:
-        portfolio_args['sat_cap_weight'] = 0.8
+    portfolio_args['sat_cap_weight'] = 0
     portfolio_args['cap_limit_1'] = 0.13
 
     leveraged_weights = calc_portfolio(portfolio_args)
