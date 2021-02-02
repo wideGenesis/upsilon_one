@@ -241,7 +241,10 @@ class RiskParityAllocator:
                     # debug(f"excess={excess}")
                     # debug(f"len(mcaps.keys()={len(mcaps.keys())}")
                     # debug(f"len(temp.keys()={len(temp.keys())}")
-                    qty = excess / (len(mcaps.keys()) - len(temp.keys()))
+                    if len(mcaps.keys()) - len(temp.keys()) > 0:
+                        qty = excess / (len(mcaps.keys()) - len(temp.keys()))
+                    elif len(mcaps.keys()) - len(temp.keys()) == 0:
+                        qty = excess / len(mcaps.keys())
                     mcaps.update({k: self.cap_limit_1})
 
             for k1 in mcaps:
