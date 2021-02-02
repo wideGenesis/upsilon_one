@@ -105,7 +105,7 @@ ETFs: [
     'XLP',
     'SOXX',
     'TAN',
-
+    'XLV'
 ]
 
 VALID_EXCHANGE: [
