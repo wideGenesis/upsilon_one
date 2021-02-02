@@ -524,7 +524,7 @@ def portfolio_tester(init_cap=10000, port_id='parking', allocator_data_interval=
     if port_id == 'sac_parking':
         # ======================================== sac_P A R K I N G ========================================
         portfolio_args['port_id'] = 'sac_parking'
-        portfolio_args['etf_only'] = False
+        portfolio_args['etf_only'] = True
         portfolio_args['stocks_only'] = False
         portfolio_args['cor_perc'] = 0.8
         portfolio_args['sat_perc'] = 0.2
@@ -585,7 +585,7 @@ def portfolio_tester(init_cap=10000, port_id='parking', allocator_data_interval=
 
         # ======================================== sac_balanced ========================================
         portfolio_args['port_id'] = 'sac_balanced'
-        portfolio_args['etf_only'] = False
+        portfolio_args['etf_only'] = True
         portfolio_args['stocks_only'] = False
         portfolio_args['cor_perc'] = 0.6
         portfolio_args['sat_perc'] = 0.4
@@ -646,7 +646,7 @@ def portfolio_tester(init_cap=10000, port_id='parking', allocator_data_interval=
 
         # ======================================== sac_growth ========================================
         portfolio_args['port_id'] = 'sac_growth'
-        portfolio_args['etf_only'] = False
+        portfolio_args['etf_only'] = True
         portfolio_args['stocks_only'] = False
         portfolio_args['cor_perc'] = 0.5
         portfolio_args['sat_perc'] = 0.5
@@ -797,11 +797,11 @@ if __name__ == '__main__':
     # p8 = mp.Process(target=portfolio_tester, args=(100000, 'tinkoff_portfolio', 3, 12,  datetime.date(2020, 1, 1),))
     # p8.start()
 
-    p9 = mp.Process(target=portfolio_tester, args=(100000, 'sac_parking', 3, 12,  datetime.date(2008, 1, 1),))
+    p9 = mp.Process(target=portfolio_tester, args=(100000, 'sac_parking', 3, 12,  datetime.date(2009, 5, 1),))
     p9.start()
-    p10 = mp.Process(target=portfolio_tester, args=(100000, 'sac_balanced', 3, 12,  datetime.date(2008, 1, 1),))
+    p10 = mp.Process(target=portfolio_tester, args=(100000, 'sac_balanced', 3, 12,  datetime.date(2009, 5, 1),))
     p10.start()
-    p11 = mp.Process(target=portfolio_tester, args=(100000, 'sac_growth', 3, 12,  datetime.date(2008, 1, 1),))
+    p11 = mp.Process(target=portfolio_tester, args=(100000, 'sac_growth', 3, 12,  datetime.date(2009, 5, 1),))
     p11.start()
 
     # p1.join()
