@@ -550,7 +550,7 @@ def portfolio_tester(init_cap=10000, port_id='parking', allocator_data_interval=
         portfolio_args['sat_selector_start_date'] = selector_start_date
         portfolio_args['sat_selector_end_date'] = selector_end_date
         portfolio_args['sat_etf_list'] = None
-        portfolio_args['sat_cap_filter'] = 100000000000
+        portfolio_args['sat_cap_filter'] = "50%"
         portfolio_args['sat_assets_to_hold'] = 10
 
         portfolio_args['sat_cov_method'] = 'de2'
@@ -611,7 +611,7 @@ def portfolio_tester(init_cap=10000, port_id='parking', allocator_data_interval=
         portfolio_args['sat_selector_start_date'] = selector_start_date
         portfolio_args['sat_selector_end_date'] = selector_end_date
         portfolio_args['sat_etf_list'] = None
-        portfolio_args['sat_cap_filter'] = 150000000000
+        portfolio_args['sat_cap_filter'] = "50%"
         portfolio_args['sat_assets_to_hold'] = 10
 
         portfolio_args['sat_cov_method'] = 'de2'
@@ -672,7 +672,7 @@ def portfolio_tester(init_cap=10000, port_id='parking', allocator_data_interval=
         portfolio_args['sat_selector_start_date'] = selector_start_date
         portfolio_args['sat_selector_end_date'] = selector_end_date
         portfolio_args['sat_etf_list'] = None
-        portfolio_args['sat_cap_filter'] = 100000000000
+        portfolio_args['sat_cap_filter'] = "50%"
         portfolio_args['sat_assets_to_hold'] = 10
 
         portfolio_args['sat_cov_method'] = 'de2'
