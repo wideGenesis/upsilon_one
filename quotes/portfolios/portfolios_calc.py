@@ -56,7 +56,7 @@ def calc_portfolio(portfolio_args):
 
     sat_closes = {}
     mkt_caps = {}
-    if portfolio_args['port_id'] == 'tinkoff_portfolio':
+    if portfolio_args['port_id'] == 'yolo_portfolio':
         td = timedelta(days=1)
         universe_date = portfolio_args['sat_selector_end_date'] - td
         sat_closes, mkt_caps = get_closes_universe_by_date_df(universe_date=universe_date,
@@ -75,7 +75,7 @@ def calc_portfolio(portfolio_args):
                                                               start_date=portfolio_args['sat_selector_start_date'],
                                                               end_date=portfolio_args['sat_selector_end_date'])
 
-    elif portfolio_args['port_id'] != 'tinkoff_portfolio' and portfolio_args['port_id'] != 'elastic':
+    elif portfolio_args['port_id'] != 'yolo_portfolio' and portfolio_args['port_id'] != 'elastic':
         sat_closes, mkt_caps = get_closes_universe_df(cap_filter=portfolio_args['sat_cap_filter'],
                                                       etf_list=portfolio_args['sat_etf_list'],
                                                       start_date=portfolio_args['sat_selector_start_date'],

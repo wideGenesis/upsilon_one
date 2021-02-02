@@ -33,7 +33,7 @@ def find_start_date(port_id, data_interval, start_test_date):
         min_dat, ticker = find_min_date(SAC_BALANCED)
     elif port_id == 'sac_growth':
         min_dat, ticker = find_min_date(SAC_GROWTH)
-    elif port_id == 'elastic' or port_id == 'tinkoff_portfolio':
+    elif port_id == 'elastic' or port_id == 'yolo_portfolio':
         return start_test_date
 
     if min_dat is not None and ticker is not None:
@@ -470,10 +470,10 @@ def portfolio_tester(init_cap=10000, port_id='parking', allocator_data_interval=
         portfolio_args['cap_limit_1'] = 0.13
         compare_ticker = "QQQ"
 
-    elif port_id == 'tinkoff_portfolio':
+    elif port_id == 'yolo_portfolio':
 
         # ======================================== TINKOFF PORTFOLIO ========================================
-        portfolio_args['port_id'] = 'tinkoff_portfolio'
+        portfolio_args['port_id'] = 'yolo_portfolio'
         portfolio_args['is_aliased'] = False
         portfolio_args['etf_only'] = False
         portfolio_args['stocks_only'] = True
@@ -769,8 +769,8 @@ def portfolio_tester(init_cap=10000, port_id='parking', allocator_data_interval=
 
 
 def main():
-    portfolio_tester(init_cap=10000, port_id='sac_growth', allocator_data_interval=3, selector_data_interval=12,
-                     start_test_date=datetime.date(2008, 1, 1))
+    portfolio_tester(init_cap=10000, port_id='yolo_portfolio', allocator_data_interval=3, selector_data_interval=12,
+                     start_test_date=datetime.date(2020, 1, 1))
 
 
 if __name__ == '__main__':
@@ -791,7 +791,7 @@ if __name__ == '__main__':
     # p6.start()
     # p7 = mp.Process(target=portfolio_tester, args=(100000, 'elastic', 3, 12,  datetime.date(2018, 1, 1),))
     # p7.start()
-    # p8 = mp.Process(target=portfolio_tester, args=(100000, 'tinkoff_portfolio', 3, 12,  datetime.date(2020, 1, 1),))
+    # p8 = mp.Process(target=portfolio_tester, args=(100000, 'yolo_portfolio', 3, 12,  datetime.date(2020, 1, 1),))
     # p8.start()
 
     # p9 = mp.Process(target=portfolio_tester, args=(100000, 'sac_parking', 3, 12,  datetime.date(2008, 1, 1),))
