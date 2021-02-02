@@ -27,6 +27,12 @@ def find_start_date(port_id, data_interval, start_test_date):
         min_dat, ticker = find_min_date(LEVERAGED)
     elif port_id == 'test_adm':
         min_dat, ticker = find_min_date(TEST_ADM)
+    elif port_id == 'sac_parking':
+        min_dat, ticker = find_min_date(SAC_PARKING)
+    elif port_id == 'sac_balanced':
+        min_dat, ticker = find_min_date(SAC_BALANCED)
+    elif port_id == 'sac_growth':
+        min_dat, ticker = find_min_date(SAC_GROWTH)
     elif port_id == 'test_stocks_only' or port_id == 'tinkoff_portfolio':
         return start_test_date
 
@@ -512,6 +518,191 @@ def portfolio_tester(init_cap=10000, port_id='parking', allocator_data_interval=
         portfolio_args['cap_limit_1'] = 0.13
         compare_ticker = "QQQ"
 
+        # ======================================== SMARTALPHACAPITAL ========================================
+
+
+    if port_id == 'sac_parking':
+        # ======================================== sac_P A R K I N G ========================================
+        portfolio_args['port_id'] = 'sac_parking'
+        portfolio_args['etf_only'] = False
+        portfolio_args['stocks_only'] = False
+        portfolio_args['cor_perc'] = 0.8
+        portfolio_args['sat_perc'] = 0.2
+        # ********************* sac_parking cor *********************
+        portfolio_args['cor_alloctor_start_date'] = alloctor_start_date
+        portfolio_args['cor_allocator_end_date'] = allocator_end_date
+        portfolio_args['cor_selector_start_date'] = selector_start_date
+        portfolio_args['cor_selector_end_date'] = selector_end_date
+        portfolio_args['cor_etf_list'] = SAC_PARKING
+        portfolio_args['cor_assets_to_hold'] = 4
+        portfolio_args['cor_cov_method'] = 'semi'
+        portfolio_args['cor_herc'] = False
+        portfolio_args['cor_linkage_'] = 'ward'
+        portfolio_args['cor_risk_measure_'] = 'variance'
+        portfolio_args['cor_graphs_show'] = False
+        portfolio_args['cor_selector_type'] = 13
+        portfolio_args['cor_selector_adjustment'] = False
+        portfolio_args['cor_selector_p1'] = 21
+        portfolio_args['cor_selector_p2'] = 126
+        portfolio_args['cor_selector_c_p1'] = 1
+        portfolio_args['cor_selector_c_p2'] = 3
+        # ********************* sac_parking sat *********************
+        portfolio_args['sat_alloctor_start_date'] = alloctor_start_date
+        portfolio_args['sat_allocator_end_date'] = allocator_end_date
+        portfolio_args['sat_selector_start_date'] = selector_start_date
+        portfolio_args['sat_selector_end_date'] = selector_end_date
+        portfolio_args['sat_etf_list'] = None
+        portfolio_args['sat_cap_filter'] = 100000000000
+        portfolio_args['sat_assets_to_hold'] = 4
+
+        portfolio_args['sat_cov_method'] = 'de2'
+        portfolio_args['sat_shrinkage_type'] = 'lw'
+        portfolio_args['sat_denoise_method'] = 'const_resid_eigen'
+        portfolio_args['sat_detone'] = True
+
+        portfolio_args['sat_herc'] = False
+        portfolio_args['sat_linkage_'] = 'ward'
+        portfolio_args['sat_risk_measure_'] = 'variance'
+        portfolio_args['sat_graphs_show'] = False
+        portfolio_args['sat_selector_type'] = 21
+        portfolio_args['sat_selector_adjustment'] = False
+        portfolio_args['sat_selector_p1'] = 21
+        portfolio_args['sat_selector_p2'] = 63
+        portfolio_args['sat_selector_c_p1'] = 1
+        portfolio_args['sat_selector_c_p2'] = 3
+        if vix_close < 15:
+            portfolio_args['sat_cap_weight'] = 0.8
+        elif 15 <= vix_close < 30:
+            portfolio_args['sat_cap_weight'] = 0.2
+        elif 30 <= vix_close < 50:
+            portfolio_args['sat_cap_weight'] = 0.5
+        elif vix_close >= 50:
+            portfolio_args['sat_cap_weight'] = 0.8
+        portfolio_args['cap_limit_1'] = 0.13
+        compare_ticker = "TLT"
+
+    elif port_id == 'sac_balanced':
+
+        # ======================================== sac_balanced ========================================
+        portfolio_args['port_id'] = 'sac_balanced'
+        portfolio_args['etf_only'] = False
+        portfolio_args['stocks_only'] = False
+        portfolio_args['cor_perc'] = 0.6
+        portfolio_args['sat_perc'] = 0.4
+        # ********************* sac_balanced cor *********************
+        portfolio_args['cor_alloctor_start_date'] = alloctor_start_date
+        portfolio_args['cor_allocator_end_date'] = allocator_end_date
+        portfolio_args['cor_selector_start_date'] = selector_start_date
+        portfolio_args['cor_selector_end_date'] = selector_end_date
+        portfolio_args['cor_etf_list'] = SAC_BALANCED
+        portfolio_args['cor_assets_to_hold'] = 5
+        portfolio_args['cor_cov_method'] = 'semi'
+        portfolio_args['cor_herc'] = False
+        portfolio_args['cor_linkage_'] = 'ward'
+        portfolio_args['cor_risk_measure_'] = 'variance'
+        portfolio_args['cor_graphs_show'] = False
+        portfolio_args['cor_selector_type'] = 13
+        portfolio_args['cor_selector_adjustment'] = False
+        portfolio_args['cor_selector_p1'] = 21
+        portfolio_args['cor_selector_p2'] = 126
+        portfolio_args['cor_selector_c_p1'] = 1
+        portfolio_args['cor_selector_c_p2'] = 3
+        # ********************* sac_balanced sat *********************
+        portfolio_args['sat_alloctor_start_date'] = alloctor_start_date
+        portfolio_args['sat_allocator_end_date'] = allocator_end_date
+        portfolio_args['sat_selector_start_date'] = selector_start_date
+        portfolio_args['sat_selector_end_date'] = selector_end_date
+        portfolio_args['sat_etf_list'] = None
+        portfolio_args['sat_cap_filter'] = 150000000000
+        portfolio_args['sat_assets_to_hold'] = 6
+
+        portfolio_args['sat_cov_method'] = 'de2'
+        portfolio_args['sat_shrinkage_type'] = 'lw'
+        portfolio_args['sat_denoise_method'] = 'const_resid_eigen'
+        portfolio_args['sat_detone'] = True
+
+        portfolio_args['sat_herc'] = False
+        portfolio_args['sat_linkage_'] = 'ward'
+        portfolio_args['sat_risk_measure_'] = 'variance'
+        portfolio_args['sat_graphs_show'] = False
+        portfolio_args['sat_selector_type'] = 21
+        portfolio_args['sat_selector_adjustment'] = False
+        portfolio_args['sat_selector_p1'] = 21
+        portfolio_args['sat_selector_p2'] = 63
+        portfolio_args['sat_selector_c_p1'] = 1
+        portfolio_args['sat_selector_c_p2'] = 3
+        if vix_close < 15:
+            portfolio_args['sat_cap_weight'] = 0.8
+        elif 15 <= vix_close < 30:
+            portfolio_args['sat_cap_weight'] = 0.2
+        elif 30 <= vix_close < 50:
+            portfolio_args['sat_cap_weight'] = 0.5
+        elif vix_close >= 50:
+            portfolio_args['sat_cap_weight'] = 0.8
+        portfolio_args['cap_limit_1'] = 0.13
+        compare_ticker = "SPY"
+
+    elif port_id == 'sac_growth':
+
+        # ======================================== sac_growth ========================================
+        portfolio_args['port_id'] = 'sac_growth'
+        portfolio_args['etf_only'] = False
+        portfolio_args['stocks_only'] = False
+        portfolio_args['cor_perc'] = 0.5
+        portfolio_args['sat_perc'] = 0.5
+        # ********************* sac_growth cor *********************
+        portfolio_args['cor_alloctor_start_date'] = alloctor_start_date
+        portfolio_args['cor_allocator_end_date'] = allocator_end_date
+        portfolio_args['cor_selector_start_date'] = selector_start_date
+        portfolio_args['cor_selector_end_date'] = selector_end_date
+        portfolio_args['cor_etf_list'] = SAC_GROWTH
+        portfolio_args['cor_assets_to_hold'] = 3
+        portfolio_args['cor_cov_method'] = 'semi'
+        portfolio_args['cor_herc'] = False
+        portfolio_args['cor_linkage_'] = 'ward'
+        portfolio_args['cor_risk_measure_'] = 'variance'
+        portfolio_args['cor_graphs_show'] = False
+        portfolio_args['cor_selector_type'] = 13
+        portfolio_args['cor_selector_adjustment'] = False
+        portfolio_args['cor_selector_p1'] = 21
+        portfolio_args['cor_selector_p2'] = 126
+        portfolio_args['cor_selector_c_p1'] = 1
+        portfolio_args['cor_selector_c_p2'] = 3
+        # ********************* sac_growth sat *********************
+        portfolio_args['sat_alloctor_start_date'] = alloctor_start_date
+        portfolio_args['sat_allocator_end_date'] = allocator_end_date
+        portfolio_args['sat_selector_start_date'] = selector_start_date
+        portfolio_args['sat_selector_end_date'] = selector_end_date
+        portfolio_args['sat_etf_list'] = None
+        portfolio_args['sat_cap_filter'] = 100000000000
+        portfolio_args['sat_assets_to_hold'] = 10
+
+        portfolio_args['sat_cov_method'] = 'de2'
+        portfolio_args['sat_shrinkage_type'] = 'lw'
+        portfolio_args['sat_denoise_method'] = 'const_resid_eigen'
+        portfolio_args['sat_detone'] = True
+
+        portfolio_args['sat_herc'] = False
+        portfolio_args['sat_linkage_'] = 'ward'
+        portfolio_args['sat_risk_measure_'] = 'variance'
+        portfolio_args['sat_graphs_show'] = False
+        portfolio_args['sat_selector_type'] = 21
+        portfolio_args['sat_selector_adjustment'] = False
+        portfolio_args['sat_selector_p1'] = 21
+        portfolio_args['sat_selector_p2'] = 63
+        portfolio_args['sat_selector_c_p1'] = 1
+        portfolio_args['sat_selector_c_p2'] = 3
+        if vix_close < 15:
+            portfolio_args['sat_cap_weight'] = 0.8
+        elif 15 <= vix_close < 30:
+            portfolio_args['sat_cap_weight'] = 0.2
+        elif 30 <= vix_close < 50:
+            portfolio_args['sat_cap_weight'] = 0.5
+        elif vix_close >= 50:
+            portfolio_args['sat_cap_weight'] = 0.8
+        portfolio_args['cap_limit_1'] = 0.13
+        compare_ticker = "QQQ"
+
     weights = calc_portfolio(portfolio_args)
 
     debug(f'Start allo({port_id}) [{allocator_end_date}]:'
@@ -599,15 +790,19 @@ if __name__ == '__main__':
     # p4.start()
     # p5 = mp.Process(target=portfolio_tester, args=(100000, 'leveraged', 3, 12,  datetime.date(2020, 7, 1),))
     # p5.start()
-
     # p6 = mp.Process(target=portfolio_tester, args=(100000, 'test_adm', 3, 12,  datetime.date(2010, 3, 1),))
     # p6.start()
-
     # p7 = mp.Process(target=portfolio_tester, args=(100000, 'test_stocks_only', 3, 12,  datetime.date(2018, 1, 1),))
     # p7.start()
+    # p8 = mp.Process(target=portfolio_tester, args=(100000, 'tinkoff_portfolio', 3, 12,  datetime.date(2020, 1, 1),))
+    # p8.start()
 
-    p8 = mp.Process(target=portfolio_tester, args=(100000, 'tinkoff_portfolio', 3, 12,  datetime.date(2020, 1, 1),))
-    p8.start()
+    p9 = mp.Process(target=portfolio_tester, args=(100000, 'sac_parking', 3, 12,  datetime.date(2008, 1, 1),))
+    p9.start()
+    p10 = mp.Process(target=portfolio_tester, args=(100000, 'sac_balanced', 3, 12,  datetime.date(2008, 1, 1),))
+    p10.start()
+    p11 = mp.Process(target=portfolio_tester, args=(100000, 'sac_growth', 3, 12,  datetime.date(2008, 1, 1),))
+    p11.start()
 
     # p1.join()
     # p2.join()
@@ -616,5 +811,8 @@ if __name__ == '__main__':
     # p5.join()
     # p6.join()
     # p7.join()
-    p8.join()
+    # p8.join()
+    p9.join()
+    p10.join()
+    p11.join()
 
