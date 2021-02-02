@@ -7,7 +7,6 @@ import pandas as pd
 from quotes.quote_loader import *
 
 
-
 def create_tinkoff_historical_universe():
     current_tinkoff_universe = get_universe(table_name=TINKOFF_UNIVERSE_TABLE_NAME)
     final_date = datetime.date(2019, 12, 31)
