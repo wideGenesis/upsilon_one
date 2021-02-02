@@ -769,14 +769,15 @@ def portfolio_tester(init_cap=10000, port_id='parking', allocator_data_interval=
 
 
 def main():
-    portfolio_tester(init_cap=10000, port_id='yolo_portfolio', allocator_data_interval=3, selector_data_interval=12,
-                     start_test_date=datetime.date(2020, 1, 1))
+    # portfolio_tester(init_cap=10000, port_id='yolo_portfolio', allocator_data_interval=3, selector_data_interval=12,
+    #                  start_test_date=datetime.date(2020, 1, 1))
+    pass
 
 
 if __name__ == '__main__':
-    main()
-    # mp.set_start_method('spawn')
-    # q = mp.Queue()
+    # main()
+    mp.set_start_method('spawn')
+    q = mp.Queue()
     # p1 = mp.Process(target=portfolio_tester, args=(100000, 'parking', 3, 12, datetime.date(2020, 7, 1),))
     # p1.start()
     # p2 = mp.Process(target=portfolio_tester, args=(100000, 'allweather', 3, 12, datetime.date(2020, 7, 1),))
