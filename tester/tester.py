@@ -33,7 +33,7 @@ def find_start_date(port_id, data_interval, start_test_date):
         min_dat, ticker = find_min_date(SAC_BALANCED)
     elif port_id == 'sac_growth':
         min_dat, ticker = find_min_date(SAC_GROWTH)
-    elif port_id == 'test_stocks_only' or port_id == 'tinkoff_portfolio':
+    elif port_id == 'elastic' or port_id == 'tinkoff_portfolio':
         return start_test_date
 
     if min_dat is not None and ticker is not None:
@@ -425,10 +425,10 @@ def portfolio_tester(init_cap=10000, port_id='parking', allocator_data_interval=
         portfolio_args['sat_selector_c_p2'] = 3
         compare_ticker = "QQQ"
 
-    elif port_id == 'test_stocks_only':
+    elif port_id == 'elastic':
 
-        # ======================================== TEST STOCKS ONLY ========================================
-        portfolio_args['port_id'] = 'test_stocks_only'
+        # ======================================== ELASTIC (STOCKS ONLY) ========================================
+        portfolio_args['port_id'] = 'elastic'
         portfolio_args['is_aliased'] = False
         portfolio_args['etf_only'] = False
         portfolio_args['stocks_only'] = True
@@ -440,7 +440,6 @@ def portfolio_tester(init_cap=10000, port_id='parking', allocator_data_interval=
         portfolio_args['sat_selector_start_date'] = selector_start_date
         portfolio_args['sat_selector_end_date'] = selector_end_date
         portfolio_args['sat_etf_list'] = None
-        # portfolio_args['sat_cap_filter'] = 20000000000
         portfolio_args['sat_cap_filter'] = '35%'
         portfolio_args['sat_assets_to_hold'] = 10
 
@@ -520,7 +519,6 @@ def portfolio_tester(init_cap=10000, port_id='parking', allocator_data_interval=
 
         # ======================================== SMARTALPHACAPITAL ========================================
 
-
     if port_id == 'sac_parking':
         # ======================================== sac_P A R K I N G ========================================
         portfolio_args['port_id'] = 'sac_parking'
@@ -553,7 +551,7 @@ def portfolio_tester(init_cap=10000, port_id='parking', allocator_data_interval=
         portfolio_args['sat_selector_end_date'] = selector_end_date
         portfolio_args['sat_etf_list'] = None
         portfolio_args['sat_cap_filter'] = 100000000000
-        portfolio_args['sat_assets_to_hold'] = 4
+        portfolio_args['sat_assets_to_hold'] = 10
 
         portfolio_args['sat_cov_method'] = 'de2'
         portfolio_args['sat_shrinkage_type'] = 'lw'
@@ -614,7 +612,7 @@ def portfolio_tester(init_cap=10000, port_id='parking', allocator_data_interval=
         portfolio_args['sat_selector_end_date'] = selector_end_date
         portfolio_args['sat_etf_list'] = None
         portfolio_args['sat_cap_filter'] = 150000000000
-        portfolio_args['sat_assets_to_hold'] = 6
+        portfolio_args['sat_assets_to_hold'] = 10
 
         portfolio_args['sat_cov_method'] = 'de2'
         portfolio_args['sat_shrinkage_type'] = 'lw'
@@ -771,15 +769,14 @@ def portfolio_tester(init_cap=10000, port_id='parking', allocator_data_interval=
 
 
 def main():
-    # portfolio_tester(init_cap=10000, port_id='aggressive', allocator_data_interval=3, selector_data_interval=12,
-    #                  start_test_date=datetime.date(2020, 7, 1))
-    pass
+    portfolio_tester(init_cap=10000, port_id='sac_balanced', allocator_data_interval=3, selector_data_interval=12,
+                     start_test_date=datetime.date(2009, 3, 1))
 
 
 if __name__ == '__main__':
-    # main()
+    main()
     # mp.set_start_method('spawn')
-    q = mp.Queue()
+    # q = mp.Queue()
     # p1 = mp.Process(target=portfolio_tester, args=(100000, 'parking', 3, 12, datetime.date(2020, 7, 1),))
     # p1.start()
     # p2 = mp.Process(target=portfolio_tester, args=(100000, 'allweather', 3, 12, datetime.date(2020, 7, 1),))
@@ -792,17 +789,17 @@ if __name__ == '__main__':
     # p5.start()
     # p6 = mp.Process(target=portfolio_tester, args=(100000, 'test_adm', 3, 12,  datetime.date(2010, 3, 1),))
     # p6.start()
-    # p7 = mp.Process(target=portfolio_tester, args=(100000, 'test_stocks_only', 3, 12,  datetime.date(2018, 1, 1),))
+    # p7 = mp.Process(target=portfolio_tester, args=(100000, 'elastic', 3, 12,  datetime.date(2018, 1, 1),))
     # p7.start()
     # p8 = mp.Process(target=portfolio_tester, args=(100000, 'tinkoff_portfolio', 3, 12,  datetime.date(2020, 1, 1),))
     # p8.start()
 
-    p9 = mp.Process(target=portfolio_tester, args=(100000, 'sac_parking', 3, 12,  datetime.date(2008, 1, 1),))
-    p9.start()
-    p10 = mp.Process(target=portfolio_tester, args=(100000, 'sac_balanced', 3, 12,  datetime.date(2008, 1, 1),))
-    p10.start()
-    p11 = mp.Process(target=portfolio_tester, args=(100000, 'sac_growth', 3, 12,  datetime.date(2008, 1, 1),))
-    p11.start()
+    # p9 = mp.Process(target=portfolio_tester, args=(100000, 'sac_parking', 3, 12,  datetime.date(2008, 1, 1),))
+    # p9.start()
+    # p10 = mp.Process(target=portfolio_tester, args=(100000, 'sac_balanced', 3, 12,  datetime.date(2008, 1, 1),))
+    # p10.start()
+    # p11 = mp.Process(target=portfolio_tester, args=(100000, 'sac_growth', 3, 12,  datetime.date(2008, 1, 1),))
+    # p11.start()
 
     # p1.join()
     # p2.join()
@@ -812,7 +809,7 @@ if __name__ == '__main__':
     # p6.join()
     # p7.join()
     # p8.join()
-    p9.join()
-    p10.join()
-    p11.join()
+    # p9.join()
+    # p10.join()
+    # p11.join()
 
