@@ -173,6 +173,8 @@ def get_closes_by_ticker_list(ticker_list, start_date=None, end_date=date.today(
                     c1.append(row[1])
                 series = pd.Series(c1, index=c0)
                 dat[ticker] = series
+            else:
+                debug(f"Closes by ticker list is EMPTY!", WARNING)
         closes = pd.DataFrame(dat)
     return closes
 
@@ -737,6 +739,7 @@ def get_universe_by_date(universe_date, cap_filter=0, u_table_name=HIST_UNIVERSE
                         break
                 return res
             else:
+                debug(f"Universe by: universe_date={str(universe_date)} : cap_filter={cap_filter} is Empty!!", WARNING)
                 return None
         else:
             debug(f'Can\'t find table: {u_table_name}!')
@@ -766,6 +769,8 @@ def get_closes_universe_by_date_df(universe_date, q_table_name=QUOTE_TABLE_NAME,
                     c1.append(row[1])
                 series = pd.Series(c1, index=c0)
                 dat[ticker] = series
+            else:
+                debug(f"Closes by date {str(universe_date)} is empty!!! ", WARNING)
         closes = pd.DataFrame(dat)
     return closes, universe
 

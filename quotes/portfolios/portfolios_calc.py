@@ -106,11 +106,13 @@ def calc_portfolio(portfolio_args):
                                  )
     sat_tickers = []
     sat_tickers = sat_rp.selector()
-    # debug(f'sat_tickers:{sat_tickers}')
+    if len(sat_tickers) == 0:
+        debug(f'sat_tickers after selector is Empty', WARNING)
     sat_list = get_closes_by_ticker_list(sat_tickers,
                                          start_date=portfolio_args['sat_alloctor_start_date'],
                                          end_date=portfolio_args['sat_allocator_end_date'])
-    # debug(f'sat_list:{sat_list}')
+    if len(sat_list) == 0:
+        debug(f'sat_list for allocator is Empty!', WARNING)
     sat_rp.closes_updater(new_closes=sat_list)
     sat_rp.calc_returns()
     satellite = sat_rp.allocator()
