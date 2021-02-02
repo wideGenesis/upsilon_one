@@ -25,3 +25,7 @@ def get_last_nasdaq_events():
     return jsn
 
 
+def create_last_hist_universe():
+    jsn = get_last_nasdaq_events()
+    parsed_json = json.loads(jsn)
+
