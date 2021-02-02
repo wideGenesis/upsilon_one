@@ -795,11 +795,11 @@ if __name__ == '__main__':
     # p8 = mp.Process(target=portfolio_tester, args=(100000, 'yolo_portfolio', 3, 12,  datetime.date(2020, 1, 1),))
     # p8.start()
 
-    p9 = mp.Process(target=portfolio_tester, args=(100000, 'sac_parking', 3, 12,  datetime.date(2008, 1, 1),))
-    p9.start()
-    p10 = mp.Process(target=portfolio_tester, args=(100000, 'sac_balanced', 3, 12,  datetime.date(2008, 1, 1),))
-    p10.start()
-    p11 = mp.Process(target=portfolio_tester, args=(100000, 'sac_growth', 3, 12,  datetime.date(2008, 1, 1),))
+    # p9 = mp.Process(target=portfolio_tester, args=(100000, 'sac_parking', 3, 12,  datetime.date(2008, 1, 1),))
+    # p9.start()
+    # p10 = mp.Process(target=portfolio_tester, args=(100000, 'sac_balanced', 3, 12,  datetime.date(2008, 3, 1),))
+    # p10.start()
+    p11 = mp.Process(target=portfolio_tester, args=(100000, 'sac_growth', 3, 12,  datetime.date(2020, 5, 1),))
     p11.start()
 
     # p1.join()
@@ -810,7 +810,7 @@ if __name__ == '__main__':
     # p6.join()
     # p7.join()
     # p8.join()
-    p9.join()
-    p10.join()
+    # p9.join()
+    # p10.join()
     p11.join()
 
