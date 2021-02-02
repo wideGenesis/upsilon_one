@@ -118,6 +118,9 @@ def get_closes_universe_df(q_table_name=QUOTE_TABLE_NAME, u_table_name=UNIVERSE_
                         c1.append(row[1])
                     series = pd.Series(c1, index=c0)
                     dat[ticker] = series
+                else:
+                    debug("WARNING data is empty", WARNING)
+                    debug(f"{query_string}", WARNING)
             closes = pd.DataFrame(dat)
             return closes
         tickers = get_universe(cap_filter, u_table_name, engine)
@@ -138,6 +141,9 @@ def get_closes_universe_df(q_table_name=QUOTE_TABLE_NAME, u_table_name=UNIVERSE_
                     c1.append(row[1])
                 series = pd.Series(c1, index=c0)
                 dat[ticker] = series
+            else:
+                debug("WARNING data is empty", WARNING)
+                debug(f"{query_string}", WARNING)
         closes = pd.DataFrame(dat)
     return closes, tickers
 
