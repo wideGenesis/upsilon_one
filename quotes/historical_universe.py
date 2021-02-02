@@ -59,7 +59,7 @@ def create_nasdaq_hist_universe():
     # ++++ Далее идут основные расчеты  ++++++++++++++
     # для начала подготовим стартовые даты и все такое
     # потом если сегодня не первое число месяца, то расчитаем вселенную для текущего месяца
-    final_date = datetime.datetime.strptime("2021-01-01", "%Y-%m-%d").date()
+    final_date = datetime.datetime.strptime(DEFAULT_START_QUOTES_DATE, "%Y-%m-%d").date()
     # final_date = datetime.datetime.strptime("2020-10-31", "%Y-%m-%d").date()
     # debug(f"Final Date[{final_date.strftime('%Y-%m-%d')}]")
     cur_universe_date = date.today()
