@@ -22,9 +22,9 @@ if __name__ == '__main__':
     debug(f"### Start eod_get_and_save_holdings ###")
     eod_get_and_save_holdings()
 
+    update_universe_prices1()
     universe = ['VIX']
     eod_update_universe_prices(universe)
-    update_universe_prices1()
 
     debug(f"### Start calc portfolio allocation ###")
     portfolio_args = {}
@@ -403,7 +403,7 @@ if __name__ == '__main__':
 
     portfolio_args.clear()
 
-    portfolio_args['port_id'] = 'yolo_portfolio'
+    portfolio_args['port_id'] = 'yolo'
     portfolio_args['is_aliased'] = False
     portfolio_args['etf_only'] = False
     portfolio_args['stocks_only'] = True
@@ -445,7 +445,7 @@ if __name__ == '__main__':
         portfolio_args['sat_cap_weight'] = 0.8
 
     portfolio_args['cap_limit_1'] = 0.13
-    compare_ticker = "QQQ"
+    compare_ticker = "SPY"
 
     yolo_weights = calc_portfolio(portfolio_args)
     create_portfolio_pie_image(weights=yolo_weights,

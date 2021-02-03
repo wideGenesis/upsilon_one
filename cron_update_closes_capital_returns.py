@@ -11,12 +11,11 @@ if __name__ == '__main__':
     args = parser.parse_args()
     log_file_name = args.fname
 
-    debug_init(file_name=log_file_name)
+    # debug_init(file_name=log_file_name)
     debug(f"### Start update universe prices ###")
-    update_universe_prices1()
-
-    debug(f"### Start update VIX prices ###")
-    universe = ['VIX']
+    universe = get_all_uniq_tickers()
+    if "VIX" not in universe:
+        universe.append("VIX")
     eod_update_universe_prices(universe)
 
     td = timedelta(days=365)
@@ -67,5 +66,24 @@ if __name__ == '__main__':
     save_portfolio_bars(name=port_id, portfolio_bars=portfolio_bars)
     save_portfolio_returns(name=port_id, portfolio_returns=portfolio_returns)
     create_candle_portfolio_img(port_id=port_id, compare_ticker="QQQ", start_date=sd, end_date=ed)
+
+    debug("Calc capital for elastic")
+    # ======================================== E L A S T I C ========================================
+    port_id = 'elastic'
+    ohlc = get_ohlc_dict_by_port_id_w(port_id=port_id, start_date=sd, end_date=ed)
+    portfolio_bars, portfolio_returns = returns_calc_w(data=ohlc)
+    save_portfolio_bars(name=port_id, portfolio_bars=portfolio_bars)
+    save_portfolio_returns(name=port_id, portfolio_returns=portfolio_returns)
+    create_candle_portfolio_img(port_id=port_id, compare_ticker="QQQ", start_date=sd, end_date=ed)
+
+    debug("Calc capital for yolo")
+    # ======================================== Y O L O ========================================
+    port_id = 'yolo'
+    ohlc = get_ohlc_dict_by_port_id_w(port_id=port_id, start_date=sd, end_date=ed)
+    portfolio_bars, portfolio_returns = returns_calc_w(data=ohlc)
+    save_portfolio_bars(name=port_id, portfolio_bars=portfolio_bars)
+    save_portfolio_returns(name=port_id, portfolio_returns=portfolio_returns)
+    create_candle_portfolio_img(port_id=port_id, compare_ticker="SPY", start_date=sd, end_date=ed)
+
     debug("%%%%%%%%%%%%%%%Complete update closes and capital returns\n\n\n")
     debug_deinit()

@@ -548,8 +548,6 @@ def get_universe(cap_filter=0, table_name=UNIVERSE_TABLE_NAME, engine=engine):
 def get_universe_for_update(table_name=UNIVERSE_TABLE_NAME, engine=engine):
     with engine.connect() as connection:
         if is_table_exist(table_name):
-            absolute_filter = None
-            percent_filter = None
             res = []
             sel_query = f'SELECT ticker FROM  {table_name} '
             result = connection.execute(sel_query)
@@ -582,6 +580,66 @@ def get_universe_capweighted(table_name=UNIVERSE_TABLE_NAME, engine=engine):
                 return None
         else:
             debug(f'Can\'t find table: {table_name}!')
+
+
+def get_all_uniq_tickers(engine=engine):
+    current_universe = UNIVERSE_TABLE_NAME
+    hist_universe = HIST_UNIVERSE_TABLE_NAME
+    tinkoff_universe = TINKOFF_UNIVERSE_TABLE_NAME
+    hist_tinkoff_universe = TINKOFF_HIST_UNIVERSE_TABLE_NAME
+    uniq_tickers = []
+    with engine.connect() as connection:
+        if is_table_exist(current_universe):
+            del_query = f'SELECT ticker FROM {current_universe} GROUP BY ticker'
+            result = connection.execute(del_query)
+            if result.rowcount > 0:
+                query_result = result.fetchall()
+                for ticker in query_result:
+                    uniq_tickers.append(ticker[0])
+            else:
+                debug(f"WARNING. Can't find data in {current_universe}", WARNING)
+        else:
+            debug(f'Can\'t find table: {current_universe}!', WARNING)
+
+        if is_table_exist(hist_universe):
+            del_query = f'SELECT ticker FROM {hist_universe} GROUP BY ticker'
+            result = connection.execute(del_query)
+            if result.rowcount > 0:
+                query_result = result.fetchall()
+                for ticker in query_result:
+                    if ticker[0] not in uniq_tickers:
+                        uniq_tickers.append(ticker[0])
+            else:
+                debug(f"WARNING. Can't find data in {hist_universe}", WARNING)
+        else:
+            debug(f'Can\'t find table: {hist_universe}!', WARNING)
+
+        if is_table_exist(tinkoff_universe):
+            del_query = f'SELECT ticker FROM {tinkoff_universe} GROUP BY ticker'
+            result = connection.execute(del_query)
+            if result.rowcount > 0:
+                query_result = result.fetchall()
+                for ticker in query_result:
+                    if ticker[0] not in uniq_tickers:
+                        uniq_tickers.append(ticker[0])
+            else:
+                debug(f"WARNING. Can't find data in {tinkoff_universe}", WARNING)
+        else:
+            debug(f'Can\'t find table: {tinkoff_universe}!', WARNING)
+
+        if is_table_exist(hist_tinkoff_universe):
+            del_query = f'SELECT ticker FROM {hist_tinkoff_universe} GROUP BY ticker'
+            result = connection.execute(del_query)
+            if result.rowcount > 0:
+                query_result = result.fetchall()
+                for ticker in query_result:
+                    if ticker[0] not in uniq_tickers:
+                        uniq_tickers.append(ticker[0])
+            else:
+                debug(f"WARNING. Can't find data in {hist_tinkoff_universe}", WARNING)
+        else:
+            debug(f'Can\'t find table: {hist_tinkoff_universe}!', WARNING)
+    return uniq_tickers
 
 
 def get_all_universe(table_name=UNIVERSE_TABLE_NAME, engine=engine):
