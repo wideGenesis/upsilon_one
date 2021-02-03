@@ -12,6 +12,7 @@ import schedule
 from time import sleep
 from charter.charter import *
 import undetected_chromedriver as uc
+from quotes.historical_universe import *
 
 
 # ============================== Main  =============================
@@ -37,10 +38,12 @@ def main():
     # update_universe_prices()
 
     # Это уже формирование вселенной по-новому, через апи
-    eod_get_and_save_holdings()
-    universe = ['VIX']
-    eod_update_universe_prices(universe)
-    update_universe_prices1()
+    # eod_get_and_save_holdings()
+    # universe = ['VIX']
+    # eod_update_universe_prices(universe)
+    # update_universe_prices1()
+
+    create_nasdaq_hist_universe()
     exit()
     # parking_weights = parking_portfolio()
     # allweather_weights = allweather_portfolio()
