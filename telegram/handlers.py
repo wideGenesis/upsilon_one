@@ -328,7 +328,7 @@ async def portfolio_candle_chart_handler(event, client_):
     elif pattern == 'elastic':
         await client_.send_file(event.input_sender, CHARTER_IMAGES_PATH + 'elastic_port_chart_over_QQQ.png')
     elif pattern == 'yolo':
-        await client_.send_file(event.input_sender, CHARTER_IMAGES_PATH + 'yolo_port_chart_over_QQQ.png')
+        await client_.send_file(event.input_sender, CHARTER_IMAGES_PATH + 'yolo_port_chart_over_SPY.png')
 
 
 async def managers_form_handler(event, client_):
