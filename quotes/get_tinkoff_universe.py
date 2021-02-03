@@ -12,12 +12,14 @@ def get_and_save_tinkoff_universe():
         url = f'https://api-invest.tinkoff.ru/openapi/market/stocks'
         headers = {'accept': 'application/json', 'Authorization': f'Bearer {TOKEN}'}
         request_result = session.get(url, headers=headers)
+        all_tinkoff_tickers = []
         if request_result.status_code == requests.codes.ok:
             res = {}
             parsed_json = json.loads(request_result.text)
             universe = get_all_universe()
             count = 0
             for inst in parsed_json['payload']['instruments']:
+                all_tinkoff_tickers.append(inst['ticker'])
                 if inst['currency'] == 'USD' and inst['ticker'] in universe and inst['ticker'] not in ['AMZN', 'GOOGL']:
                     res[inst['ticker']] = (universe[inst['ticker']][0], universe[inst['ticker']][1], universe[inst['ticker']][2])
                     count += 1
@@ -33,6 +35,7 @@ def get_and_save_tinkoff_universe():
             else:
                 create_universe_table(TINKOFF_UNIVERSE_TABLE_NAME)
                 eod_insert_universe_data(res, TINKOFF_UNIVERSE_TABLE_NAME)
+        return all_tinkoff_tickers
 
 
 def main():
