@@ -30,26 +30,17 @@ def create_nasdaq_hist_universe():
         else:
             result_events[event_date] = upd
 
-    # for key, value in result_events.items():
-    # debug(f"Date[{key.strftime('%Y-%m-%d')}]: {value}")
-
     # ++++ Заберем текущие конституенты индекса NDX
     # Это и будет текущей вселенной
     curr_universe = get_index_constituent('NDX')
-
-    # debug(f"len(curr_universe)={len(curr_universe)}")
-    # debug(f"curr_universe:{curr_universe}")
 
     # ++++ Все соберем в global_universe для того что бы по всем данным обновлять цены.
     for ticker in curr_universe.keys():
         if ticker not in global_universe:
             global_universe.append(ticker)
 
-    # debug(f"len(global_universe)={len(global_universe)}")
-    # debug(f"global_universe:{global_universe}")
-
     # ++++ Обновляем цены по всем тикерам из global_universe
-    # eod_update_universe_prices(global_universe)
+    eod_update_universe_prices(global_universe)
 
     # ++++ Подгружаем данные SimFin для поиска исторических маркет капов
     sf.set_api_key('free')
