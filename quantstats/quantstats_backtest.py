@@ -37,12 +37,20 @@ leveraged = get_portfolio_returns_df('leveraged', start_date=None, end_date=date
 # quantstats_pdf(port_rets_df=balanced, bench='QQQ', filename='balanced', title='Balanced Strategy')
 
 
-elastic = get_portfolio_returns_df('elastic', start_date=None, end_date=date.today())
-yolo = get_portfolio_returns_df('yolo', start_date=None, end_date=date.today())
+# elastic = get_portfolio_returns_df('elastic', start_date=None, end_date=date.today())
+# yolo = get_portfolio_returns_df('yolo', start_date=None, end_date=date.today())
 
-print(elastic)
-elastic.to_csv('elastic.csv')
-yolo.to_csv('yolo.csv')
+# print(elastic)
+# elastic.to_csv('elastic.csv')
+# yolo.to_csv('yolo.csv')
 
 # quantstats_pdf(port_rets_df=elastic, bench='QQQ', filename='elastic', title='Elastic Strategy')
 # quantstats_pdf(port_rets_df=yolo, bench='SPY', filename='yolo', title='Yolo Strategy')
+
+sac_parking = get_portfolio_returns_df('sac_parking', start_date=None, end_date=date.today())
+sac_balanced = get_portfolio_returns_df('sac_balanced', start_date=None, end_date=date.today())
+sac_growth = get_portfolio_returns_df('sac_growth', start_date=None, end_date=date.today())
+
+quantstats_pdf(port_rets_df=sac_parking, bench='TLT', filename='sac_parking', title='Parking Strategy')
+quantstats_pdf(port_rets_df=sac_balanced, bench='SPY', filename='sac_balanced', title='Balanced Strategy')
+quantstats_pdf(port_rets_df=sac_growth, bench='SPY', filename='sac_growth', title='Growth Strategy')
