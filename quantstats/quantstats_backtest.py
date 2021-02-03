@@ -35,5 +35,14 @@ leveraged = get_portfolio_returns_df('leveraged', start_date=None, end_date=date
 # quantstats_pdf(port_rets_df=parking, bench='TLT', filename='parking', title='Parking Strategy')
 # quantstats_pdf(port_rets_df=allweather, bench='SPY', filename='allweather', title='All Weather Strategy')
 # quantstats_pdf(port_rets_df=balanced, bench='QQQ', filename='balanced', title='Balanced Strategy')
-quantstats_pdf(port_rets_df=aggressive, bench='QQQ', filename='aggressive', title='Aggressive Strategy')
-quantstats_pdf(port_rets_df=leveraged, bench='QQQ', filename='leveraged', title='Leveraged Strategy')
+
+
+elastic = get_portfolio_returns_df('elastic', start_date=None, end_date=date.today())
+yolo = get_portfolio_returns_df('yolo', start_date=None, end_date=date.today())
+
+print(elastic)
+elastic.to_csv('elastic.csv')
+yolo.to_csv('yolo.csv')
+
+# quantstats_pdf(port_rets_df=elastic, bench='QQQ', filename='elastic', title='Elastic Strategy')
+# quantstats_pdf(port_rets_df=yolo, bench='SPY', filename='yolo', title='Yolo Strategy')

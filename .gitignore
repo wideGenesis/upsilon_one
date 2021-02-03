@@ -25,7 +25,7 @@ chromedriver.exe
 **/results/
 results/img_out/*
 results/port_images/*
-results/strategy_stats/*
+#results/strategy_stats/*
 vix-futures-term-structu.png
 geckodriver.log
 quotes/sim_fin_data/download/us-shareprices-daily.zip
