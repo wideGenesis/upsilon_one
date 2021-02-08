@@ -142,7 +142,7 @@ def get_portfolio_returns(port_id, start_date=None, end_date=date.today(),
 def get_portfolio_returns_df(port_id, start_date=None, end_date=date.today(),
                              table_name=PORTFOLIO_RETURNS_TABLE_NAME, engine=engine):
     with engine.connect() as connection:
-        portfolio_returns = None
+        portfolio_returns = pd.Series()
         if is_table_exist(table_name):
             query_string = f'SELECT rdate, ret FROM {table_name} ' \
                            f' WHERE port_id=\'{port_id}\' '
