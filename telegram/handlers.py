@@ -165,6 +165,8 @@ async def dialog_flow_handler(event, client_):
                     '/instruction20',
                     '/instruction21',
                     '/instruction22',
+                    '/instruction23',
+                    '/instruction24',
                     '/mindepo',
                     '/managers_form',
                     'Анкета регистрации управляющего',
@@ -174,6 +176,8 @@ async def dialog_flow_handler(event, client_):
                     '/chart_balanced',
                     '/chart_aggressive',
                     '/chart_leveraged',
+                    '/chart_elastic',
+                    '/chart_yolo',
                     )):
             user_message = event.text
             project_id = 'common-bot-1'
@@ -302,6 +306,10 @@ async def instructions_handler(event, client_):
         await client_.send_message(event.input_sender, ins.instruction21)
     elif pattern == 'instruction22':
         await client_.send_message(event.input_sender, ins.instruction22)
+    elif pattern == 'instruction23':
+        await client_.send_message(event.input_sender, ins.instruction23)
+    elif pattern == 'instruction24':
+        await client_.send_message(event.input_sender, ins.instruction24)
 
 
 async def portfolio_candle_chart_handler(event, client_):
@@ -317,6 +325,10 @@ async def portfolio_candle_chart_handler(event, client_):
         await client_.send_file(event.input_sender, CHARTER_IMAGES_PATH + 'aggressive_port_chart_over_QQQ.png')
     elif pattern == 'leveraged':
         await client_.send_file(event.input_sender, CHARTER_IMAGES_PATH + 'leveraged_port_chart_over_QQQ.png')
+    elif pattern == 'elastic':
+        await client_.send_file(event.input_sender, CHARTER_IMAGES_PATH + 'elastic_port_chart_over_QQQ.png')
+    elif pattern == 'yolo':
+        await client_.send_file(event.input_sender, CHARTER_IMAGES_PATH + 'yolo_port_chart_over_SPY.png')
 
 
 async def managers_form_handler(event, client_):

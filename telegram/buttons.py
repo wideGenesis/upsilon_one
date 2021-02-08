@@ -80,6 +80,12 @@ keyboard_a2 = [
     [
         Button.inline('\U0001F4BC  ' + 'Плечевой портфель', b'a2a7')
     ],
+    [
+        Button.inline('\U0001F4BC  ' + 'Elastic портфель (только акции, без ETF)', b'a2a9')
+    ],
+    [
+        Button.inline('\U0001F4BC  ' + 'Yolo портфель (spbexchange)', b'a2a10')
+    ],
     # [
     #     Button.inline('\U0001F4BC  ' + 'Трейдинг/Дневные стратегии', b'a2a8')
     # ],

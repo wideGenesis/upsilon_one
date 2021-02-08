@@ -318,6 +318,38 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
         await client.send_message(event.input_sender, 'Кому и когда покупать плечевой портфель? \n'
                                                       '/instruction18 \n End of Day График - /chart_leveraged',
                                   buttons=buttons.keyboard_a2_back)
+
+    elif event.data == b'a2a9':
+        await event.edit()
+        message = await client.send_message(entity=entity, message='Загрузка...')
+        await client.edit_message(message, 'Elastic Strategy - портфель только из акций')
+        await client.send_message(event.input_sender, 'Текущая структура портфеля')
+        await client.send_file(entity, CHARTER_IMAGES_PATH + 'elastic_portfolio_pie.png')
+        await client.send_message(event.input_sender, 'Подробная статистика стратегии')
+        await client.send_file(entity, STATS_PATH + 'elastic.pdf')
+        await client.send_message(event.input_sender, 'Симуляция доходности портфеля на 10 лет \n '
+                                                      'Как интерпретировать результаты симуляций Монте-Карло?'
+                                                      ' - /instruction19')
+        await client.send_file(entity, STATS_PATH + 'elastic.png')
+        await client.send_file(entity, STATS_PATH + 'elastic2.png')
+        await client.send_message(event.input_sender, 'Кому и когда покупать Elastic портфель? \n'
+                                                      '/instruction23 \n End of Day График - /chart_elastic',
+                                  buttons=buttons.keyboard_a2_back)
+
+    elif event.data == b'a2a10':
+        await event.edit()
+        message = await client.send_message(entity=entity, message='Загрузка...')
+        await client.edit_message(message, 'Yolo Strategy - портфель только из акций, торгуемых на spbexchange. '
+                                           'Доступен для клиентов Сбер, Тинькофф, Альфабанк, ВТБ')
+        await client.send_message(event.input_sender, 'Текущая структура портфеля')
+        await client.send_file(entity, CHARTER_IMAGES_PATH + 'yolo_portfolio_pie.png')
+        await client.send_message(event.input_sender, 'Подробная статистика стратегии')
+        await client.send_file(entity, STATS_PATH + 'yolo.pdf')
+
+        await client.send_message(event.input_sender, 'Кому и когда покупать Yolo портфель? \n'
+                                                      '/instruction24 \n End of Day График - /chart_yolo',
+                                  buttons=buttons.keyboard_a2_back)
+
     # elif event.data == b'a2a8':
     #     await event.edit()
     #     message = await client.send_message(entity=entity, message='Загрузка...')
