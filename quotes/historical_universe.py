@@ -21,10 +21,12 @@ def create_nasdaq_hist_universe():
         event_date = datetime.datetime.strptime(item['date'], "%Y-%m-%d").date()
         if item['removedTicker'] is not None and item['removedTicker'] != "":
             upd = {item['removedTicker']: 'Remove'}
-            global_universe.append(item['removedTicker'])
+            if item['removedTicker'] not in global_universe:
+                global_universe.append(item['removedTicker'])
         if item['addedSecurity'] is not None and item['addedSecurity'] != "":
             upd = {item['symbol']: 'Add'}
-            global_universe.append(item['symbol'])
+            if item['symbol'] not in global_universe:
+                global_universe.append(item['symbol'])
         if event_date in result_events:
             result_events[event_date].update(upd)
         else:
@@ -40,7 +42,7 @@ def create_nasdaq_hist_universe():
             global_universe.append(ticker)
 
     # ++++ Обновляем цены по всем тикерам из global_universe
-    eod_update_universe_prices(global_universe)
+    ohlc_data_updater(global_universe, True)
 
     # ++++ Подгружаем данные SimFin для поиска исторических маркет капов
     sf.set_api_key('free')
@@ -104,7 +106,7 @@ def create_nasdaq_hist_universe():
         need_update_prices.append("XEL")
 
     # Заберем данные по вновь добавленным тикерам
-    eod_update_universe_prices(need_update_prices)
+    ohlc_data_updater(need_update_prices, True)
 
     # Проверка на достаточность данных в тикерах
     # Данных должно быть за 12 месяцев до текущей даты вселенной cur_universe_date

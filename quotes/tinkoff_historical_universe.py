@@ -35,7 +35,8 @@ def create_tinkoff_historical_universe():
         need_update_prices.append("XEL")
 
     # Заберем данные по вновь добавленным тикерам
-    eod_update_universe_prices(need_update_prices)
+    ohlc_data_updater(need_update_prices, True)
+
 
     # Сохраним ткущую вселенную в БД
     save_universe(cur_universe_date, universe_to_save)

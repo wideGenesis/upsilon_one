@@ -52,7 +52,7 @@ def save_universe(universe_date, universe):
     append_universe_by_date(universe, universe_date)
 
 
-def create_last_hist_universe():
+def create_last_hist_universe(need_update_data=True):
     jsn = get_last_nasdaq_events()
     result_events = {}
     global_universe = ['WMT', 'NEE', 'XEL']
@@ -63,10 +63,12 @@ def create_last_hist_universe():
             event_date = datetime.datetime.strptime(item['date'], "%Y-%m-%d").date()
             if item['removedTicker'] is not None and item['removedTicker'] != "":
                 upd = {item['removedTicker']: 'Remove'}
-                global_universe.append(item['removedTicker'])
+                if item['removedTicker'] not in global_universe:
+                    global_universe.append(item['removedTicker'])
             if item['addedSecurity'] is not None and item['addedSecurity'] != "":
                 upd = {item['symbol']: 'Add'}
-                global_universe.append(item['symbol'])
+                if item['symbol'] not in global_universe:
+                    global_universe.append(item['symbol'])
             if event_date in result_events:
                 result_events[event_date].update(upd)
             else:
@@ -82,7 +84,8 @@ def create_last_hist_universe():
             global_universe.append(ticker)
 
     # ++++ Обновляем цены по всем тикерам из global_universe
-    eod_update_universe_prices(global_universe)
+    if need_update_data:
+        ohlc_data_updater(global_universe, True)
 
     cur_universe_date = date.today()
     prev_universe_date = date.today()
@@ -132,7 +135,7 @@ def create_last_hist_universe():
         need_update_prices.append("XEL")
 
     # Заберем данные по вновь добавленным тикерам
-    eod_update_universe_prices(need_update_prices)
+    ohlc_data_updater(global_universe, True)
 
     # Проверка на достаточность данных в тикерах
     # Данных должно быть за 12 месяцев до текущей даты вселенной cur_universe_date

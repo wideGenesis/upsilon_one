@@ -8,7 +8,7 @@ from quotes.get_tinkoff_universe import *
 from quotes.eodhistoricaldata import *
 
 
-def create_last_hist_tinkoff_universe():
+def create_last_hist_tinkoff_universe(need_update_data=True):
     all_tinkoff_tickers = get_and_save_tinkoff_universe()
     current_tinkoff_universe = get_universe(table_name=TINKOFF_UNIVERSE_TABLE_NAME)
     cur_universe_date = date.today()
@@ -36,7 +36,8 @@ def create_last_hist_tinkoff_universe():
         need_update_prices.append("XEL")
 
     # Заберем данные по вновь добавленным тикерам
-    eod_update_universe_prices(need_update_prices)
+    if need_update_data:
+        ohlc_data_updater(need_update_prices, True)
 
     # Сохраним ткущую вселенную в БД
     save_universe(cur_universe_date, universe_to_save)

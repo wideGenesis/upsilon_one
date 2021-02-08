@@ -10,6 +10,8 @@ def save_portfolio_weights(name="portfolio", portfolio_weights=None, allocation_
         create_portfolio_allocation_table()
     update_portfolio_allocation(port_id=name, weights=portfolio_weights)
 
+
+def save_hist_portfolio_weights(name="portfolio", portfolio_weights=None, allocation_date=date.today()):
     # ===== Сохраним текущую аллокацию в историческую таблицу =====
     # Для справки: она по умолчанию НЕ  перезаписывается, то есть если аллокация на эту дату уже есть
     # то она не перезапишется, если не подать в функцию спецаргумент overwrite=True

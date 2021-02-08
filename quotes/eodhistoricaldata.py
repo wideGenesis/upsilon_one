@@ -307,13 +307,20 @@ def get_historical_adjprices(ticker, from_date, end_date, is_update=False):
         request_result = session.get(url, params=params)
     except Exception as e:
         # print(e, 'Waiting 10 sec')
-        sleep(15)
-        request_result = session.get(url, params=params)
+        count = 0
+        while request_result.status_code != requests.codes.ok:
+            sleep(5)
+            request_result = session.get(url, params=params)
+            count += 1
+            if count == 10:
+                debug(f"Cant get_historical_adjprices by ticker {ticker}", WARNING)
     if request_result.status_code == requests.codes.ok:
         parsed_json = json.loads(request_result.text)
         for bar in parsed_json:
             prices[bar['date']] = (bar['open'], bar['high'], bar['low'], bar['close'], bar['close'],
                                    bar['volume'], 0)
+        # if len(prices) == 0:
+        #     debug(f'Prices ticker: [{ticker}] is EMPTY!', WARNING)
     insert_quotes(ticker, prices, is_update)
 
 

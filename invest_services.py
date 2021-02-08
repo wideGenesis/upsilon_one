@@ -17,34 +17,44 @@ from quotes.historical_universe import *
 
 # ============================== Main  =============================
 def main():
+    # %%%%%%%%%%%%%  Примеры забирания и апдейта данных  %%%%%%%%%%%%%
+    # 1) Первичный аплоад данных. Делаем один раз и больше данные не  трогаем.
+    #    Ео если вдруг пришлось дропнуть таблицу quotes то лучше начать именно с первичного забора данных
+    # Создадим максимально необходимый список тикеров. Он учитывет все конституенты Насдака + исторические
+    # вхождения и выбытия из Насдака.
+    # Также в нем все сонституенты из списка в настройках - ETF_FOR_SCRAPE.
+    # А также все ETFы из списка в настройках - ETFs
+    # global_universe = create_max_universe_list()
 
-    # get_etfdb_flows(driver=chrome_init())
-    # get_finviz_treemaps(driver=firefox_init())
-    # qt_curve(ag=agents())
-    # advance_decline(ag=agents())
-    # qt_curve()
-    # spx_yield()
-    # vix_cont()
-    # get_sma50(ag=agents())
+    # Закачаем OHLC по всему этому списку начиная с даты указанной в настройках в DEFAULT_START_QUOTES_DATE
+    # ohlc_data_updater(global_universe)
+
+    # 2) Обновление данных!
+    # На вход можно подать любой набор тикеров.
+    # Для того что бы не было ошибок с попыткой положить в базу дублированные данные,
+    # нужно второй аргумент функции выставить в TRUE !!! ЭТО ВАЖНО!
+    # Иначе обновление данных по тикерам где данные дублируются не произойдет.
+    # Функция возмет по каждому тикеру максимальную дату, которая найдется в базе
+    # и будет пытаться обновить с этой даты по сегодня
+    global_universe = create_max_universe_list()
+    # ohlc_data_updater(global_universe, True)
+
+    # 3) Обновление данных за конкретный период времени. Сделано на тот случай если вдруг,
+    # по неизвестной причине в данных есть дырки, что бы можно было не перезабирать все данные,
+    # а обновить только за конкретный период. Надеюсь этот вараинт не пригодится,
+    # но для гибкости забора данных пусть будет.
+    # global_universe = create_max_universe_list()
+    # ohlc_data_updater(global_universe, True, datetime.date(2021, 1, 1), datetime.date(2021, 2, 1))
+
+
+
     # exit()
+    # Создать текущую вселенную.
+    eod_get_and_save_holdings()
 
-    # get_economics(ag=agents())
-    # get_tw_charts(driver=chrome_init())
-    # vix_curve(driver=chrome_init())
-    # get_coins360_treemaps(driver=chrome_init())
-
-    # Это забирание вселенной по-старому
-    # get_and_save_holdings(driver=chrome_init())
-    # update_universe_prices()
-
-    # Это уже формирование вселенной по-новому, через апи
-    # eod_get_and_save_holdings()
-    # universe = ['VIX']
-    # eod_update_universe_prices(universe)
-    # update_universe_prices1()
-
-    create_nasdaq_hist_universe()
     exit()
+
+
     # parking_weights = parking_portfolio()
     # allweather_weights = allweather_portfolio()
     # balanced_weights = balanced_portfolio()

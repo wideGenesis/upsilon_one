@@ -161,6 +161,42 @@ def download_quotes_to_db(ticker, start_date, end_date, is_update):
         yf = YahooFinancials(ticker)
         data = yf.get_historical_price_data(dt_to_str(start_date), dt_to_str(end_date), 'daily')
     except Exception as err:
+        debug(f'Unable to read data for {ticker}: {err}', WARNING)
+        return pd.DataFrame({})
+
+    if data.get(ticker) is None or data[ticker].get('prices') is None or \
+            data[ticker].get('timeZone') is None or len(data[ticker]['prices']) == 0:
+        debug(f'Yahoo: no data for {ticker}', WARNING)
+        return pd.DataFrame({})
+
+    prices = {}
+    for rec in sorted(data[ticker]['prices'], key=lambda r: r['date']):
+        date = datetime.strptime(rec['formatted_date'], '%Y-%m-%d')
+        dic_with_prices(prices, ticker, date, rec['open'], rec['high'], rec['low'], rec['close'],
+                        rec['adjclose'], rec['volume'])
+
+    if 'dividends' in data[ticker]['eventsData']:
+        for date, rec in sorted(data[ticker]['eventsData']['dividends'].items(), key=lambda r: r[0]):
+            date = datetime.strptime(date, '%Y-%m-%d')
+            dic_with_div(prices, ticker, date, rec['amount'])
+
+    if 'splits' in data[ticker]['eventsData']:
+        for date, rec in sorted(data[ticker]['eventsData']['splits'].items(), key=lambda r: r[0]):
+            date = datetime.strptime(date, '%Y-%m-%d')
+            # print(f"{ticker} has split {rec['splitRatio']} for {date}")
+
+    if len(prices) == 0:
+        debug(f'None data by [{ticker}]')
+    # print("PRICES:" + str(prices))
+    insert_quotes(ticker, prices, is_update)
+
+
+# Скачиваем данные из яху (цены и дивиденды)
+def download_quotes_by_ticker(ticker, start_date, end_date):
+    try:
+        yf = YahooFinancials(ticker)
+        data = yf.get_historical_price_data(dt_to_str(start_date), dt_to_str(end_date), 'daily')
+    except Exception as err:
         # print(f'Unable to read data for {ticker}: {err}')
         return pd.DataFrame({})
 
@@ -186,7 +222,7 @@ def download_quotes_to_db(ticker, start_date, end_date, is_update):
             # print(f"{ticker} has split {rec['splitRatio']} for {date}")
 
     # print("PRICES:" + str(prices))
-    insert_quotes(ticker, prices, is_update)
+    return prices
 
 
 def get_sector_and_market_cap(ticker):

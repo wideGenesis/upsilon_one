@@ -135,6 +135,19 @@ EXCLUDE_TICKERS: [
   'CELG'
 ]
 
+DELISTED_TICKERS: ['MYL','CELG','EFII','RHT','TFCFA','TFCF','LVNTA','VIAB','AABA','WFM','LEXEA','LLTC','SNDK','SPLS',
+                   'GMCR','CMCSK','BRCM','SIAL','DTV','CTRX','KRFT','STRZA','WCRX','APOL','NIHD','JOY','CEPH','MICC',
+                   'GENZ','FWLT','PPDI','JAVA','LVLT','MWW','BEAS','XMSR','SEPR','CKFR','CDWC','BMET','APCC','ATYT',
+                   'PIXR','NTLI','SEBL','MCIP','MERQE','ISIL','SSCC','QLGC','NVLS','NXTL','FHCC','BRCD','RFMD','HGSI',
+                   'ICOS','CYTC','ATML','AMCC','ADRX','ABGX','PMCS','VTSS','IDTI','ITWOE','GMST','WCOEQ','IMNX','ADLAE',
+                   'BVSN','INKT','NOVL','MCLDQ','EXDSQ','ATHMQ','VSTR','SDLI','NWACQ','LGTO','QTRN','LCOS','NSOL','ANDW',
+                   'TECD','RXSD','Q','WWWW','COMR','CEXP','FDLNB','AMFM','DZB','JCOR','NSCP','TCOMA','HBOC','AW','PHYCQ',
+                   'OXHP','GNCI','OFISE','WCLX','VKNG','BOSTQ','ASCL','KMAGQ','EDCI']
+
+RECENTLY_DELISTED: ['SHPG','ESRX','CA','VMED','FMCN','AMLN','PETM','TLAB','MEDI','CMVT','LNCR','MOLX','MLNM','BGEN',
+                    'PDLI','IMCL','ARBA','PALM','XOXO','MFE','PHS','GX','NLI','CATP','STEI','CNTO','FORE','PAIR',
+                    'MCIC','PAGE','OSI','BMC','AFM']
+
 CHARTER_CANDLE_CHART:
   IMAGE_WIDTH: 640
   IMAGE_HEIGHT: 320

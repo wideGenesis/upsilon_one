@@ -47,19 +47,23 @@ def create_quotes_table(table_name=QUOTE_TABLE_NAME, engine=engine):
     with engine.connect() as connection:
         if not is_table_exist(table_name):
             transaction = connection.begin()
-            create_query = f'CREATE TABLE {table_name} ' \
-                           f'(ticker VARCHAR(6) NOT NULL, ' \
-                           f'dateTime DATE, ' \
-                           f'open  DOUBLE, ' \
-                           f'high DOUBLE NOT NULL, ' \
-                           f'low DOUBLE NOT NULL, ' \
-                           f'close DOUBLE NOT NULL, ' \
-                           f'adj_close DOUBLE NOT NULL, ' \
-                           f'volume INTEGER NOT NULL, ' \
-                           f'dividend DOUBLE NOT NULL, ' \
-                           f'PRIMARY KEY(ticker, dateTime)' \
-                           f')'
-            connection.execute(create_query)
+            try:
+                create_query = f'CREATE TABLE {table_name} ' \
+                               f'(ticker VARCHAR(6) NOT NULL, ' \
+                               f'dateTime DATE, ' \
+                               f'open  DOUBLE, ' \
+                               f'high DOUBLE NOT NULL, ' \
+                               f'low DOUBLE NOT NULL, ' \
+                               f'close DOUBLE NOT NULL, ' \
+                               f'adj_close DOUBLE NOT NULL, ' \
+                               f'volume BIGINT NOT NULL, ' \
+                               f'dividend DOUBLE NOT NULL, ' \
+                               f'PRIMARY KEY(ticker, dateTime)' \
+                               f')'
+                connection.execute(create_query)
+            except Exception as e:
+                debug(e, ERROR)
+                transaction.rollback()
             transaction.commit()
 
 
@@ -67,7 +71,11 @@ def insert_quotes(ticker, quotes, is_update=True, table_name=QUOTE_TABLE_NAME, e
     with engine.connect() as connection:
         transaction = connection.begin()
         try:
-            for qdate in quotes:
+            values_amount = 0
+            insert_query = f'INSERT INTO {table_name} ' \
+                           f'(ticker, dateTime, open, high, low, close, adj_close, volume, dividend) ' \
+                           f'VALUES '
+            for count, qdate in enumerate(quotes, start=1):
                 o, h, l, c, ac, v, d = quotes[qdate]
                 test = False
                 if is_update:
@@ -83,14 +91,19 @@ def insert_quotes(ticker, quotes, is_update=True, table_name=QUOTE_TABLE_NAME, e
                     except:
                         test = False
                 if not test:
-                    insert_query = f'INSERT INTO {table_name} ' \
-                                   f'(ticker, dateTime, open, high, low, close, adj_close, volume, dividend) ' \
-                                   f'VALUES (\'{ticker}\', \'{str(qdate)}\', ' \
+                    insert_query += f'(\'{ticker}\', \'{str(qdate)}\', ' \
                                    f'\'{str(o)}\', \'{str(h)}\', \'{str(l)}\', \'{str(c)}\', \'{str(ac)}\', ' \
                                    f'\'{str(v)}\', \'{str(d)}\')'
-                    connection.execute(insert_query)
-            transaction.commit()
-        except:
+                    if count == len(quotes):
+                        insert_query += ";"
+                    else:
+                        insert_query += ", "
+                    values_amount += 1
+            if values_amount > 0:
+                connection.execute(insert_query)
+                transaction.commit()
+        except Exception as e:
+            debug(e, ERROR)
             transaction.rollback()
 
 
@@ -217,6 +230,29 @@ def get_ohlc_dict_by_port_id(port_id, start_date=None, end_date=date.today(),
     return ohlc
 
 
+def get_ohlc_dict_by_ticker(ticker, start_date=None, end_date=date.today(),
+                            q_table_name=QUOTE_TABLE_NAME, u_table_name=UNIVERSE_TABLE_NAME,
+                            engine=engine):
+    with engine.connect() as connection:
+        ohlc = {}
+        query_string = f'SELECT q.dateTime, q.open, q.high, q.low, q.close, q.adj_close ' \
+                       f'FROM {q_table_name} q ' \
+                       f'WHERE q.ticker=\'{ticker}\' '
+        if start_date is not None:
+            query_string += f' AND q.dateTime >= \'{str(start_date)}\' '
+        if end_date is not None:
+            query_string += f' AND q.dateTime < \'{str(end_date)}\' '
+        query_string += f' ORDER BY q.dateTime ASC'
+
+        q_result = connection.execute(query_string)
+        if q_result.rowcount > 0:
+            rows = q_result.fetchall()
+            for row in rows:
+                dat, o, h, l, c, ac = row
+                ohlc[dat] = [(o, h, l, c, ac)]
+    return ohlc
+
+
 def get_ohlc_dict_by_port_id_h(port_id, start_date=None, end_date=date.today(),
                                  q_table_name=QUOTE_TABLE_NAME, u_table_name=UNIVERSE_TABLE_NAME,
                                  engine=engine):
@@ -292,15 +328,33 @@ def get_ohlc_dict_by_port_id_w(port_id, start_date=None, end_date=date.today(),
     return res
 
 
+def get_all_tickers_fom_quotes(q_table_name=QUOTE_TABLE_NAME, engine=engine):
+    with engine.connect() as connection:
+        res = []
+        if is_table_exist(q_table_name):
+            sel_query = f'SELECT ticker FROM {q_table_name} GROUP BY ticker'
+            result = connection.execute(sel_query)
+            if result.rowcount > 0:
+                query_result = result.fetchall()
+                for ticker in query_result:
+                    res.append(ticker[0])
+            else:
+                debug(f"WARNING. Can't find data in {q_table_name}", WARNING)
+        else:
+            debug(f'Can\'t find table: {q_table_name}!', WARNING)
+    return res
+
+
 def get_port_allocation_by_date(port_id, allo_date, table_name=HIST_PORT_ALLOCATION_TABLE_NAME, engine=engine):
     with engine.connect() as connection:
         if is_table_exist(table_name):
-            res={}
+            res = {}
             get_query = f'SELECT ticker, weight ' \
                         f'FROM {table_name} ' \
                         f'WHERE port_id=\'{port_id}\' AND adate=\'{str(allo_date)}\''
             get_result = connection.execute(get_query)
-            if get_result.rowcount > 0 :
+            if get_result.rowcount > 0:
+                debug(f"Get allo by DATE [{str(allo_date)}]")
                 rows = get_result.fetchall()
                 for row in rows:
                     ticker, weight = row
@@ -311,7 +365,8 @@ def get_port_allocation_by_date(port_id, allo_date, table_name=HIST_PORT_ALLOCAT
                             f'WHERE port_id=\'{port_id}\' ' \
                             f'AND adate=(SELECT min(a.adate) FROM {table_name} a WHERE a.port_id=\'{port_id}\')'
                 get_result = connection.execute(get_query)
-                if get_result.rowcount > 0 :
+                if get_result.rowcount > 0:
+                    debug(f"[{str(allo_date)}]Get allo by min DATE")
                     rows = get_result.fetchall()
                     for row in rows:
                         ticker, weight = row
@@ -587,58 +642,22 @@ def get_all_uniq_tickers(engine=engine):
     hist_universe = HIST_UNIVERSE_TABLE_NAME
     tinkoff_universe = TINKOFF_UNIVERSE_TABLE_NAME
     hist_tinkoff_universe = TINKOFF_HIST_UNIVERSE_TABLE_NAME
+    quote = QUOTE_TABLE_NAME
+    table_list = [current_universe, hist_universe, tinkoff_universe, hist_tinkoff_universe, quote]
     uniq_tickers = []
     with engine.connect() as connection:
-        if is_table_exist(current_universe):
-            del_query = f'SELECT ticker FROM {current_universe} GROUP BY ticker'
-            result = connection.execute(del_query)
-            if result.rowcount > 0:
-                query_result = result.fetchall()
-                for ticker in query_result:
-                    uniq_tickers.append(ticker[0])
-            else:
-                debug(f"WARNING. Can't find data in {current_universe}", WARNING)
-        else:
-            debug(f'Can\'t find table: {current_universe}!', WARNING)
-
-        if is_table_exist(hist_universe):
-            del_query = f'SELECT ticker FROM {hist_universe} GROUP BY ticker'
-            result = connection.execute(del_query)
-            if result.rowcount > 0:
-                query_result = result.fetchall()
-                for ticker in query_result:
-                    if ticker[0] not in uniq_tickers:
+        for table in table_list:
+            if is_table_exist(table):
+                sel_query = f'SELECT ticker FROM {table} GROUP BY ticker'
+                result = connection.execute(sel_query)
+                if result.rowcount > 0:
+                    query_result = result.fetchall()
+                    for ticker in query_result:
                         uniq_tickers.append(ticker[0])
+                else:
+                    debug(f"WARNING. Can't find data in {table}", WARNING)
             else:
-                debug(f"WARNING. Can't find data in {hist_universe}", WARNING)
-        else:
-            debug(f'Can\'t find table: {hist_universe}!', WARNING)
-
-        if is_table_exist(tinkoff_universe):
-            del_query = f'SELECT ticker FROM {tinkoff_universe} GROUP BY ticker'
-            result = connection.execute(del_query)
-            if result.rowcount > 0:
-                query_result = result.fetchall()
-                for ticker in query_result:
-                    if ticker[0] not in uniq_tickers:
-                        uniq_tickers.append(ticker[0])
-            else:
-                debug(f"WARNING. Can't find data in {tinkoff_universe}", WARNING)
-        else:
-            debug(f'Can\'t find table: {tinkoff_universe}!', WARNING)
-
-        if is_table_exist(hist_tinkoff_universe):
-            del_query = f'SELECT ticker FROM {hist_tinkoff_universe} GROUP BY ticker'
-            result = connection.execute(del_query)
-            if result.rowcount > 0:
-                query_result = result.fetchall()
-                for ticker in query_result:
-                    if ticker[0] not in uniq_tickers:
-                        uniq_tickers.append(ticker[0])
-            else:
-                debug(f"WARNING. Can't find data in {hist_tinkoff_universe}", WARNING)
-        else:
-            debug(f'Can\'t find table: {hist_tinkoff_universe}!', WARNING)
+                debug(f'Can\'t find table: {table}!', WARNING)
     return uniq_tickers
 
 

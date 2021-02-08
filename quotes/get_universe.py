@@ -41,6 +41,80 @@ def get_universe_from_db(table_name, engine):
     return get_universe(table_name, engine)
 
 
+FMP_API_KEY = f'5d0aeca6a9e10d5c77140a33607d3872'
+
+
+def get_last_nasdaq_events():
+    debug("#Start get last nasdaq events")
+    jsn = None
+    session = requests.Session()
+    url = f'https://financialmodelingprep.com/api/v3/historical/nasdaq_constituent'
+    params = {'apikey': FMP_API_KEY}
+    request_result = session.get(url, params=params)
+    if request_result.status_code == requests.codes.ok:
+        jsn = request_result.text
+    else:
+        debug(f"Can't get NASDAQ historical events", ERROR)
+    return jsn
+
+
+def create_max_universe_list():
+    # Возьмем все событя добавления и выбытия акций из Насдака
+    jsn = get_last_nasdaq_events()
+    result_events = {}
+    global_universe = ['WMT', 'NEE', 'XEL']
+    if jsn is not None:
+        hist_events = json.loads(jsn)
+        for item in hist_events:
+            upd = {}
+            event_date = datetime.datetime.strptime(item['date'], "%Y-%m-%d").date()
+            if item['removedTicker'] is not None and item['removedTicker'] != "":
+                upd = {item['removedTicker']: 'Remove'}
+                if item['removedTicker'] not in global_universe:
+                    global_universe.append(item['removedTicker'])
+            if item['addedSecurity'] is not None and item['addedSecurity'] != "":
+                upd = {item['symbol']: 'Add'}
+                if item['symbol'] not in global_universe:
+                    global_universe.append(item['symbol'])
+            if event_date in result_events:
+                result_events[event_date].update(upd)
+            else:
+                result_events[event_date] = upd
+
+    # ++++ Заберем текущие конституенты индекса NDX
+    # Это и будет текущей вселенной
+    curr_universe = get_index_constituent('NDX')
+
+    # ++++ Все соберем в global_universe для того что бы по всем данным обновлять цены.
+    for ticker in curr_universe.keys():
+        if ticker not in global_universe:
+            global_universe.append(ticker)
+
+    # ++++ Заберем текущие конституенты всех нужных нам ETF
+    debug("Start eod_get_and_save_holdings")
+    constituents = get_all_etf_holdings()
+    for ticker in constituents.keys():
+        if ticker not in global_universe:
+            global_universe.append(ticker)
+
+    # ++++++++ Добавим ETFs ++++++++
+    for ticker in ETFs:
+        if ticker not in global_universe:
+            global_universe.append(ticker)
+
+    # ++++++++ Добавим VIX ++++++++
+    if '^VIX' not in global_universe:
+        global_universe.append('^VIX')
+
+    # ++++++++ Перепроверим вообще все используемые тикеры ++++++++
+    all_used_tickers = get_all_uniq_tickers()
+    for ticker in all_used_tickers:
+        if ticker not in global_universe:
+            global_universe.append(ticker)
+
+    return global_universe
+
+
 @dataclass
 class ConstituentsScraper:
     __slots__ = [

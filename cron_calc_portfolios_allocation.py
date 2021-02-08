@@ -20,11 +20,8 @@ if __name__ == '__main__':
     # ****************************************** СТАРЫЕ ПОРТФЕЛИ ******************************************
 
     debug(f"### Start eod_get_and_save_holdings ###")
-    eod_get_and_save_holdings()
-
-    update_universe_prices1()
-    universe = ['VIX']
-    eod_update_universe_prices(universe)
+    global_universe = create_max_universe_list()
+    ohlc_data_updater(global_universe, True)
 
     debug(f"### Start calc portfolio allocation ###")
     portfolio_args = {}
@@ -36,7 +33,7 @@ if __name__ == '__main__':
     if selector_end_date.day != 1:
         selector_end_date = datetime.date(selector_end_date.year, selector_end_date.month, 1)
     selector_start_date = add_months(allocator_end_date, -12)
-    vix_close = get_close_ticker_by_date('VIX', allocator_end_date)
+    vix_close = get_close_ticker_by_date('^VIX', allocator_end_date)
     td = timedelta(days=1)
 
     # debug(f"Start calc parking portfolio")
@@ -95,6 +92,9 @@ if __name__ == '__main__':
     #                            filename="parking_portfolio_pie")
     # debug(f'[{portfolio_args["port_id"]}]: {parking_weights}')
     # save_portfolio_weights(name='parking', portfolio_weights=parking_weights, allocation_date=(allocator_end_date-td))
+    # save_hist_portfolio_weights(name='parking',
+    #                             portfolio_weights=parking_weights,
+    #                             allocation_date=(allocator_end_date-td))
     #
     # debug(f"Start calc allweather portfolio")
     # # ======================================== A L L W E A T H E R ========================================
@@ -156,6 +156,9 @@ if __name__ == '__main__':
     # save_portfolio_weights(name='allweather',
     #                        portfolio_weights=allweather_weights,
     #                        allocation_date=(allocator_end_date-td))
+    # save_hist_portfolio_weights(name='allweather',
+    #                             portfolio_weights=allweather_weights,
+    #                             allocation_date=(allocator_end_date-td))
     #
     # debug(f"Start calc balanced portfolio")
     # # ======================================== B A L A N C E D ========================================
@@ -215,6 +218,9 @@ if __name__ == '__main__':
     #                            filename="balanced_portfolio_pie")
     # debug(f'[{portfolio_args["port_id"]}]: {balanced_weights}')
     # save_portfolio_weights(name='balanced', portfolio_weights=balanced_weights, allocation_date=(allocator_end_date-td))
+    # save_hist_portfolio_weights(name='balanced',
+    #                             portfolio_weights=balanced_weights,
+    #                             allocation_date=(allocator_end_date-td))
     #
     # debug(f"Start calc aggressive portfolio")
     # # ======================================== A G G R E S S I V E ========================================
@@ -276,6 +282,9 @@ if __name__ == '__main__':
     # save_portfolio_weights(name='aggressive',
     #                        portfolio_weights=aggressive_weights,
     #                        allocation_date=(allocator_end_date-td))
+    # save_hist_portfolio_weights(name='aggressive',
+    #                             portfolio_weights=aggressive_weights,
+    #                             allocation_date=(allocator_end_date-td))
     #
     # debug(f"Start calc leveraged portfolio")
     # # ======================================== L E V E R A G E D ========================================
@@ -338,11 +347,14 @@ if __name__ == '__main__':
     # save_portfolio_weights(name='leveraged',
     #                        portfolio_weights=leveraged_weights,
     #                        allocation_date=(allocator_end_date-td))
+    # save_hist_portfolio_weights(name='leveraged',
+    #                             portfolio_weights=leveraged_weights,
+    #                             allocation_date=(allocator_end_date-td))
 
     # ****************************************** ПОРТФЕЛИ ТОЛЬКО НА АКЦИЯХ ******************************************
     # ======================================== ELASTIC (STOCKS ONLY) ========================================
-    create_last_hist_universe()
-
+    # create_last_hist_universe(need_update_data=False)
+    #
     portfolio_args.clear()
 
     portfolio_args['port_id'] = 'elastic'
@@ -395,11 +407,14 @@ if __name__ == '__main__':
     save_portfolio_weights(name='elastic',
                            portfolio_weights=elastic_weights,
                            allocation_date=(allocator_end_date-td))
+    save_hist_portfolio_weights(name='elastic',
+                                portfolio_weights=elastic_weights,
+                                allocation_date=(allocator_end_date-td))
 
     # ======================================== TINKOFF PORTFOLIO ========================================
     # +++++ Для начала обновим текущую вселенную
     # Соберем последнюю историческую вселенную
-    create_last_hist_tinkoff_universe()
+    # create_last_hist_tinkoff_universe(need_update_data=False)
 
     portfolio_args.clear()
 
@@ -455,6 +470,9 @@ if __name__ == '__main__':
     save_portfolio_weights(name='yolo',
                            portfolio_weights=yolo_weights,
                            allocation_date=(allocator_end_date-td))
+    save_hist_portfolio_weights(name='yolo',
+                                portfolio_weights=yolo_weights,
+                                allocation_date=(allocator_end_date-td))
 
     debug("%%%%%%%%%%%%%%%Complete calc portfolios \n\n\n")
     debug_deinit()

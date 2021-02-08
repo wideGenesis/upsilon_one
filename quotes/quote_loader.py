@@ -218,6 +218,41 @@ def eod_update_universe_prices(universe=None):
     debug("Complete eod_update_universe_prices")
 
 
+def ohlc_data_updater(universe, is_update=False, sd=None, ed=None):
+    if not is_table_exist(QUOTE_TABLE_NAME):
+        debug("__Table is not exists__")
+        create_quotes_table()
+    t_len = len(universe)
+    end_date = date.today()
+    if ed is not None:
+        end_date = ed
+    if not is_debug_init():
+        print_progress_bar(0, t_len, prefix='Progress:', suffix='Complete', length=50)
+    for count, ticker in enumerate(universe, start=1):
+        start_date = datetime.datetime.strptime(DEFAULT_START_QUOTES_DATE, "%Y-%m-%d").date()
+        if sd is not None:
+            start_date = sd
+        else:
+            if ticker_lookup(ticker):
+                start_date = find_max_date_by_ticker(ticker) + timedelta(days=1)
+        if is_update:
+            if ticker not in DELISTED_TICKERS and ticker not in RECENTLY_DELISTED:
+                download_quotes_to_db(ticker, start_date, end_date, is_update)
+        else:
+            if ticker not in DELISTED_TICKERS:
+                download_quotes_to_db(ticker, start_date, end_date, is_update)
+            else:
+                get_historical_adjprices(ticker, start_date, end_date, is_update)
+        if not is_debug_init():
+            print_progress_bar(count, t_len, prefix='Progress:', suffix=f'Complete:{ticker}:[{count}:{t_len}]   ',
+                               length=50)
+        else:
+            debug(f'Complete:{ticker}:[{count}:{t_len}]')
+
+    debug("Complete ohlc_data_updater")
+
+
+
 
 def main():
     td = timedelta(days=4)
@@ -274,6 +309,8 @@ def main():
             # end_date = date(2020, 1, 1)
             end_date = date.today()
             download_quotes_to_db(ticker, start_date, end_date, is_update)
+
+
 
 
 if __name__ == '__main__':
