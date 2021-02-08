@@ -706,8 +706,10 @@ def portfolio_tester(init_cap=10000, port_id='parking', allocator_data_interval=
     debug(f'Start allo({port_id}) [{allocator_end_date}]:'
           f'{sorted(weights.items(), key=lambda x: x[1], reverse=True)}')
     save_portfolio_weights(name=port_id, portfolio_weights=weights)
-    save_hist_portfolio_weights(name=port_id, portfolio_weights=weights, allocation_date=(allocator_end_date-timedelta(1)))
-
+    if port_id == 'yolo' or port_id == 'elastic':
+        save_hist_portfolio_weights(name=port_id,
+                                    portfolio_weights=weights,
+                                    allocation_date=(allocator_end_date - timedelta(1)))
 
     td = date.today()
     while_date = datetime.date(td.year, td.month, 1)
@@ -761,7 +763,10 @@ def portfolio_tester(init_cap=10000, port_id='parking', allocator_data_interval=
         debug(f'[{portfolio_args["port_id"]}][{allocator_end_date.strftime("%Y %b")}]:'
               f'{sorted(weights.items(), key=lambda x: x[1], reverse=True)}')
         save_portfolio_weights(name=port_id, portfolio_weights=weights)
-        save_hist_portfolio_weights(name=port_id, portfolio_weights=weights, allocation_date=(allocator_end_date-timedelta(1)))
+        if port_id == 'yolo' or port_id == 'elastic':
+            save_hist_portfolio_weights(name=port_id,
+                                        portfolio_weights=weights,
+                                        allocation_date=(allocator_end_date-timedelta(1)))
 
     sd = real_start_date
     create_candle_portfolio_img(port_id=port_id,
