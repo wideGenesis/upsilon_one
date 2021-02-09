@@ -35,12 +35,12 @@ async def db_save_risk_profile(value, identifier, engine=None):
         try:
             if risk_data_lookup(identifier):
                 sql_query = f'UPDATE risk_profile_data ' \
-                            f'SET rdata = \'{value}\' ' \
+                            f'SET rdata = concat(rdata, \'{value}\') ' \
                             f'WHERE user_id = \'{identifier}\''
             else:
                 sql_query = f'INSERT INTO risk_profile_data ' \
                            f'(user_id, rdata) ' \
-                           f'VALUES (\'{identifier}\', concat(rdata, \'{value}\')'
+                           f'VALUES (\'{identifier}\', \'{value}\')'
             connection.execute(sql_query)
             transaction.commit()
         except Exception as e:
