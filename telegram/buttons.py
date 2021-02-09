@@ -327,6 +327,26 @@ keyboard_subscription_professional = [
     ]
 ]
 
+keyboard_risk_profile = [
+    [
+        Button.inline('\U0001F3E6  ' + 'Спекулятивный рост', b'rp1')
+    ],
+    [
+        Button.inline('\U0001F3E6  ' + 'Агрессивный рост', b'rp2')
+    ],
+    [
+        Button.inline('\U0001F3E6  ' + 'Умеренный рост', b'rp3')
+    ],
+    [
+        Button.inline('\U0001F3E6  ' + 'Острожный рост', b'rp4')
+    ],
+    [
+        Button.inline('\U0001F3E6  ' + 'Сохранение капитала', b'rp5')
+    ],
+    [
+        Button.inline('\U0001F3E6  ' + 'Рост и обеспечение текущих расходов.', b'rp6')
+    ]
+]
 
 def generate_payment_button(kbd_label=None, payment_link=None):
     keyboard_subscr_start_inst = [
