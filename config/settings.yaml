@@ -20,8 +20,8 @@ TELEGRAM:
   TELETHON_DB_NAME: 'telethon_upsilon_db'
   TEST_IP: '149.154.167.40:443'
   PROD_IP: '149.154.167.50:443'
-#  UPSILON: '1417206041:AAHqQK99vhYOqJpMZLDybUkC6aDaS4qsEsQ'
-  UPSILON: '1165403235:AAE5ERAXBR9lpNXFmc0blZ_OqcklP-06beE' #test
+  UPSILON: '1417206041:AAHqQK99vhYOqJpMZLDybUkC6aDaS4qsEsQ'
+  UPSILON_LOCAL: '1165403235:AAE5ERAXBR9lpNXFmc0blZ_OqcklP-06beE' #test
   OWNER: '379634398'
   SERVICE_CHAT: '-1001262211476'
   PAYMENT_TOKEN: '18c09e066f974297975b8191a8994da7'
@@ -30,15 +30,15 @@ TELEGRAM:
   TARIFF_IMAGES: 'results/tariff_images/'
 
 
-#SQL:
-#  DB_NAME: 'upsilon_one'
-#  DB_USER: 'upsilon_one'
-#  DB_PASSWORD: 'showmethemoney'
-#  DB_HOST: 'localhost'
-#  DB_PORT: '3306'
-#  DEFAULT_START_QUOTES_DATE: '2006-01-01'
-
 SQL:
+  DB_NAME: 'upsilon_one'
+  DB_USER: 'upsilon_one'
+  DB_PASSWORD: 'showmethemoney'
+  DB_HOST: 'localhost'
+  DB_PORT: '3306'
+  DEFAULT_START_QUOTES_DATE: '2006-01-01'
+
+SQL_LOCAL:
   DB_NAME: 'ups_test'
   DB_USER: 'ups_test'
   DB_PASSWORD: 'ups_test'

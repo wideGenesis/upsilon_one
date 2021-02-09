@@ -51,3 +51,4 @@ tester/Tests/balanced_port_chart_over_QQQ.png
 tester/Tests/leveraged_port_chart_over_QQQ.png
 tester/Tests/parking_port_chart_over_TLT.png
 tester/Tests/test_stocks_only_port_chart_over_QQQ.png
+config/local.conf

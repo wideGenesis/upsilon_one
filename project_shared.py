@@ -16,7 +16,11 @@ os.environ["PYTHONUNBUFFERED"] = "1"
 
 PROJECT_HOME_DIR, i_filename = os.path.split(__file__)
 # print(f'##### {PROJECT_HOME_DIR}:{i_filename}')
+conf_dir = f'{PROJECT_HOME_DIR}/config/'
 conf = yaml.safe_load(open(f'{PROJECT_HOME_DIR}/config/settings.yaml'))
+
+if os.path.exists(conf_dir+'local.conf'):
+    print("Run local!!")
 
 LOGS_PATH = PROJECT_HOME_DIR + '/logs/'
 
@@ -99,11 +103,17 @@ P_OUTER_BACKGROUND_COLOR = conf['CHARTER_PIE']['OUTER_BACKGROUND_COLOR']
 P_AXIS_FONT_COLOR = conf['CHARTER_PIE']['AXIS_FONT_COLOR']
 
 # ============================== SQL Connect ======================
+if os.path.exists(conf_dir+'local.conf'):
+    SQL_DB_NAME = conf['SQL_LOCAL']['DB_NAME']
+    SQL_USER = conf['SQL_LOCAL']['DB_USER']
+    SQL_PASSWORD = conf['SQL_LOCAL']['DB_PASSWORD']
+else:
+    SQL_DB_NAME = conf['SQL']['DB_NAME']
+    SQL_USER = conf['SQL']['DB_USER']
+    SQL_PASSWORD = conf['SQL']['DB_PASSWORD']
 
-SQL_DB_NAME = conf['SQL']['DB_NAME']
-SQL_USER = conf['SQL']['DB_USER']
-SQL_PASSWORD = conf['SQL']['DB_PASSWORD']
 SQL_URI = 'mysql+pymysql://{}:{}@localhost/{}'.format(SQL_USER, SQL_PASSWORD, SQL_DB_NAME)
+print(SQL_URI)
 
 engine = create_engine(SQL_URI, pool_recycle=3600)
 container = AlchemySessionContainer(engine=engine)
@@ -120,7 +130,10 @@ BTC = conf['CREDENTIALS']['BTC']
 ETH = conf['CREDENTIALS']['ETH']
 API_KEY = conf['TELEGRAM']['API_KEY']
 API_HASH = conf['TELEGRAM']['API_HASH']
-UPSILON = conf['TELEGRAM']['UPSILON']
+if os.path.exists(conf_dir+'local.conf'):
+    UPSILON = conf['TELEGRAM']['UPSILON_LOCAL']
+else:
+    UPSILON = conf['TELEGRAM']['UPSILON']
 OWNER = conf['TELEGRAM']['OWNER']  # TODO Сделать пару владельцев для коммуникации
 SERVICE_CHAT = conf['TELEGRAM']['SERVICE_CHAT']
 
