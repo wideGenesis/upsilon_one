@@ -397,12 +397,16 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
         await client.send_message(event.input_sender, 'Калькуляторы', buttons=buttons.keyboard_a3)
 
     # ============================== Управление =============================
-    # elif event.data == b'a4a1':
-    #     await event.edit()
-    #     message = await client.send_message(entity=entity, message='Загрузка...')
-    #     await client.edit_message(message, 'Маркетплейс управляющих')
-    #     await client.send_message(event.input_sender, 'Все об управлени активами. /instruction16',
-    #                               buttons=buttons.keyboard_a4_back)
+    elif event.data == b'a4a1':
+        await event.edit()
+        message = await client.send_message(entity=entity, message='Загрузка...')
+        await client.edit_message(message, ' Для доступа к портфелям управляющих необходимо '
+                                           'ответить определить ваш уровень терпимости к риску')
+        await client.send_message(event.input_sender, 'Выберите наиболее подходящий вариант для вас \n \n'
+                                  + ins.instruction25, buttons=buttons.keyboard_risk_profile)
+
+        # await client.send_message(event.input_sender, 'Все об управлени активами. /instruction26',
+        #                           buttons=buttons.keyboard_a4_back)
     elif event.data == b'a4a2':
         await event.edit()
         message = await client.send_message(entity=entity, message='Загрузка...')
@@ -565,6 +569,92 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
                                   f'[https://t.me/UpsilonBot?start={sender_id}]'
                                   f'(https://t.me/UpsilonBot?start={sender_id})')
 
+        # ============================== Risk Profile =============================
+    elif event.data == b'rp1':
+        # print('@@@@@@@@', event.original_update.user_id)
+        # print('22222222', event.original_update.peer.user_id)
+        user_profile = await sql.user_search(event.original_update.peer.user_id, engine)
+        update = str(event.data)
+        print(user_profile)
+        print('22222', user_profile[5])
+        print(update)
+        await sql.db_save_risk_profile(update, user_profile[12], engine)
+        await client.send_message(event.input_sender,
+                                  message='Укажите примерную стоимость средств выделенных для инвестирования',
+                                  buttons=buttons.keyboard_financial_state)
+
+    elif event.data == b'rp2':
+        await client.send_message(event.input_sender,
+                                  message='Укажите примерную стоимость средств выделенных для инвестирования',
+                                  buttons=buttons.keyboard_financial_state)
+    elif event.data == b'rp3':
+        await client.send_message(event.input_sender,
+                                  message='Укажите примерную стоимость средств выделенных для инвестирования',
+                                  buttons=buttons.keyboard_financial_state)
+    elif event.data == b'rp4':
+        await client.send_message(event.input_sender,
+                                  message='Укажите примерную стоимость средств выделенных для инвестирования',
+                                  buttons=buttons.keyboard_financial_state)
+    elif event.data == b'rp5':
+        await client.send_message(event.input_sender,
+                                  message='Укажите примерную стоимость средств выделенных для инвестирования',
+                                  buttons=buttons.keyboard_financial_state)
+    elif event.data == b'rp6':
+        await client.send_message(event.input_sender,
+                                  message='Укажите примерную стоимость средств выделенных для инвестирования',
+                                  buttons=buttons.keyboard_financial_state)
+
+    elif event.data == b'fs1':
+        await client.send_message(event.input_sender,
+                                  message=ins.msg_fs,
+                                  buttons=buttons.keyboard_horizon)
+    elif event.data == b'fs2':
+        await client.send_message(event.input_sender,
+                                  message=ins.msg_fs,
+                                  buttons=buttons.keyboard_horizon)
+    elif event.data == b'fs3':
+        await client.send_message(event.input_sender,
+                                  message=ins.msg_fs,
+                                  buttons=buttons.keyboard_horizon)
+    elif event.data == b'fs4':
+        await client.send_message(event.input_sender,
+                                  message=ins.msg_fs,
+                                  buttons=buttons.keyboard_horizon)
+
+    elif event.data == b'hr1':
+        await client.send_message(event.input_sender,
+                                  message=ins.msg_hr,
+                                  buttons=buttons.keyboard_return)
+    elif event.data == b'hr2':
+        await client.send_message(event.input_sender,
+                                  message=ins.msg_hr,
+                                  buttons=buttons.keyboard_return)
+    elif event.data == b'hr3':
+        await client.send_message(event.input_sender,
+                                  message=ins.msg_hr,
+                                  buttons=buttons.keyboard_return)
+    elif event.data == b'hr4':
+        await client.send_message(event.input_sender,
+                                  message=ins.msg_hr,
+                                  buttons=buttons.keyboard_return)
+
+    elif event.data == b'ret1':
+        await client.send_message(event.input_sender,
+                                  message=ins.msg_ret,
+                                  buttons=buttons.keyboard_a4)
+    elif event.data == b'ret2':
+        await client.send_message(event.input_sender,
+                                  message=ins.msg_ret,
+                                  buttons=buttons.keyboard_a4)
+    elif event.data == b'ret3':
+        await client.send_message(event.input_sender,
+                                  message=ins.msg_ret,
+                                  buttons=buttons.keyboard_a4)
+    elif event.data == b'ret4':
+        await client.send_message(event.input_sender,
+                                  message=ins.msg_ret,
+                                  buttons=buttons.keyboard_a4)
+
     # ============================== Subscriptions =============================
     elif event.data == b'z1':
         await event.edit()
@@ -653,3 +743,5 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
             dt = datetime.now()
             dt_int = shared.datetime2int(dt)
             await sql.insert_into_payment_message(order_id, sender_id, msg_id, dt_int, engine)
+
+

@@ -11,6 +11,7 @@ from telegram import ai
 from telegram import shared
 from quotes.stock_quotes_news import StockStat
 from telegram import instructions as ins
+from telegram import buttons
 from project_shared import *
 
 
@@ -167,6 +168,7 @@ async def dialog_flow_handler(event, client_):
                     '/instruction22',
                     '/instruction23',
                     '/instruction24',
+                    '/instruction25',
                     '/mindepo',
                     '/managers_form',
                     'Анкета регистрации управляющего',
@@ -310,6 +312,10 @@ async def instructions_handler(event, client_):
         await client_.send_message(event.input_sender, ins.instruction23)
     elif pattern == 'instruction24':
         await client_.send_message(event.input_sender, ins.instruction24)
+    elif pattern == 'instruction25':
+        await client_.send_message(event.input_sender, ins.instruction25)
+        # await client_.send_message(event.input_sender, 'Выберите наиболее подходящий вариант для вас',
+        #                            buttons=buttons.keyboard_risk_profile)
 
 
 async def portfolio_candle_chart_handler(event, client_):

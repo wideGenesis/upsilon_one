@@ -126,9 +126,9 @@ keyboard_a3_back = [
     ]
 ]
 keyboard_a4 = [
-    # [
-    #     Button.inline('\U0001F4A1 ' + 'Маркетплейс управляющих', b'a4a1')
-    # ],
+    [
+        Button.inline('\U0001F4A1 ' + 'Портфели доступные для управления', b'a4a1')
+    ],
     [
         Button.inline('\U0001F6E1   ' + 'Регистрация управляющего', b'a4a2')
     ],
@@ -347,6 +347,64 @@ keyboard_risk_profile = [
         Button.inline('\U0001F3E6  ' + 'Рост и обеспечение текущих расходов.', b'rp6')
     ]
 ]
+
+keyboard_financial_state = [
+    [
+        Button.inline('\U0001F3E6  ' + '$0 - $100,000', b'fs1')
+    ],
+    [
+        Button.inline('\U0001F3E6  ' + '$100,000 - $1,000000', b'fs2')
+    ],
+    [
+        Button.inline('\U0001F3E6  ' + '$1,000000 - $5,000000', b'fs3')
+    ],
+    [
+        Button.inline('\U0001F3E6  ' + 'более $5,000000', b'fs4')
+    ]
+]
+
+keyboard_horizon = [
+    [
+        Button.inline('\U0001F3E6  ' + '1 год', b'hr1')
+    ],
+    [
+        Button.inline('\U0001F3E6  ' + 'от 1 до 2 лет', b'hr2')
+    ],
+    [
+        Button.inline('\U0001F3E6  ' + 'от 3 до 5 лет', b'hr3')
+    ],
+    [
+        Button.inline('\U0001F3E6  ' + 'более 5 лет', b'hr4')
+    ]
+]
+
+keyboard_return = [
+    [
+        Button.inline('\U0001F3E6  ' + 'до 5%', b'ret1')
+    ],
+    [
+        Button.inline('\U0001F3E6  ' + 'до 10%', b'ret2')
+    ],
+    [
+        Button.inline('\U0001F3E6  ' + 'до 15%', b'ret3')
+    ],
+    [
+        Button.inline('\U0001F3E6  ' + 'свыше 15%', b'ret4')
+    ]
+]
+
+keyboard_managed_strategies = [
+    [
+        Button.inline('\U0001F3E6  ' + 'Парковочный портфель', b'sac1')
+    ],
+    [
+        Button.inline('\U0001F3E6  ' + 'Сбалансированный портфель', b'sac2')
+    ],
+    [
+        Button.inline('\U0001F3E6  ' + 'Агрессивный', b'sac3')
+    ]
+]
+
 
 def generate_payment_button(kbd_label=None, payment_link=None):
     keyboard_subscr_start_inst = [
