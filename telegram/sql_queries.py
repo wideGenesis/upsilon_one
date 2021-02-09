@@ -28,8 +28,50 @@ async def db_save_referral(value, identifier, engine=None):
 
 async def db_save_risk_profile(value, identifier, engine=None):
     with engine.connect() as connection:
-        connection.execute("UPDATE entities SET reserved_1 = concat(reserved_1, %s) WHERE id = %s", [value, identifier])
-        connection.execute("commit")
+        is_exist = await is_table_exist('risk_profile_data', engine)
+        if not is_exist:
+            await create_risk_profile_data_table(engine)
+        transaction = connection.begin()
+        try:
+            if risk_data_lookup(identifier):
+                sql_query = f'UPDATE risk_profile_data ' \
+                            f'SET rdata = concat(rdata, \'{value}\') ' \
+                            f'WHERE user_id = \'{identifier}\''
+            else:
+                sql_query = f'INSERT INTO risk_profile_data ' \
+                           f'(user_id, rdata) ' \
+                           f'VALUES (\'{identifier}\', concat(rdata, \'{value}\')'
+            connection.execute(sql_query)
+            transaction.commit()
+        except Exception as e:
+            debug(e, ERROR)
+            transaction.rollback()
+        
+
+async def create_risk_profile_data_table(engine=None):
+    with engine.connect() as connection:
+        transaction = connection.begin()
+        try:
+            connection.execute("CREATE TABLE risk_profile_data ("
+                               "user_id BIGINT NOT NULL, "
+                               "rdata VARCHAR(255) NOT NULL, "
+                               "PRIMARY KEY(user_id)"
+                               ")")
+            transaction.commit()
+        except Exception as e:
+            debug(e, ERROR)
+            transaction.rollback()
+
+
+def risk_data_lookup(user_id, engine=engine) -> bool:
+    with engine.connect() as connection:
+        try:
+            query_string = f'SELECT * FROM risk_profile_data WHERE user_id = \'{user_id}\' LIMIT 1'
+            result = connection.execute(query_string)
+            return True if result.rowcount > 0 else False
+        except Exception as e:
+            debug(e, ERROR)
+            return False
 
 
 async def create_payment_message_table(engine=None):
