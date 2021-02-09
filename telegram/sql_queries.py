@@ -41,6 +41,7 @@ async def db_save_risk_profile(value, identifier, engine=None):
                 sql_query = f'INSERT INTO risk_profile_data ' \
                            f'(user_id, rdata) ' \
                            f'VALUES (\'{identifier}\', \'{value}\')'
+            debug(f"SQL QUERY: {sql_query} ")
             connection.execute(sql_query)
             transaction.commit()
         except Exception as e:
@@ -67,6 +68,7 @@ def risk_data_lookup(user_id, engine=engine) -> bool:
     with engine.connect() as connection:
         try:
             query_string = f'SELECT * FROM risk_profile_data WHERE user_id = \'{user_id}\' LIMIT 1'
+            debug(f"SQL QUERY LOOKUP: {query_string} ")
             result = connection.execute(query_string)
             return True if result.rowcount > 0 else False
         except Exception as e:
