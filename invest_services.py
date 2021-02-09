@@ -24,13 +24,13 @@ def main():
     # вхождения и выбытия из Насдака.
     # Также в нем все сонституенты из списка в настройках - ETF_FOR_SCRAPE.
     # А также все ETFы из списка в настройках - ETFs
-    global_universe = create_max_universe_list()
+    # global_universe = create_max_universe_list()
 
     # Закачаем OHLC по всему этому списку начиная с даты указанной в настройках в DEFAULT_START_QUOTES_DATE
-    ohlc_data_updater(global_universe)
+    # ohlc_data_updater(global_universe)
 
     # Создать текущую вселенную.
-    eod_get_and_save_holdings()
+    # eod_get_and_save_holdings()
 
     # 2) Обновление данных!
     # На вход можно подать любой набор тикеров.
@@ -39,8 +39,8 @@ def main():
     # Иначе обновление данных по тикерам где данные дублируются не произойдет.
     # Функция возмет по каждому тикеру максимальную дату, которая найдется в базе
     # и будет пытаться обновить с этой даты по сегодня
-    #global_universe = create_max_universe_list()
-    # ohlc_data_updater(global_universe, True)
+    global_universe = create_max_universe_list()
+    ohlc_data_updater(global_universe, True)
 
     # 3) Обновление данных за конкретный период времени. Сделано на тот случай если вдруг,
     # по неизвестной причине в данных есть дырки, что бы можно было не перезабирать все данные,
@@ -51,7 +51,7 @@ def main():
 
 
 
-    # exit()
+    exit()
     # Создать текущую вселенную.
     eod_get_and_save_holdings()
 
