@@ -26,6 +26,12 @@ async def db_save_referral(value, identifier, engine=None):
         connection.execute("commit")
 
 
+async def db_save_risk_profile(value, identifier, engine=None):
+    with engine.connect() as connection:
+        connection.execute("UPDATE entities SET reserved_1 = concat(reserved_1, %s) WHERE id = %s", [value, identifier])
+        connection.execute("commit")
+
+
 async def create_payment_message_table(engine=None):
     with engine.connect() as connection:
         is_exist = await is_table_exist('payment_message_hist', engine)
