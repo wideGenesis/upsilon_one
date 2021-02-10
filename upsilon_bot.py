@@ -118,7 +118,7 @@ async def instructions(event):
     await handlers.instructions_handler(event, client)
 
 
-@client.on(events.NewMessage(pattern='^/chart_(parking|allweather|balanced|aggressive|leveraged)$'))
+@client.on(events.NewMessage(pattern='^/chart_(parking|allweather|balanced|aggressive|leveraged|elastic|yolo)$'))
 async def instructions(event):
     await handlers.portfolio_candle_chart_handler(event, client)
 
