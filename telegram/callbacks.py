@@ -340,7 +340,7 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
         await event.edit()
         message = await client.send_message(entity=entity, message='Загрузка...')
         await client.edit_message(message, 'Yolo Strategy - портфель только из акций, торгуемых на spbexchange. '
-                                           'Доступен для клиентов Сбер, Тинькофф, Альфабанк, ВТБ')
+                                           'Доступен для клиентов Сбер, Тинькофф, Альфа-банк, ВТБ')
         await client.send_message(event.input_sender, 'Текущая структура портфеля')
         await client.send_file(entity, CHARTER_IMAGES_PATH + 'yolo_portfolio_pie.png')
         await client.send_message(event.input_sender, 'Подробная статистика стратегии')
