@@ -402,6 +402,9 @@ keyboard_managed_strategies = [
     ],
     [
         Button.inline('\U0001F3E6  ' + 'Агрессивный', b'sac3')
+    ],
+    [
+        Button.inline('\U0001F519  ' + 'Назад', b'sacback')
     ]
 ]
 
