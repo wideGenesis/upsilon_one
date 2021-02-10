@@ -14,9 +14,9 @@ if __name__ == '__main__':
 
     debug_init(file_name=log_file_name)
     debug(f"### Start update universe prices ###")
-    global_universe = create_max_universe_list()
-    ohlc_data_updater(global_universe, True)
-
+    # global_universe = create_max_universe_list()
+    # ohlc_data_updater(global_universe, True)
+    #
     td = timedelta(days=365)
     ed = date.today()
     sd = ed - td
