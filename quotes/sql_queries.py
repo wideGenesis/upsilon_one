@@ -300,6 +300,7 @@ def get_ohlc_dict_by_port_id_w(port_id, start_date=None, end_date=date.today(),
                 allo_date = datetime.date(curr_date.year, curr_date.month, 1)
             allo_date -= td
             allo = get_port_allocation_by_date(port_id=port_id, allo_date=allo_date)
+            debug(f'Allo by date [{str(allo_date)}]:{allo}')
 
             e_date = add_months(curr_date, 1)
             e_date = datetime.date(e_date.year, e_date.month, 1)
