@@ -34,9 +34,7 @@ async def db_save_risk_profile(value, identifier, engine=None):
         transaction = connection.begin()
         try:
             if risk_data_lookup(identifier):
-                sql_query = f'UPDATE risk_profile_data ' \
-                            f'SET rdata = concat(rdata, \'{value}\') ' \
-                            f'WHERE user_id = \'{identifier}\''
+                sql_query = f'UPDATE risk_profile_data SET rdata = concat(rdata, \'{value}\') WHERE user_id = \'{identifier}\''
             else:
                 sql_query = f'INSERT INTO risk_profile_data ' \
                            f'(user_id, rdata) ' \
