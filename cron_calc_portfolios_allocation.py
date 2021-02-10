@@ -15,7 +15,7 @@ if __name__ == '__main__':
     args = parser.parse_args()
     log_file_name = args.fname
 
-    # debug_init(file_name=log_file_name)
+    debug_init(file_name=log_file_name)
 
     # ****************************************** СТАРЫЕ ПОРТФЕЛИ ******************************************
 
