@@ -496,6 +496,7 @@ def returns_calc_w(init_capital=100000, data=None):
             prev_ohlc_date = ohlc_date
 
         c_val = list(cap_ohlc.values())
+        debug(f'c_val={c_val}')
         cash = round(in_cap - c_val[0][4], 2)
         if cash > 0:
             in_cap = round(c_val[-1][4] + cash, 2)
