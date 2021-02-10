@@ -398,7 +398,6 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
 
     # ============================== Управление =============================
     elif event.data == b'a4a1':
-        # user_profile = await sql.user_search(event.original_update.peer.user_id, engine)
         risk_profile = sql.risk_data_lookup(event.original_update.peer.user_id, engine)
         if risk_profile:
             await event.edit()
