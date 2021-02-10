@@ -407,7 +407,7 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
 
             message = await client.send_message(entity=entity, message='Загрузка...')
             await client.edit_message(message, ' Для доступа к портфелям управляющих необходимо '
-                                               'ответить определить ваш уровень терпимости к риску')
+                                               'определить ваш уровень терпимости к риску')
             await client.send_message(event.input_sender, 'Выберите наиболее подходящий вариант для вас \n \n'
                                       + ins.instruction25, buttons=buttons.keyboard_risk_profile)
 
