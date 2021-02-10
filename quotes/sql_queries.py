@@ -354,7 +354,7 @@ def get_port_allocation_by_date(port_id, allo_date, table_name=HIST_PORT_ALLOCAT
                         f'WHERE port_id=\'{port_id}\' AND adate=\'{str(allo_date)}\''
             get_result = connection.execute(get_query)
             if get_result.rowcount > 0:
-                debug(f"Get allo by DATE [{str(allo_date)}]")
+                # debug(f"Get allo by DATE [{str(allo_date)}]")
                 rows = get_result.fetchall()
                 for row in rows:
                     ticker, weight = row
@@ -366,7 +366,7 @@ def get_port_allocation_by_date(port_id, allo_date, table_name=HIST_PORT_ALLOCAT
                             f'AND adate=(SELECT min(a.adate) FROM {table_name} a WHERE a.port_id=\'{port_id}\')'
                 get_result = connection.execute(get_query)
                 if get_result.rowcount > 0:
-                    debug(f"[{str(allo_date)}]Get allo by min DATE")
+                    # debug(f"[{str(allo_date)}]Get allo by min DATE")
                     rows = get_result.fetchall()
                     for row in rows:
                         ticker, weight = row
