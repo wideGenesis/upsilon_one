@@ -424,6 +424,55 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
         await event.edit()
         await client.send_message(event.input_sender, 'Регистрация управляющего', buttons=buttons.keyboard_a4)
 
+    elif event.data == b'sac1':
+        await event.edit()
+        message = await client.send_message(entity=entity, message='Загрузка...')
+        await client.edit_message(message, 'Подробная статистика стратегии')
+        # await client.send_message(event.input_sender, 'Текущая структура портфеля')
+        # await client.send_file(entity, CHARTER_IMAGES_PATH + 'parking_portfolio_pie.png')
+        # await client.send_message(event.input_sender, 'Подробная статистика стратегии')
+        await client.send_file(entity, STATS_PATH + 'sac_parking.pdf')
+        # await client.send_message(event.input_sender, 'Симуляция доходности портфеля на 10 лет \n '
+        #                                               'Как интерпретировать результаты симуляций Монте-Карло?'
+        #                                               ' - /instruction19')
+        # await client.send_file(entity, STATS_PATH + 'parking.png')
+        # await client.send_file(entity, STATS_PATH + 'parking2.png')
+        await client.send_message(event.input_sender, 'О доверительном управлении \n'
+                                                      '/instruction26',
+                                  buttons=buttons.keyboard_managed_strategies)
+    elif event.data == b'sac2':
+        await event.edit()
+        message = await client.send_message(entity=entity, message='Загрузка...')
+        await client.edit_message(message, 'Подробная статистика стратегии')
+        # await client.send_message(event.input_sender, 'Текущая структура портфеля')
+        # await client.send_file(entity, CHARTER_IMAGES_PATH + 'parking_portfolio_pie.png')
+        # await client.send_message(event.input_sender, 'Подробная статистика стратегии')
+        await client.send_file(entity, STATS_PATH + 'sac_balanced.pdf')
+        # await client.send_message(event.input_sender, 'Симуляция доходности портфеля на 10 лет \n '
+        #                                               'Как интерпретировать результаты симуляций Монте-Карло?'
+        #                                               ' - /instruction19')
+        # await client.send_file(entity, STATS_PATH + 'parking.png')
+        # await client.send_file(entity, STATS_PATH + 'parking2.png')
+        await client.send_message(event.input_sender, 'О доверительном управлении \n'
+                                                      '/instruction26',
+                                  buttons=buttons.keyboard_managed_strategies)
+
+    elif event.data == b'sac3':
+        await event.edit()
+        message = await client.send_message(entity=entity, message='Загрузка...')
+        await client.edit_message(message, 'Подробная статистика стратегии')
+        # await client.send_message(event.input_sender, 'Текущая структура портфеля')
+        # await client.send_file(entity, CHARTER_IMAGES_PATH + 'parking_portfolio_pie.png')
+        # await client.send_message(event.input_sender, 'Подробная статистика стратегии')
+        await client.send_file(entity, STATS_PATH + 'sac_growth.pdf')
+        # await client.send_message(event.input_sender, 'Симуляция доходности портфеля на 10 лет \n '
+        #                                               'Как интерпретировать результаты симуляций Монте-Карло?'
+        #                                               ' - /instruction19')
+        # await client.send_file(entity, STATS_PATH + 'parking.png')
+        # await client.send_file(entity, STATS_PATH + 'parking2.png')
+        await client.send_message(event.input_sender, 'О доверительном управлении \n'
+                                                      '/instruction26',
+                                  buttons=buttons.keyboard_managed_strategies)
     # ============================== Инструкции =============================
     # elif event.data == b'a5a1':
     #     await event.edit()

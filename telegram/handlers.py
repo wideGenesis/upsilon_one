@@ -169,6 +169,7 @@ async def dialog_flow_handler(event, client_):
                     '/instruction23',
                     '/instruction24',
                     '/instruction25',
+                    '/instruction26',
                     '/mindepo',
                     '/managers_form',
                     'Анкета регистрации управляющего',
@@ -314,8 +315,8 @@ async def instructions_handler(event, client_):
         await client_.send_message(event.input_sender, ins.instruction24)
     elif pattern == 'instruction25':
         await client_.send_message(event.input_sender, ins.instruction25)
-        # await client_.send_message(event.input_sender, 'Выберите наиболее подходящий вариант для вас',
-        #                            buttons=buttons.keyboard_risk_profile)
+    elif pattern == 'instruction26':
+        await client_.send_message(event.input_sender, ins.instruction26)
 
 
 async def portfolio_candle_chart_handler(event, client_):
