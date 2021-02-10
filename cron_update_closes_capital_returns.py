@@ -70,6 +70,7 @@ if __name__ == '__main__':
     # ======================================== E L A S T I C ========================================
     port_id = 'elastic'
     ohlc = get_ohlc_dict_by_port_id_w(port_id=port_id, start_date=sd, end_date=ed)
+    debug(f"OHLC dict size: {len(ohlc)}")
     portfolio_bars, portfolio_returns = returns_calc_w(data=ohlc)
     save_portfolio_bars(name=port_id, portfolio_bars=portfolio_bars)
     save_portfolio_returns(name=port_id, portfolio_returns=portfolio_returns)
