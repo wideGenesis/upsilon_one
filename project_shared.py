@@ -9,6 +9,7 @@ import datetime
 import calendar
 from sqlalchemy import create_engine
 from alchemysession import AlchemySessionContainer
+from PIL import Image, ImageDraw, ImageFont
 
 PYTHON_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir))
 sys.path.append(PYTHON_PATH)
@@ -239,3 +240,19 @@ def add_months(sourcedate, months):
     month = month % 12 + 1
     day = min(sourcedate.day, calendar.monthrange(year, month)[1])
     return datetime.date(year, month, day)
+
+
+def add_watermark(before, after, font_size=16, wtermark_color=(217, 217, 217, 20)):
+    img_to_edit = IMAGES_OUT_PATH + before
+    image = Image.open(img_to_edit).convert("RGBA")
+    txt_img = Image.new("RGBA", image.size, (255, 255, 255, 0))
+    draw = ImageDraw.Draw(txt_img)
+    font = ImageFont.truetype("arial.ttf", font_size)
+    text = "(c) @UpsilonBot"
+    font_width, font_height = font.getsize(text)
+    x = image.width/2 - font_width/2
+    y = image.height/2 - font_height/2
+    draw.text((x, y), text, font=font, fill=wtermark_color)
+    save_path = IMAGES_OUT_PATH + after
+    composite = Image.alpha_composite(image, txt_img)
+    composite.save(save_path)
