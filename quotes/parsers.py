@@ -244,6 +244,7 @@ def get_tw_charts(driver=None, img_out_path_=IMAGES_OUT_PATH):
                 debug(f'img_out_path_:{img_out_path_}')
                 debug(f'k:{k}')
                 im_path = os.path.join(img_out_path_, k + '.png')
+                debug(f'im_path:{im_path}')
                 driver.get(v)
                 sleep(22)
                 elem = driver.find_element_by_class_name("chart-container-border")
