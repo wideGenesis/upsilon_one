@@ -270,6 +270,7 @@ def get_tw_charts(driver=None, img_out_path_=IMAGES_OUT_PATH):
                 im = Image.open(image_stream)
                 im.save(im_path)
                 add_watermark(im_path, im_path, 100)
+                debug(f"IMG Path:{im_path}")
                 # driver.get_screenshot_as_file(im_path)
                 # im = Image.open(im_path)
                 # width, height = im.size

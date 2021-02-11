@@ -114,7 +114,6 @@ else:
     SQL_PASSWORD = conf['SQL']['DB_PASSWORD']
 
 SQL_URI = 'mysql+pymysql://{}:{}@localhost/{}'.format(SQL_USER, SQL_PASSWORD, SQL_DB_NAME)
-print(SQL_URI)
 
 engine = create_engine(SQL_URI, pool_recycle=3600)
 container = AlchemySessionContainer(engine=engine)
