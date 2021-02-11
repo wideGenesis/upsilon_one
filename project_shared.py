@@ -242,7 +242,7 @@ def add_months(sourcedate, months):
 
 
 def add_watermark(before, after, font_size=16, wtermark_color=(217, 217, 217, 20)):
-    img_to_edit = IMAGES_OUT_PATH + before
+    img_to_edit = before
     image = Image.open(img_to_edit).convert("RGBA")
     txt_img = Image.new("RGBA", image.size, (255, 255, 255, 0))
     draw = ImageDraw.Draw(txt_img)
@@ -252,6 +252,6 @@ def add_watermark(before, after, font_size=16, wtermark_color=(217, 217, 217, 20
     x = image.width/2 - font_width/2
     y = image.height/2 - font_height/2
     draw.text((x, y), text, font=font, fill=wtermark_color)
-    save_path = IMAGES_OUT_PATH + after
+    save_path = after
     composite = Image.alpha_composite(image, txt_img)
     composite.save(save_path)
