@@ -242,30 +242,16 @@ def add_months(sourcedate, months):
 
 
 def add_watermark(before, after, font_size=16, wtermark_color=(217, 217, 217, 20)):
-    debug("#1.1")
     img_to_edit = before
-    debug("#1.2")
     image = Image.open(img_to_edit).convert("RGBA")
-    debug("#1.3")
     txt_img = Image.new("RGBA", image.size, (255, 255, 255, 0))
-    debug("#1.4")
     draw = ImageDraw.Draw(txt_img)
-    debug("#1.5")
     font = ImageFont.truetype("arialbd.ttf", font_size)
-    debug("#1.6")
     text = "(c) @UpsilonBot"
-    debug("#1.7")
     font_width, font_height = font.getsize(text)
-    debug("#1.8")
     x = image.width/2 - font_width/2
-    debug("#1.9")
     y = image.height/2 - font_height/2
-    debug("#1.10")
     draw.text((x, y), text, font=font, fill=wtermark_color)
-    debug("#1.11")
     save_path = after
-    debug("#1.12")
     composite = Image.alpha_composite(image, txt_img)
-    debug("#1.13")
     composite.save(save_path)
-    debug("#1.14")
