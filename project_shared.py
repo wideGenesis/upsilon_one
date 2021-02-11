@@ -251,7 +251,7 @@ def add_watermark(before, after, font_size=16, wtermark_color=(217, 217, 217, 20
     debug("#1.4")
     draw = ImageDraw.Draw(txt_img)
     debug("#1.5")
-    font = ImageFont.truetype("arial.ttf", font_size)
+    font = ImageFont.truetype("arialbd.ttf", font_size)
     debug("#1.6")
     text = "(c) @UpsilonBot"
     debug("#1.7")
