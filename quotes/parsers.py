@@ -241,6 +241,8 @@ def get_tw_charts(driver=None, img_out_path_=IMAGES_OUT_PATH):
     try:
         with driver:
             for k, v in treemaps.items():
+                debug(f'img_out_path_:{img_out_path_}')
+                debug(f'k:{k}')
                 im_path = os.path.join(img_out_path_, k + '.png')
                 driver.get(v)
                 sleep(22)
