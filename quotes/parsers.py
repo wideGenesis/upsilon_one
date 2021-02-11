@@ -243,11 +243,11 @@ def get_tw_charts(driver=None, img_out_path_=IMAGES_OUT_PATH):
             for k, v in treemaps.items():
                 im_path = os.path.join(img_out_path_, k + '.png')
                 driver.get(v)
-                sleep(20)
+                sleep(22)
                 elem = driver.find_element_by_class_name("chart-container-border")
                 webdriver.ActionChains(driver).move_to_element(elem).perform()
                 driver.execute_script("return arguments[0].scrollIntoView();", elem)
-                sleep(5)
+                sleep(8)
                 try:
                     close_button1 = driver.find_element_by_class_name(
                         'tv-dialog__close close-d1KI_uC8 dialog-close-3phLlAHH js-dialog__close')
