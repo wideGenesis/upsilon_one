@@ -251,6 +251,7 @@ def get_tw_charts(driver=None, img_out_path_=IMAGES_OUT_PATH):
                 webdriver.ActionChains(driver).move_to_element(elem).perform()
                 driver.execute_script("return arguments[0].scrollIntoView();", elem)
                 sleep(8)
+                debug(f'#1.1:{im_path}')
                 try:
                     close_button1 = driver.find_element_by_class_name(
                         'tv-dialog__close close-d1KI_uC8 dialog-close-3phLlAHH js-dialog__close')
@@ -264,14 +265,22 @@ def get_tw_charts(driver=None, img_out_path_=IMAGES_OUT_PATH):
                 except Exception as e2:
                     debug(e2)
 
+                debug(f'#1.2:{im_path}')
                 elem = driver.find_element_by_class_name("layout__area--top")
+                debug(f'#1.3:{im_path}')
                 webdriver.ActionChains(driver).move_to_element(elem).click().perform()
+                debug(f'#1.4:{im_path}')
 
                 chart = driver.find_element_by_class_name("layout__area--center")
+                debug(f'#1.5:{im_path}')
                 image = chart.screenshot_as_png
+                debug(f'#1.6:{im_path}')
                 image_stream = io.BytesIO(image)
+                debug(f'#1.7:{im_path}')
                 im = Image.open(image_stream)
+                debug(f'#1.8:{im_path}')
                 im.save(im_path)
+                debug(f'#1.9:{im_path}')
                 add_watermark(im_path, im_path, 100)
                 debug(f"IMG Path:{im_path}")
                 # driver.get_screenshot_as_file(im_path)
