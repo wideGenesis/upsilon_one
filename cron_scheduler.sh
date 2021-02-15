@@ -89,5 +89,5 @@ OLD_LOG_FILE_NAME='cron_scheduler_'$(date --date="$date -10 day" +%Y_%m_%d)'.log
 if [[ -f $LOGDIR/$OLD_LOG_FILE_NAME ]]
 then
 	echo "Try delete " $OLD_LOG_FILE_NAME
-	rm $BASEDIR/$OLD_LOG_FILE_NAME
+	rm $LOGDIR/$OLD_LOG_FILE_NAME
 fi
