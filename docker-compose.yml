@@ -12,7 +12,6 @@ services:
     ports:
       - "8080:80"
       - "80:80"
-      - "50638:50638"
 
   mysql-server:    
     image: mysql:8.0
