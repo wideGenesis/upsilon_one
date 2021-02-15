@@ -226,9 +226,9 @@ def main():
     loop = asyncio.get_event_loop()
     loop.run_until_complete(webserver_starter())
 
-    debug("_____Running TCP server_____")
-    loop_tcp = asyncio.get_event_loop()
-    loop_tcp.run_until_complete(tcpserver_starter(client))
+    # debug("_____Running TCP server_____")
+    # loop_tcp = asyncio.get_event_loop()
+    # loop_tcp.run_until_complete(tcpserver_starter(client))
 
     debug("__Running telethon client__")
     # Старт клиента Телетон
