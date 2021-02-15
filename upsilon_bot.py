@@ -20,6 +20,7 @@ from telegram import callbacks
 from telegram import shared
 from project_shared import *
 from tcp_client_server.libserver import *
+import concurrent.futures
 
 # ============================== Environment Setup ======================
 PYTHON_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir))
@@ -141,57 +142,6 @@ async def webserver_starter():
     await site.start()
 
 
-async def accept_wrapper(sock, sel):
-    conn, addr = sock.accept()  # Should be ready to read
-    print("accepted connection from", addr)
-    conn.setblocking(False)
-    message = Message(sel, conn, addr)
-    sel.register(conn, selectors.EVENT_READ, data=message)
-
-
-async def tcpserver_starter(clnt):
-    sel = selectors.DefaultSelector()
-    host = ''
-    port = 50638
-    lsock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    # Avoid bind() exception: OSError: [Errno 48] Address already in use
-    lsock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-    lsock.bind((host, port))
-    lsock.listen()
-    debug(f'TCP Server listening on ({host}, {port})')
-    lsock.setblocking(False)
-    sel.register(lsock, selectors.EVENT_READ, data=None)
-
-    try:
-        while True:
-            tcp_events = sel.select(timeout=None)
-            for key, mask in tcp_events:
-                if key.data is None:
-                    await accept_wrapper(key.fileobj, sel)
-                else:
-                    message = key.data
-                    try:
-                        action, value = message.process_events(mask)
-                        is_ack = False
-                        if action == 'send_to':
-                            debug('Need to send something!!')
-                            if value == 'sac_pies':
-                                await handlers.send_sac_pie(clnt)
-                            is_ack = True
-                        elif action == 'create':
-                            debug('Need create anything')
-                            is_ack = True
-                        message.process_answer(mask, is_ack)
-
-                    except Exception:
-                        debug(f'main: error: exception for {message.addr}:\n{traceback.format_exc()}')
-                        message.close()
-    except KeyboardInterrupt:
-        debug("caught keyboard interrupt, exiting")
-    finally:
-        sel.close()
-
-
 async def init_db():
     # Создаем таблицу с данными по платежным сообщениям
     # Таблица будет создаваться только если ее нет
@@ -213,7 +163,7 @@ def main():
         global PUBKEY
         PUBKEY = rsa.PublicKey.load_pkcs1_openssl_pem(key_data)
 
-    handlers.set_route(app, PAYMENT_TOKEN, PUBKEY, client, engine)
+    handlers.set_route(app, PAYMENT_TOKEN, COMMAND_TOKEN, PUBKEY, client, engine)
 
     shared.create_subscribes(TARIFF_IMAGES)
 
@@ -226,19 +176,14 @@ def main():
     loop = asyncio.get_event_loop()
     loop.run_until_complete(webserver_starter())
 
-    # debug("_____Running TCP server_____")
-    # loop_tcp = asyncio.get_event_loop()
-    # loop_tcp.run_until_complete(tcpserver_starter(client))
-
     debug("__Running telethon client__")
     # Старт клиента Телетон
     client.run_until_disconnected()
 
 
 if __name__ == '__main__':
-    debug_init(file_name="bot.log")
+    # debug_init(file_name="bot.log")
     debug("__Ignition sequence start__")
     # print(sys.path)
     main()
     debug_deinit()
-

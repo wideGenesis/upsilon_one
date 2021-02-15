@@ -17,8 +17,9 @@ from project_shared import *
 
 class WebHandler:
 
-    def __init__(self, payment_token, pubkey, client, engine):
+    def __init__(self, payment_token, command_token, pubkey, client, engine):
         self.payment_token = payment_token
+        self.command_token = command_token
         self.pubkey = pubkey
         self.client = client
         self.engine = engine
@@ -86,12 +87,30 @@ class WebHandler:
             else:
                 debug("Global SenderID is None")
                 return web.Response(status=403)
-        else:
-            return web.Response(status=403)
+        elif request.match_info.get("token") == self.command_token:
+            debug(f'Received cmd token!')
+            request_json = await request.json()
+            debug(f'request_json:{request_json}')
+            action = str(request_json['action'])
+            value = str(request_json['value'])
+            if action == "send_to":
+                debug(f'Action = send_to')
+                toid = request_json.get("id", None)
+                if toid is not None and isinstance(toid, str):
+                    toid = int(toid)
+                if value == "sac_pies":
+                    debug(f'Value = sac_pies')
+                    await send_sac_pie(self.client, toid)
+                if value == "message":
+                    debug(f'Value = message')
+                    msg = request_json.get("msg", None)
+                    await send_to_message(self.client, toid, msg)
+            return web.Response(status=200)
+        return web.Response(status=403)
 
 
-def set_route(app, payment_token, pubkey, client, engine):
-    web_handler = WebHandler(payment_token, pubkey, client, engine)
+def set_route(app, payment_token, command_tiken, pubkey, client, engine):
+    web_handler = WebHandler(payment_token, command_tiken, pubkey, client, engine)
     app.router.add_post("/{token}/", web_handler.success_payment_handler)
 
 
@@ -346,10 +365,23 @@ async def managers_form_handler(event, client_):
     await client_.send_message(-1001262211476, str(sender_id.user_id) + '  \n' + str(user_message))
 
 
-async def send_sac_pie(clnt):
-    sender_id = '341503812'
-    user_message = f'Everymonth update allocation'
-    await clnt.send_message(sender_id, user_message)
-    await clnt.send_file(sender_id, CHARTER_IMAGES_PATH + 'elastic_portfolio_pie.png')
-    await clnt.send_file(sender_id, CHARTER_IMAGES_PATH + 'yolo_portfolio_pie.png')
+async def send_sac_pie(clnt, toid):
+    debug('send_sac_pie')
+    try:
+        entity = await clnt.get_entity(toid)
+        debug(f'entity={entity}')
+        user_message = f'Everymonth update allocation'
+        await clnt.send_message(entity, user_message)
+        await clnt.send_file(entity, CHARTER_IMAGES_PATH + 'elastic_portfolio_pie.png')
+        await clnt.send_file(entity, CHARTER_IMAGES_PATH + 'yolo_portfolio_pie.png')
+    except Exception as e:
+        debug(e, ERROR)
 
+
+async def send_to_message(clnt, toid, msg):
+    try:
+        entity = await clnt.get_entity(toid)
+        debug(f'entity={entity}')
+        await clnt.send_message(entity, msg)
+    except Exception as e:
+        debug(e, ERROR)

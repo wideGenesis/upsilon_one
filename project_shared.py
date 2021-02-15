@@ -121,6 +121,7 @@ alchemy_session = container.new_session('default')
 
 # ============================== BOT SETTINGS ======================
 PAYMENT_TOKEN = conf['TELEGRAM']['PAYMENT_TOKEN']
+COMMAND_TOKEN = conf['TELEGRAM']['COMMAND_TOKEN']
 PAYMENT_SUCCESS_LISTEN = conf['TELEGRAM']['PAYMENT_SUCCESS_LISTEN']
 PAYMENT_SUCCESS_LISTEN_PORT = conf['TELEGRAM']['PAYMENT_SUCCESS_LISTEN_PORT']
 
