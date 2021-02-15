@@ -344,3 +344,12 @@ async def managers_form_handler(event, client_):
     user_message = event.text
     await client_.send_message(sender_id, 'Запрос на регистрацию принят')
     await client_.send_message(-1001262211476, str(sender_id.user_id) + '  \n' + str(user_message))
+
+
+async def send_sac_pie(clnt):
+    sender_id = '341503812'
+    user_message = f'Everymonth update allocation'
+    await clnt.send_message(sender_id, user_message)
+    await clnt.send_file(sender_id, CHARTER_IMAGES_PATH + 'elastic_portfolio_pie.png')
+    await clnt.send_file(sender_id, CHARTER_IMAGES_PATH + 'yolo_portfolio_pie.png')
+

@@ -1,8 +1,8 @@
-import sys
 import selectors
 import json
 import io
 import struct
+from project_shared import *
 
 
 class Message:
@@ -45,7 +45,7 @@ class Message:
 
     def _write(self):
         if self._send_buffer:
-            print("sending", repr(self._send_buffer), "to", self.addr)
+            debug(f'sending {repr(self._send_buffer)} to {self.addr}')
             try:
                 # Should be ready to write
                 sent = self.sock.send(self._send_buffer)
@@ -84,7 +84,6 @@ class Message:
         return message
 
     def _create_response_json_content(self):
-        answer = ''
         if self.is_ack:
             answer = f'ACK'
         else:
@@ -111,9 +110,11 @@ class Message:
         if mask & selectors.EVENT_READ:
             self.read()
         action = ''
+        value = ''
         if self.request is not None:
             action = self.request.get("action")
-        return action
+            value = self.request.get("value")
+        return action, value
 
     def process_answer(self, mask, is_ack):
         self.is_ack = is_ack
@@ -142,22 +143,16 @@ class Message:
         self._write()
 
     def close(self):
-        print("closing connection to", self.addr)
+        debug(f'closing connection to {self.addr}')
         try:
             self.selector.unregister(self.sock)
         except Exception as e:
-            print(
-                "error: selector.unregister() exception for",
-                f"{self.addr}: {repr(e)}",
-            )
+            debug(f'error: selector.unregister() exception for {self.addr}: {repr(e)}', ERROR)
 
         try:
             self.sock.close()
         except OSError as e:
-            print(
-                "error: socket.close() exception for",
-                f"{self.addr}: {repr(e)}",
-            )
+            debug(f'error: socket.close() exception for {self.addr}: {repr(e)}', ERROR)
         finally:
             # Delete reference to socket object for garbage collection
             self.sock = None
@@ -195,14 +190,11 @@ class Message:
         if self.jsonheader["content-type"] == "text/json":
             encoding = self.jsonheader["content-encoding"]
             self.request = self._json_decode(data, encoding)
-            print("received request", repr(self.request), "from", self.addr)
+            debug(f'received request {repr(self.request)} from {self.addr}')
         else:
             # Binary or unknown content-type
             self.request = data
-            print(
-                f'received {self.jsonheader["content-type"]} request from',
-                self.addr,
-            )
+            debug(f'received {self.jsonheader["content-type"]} request from {self.addr}')
         # Set selector to listen for write events, we're done reading.
         self._set_selector_events_mask("w")
 

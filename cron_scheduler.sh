@@ -85,7 +85,7 @@ fi
 deactivate
 
 OLD_LOG_FILE_NAME='cron_scheduler_'$(date --date="$date -10 day" +%Y_%m_%d)'.log'
-
+echo "Old filename: $OLD_LOG_FILE_NAME"
 if [[ -f $LOGDIR/$OLD_LOG_FILE_NAME ]]
 then
 	echo "Try delete " $OLD_LOG_FILE_NAME
