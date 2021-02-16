@@ -161,7 +161,8 @@ async def dialog_flow_handler(event, client_):
             sender_id = await event.get_input_sender()
         if not any(value in event.text for value in
                    ('/start', '/help', '/publish_to', '/to', 'Главное меню', 'Профиль', 'Помощь', 'Donate', '/q', '/n',
-                    '/about', '/goals', '/skills', '/future',
+                    '/about', '/goals', '/skills', '/future', 'menu', 'Menu', 'Меню', 'меню', 'инструкции',
+                    'Инструкции', 'помощь',
                     '/instruction00',
                     '/instruction01',
                     '/instruction02',

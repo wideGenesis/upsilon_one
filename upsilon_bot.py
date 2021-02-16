@@ -18,6 +18,8 @@ from telegram import sql_queries as sql
 from telegram import handlers
 from telegram import callbacks
 from telegram import shared
+from telegram import instructions as ins
+from telegram import buttons
 from project_shared import *
 from tcp_client_server.libserver import *
 import concurrent.futures
@@ -44,7 +46,7 @@ async def start(event):
     await menu.start_menu(event, client, engine=engine)
 
 
-@client.on(events.NewMessage(pattern='Главное меню'))
+@client.on(events.NewMessage(pattern='Главное меню|menu|Menu|Меню|меню'))
 async def tools(event):
     await menu.tools_menu(event, client)
 
@@ -54,9 +56,10 @@ async def profile(event):
     await menu.profile_menu(event, client, engine=engine)
 
 
-@client.on(events.NewMessage(pattern='Помощь'))
+@client.on(events.NewMessage(pattern='Помощь|инструкции|Инструкции|помощь'))
 async def helper(event):
-    await menu.helper_menu(event, client)
+    # await menu.helper_menu(event, client)
+    await client.send_message(event.input_sender, ins.instructions_main, buttons=buttons.keyboard_a5)
 
 
 @client.on(events.NewMessage(pattern='Donate'))
