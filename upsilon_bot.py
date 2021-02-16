@@ -56,7 +56,7 @@ async def profile(event):
     await menu.profile_menu(event, client, engine=engine)
 
 
-@client.on(events.NewMessage(pattern='Помощь|инструкции|Инструкции|помощь'))
+@client.on(events.NewMessage(pattern='Помощь|инструкции|Инструкции|помощь|help|Help'))
 async def helper(event):
     # await menu.helper_menu(event, client)
     await client.send_message(event.input_sender, ins.instructions_main, buttons=buttons.keyboard_a5)
