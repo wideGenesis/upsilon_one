@@ -62,7 +62,7 @@ async def helper(event):
     await client.send_message(event.input_sender, ins.instructions_main, buttons=buttons.keyboard_a5)
 
 
-@client.on(events.NewMessage(pattern='портфель|портфели|portfolio|portfolios'))
+@client.on(events.NewMessage(pattern='портфель|портфели|Портфель|Портфели|portfolio|portfolios'))
 async def portfolios(event):
     await client.send_message(event.input_sender, 'Портфели', buttons=buttons.keyboard_a2)
 

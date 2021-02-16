@@ -163,7 +163,7 @@ async def dialog_flow_handler(event, client_):
                    ('/start', '/help', '/publish_to', '/to', 'Главное меню', 'Профиль', 'профиль',
                     'Помощь', 'Donate', '/q', '/n',
                     '/about', '/goals', '/skills', '/future', 'menu', 'Menu', 'Меню', 'меню', 'инструкции',
-                    'Инструкции', 'помощь', 'портфель', 'портфели', 'portfolio', 'portfolios',
+                    'Инструкции', 'помощь', 'портфель', 'портфели', 'Портфель', 'Портфели', 'portfolio', 'portfolios',
                     '/instruction00',
                     '/instruction01',
                     '/instruction02',
