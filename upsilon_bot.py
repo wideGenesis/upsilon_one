@@ -62,9 +62,9 @@ async def helper(event):
     await client.send_message(event.input_sender, ins.instructions_main, buttons=buttons.keyboard_a5)
 
 
-@client.on(events.NewMessage(pattern='Donate'))
-async def donate(event):
-    await menu.donate_menu(event, client)
+@client.on(events.NewMessage(pattern='портфель|портфели|portfolio|portfolios'))
+async def portfolios(event):
+    await client.send_message(event.input_sender, 'Портфели', buttons=buttons.keyboard_a2)
 
 
 # ============================== Commands ===============================
