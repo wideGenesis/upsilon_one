@@ -51,7 +51,7 @@ async def tools(event):
     await menu.tools_menu(event, client)
 
 
-@client.on(events.NewMessage(pattern='Профиль'))
+@client.on(events.NewMessage(pattern='Профиль|профиль'))
 async def profile(event):
     await menu.profile_menu(event, client, engine=engine)
 
