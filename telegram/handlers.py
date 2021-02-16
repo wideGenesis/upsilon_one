@@ -160,12 +160,13 @@ async def dialog_flow_handler(event, client_):
         except ValueError as e:
             sender_id = await event.get_input_sender()
         if not any(value in event.text for value in
-                   ('/start', '/help', '/publish_to', '/to', 'Главное меню', 'Профиль', 'профиль',
-                    'Помощь', 'Donate', '/q', '/n',
-                    '/about', '/goals', '/skills', '/future', 'menu', 'Menu', 'Меню', 'меню', '^инструкции$',
-                    '^Инструкции$', '^помощь$', '^help$', '^Help$',
-                    '^портфель$', '^портфели$', '^Портфель$', '^Портфели$',
-                    '^portfolio$', '^portfolios$',
+                   ('/start', '/publish_to', '/to',
+                    '/q', '/n',
+                    '/about', '/goals', '/skills', '/future',
+                    'Портфели', '^портфель$', '^портфели$', '^Портфель$', '^portfolio$', '^portfolios$',
+                    'Главное меню',  'menu', 'Menu', 'Меню', 'меню',
+                    'Профиль', 'профиль', 'Profile', 'profile',
+                    '/help', 'Помощь', '^инструкции$', '^Инструкции$', '^помощь$', '^help$', '^Help$',
                     '/instruction00',
                     '/instruction01',
                     '/instruction02',
