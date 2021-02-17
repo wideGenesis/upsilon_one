@@ -83,7 +83,7 @@ async def dialog_flow(event):
     await handlers.dialog_flow_handler(event, client)
 
 
-@client.on(events.NewMessage(pattern='/q|$|#|@'))
+@client.on(events.NewMessage(pattern='/q|[$#@]'))
 async def quotes_to(event):
     await handlers.quotes_to_handler(event, client, limit=0)
 
