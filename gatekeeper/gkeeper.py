@@ -74,24 +74,41 @@ app.router.add_post("/{token}/", handle)
 async def handler(event):
     # Welcome every new user
     if event.user_joined:
+        debug("Join user event received")
+        await client.get_dialogs()
         user_id = event.user_id
-        host = '127.0.0.1'
-        port = 8445
-        debug(f"Joined user id: {user_id}")
-        debug("Try send joined command")
-        with requests.Session() as session:
-            url = f'http://{host}:{port}/{spammer_token}/'
-            data = {'action': "new_user", 'value': user_id}
-            headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}
-            try:
-                request_result = session.post(url, data=json.dumps(data), headers=headers)
-            except Exception as e:
-                debug(e, ERROR)
-                sleep(10)
-                request_result = session.post(url, data=json.dumps(data), headers=headers)
-            if request_result.status_code == requests.codes.ok:
-                parsed_json = json.loads(request_result.text)
-                debug(parsed_json)
+        username = event.user.username
+        if user_id is not None and username is not None:
+            host = '127.0.0.1'
+            port = 8441
+            debug(f"Joined user id: {user_id}")
+            debug("Try send joined command")
+            with requests.Session() as session:
+                url = f'http://{host}:{port}/{spammer_token}/'
+                data = {'action': "new_user", 'user_id': user_id, 'username': username}
+                headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}
+                try:
+                    request_result = session.post(url, data=json.dumps(data), headers=headers)
+                except Exception as e:
+                    debug(e, ERROR)
+                    entity = await client.get_entity('defoer')
+                    await client.send_message(entity, str(e))
+                    count = 2
+                    while request_result.status_code != requests.codes.ok:
+                        debug(f"Error. Try one more: {count}")
+                        sleep(10)
+                        request_result = session.post(url, data=json.dumps(data), headers=headers)
+                        count += 1
+                        if count == 100:
+                            break
+                if request_result.status_code == requests.codes.ok:
+                    parsed_json = json.loads(request_result.text)
+                    is_ack = parsed_json.get("result", None)
+                    if is_ack == "NACK" or is_ack is None:
+                        dt = datetime.datetime.now()
+                        entity = await client.get_entity('defoer')
+                        await client.send_message(entity, f'[{dt.strftime("%H:%M:%S")}]: Spammer bot NACK answer!')
+                    debug(parsed_json)
 
 
 async def webserver_starter():

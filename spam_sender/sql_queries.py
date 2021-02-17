@@ -2,7 +2,7 @@ from project_shared import *
 from datetime import date, timedelta
 
 
-def is_table_exist(table_name, engine=engine) -> bool:
+def is_table_exist(table_name='new_users', engine=engine) -> bool:
     with engine.connect() as connection:
         try:
             query_string = f'SELECT 1 FROM {table_name} LIMIT 1'
@@ -24,11 +24,12 @@ def user_lookup(user_id, engine=engine) -> bool:
 
 def create_newusers_table(table_name='new_users', engine=engine):
     with engine.connect() as connection:
-        if not is_table_exist(table_name):
+        if not is_table_exist(table_name, engine):
             transaction = connection.begin()
             try:
                 create_query = f'CREATE TABLE {table_name} ' \
                                f'(user_id BIGINT NOT NULL, ' \
+                               f'username VARCHAR(255), ' \
                                f'append_dt BIGINT NOT NULL, ' \
                                f'wstatus_dt BIGINT, ' \
                                f'PRIMARY KEY(user_id)' \
@@ -44,12 +45,14 @@ def select_users(engine=engine):
     with engine.connect() as connection:
         users_list = {}
         try:
-            query_string = f'SELECT user_id FROM new_users, append_dt  WHERE wstatus_dt IS NUL'
+            query_string = f'SELECT user_id, username, append_dt ' \
+                           f'FROM new_users  ' \
+                           f'WHERE wstatus_dt IS NULL OR wstatus_dt=\'0\''
             q_result = connection.execute(query_string)
             if q_result.rowcount > 0:
                 rows = q_result.fetchall()
                 for row in rows:
-                    users_list[int(row[0])] = int(row[0])
+                    users_list[int(row[0])] = (row[1], int(row[2]))
             else:
                 debug("WARNING data is empty", WARNING)
                 debug(f"{query_string}", WARNING)
@@ -73,13 +76,13 @@ def set_wstatus(user_id, wstatus, engine=engine):
             transaction.commit()
 
 
-def insert_new_user(user_id, append_dt, engine=engine):
+def insert_new_user(user_id, username, append_dt, engine=engine):
     with engine.connect() as connection:
         if not user_lookup(user_id, engine):
             transaction = connection.begin()
             try:
-                query_string = f'INSERT INTO new_users (user_id, append_dt, wstatus_dt) ' \
-                               f'VALUES (\'{user_id}\',\'{append_dt}\',\'NULL\')'
+                query_string = f'INSERT INTO new_users (user_id, username, append_dt, wstatus_dt) ' \
+                               f'VALUES (\'{user_id}\',\'{username}\',\'{append_dt}\',\'NULL\')'
                 connection.execute(query_string)
             except Exception as e:
                 debug(e, ERROR)
