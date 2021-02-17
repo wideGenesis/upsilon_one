@@ -12,6 +12,7 @@ from telegram import shared
 from quotes.stock_quotes_news import StockStat
 from telegram import instructions as ins
 from telegram import buttons
+import re
 from project_shared import *
 
 
@@ -159,53 +160,54 @@ async def dialog_flow_handler(event, client_):
             sender_id = event.input_sender
         except ValueError as e:
             sender_id = await event.get_input_sender()
-        if not any(value in event.text for value in
-                   ('/start', '/publish_to', '/to',
-                    '/q', '/n',
-                    '/about', '/goals', '/skills', '/future',
-                    'Портфели', '^портфель$', '^портфели$', '^Портфель$', '^portfolio$', '^portfolios$',
-                    'Главное меню',  'menu', 'Menu', 'Меню', 'меню',
-                    'Профиль', 'профиль', 'Profile', 'profile',
-                    '/help', 'Помощь', '^инструкции$', '^Инструкции$', '^помощь$', '^help$', '^Help$',
-                    '/instruction00',
-                    '/instruction01',
-                    '/instruction02',
-                    '/instruction03',
-                    '/instruction04',
-                    '/instruction05',
-                    '/instruction06',
-                    '/instruction07',
-                    '/instruction08',
-                    '/instruction09',
-                    '/instruction10',
-                    '/instruction11',
-                    '/instruction12',
-                    '/instruction13',
-                    '/instruction14',
-                    '/instruction15',
-                    '/instruction16',
-                    '/instruction17',
-                    '/instruction18',
-                    '/instruction19',
-                    '/instruction20',
-                    '/instruction21',
-                    '/instruction22',
-                    '/instruction23',
-                    '/instruction24',
-                    '/instruction25',
-                    '/instruction26',
-                    '/mindepo',
-                    '/managers_form',
-                    'Анкета регистрации управляющего',
-
-                    '/chart_parking',
-                    '/chart_allweather',
-                    '/chart_balanced',
-                    '/chart_aggressive',
-                    '/chart_leveraged',
-                    '/chart_elastic',
-                    '/chart_yolo',
-                    )):
+        if ins.pattern.search(event.text) is None:
+        # if not any(value in event.text for value in
+        #            ('/start', '/publish_to', '/to',
+        #             '/q', '/n',
+        #             '/about', '/goals', '/skills', '/future',
+        #             'Портфели', '^портфель$', '^портфели$', '^Портфель$', '^portfolio$', '^portfolios$',
+        #             'Главное меню',  'menu', 'Menu', 'Меню', 'меню',
+        #             'Профиль', 'профиль', 'Profile', 'profile',
+        #             '/help', 'Помощь', '^инструкции$', '^Инструкции$', '^помощь$', '^help$', '^Help$',
+        #             '/instruction00',
+        #             '/instruction01',
+        #             '/instruction02',
+        #             '/instruction03',
+        #             '/instruction04',
+        #             '/instruction05',
+        #             '/instruction06',
+        #             '/instruction07',
+        #             '/instruction08',
+        #             '/instruction09',
+        #             '/instruction10',
+        #             '/instruction11',
+        #             '/instruction12',
+        #             '/instruction13',
+        #             '/instruction14',
+        #             '/instruction15',
+        #             '/instruction16',
+        #             '/instruction17',
+        #             '/instruction18',
+        #             '/instruction19',
+        #             '/instruction20',
+        #             '/instruction21',
+        #             '/instruction22',
+        #             '/instruction23',
+        #             '/instruction24',
+        #             '/instruction25',
+        #             '/instruction26',
+        #             '/mindepo',
+        #             '/managers_form',
+        #             'Анкета регистрации управляющего',
+        #
+        #             '/chart_parking',
+        #             '/chart_allweather',
+        #             '/chart_balanced',
+        #             '/chart_aggressive',
+        #             '/chart_leveraged',
+        #             '/chart_elastic',
+        #             '/chart_yolo',
+        #             )):
             user_message = event.text
             project_id = 'common-bot-1'
             try:
@@ -221,7 +223,9 @@ async def dialog_flow_handler(event, client_):
 
 
 async def quotes_to_handler(event, client_, limit=20):
-    parse = str(event.text).split(' ')
+    parse = str(event.text)  #.split(' ')
+    parse = re.split('/q |#|@|\$', parse)
+    print(parse)
     stock = parse[1]
     stock = stock.upper()
     img_path = os.path.join('results/ticker_stat', f'{stock}.png')
