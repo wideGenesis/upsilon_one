@@ -241,7 +241,8 @@ async def future_handler(event, client_):
 
 
 async def support_handler(event, client_):
-    await client_.send_message(-1001262211476, str(event.input_sender))
+    await client_.send_message(-1001262211476, str(event.input_sender) +
+                               '  \n' + str(event.text))
     await client_.send_message(event.input_sender, 'Сообщение успешно отправлено. Спасибо!')
 
 
