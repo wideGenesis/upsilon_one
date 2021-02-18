@@ -90,6 +90,8 @@ class WebHandler:
                 return web.Response(status=403)
         elif request.match_info.get("token") == self.command_token:
             debug(f'Received cmd token!')
+            res_ack = {'result': 'ACK'}
+            res_nack = {'result': 'NACK'}
             request_json = await request.json()
             debug(f'request_json:{request_json}')
             action = str(request_json['action'])
@@ -105,9 +107,10 @@ class WebHandler:
                 if value == "message":
                     debug(f'Value = message')
                     msg = request_json.get("msg", None)
-                    await send_to_message(self.client, toid, msg)
-            return web.Response(status=200)
-        return web.Response(status=403)
+                    res = await send_to_message(self.client, toid, msg)
+                    if res:
+                        return web.json_response(res_ack)
+            return web.json_response(res_nack)
 
 
 def set_route(app, payment_token, command_tiken, pubkey, client, engine):
@@ -342,8 +345,8 @@ async def send_sac_pie(clnt, toid):
 
 async def send_to_message(clnt, toid, msg):
     try:
-        entity = await clnt.get_entity(toid)
-        debug(f'entity={entity}')
-        await clnt.send_message(entity, msg)
+        await clnt.send_message(toid, msg)
+        return True
     except Exception as e:
         debug(e, ERROR)
+        return False

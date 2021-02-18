@@ -9,7 +9,7 @@ from telethon.tl.types import PeerUser, PeerChat, PeerChannel, InputPeerUser
 from aiohttp import web
 import sqlalchemy
 from project_shared import *
-from sql_queries import *
+from spam_sender.sql_queries import *
 
 my_sqlalchemy_engine = sqlalchemy.create_engine(
     'mysql+pymysql://gb_telethon2:J-KnpTx-Qz6V@mysql102.1gb.ru/gb_telethon2')

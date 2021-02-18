@@ -5,15 +5,15 @@ from quotes.sql_queries import *
 from time import sleep
 
 
-def send_command(host, port, action, value, id, msg):
+def send_command(rhost, rport, raction, rvalue, ruser_id, rmsg):
     print("send_command")
     with requests.Session() as session:
-        url = f'http://{host}:{port}/{COMMAND_TOKEN}/'
+        url = f'http://{rhost}:{rport}/{COMMAND_TOKEN}/'
         data = {}
         if id is None and msg is None:
-            data = {'action': action, 'value': value }
+            data = {'action': raction, 'value': rvalue }
         else:
-            data = {'action': action, 'value': value, 'id': id, 'msg': msg}
+            data = {'action': raction, 'value': rvalue, 'id': ruser_id, 'msg': rmsg}
 
         headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}
         try:
@@ -42,10 +42,9 @@ if __name__ == '__main__':
     action, value = sys.argv[3], sys.argv[4]
     print(f'A:{action} V:{value}')
     msg = None
-    id = None
-    if len(sys.argv) == 6:
-        id = sys.argv[5]
+    user_id = None
     if len(sys.argv) == 7:
+        user_id = sys.argv[5]
         msg = sys.argv[6]
     print("Client start")
-    send_command(host, port, action, value, id, msg)
+    send_command(host, port, action, value, user_id, msg)
