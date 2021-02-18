@@ -240,6 +240,11 @@ async def future_handler(event, client_):
     await client_.send_message(event.input_sender, ins.future)
 
 
+async def support_handler(event, client_):
+    await client_.send_message(-1001262211476, str(event.input_sender))
+    await client_.send_message(event.input_sender, 'Сообщение успешно отправлено. Спасибо!')
+
+
 async def instructions_handler(event, client_):
     pattern = event.original_update.message.message
     pattern = str(pattern).strip('/')

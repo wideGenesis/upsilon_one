@@ -136,6 +136,11 @@ async def instructions(event):
     await handlers.managers_form_handler(event, client)
 
 
+@client.on(events.NewMessage(pattern='/support'))
+async def skills(event):
+    await handlers.support_handler(event, client)
+
+
 # ============================== Main  =============================
 # Стартуем вебсервер для прослушки приходящих событий об успешных платежах
 async def webserver_starter():
