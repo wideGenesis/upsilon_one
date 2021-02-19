@@ -108,7 +108,6 @@ async def profile_menu(event, client, engine=None):
                               f'Уровень подписки: __{user_profile[10]}__' + '\n' +
                               f'Пользователей бота: __{count}__', buttons=keyboard_z1)
 
-
                 
 async def donate_menu(event, client):
     await client.send_message(event.input_sender, '# TODO')
