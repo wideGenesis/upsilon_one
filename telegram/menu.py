@@ -54,7 +54,9 @@ async def start_menu(event, client, engine=None):
                                       'для трейдинга и управления инвестициями. \n \n'
                                       'Обо мне - /about \n'
                                       'Цели - /goals \n'
-                                      'Мои навыки - /skills \n', buttons=keyboard_start)
+                                      'Мои навыки - /skills \n \n'
+                                      'Важно! Если по какой-то причине у вас пропали кнопки Главного меню, '
+                                      'то вы можете напечатать Меню для вызова кнопок.', buttons=keyboard_start)
 
 
 async def tools_menu(event, client):

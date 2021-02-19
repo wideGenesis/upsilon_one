@@ -137,7 +137,7 @@ async def instructions(event):
 
 
 @client.on(events.NewMessage(pattern='/support'))
-async def skills(event):
+async def support(event):
     await handlers.support_handler(event, client)
 
 
