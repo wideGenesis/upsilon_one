@@ -342,10 +342,11 @@ async def send_sac_pie(clnt, toid):
     try:
         entity = await clnt.get_entity(toid)
         debug(f'entity={entity}')
-        user_message = f'Everymonth update allocation'
+        user_message = f'Ежемесячное обновление аллокаций портфелей'
         await clnt.send_message(entity, user_message)
-        await clnt.send_file(entity, CHARTER_IMAGES_PATH + 'elastic_portfolio_pie.png')
-        await clnt.send_file(entity, CHARTER_IMAGES_PATH + 'yolo_portfolio_pie.png')
+        await clnt.send_file(entity, CHARTER_IMAGES_PATH + 'sac_parking_portfolio_pie.png')
+        await clnt.send_file(entity, CHARTER_IMAGES_PATH + 'sac_balanced_portfolio_pie.png')
+        await clnt.send_file(entity, CHARTER_IMAGES_PATH + 'sac_growth_portfolio_pie.png')
     except Exception as e:
         debug(e, ERROR)
 
