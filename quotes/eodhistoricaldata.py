@@ -324,6 +324,77 @@ def get_historical_adjprices(ticker, from_date, end_date, is_update=False):
     insert_quotes(ticker, prices, is_update)
 
 
+def get_company_rank(ticker, exchange="US", sess=None):
+    debug("")
+    if ticker is None:
+        return None
+    session = requests.Session()
+    url = f'https://eodhistoricaldata.com/api/fundamentals/{ticker}.US'
+    params = {'api_token': EOD_API_KEY}
+    request_result = session.get(url, params=params)
+    debug(f"request_result.status_code={request_result.status_code}")
+    if request_result.status_code == requests.codes.ok:
+        parsed_json = json.loads(request_result.text)
+        # debug(f'parsed_json:{parsed_json}')
+        if parsed_json is None:
+            return None
+        else:
+            EPSEstimateNextQuarter = parsed_json["Highlights"]["EPSEstimateNextQuarter"]
+            EPSEstimateCurrentQuarter = parsed_json["Highlights"]["EPSEstimateCurrentQuarter"]
+            RevenuePerShareTTM = parsed_json["Highlights"]["RevenuePerShareTTM"]
+            DilutedEpsTTM = parsed_json["Highlights"]["DilutedEpsTTM"]
+
+            td = datetime.datetime.today()
+            month = 0
+            cqday = 0
+            if 1 <= td.month <= 3:
+                month = 3
+                day = 31
+            if 4 <= td.month <= 6:
+                month = 6
+                day = 30
+            if 7 <= td.month <= 9:
+                month = 9
+                day = 30
+            if 10 <= td.month <= 12:
+                month = 12
+                day = 31
+            cqday = datetime.date(td.year, month, day)
+            nqday = add_months(cqday, 3)
+
+
+            debug(f'cqday={cqday}')
+            debug(f'nqday={nqday}')
+            yearago = add_months(cqday, -12).strftime("%Y-%m-%d")
+            nqyearago = add_months(nqday, -12).strftime("%Y-%m-%d")
+            debug(f'yearago={yearago}')
+            # totalRevenueLastYear = parsed_json["Financials"]["Income_Statement"]["quarterly"][yearago]["totalRevenue"]
+            epsEstimateYearago = parsed_json["Earnings"]["History"][yearago]["epsEstimate"]
+            EPSEstimateNextQuarterYearago = parsed_json["Earnings"]["History"][nqyearago]["epsEstimate"]
+            QuarterlyRevenueGrowthYOY = parsed_json["Highlights"]["QuarterlyRevenueGrowthYOY"]
+
+            res1 = None
+            res2 = None
+            res3 = None
+            if EPSEstimateNextQuarter is not None and  EPSEstimateNextQuarterYearago is not None:
+                res1 = (EPSEstimateNextQuarter - EPSEstimateNextQuarterYearago) >= 0
+            if EPSEstimateCurrentQuarter is not None and  epsEstimateYearago is not None:
+                res2 = (EPSEstimateCurrentQuarter - epsEstimateYearago) >= 0
+            if QuarterlyRevenueGrowthYOY is not None:
+                res3 = QuarterlyRevenueGrowthYOY >= 0
+            debug(f'\nEPSEstimateNextQuarter: {EPSEstimateNextQuarter} \n'
+                  f'EPSEstimateCurrentQuarter: {EPSEstimateCurrentQuarter}\n'
+                  f'QuarterlyRevenueGrowthYOY:{QuarterlyRevenueGrowthYOY}\n'
+                  # f'DilutedEpsTTM:{DilutedEpsTTM}\n'
+                  # f'totalRevenue[{yearago}]:{totalRevenueLastYear}\n'
+                  f'epsEstimate[{yearago}]:{epsEstimateYearago}\n'
+                  f'EPSEstimateNextQuarterYearago[{nqyearago}]:{EPSEstimateNextQuarterYearago}\n'
+                  f'res1:{res1}\n'
+                  f'res2:{res2}\n'
+                  f'res3:{res3}')
+            return res1, res2, res3
+
+
 def main():
     debug("__Start main__")
     # mkt_cap = get_market_cap('AAPL')

@@ -83,7 +83,7 @@ class MainWin(QDialog):
             for i in range(1, len(self.actionComboBox)):
                 self.actionComboBox.removeItem(i)
         if indx == 1:
-            self.portLabel.setText("Getekeeper")
+            self.portLabel.setText("Gatekeeper")
             self.actionComboBox.setItemText(0, "join_to")
             self.userIDLabel.hide()
             self.userIDLineEdit.hide()
