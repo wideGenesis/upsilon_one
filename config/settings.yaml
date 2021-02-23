@@ -77,6 +77,14 @@ DEBUG_TYPE:
   WARNING: 'WARNING'
   ERROR: 'ERROR'
 
+
+EXCLUDE_USERS: [
+    '-1001262211476',
+    '-1001171365094',
+    '1417206041'
+]
+
+
 ETF_FOR_SCRAPE: {
                   'QQQ': 20,
                   'IWY': 20,

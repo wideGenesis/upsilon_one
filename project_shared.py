@@ -119,6 +119,9 @@ engine = create_engine(SQL_URI, pool_recycle=3600)
 container = AlchemySessionContainer(engine=engine)
 alchemy_session = container.new_session('default')
 
+# ============================== Bot messages settings ======================
+EXCLUDE_USERS = conf['EXCLUDE_USERS']
+
 # ============================== BOT SETTINGS ======================
 PAYMENT_TOKEN = conf['TELEGRAM']['PAYMENT_TOKEN']
 COMMAND_TOKEN = conf['TELEGRAM']['COMMAND_TOKEN']
@@ -256,3 +259,11 @@ def add_watermark(before, after, font_size=16, wtermark_color=(217, 217, 217, 20
     save_path = after
     composite = Image.alpha_composite(image, txt_img)
     composite.save(save_path)
+
+
+def check_int(s):
+    if s is None or s == "":
+        return False
+    if s[0] in ('-', '+'):
+        return s[1:].isdigit()
+    return s.isdigit()

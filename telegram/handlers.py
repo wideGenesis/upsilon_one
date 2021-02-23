@@ -14,6 +14,7 @@ from telegram import instructions as ins
 from telegram import buttons
 import re
 from project_shared import *
+from telegram.sql_queries import get_all_users
 
 
 class WebHandler:
@@ -99,15 +100,23 @@ class WebHandler:
             if action == "send_to":
                 debug(f'Action = send_to')
                 toid = request_json.get("id", None)
-                if toid is not None and isinstance(toid, str):
+                if toid is not None and check_int(toid):
                     toid = int(toid)
                 if value == "sac_pies":
                     debug(f'Value = sac_pies')
-                    await send_sac_pie(self.client, toid)
+                    res = await send_sac_pie(self.client, toid)
+                    if res:
+                        return web.json_response(res_ack)
                 if value == "message":
                     debug(f'Value = message')
                     msg = request_json.get("msg", None)
                     res = await send_to_message(self.client, toid, msg)
+                    if res:
+                        return web.json_response(res_ack)
+                if value == "broadcast_message":
+                    debug(f'Value = broadcast_message')
+                    msg = request_json.get("msg", None)
+                    res = await send_broadcast_message(self.client, self.engine, msg)
                     if res:
                         return web.json_response(res_ack)
             return web.json_response(res_nack)
@@ -349,13 +358,26 @@ async def send_sac_pie(clnt, toid):
         await clnt.send_file(entity, CHARTER_IMAGES_PATH + 'sac_parking_portfolio_pie.png')
         await clnt.send_file(entity, CHARTER_IMAGES_PATH + 'sac_balanced_portfolio_pie.png')
         await clnt.send_file(entity, CHARTER_IMAGES_PATH + 'sac_growth_portfolio_pie.png')
+        return True
     except Exception as e:
         debug(e, ERROR)
+        return False
 
 
 async def send_to_message(clnt, toid, msg):
     try:
         await clnt.send_message(toid, msg)
+        return True
+    except Exception as e:
+        debug(e, ERROR)
+        return False
+
+
+async def send_broadcast_message(clnt, engine, msg):
+    try:
+        users = await get_all_users(engine)
+        for user_id in users:
+            await clnt.send_message(user_id, msg)
         return True
     except Exception as e:
         debug(e, ERROR)

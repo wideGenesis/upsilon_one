@@ -51,6 +51,7 @@ class MainWin(QDialog):
         self.hostComboBox.currentIndexChanged.connect(self._host_combobox_changed)
         self.portComboBox.currentIndexChanged.connect(self._port_combobox_changed)
         self.actionComboBox.currentIndexChanged.connect(self._action_combobox_changed)
+        self.actionDetailComboBox.currentIndexChanged.connect(self._actiondetail_combobox_changed)
 
         self.chanelLineEdit.textChanged.connect(self._chanelTextChanged)
         self.userIDLineEdit.textChanged.connect(self._userIdTextChanged)
@@ -69,7 +70,7 @@ class MainWin(QDialog):
             self.hostLabel.setText("Instance")
 
     def _port_combobox_changed(self, indx):
-        debug(f"Index: {indx} len={len(self.portComboBox)}")
+        debug(f"_port_combobox_changed Index: {indx} len={len(self.portComboBox)}")
         if indx == 0:
             self.portLabel.setText("UpsilonBot")
             self.actionComboBox.setItemText(0, "send_to")
@@ -80,8 +81,16 @@ class MainWin(QDialog):
             self.chanelLineEdit.clear()
             self.messageLabel.show()
             self.messageTextEdit.show()
-            for i in range(1, len(self.actionComboBox)):
-                self.actionComboBox.removeItem(i)
+            while len(self.actionComboBox) > 1:
+                self.actionComboBox.removeItem(1)
+            self.actionDetailLabel.show()
+            self.actionDetailComboBox.show()
+            self.actionDetailComboBox.setItemText(0, "message")
+            while len(self.actionDetailComboBox) > 1:
+                self.actionDetailComboBox.removeItem(1)
+            self.actionDetailComboBox.addItem("broadcast_message")
+            self.actionDetailComboBox.addItem("sac_pies")
+
         if indx == 1:
             self.portLabel.setText("Gatekeeper")
             self.actionComboBox.setItemText(0, "join_to")
@@ -93,11 +102,18 @@ class MainWin(QDialog):
             self.messageLabel.hide()
             self.messageTextEdit.hide()
             self.messageTextEdit.clear()
-            for i in range(1, len(self.actionComboBox)):
-                self.actionComboBox.removeItem(i)
+            self.actionDetailLabel.show()
+            self.actionDetailComboBox.show()
+            while len(self.actionComboBox) > 1:
+                self.actionComboBox.removeItem(1)
             self.actionComboBox.addItem("leave_channel")
+            self.actionDetailComboBox.setItemText(0, "simple_chat")
+            while len(self.actionDetailComboBox) > 1:
+                self.actionDetailComboBox.removeItem(1)
+            self.actionDetailComboBox.addItem("private_chat")
 
     def _action_combobox_changed(self, indx):
+        debug(f"_action_combobox_changed Index: {indx} len={len(self.actionComboBox)}")
         action_text = self.actionComboBox.itemText(indx)
         if action_text == "send_to":
             self.userIDLabel.show()
@@ -106,6 +122,13 @@ class MainWin(QDialog):
             self.chanelLineEdit.hide()
             self.messageLabel.show()
             self.messageTextEdit.show()
+            self.actionDetailLabel.show()
+            self.actionDetailComboBox.show()
+            self.actionDetailComboBox.setItemText(0, "message")
+            while len(self.actionDetailComboBox) > 1:
+                self.actionDetailComboBox.removeItem(1)
+            self.actionDetailComboBox.addItem("broadcast_message")
+            self.actionDetailComboBox.addItem("sac_pies")
         if action_text == "join_to":
             self.userIDLabel.hide()
             self.userIDLineEdit.hide()
@@ -113,6 +136,12 @@ class MainWin(QDialog):
             self.chanelLineEdit.show()
             self.messageLabel.hide()
             self.messageTextEdit.hide()
+            self.actionDetailLabel.show()
+            self.actionDetailComboBox.show()
+            self.actionDetailComboBox.setItemText(0, "simple_chat")
+            while len(self.actionDetailComboBox) > 1:
+                self.actionDetailComboBox.removeItem(1)
+            self.actionDetailComboBox.addItem("private_chat")
         if action_text == "leave_channel":
             self.userIDLabel.hide()
             self.userIDLineEdit.hide()
@@ -120,6 +149,34 @@ class MainWin(QDialog):
             self.chanelLineEdit.show()
             self.messageLabel.hide()
             self.messageTextEdit.hide()
+            self.actionDetailLabel.hide()
+            self.actionDetailComboBox.hide()
+            self.actionDetailComboBox.setItemText(0, "")
+            while len(self.actionDetailComboBox) > 1:
+                self.actionDetailComboBox.removeItem(1)
+
+    def _actiondetail_combobox_changed(self, indx):
+        debug(f"_actiondetail_combobox_changed Index: {indx} len={len(self.actionDetailComboBox)}")
+        actiondetail_text = self.actionDetailComboBox.itemText(indx)
+        if actiondetail_text == "broadcast_message":
+            self.userIDLabel.hide()
+            self.userIDLineEdit.hide()
+            self.chanelLabel.hide()
+            self.chanelLineEdit.hide()
+            self.messageLabel.show()
+            self.messageTextEdit.show()
+            self.actionDetailLabel.show()
+            self.actionDetailComboBox.show()
+        else:
+            self.userIDLabel.show()
+            self.userIDLineEdit.show()
+            self.chanelLabel.hide()
+            self.chanelLineEdit.hide()
+            self.messageLabel.show()
+            self.messageTextEdit.show()
+            self.actionDetailLabel.show()
+            self.actionDetailComboBox.show()
+
 
     def _chanelTextChanged(self, txt):
         action_text = self.actionComboBox.itemText(self.actionComboBox.currentIndex())
@@ -155,13 +212,19 @@ class MainWin(QDialog):
             chanel = self.chanelLineEdit.text()
             rmsg = self.messageTextEdit.toPlainText()
             url = f'http://{rhost}:{rport}/{COMMAND_TOKEN}/'
+            raction_detail = self.actionDetailComboBox.itemText(self.actionDetailComboBox.currentIndex())
             data = {}
-            if ruser_id is None and rmsg is None:
-                rvalue = chanel
-                data = {'action': raction, 'value': rvalue}
-            else:
-                rvalue = "message"
-                data = {'action': raction, 'value': rvalue, 'id': ruser_id, 'msg': rmsg}
+            if raction == "send_to":
+                if raction_detail == "message":
+                    data = {'action': raction, 'value': raction_detail, 'id': ruser_id, 'msg': rmsg}
+                if raction_detail == "sac_pies":
+                    data = {'action': raction, 'value': raction_detail, 'id': ruser_id, 'msg': ""}
+                if raction_detail == "broadcast_message":
+                    data = {'action': raction, 'value': raction_detail, 'id': "", 'msg': rmsg}
+            if raction == "join_to":
+                data = {'action': raction, 'value': raction_detail, 'id': chanel}
+            if raction == "leave_channel":
+                data = {'action': raction, 'value': chanel}
 
             headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}
             try:

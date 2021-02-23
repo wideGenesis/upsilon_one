@@ -116,3 +116,23 @@ async def is_table_exist(table_name, engine=None) -> bool:
             return True if result else False
         except:
             return False
+
+
+async def get_all_users(engine=None):
+    with engine.connect() as connection:
+        users = []
+        try:
+            query_string = f'SELECT id FROM entities'
+            q_result = connection.execute(query_string)
+            if q_result.rowcount > 0:
+                rows = q_result.fetchall()
+                for row in rows:
+                    if row[0] not in EXCLUDE_USERS:
+                        users.append(row[0])
+        except Exception as e:
+            debug(e, ERROR)
+    return users
+
+
+
+
