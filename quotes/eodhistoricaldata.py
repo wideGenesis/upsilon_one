@@ -378,14 +378,14 @@ def get_company_rank(ticker, exchange="US", sess=None):
             nqyearago = nqyearago.strftime("%Y-%m-%d")
             debug(f'yearago={yearago}')
             # totalRevenueLastYear = parsed_json["Financials"]["Income_Statement"]["quarterly"][yearago]["totalRevenue"]
-            epsEstimateYearago = parsed_json["Earnings"]["History"][yearago]["epsEstimate"]
-            EPSEstimateNextQuarterYearago = parsed_json["Earnings"]["History"][nqyearago]["epsEstimate"]
+            epsActualYearago = parsed_json["Earnings"]["History"][yearago]["epsActual"]
+            epsActualYearagoNextQuarterYearago = parsed_json["Earnings"]["History"][nqyearago]["epsActual"]
             QuarterlyRevenueGrowthYOY = parsed_json["Highlights"]["QuarterlyRevenueGrowthYOY"]
 
-            if EPSEstimateNextQuarter is not None and  EPSEstimateNextQuarterYearago is not None:
-                res1 = (EPSEstimateNextQuarter - EPSEstimateNextQuarterYearago) >= 0
-            if EPSEstimateCurrentQuarter is not None and  epsEstimateYearago is not None:
-                res2 = (EPSEstimateCurrentQuarter - epsEstimateYearago) >= 0
+            if EPSEstimateNextQuarter is not None and  epsActualYearagoNextQuarterYearago is not None:
+                res1 = (EPSEstimateNextQuarter - epsActualYearagoNextQuarterYearago) >= 0
+            if EPSEstimateCurrentQuarter is not None and epsActualYearago is not None:
+                res2 = (EPSEstimateCurrentQuarter - epsActualYearago) >= 0
             if QuarterlyRevenueGrowthYOY is not None:
                 res3 = QuarterlyRevenueGrowthYOY >= 0
             debug(f'\nEPSEstimateNextQuarter: {EPSEstimateNextQuarter} \n'
@@ -393,8 +393,8 @@ def get_company_rank(ticker, exchange="US", sess=None):
                   f'QuarterlyRevenueGrowthYOY:{QuarterlyRevenueGrowthYOY}\n'
                   # f'DilutedEpsTTM:{DilutedEpsTTM}\n'
                   # f'totalRevenue[{yearago}]:{totalRevenueLastYear}\n'
-                  f'epsEstimate[{yearago}]:{epsEstimateYearago}\n'
-                  f'EPSEstimateNextQuarterYearago[{nqyearago}]:{EPSEstimateNextQuarterYearago}\n'
+                  f'epsActualYearago[{yearago}]:{epsActualYearago}\n'
+                  f'epsActualYearagoNextQuarterYearago[{nqyearago}]:{epsActualYearagoNextQuarterYearago}\n'
                   f'res1:{res1}\n'
                   f'res2:{res2}\n'
                   f'res3:{res3}')
