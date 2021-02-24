@@ -175,12 +175,21 @@ class StockStat:
             return msg1
 
         elif rank[0] is False and rank[1] is True and rank[2] is False and sma50 > 0:
-            msg1 = 'Компания, без перспектив и развития. ' + \
+            msg1 = 'Компания без перспектив и развития. ' + \
                    '\U0001F44D'*2 + ' - Очень слабый кандидат для покупки. Кандидат для спекуляций'
             return msg1
         elif rank[0] is False and rank[1] is True and rank[2] is False and sma50 < 0:
-            msg1 = 'Компания, без перспектив и развития. ' + \
+            msg1 = 'Компания без перспектив и развития. ' + \
                    '\U0001F44D' + ' - Кандидат для спекуляций исключительно '
+            return msg1
+
+        elif rank[0] is True and rank[1] is False and rank[2] is False and sma50 > 0:
+            msg1 = 'Убыточная компания,но с перспективой развития. ' + \
+                   '\U0001F44D'*2 + ' - Очень слабый кандидат для покупки. Кандидат для спекуляций'
+            return msg1
+        elif rank[0] is True and rank[1] is False and rank[2] is False and sma50 < 0:
+            msg1 = 'Убыточная компания,но с перспективой развития. ' + \
+                   '\U0001F44D'*1 + ' - Кандидат для спекуляций'
             return msg1
 
         elif rank[0] is None and rank[1] is None and rank[2] is None:

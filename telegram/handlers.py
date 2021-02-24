@@ -222,7 +222,8 @@ async def quotes_to_handler(event, client_, limit=20):
     await client_.send_message(event.input_sender, msg2)
     await client_.send_file(event.input_sender, img_path)
     await client_.send_message(event.input_sender, msg1)
-    await client_.send_message(event.input_sender, 'Оценка Ипсилона: ' + '\n' + msg3)
+    await client_.send_message(event.input_sender, 'Оценка Ипсилона: ' + '\n' + msg3 + '\n' +
+                               'Как использовать скоринг? - /instruction28')
     os.remove(img_path)
 
 
@@ -325,6 +326,8 @@ async def instructions_handler(event, client_):
         await client_.send_message(event.input_sender, ins.instruction26)
     elif pattern == 'instruction27':
         await client_.send_message(event.input_sender, ins.instruction27)
+    elif pattern == 'instruction28':
+        await client_.send_message(event.input_sender, ins.instruction28)
 
 
 async def portfolio_candle_chart_handler(event, client_):
