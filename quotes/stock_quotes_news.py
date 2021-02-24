@@ -114,7 +114,7 @@ class StockStat:
             print(sma50)
 
         except Exception as e11:
-            msg1 = 'Ранг для ETF недоступен'
+            msg1 = 'Ранг для данного тикера недоступен'
             return msg1
 
         if rank[0] is True and rank[1] is True and rank[2] is True and sma50 > 0:
@@ -172,6 +172,15 @@ class StockStat:
         elif rank[0] is False and rank[1] is False and rank[2] is False and sma50 < 0:
             msg1 = 'Убыточная компания, без перспектив и развития. ' + \
                    '\U0001F44E' + ' - Не является кандидатом для покупки и спекуляций'
+            return msg1
+
+        elif rank[0] is False and rank[1] is True and rank[2] is False and sma50 > 0:
+            msg1 = 'Компания, без перспектив и развития. ' + \
+                   '\U0001F44E'*2 + ' - Очень слабый кандидат для покупки. Кандидат для спекуляций'
+            return msg1
+        elif rank[0] is False and rank[1] is True and rank[2] is False and sma50 < 0:
+            msg1 = 'Компания, без перспектив и развития. ' + \
+                   '\U0001F44E' + ' - Кандидат для спекуляций исключительно '
             return msg1
 
         elif rank[0] is None and rank[1] is None and rank[2] is None:

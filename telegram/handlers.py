@@ -203,7 +203,7 @@ async def quotes_to_handler(event, client_, limit=20):
         msg1 = ss.stock_description()
     except Exception as e1:
         debug(e1)
-        msg1 = 'Описание для ETF недоступно'
+        msg1 = 'Описание для ETF недоступно или нет данных'
     try:
         ss.stock_snapshot()
     except Exception as e2:
