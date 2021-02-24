@@ -325,7 +325,7 @@ def get_historical_adjprices(ticker, from_date, end_date, is_update=False):
 
 
 def get_company_rank(ticker, exchange="US", sess=None):
-    debug("")
+    debug(f"### {ticker} ###")
     res1 = None
     res2 = None
     res3 = None
@@ -351,6 +351,9 @@ def get_company_rank(ticker, exchange="US", sess=None):
 
             EPSEstimateNextQuarter = parsed_json["Highlights"]["EPSEstimateNextQuarter"]
             EPSEstimateCurrentQuarter = parsed_json["Highlights"]["EPSEstimateCurrentQuarter"]
+            if EPSEstimateNextQuarter == 0 and EPSEstimateCurrentQuarter == 0:
+                return res1, res2, res3, ""
+
             # RevenuePerShareTTM = parsed_json["Highlights"]["RevenuePerShareTTM"]
             # DilutedEpsTTM = parsed_json["Highlights"]["DilutedEpsTTM"]
             delta = timedelta(days=1)
