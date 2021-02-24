@@ -203,7 +203,7 @@ async def quotes_to_handler(event, client_, limit=20):
         msg1 = ss.stock_description()
     except Exception as e1:
         debug(e1)
-        msg1 = 'Описание для ETF недоступно'
+        msg1 = 'Описание для ETF недоступно или нет данных'
     try:
         ss.stock_snapshot()
     except Exception as e2:
@@ -222,7 +222,8 @@ async def quotes_to_handler(event, client_, limit=20):
     await client_.send_message(event.input_sender, msg2)
     await client_.send_file(event.input_sender, img_path)
     await client_.send_message(event.input_sender, msg1)
-    await client_.send_message(event.input_sender, 'Оценка Ипсилона: ' + '\n' + msg3)
+    await client_.send_message(event.input_sender, 'Оценка Ипсилона: ' + '\n' + msg3 + '\n' +
+                               'Как использовать скоринг? - /instruction28')
     os.remove(img_path)
 
 
@@ -325,6 +326,8 @@ async def instructions_handler(event, client_):
         await client_.send_message(event.input_sender, ins.instruction26)
     elif pattern == 'instruction27':
         await client_.send_message(event.input_sender, ins.instruction27)
+    elif pattern == 'instruction28':
+        await client_.send_message(event.input_sender, ins.instruction28)
 
 
 async def portfolio_candle_chart_handler(event, client_):
