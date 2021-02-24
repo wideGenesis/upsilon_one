@@ -326,8 +326,11 @@ def get_historical_adjprices(ticker, from_date, end_date, is_update=False):
 
 def get_company_rank(ticker, exchange="US", sess=None):
     debug("")
+    res1 = None
+    res2 = None
+    res3 = None
     if ticker is None:
-        return None
+        return res1, res2, res3, ""
     session = requests.Session()
     url = f'https://eodhistoricaldata.com/api/fundamentals/{ticker}.US'
     params = {'api_token': EOD_API_KEY}
@@ -337,45 +340,48 @@ def get_company_rank(ticker, exchange="US", sess=None):
         parsed_json = json.loads(request_result.text)
         # debug(f'parsed_json:{parsed_json}')
         if parsed_json is None:
-            return None
+            return res1, res2, res3, ""
         else:
+            if parsed_json["General"]["IsDelisted"] == 'true':
+                return res1, res2, res3, ""
+            td = datetime.date.today()
+            ipo_date = parsed_json["General"]["IPODate"]
+            if datetime.datetime.strptime(ipo_date, "%Y-%m-%d").date() > add_months(td, -12):
+                return res1, res2, res3, ipo_date
+
             EPSEstimateNextQuarter = parsed_json["Highlights"]["EPSEstimateNextQuarter"]
             EPSEstimateCurrentQuarter = parsed_json["Highlights"]["EPSEstimateCurrentQuarter"]
-            RevenuePerShareTTM = parsed_json["Highlights"]["RevenuePerShareTTM"]
-            DilutedEpsTTM = parsed_json["Highlights"]["DilutedEpsTTM"]
+            # RevenuePerShareTTM = parsed_json["Highlights"]["RevenuePerShareTTM"]
+            # DilutedEpsTTM = parsed_json["Highlights"]["DilutedEpsTTM"]
+            delta = timedelta(days=1)
+            td = datetime.date.today()
+            eh = parsed_json["Earnings"]["History"]
+            fqdate = next((dat for dat in eh if datetime.datetime.strptime(dat, "%Y-%m-%d").date() < td), None)
+            if fqdate is None:
+                debug(f"Can't find quarter date", ERROR)
+                return res1, res2, res3, ""
+            tmpdate = datetime.datetime.strptime(fqdate, "%Y-%m-%d").date()
+            while tmpdate < td:
+                tmpdate = add_months(tmpdate, 4)
+                tmpdate = datetime.date(tmpdate.year, tmpdate.month, 1) - delta
+            current_quarter = tmpdate
+            debug(f'current_quarter: {current_quarter}')
 
-            td = datetime.datetime.today()
-            month = 0
-            cqday = 0
-            if 1 <= td.month <= 3:
-                month = 3
-                day = 31
-            if 4 <= td.month <= 6:
-                month = 6
-                day = 30
-            if 7 <= td.month <= 9:
-                month = 9
-                day = 30
-            if 10 <= td.month <= 12:
-                month = 12
-                day = 31
-            cqday = datetime.date(td.year, month, day)
-            nqday = add_months(cqday, 3)
+            yearago = add_months(current_quarter, -11)
+            yearago = datetime.date(yearago.year, yearago.month, 1) - delta
+            yearago = yearago.strftime("%Y-%m-%d")
 
-
-            debug(f'cqday={cqday}')
-            debug(f'nqday={nqday}')
-            yearago = add_months(cqday, -12).strftime("%Y-%m-%d")
-            nqyearago = add_months(nqday, -12).strftime("%Y-%m-%d")
+            next_quarter = add_months(current_quarter, 4)
+            next_quarter = datetime.date(next_quarter.year, next_quarter.month, 1) - delta
+            nqyearago = add_months(next_quarter, -11)
+            nqyearago = datetime.date(nqyearago.year, nqyearago.month, 1) - delta
+            nqyearago = nqyearago.strftime("%Y-%m-%d")
             debug(f'yearago={yearago}')
             # totalRevenueLastYear = parsed_json["Financials"]["Income_Statement"]["quarterly"][yearago]["totalRevenue"]
             epsEstimateYearago = parsed_json["Earnings"]["History"][yearago]["epsEstimate"]
             EPSEstimateNextQuarterYearago = parsed_json["Earnings"]["History"][nqyearago]["epsEstimate"]
             QuarterlyRevenueGrowthYOY = parsed_json["Highlights"]["QuarterlyRevenueGrowthYOY"]
 
-            res1 = None
-            res2 = None
-            res3 = None
             if EPSEstimateNextQuarter is not None and  EPSEstimateNextQuarterYearago is not None:
                 res1 = (EPSEstimateNextQuarter - EPSEstimateNextQuarterYearago) >= 0
             if EPSEstimateCurrentQuarter is not None and  epsEstimateYearago is not None:
@@ -392,7 +398,7 @@ def get_company_rank(ticker, exchange="US", sess=None):
                   f'res1:{res1}\n'
                   f'res2:{res2}\n'
                   f'res3:{res3}')
-            return res1, res2, res3
+            return res1, res2, res3, ""
 
 
 def main():
