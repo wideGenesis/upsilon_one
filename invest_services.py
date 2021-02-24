@@ -126,5 +126,5 @@ def main():
 
 
 if __name__ == '__main__':
-    print(f"Starting scrapers {os.path.realpath(__file__)}, this may take a while")
+    # print(f"Starting scrapers {os.path.realpath(__file__)}, this may take a while")
     main()
