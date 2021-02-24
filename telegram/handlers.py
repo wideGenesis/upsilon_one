@@ -213,10 +213,16 @@ async def quotes_to_handler(event, client_, limit=20):
     except Exception as e3:
         debug(e3)
         msg2 = 'Статистика недоступна'
+    try:
+        msg3 = ss.company_rank()
+    except Exception as e4:
+        debug(e4)
+        msg3 = 'Рекомендация недоступна'
 
     await client_.send_message(event.input_sender, msg2)
     await client_.send_file(event.input_sender, img_path)
     await client_.send_message(event.input_sender, msg1)
+    await client_.send_message(event.input_sender, 'Оценка Ипсилона: ' + '\n' + msg3)
     os.remove(img_path)
 
 
