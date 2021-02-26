@@ -1,6 +1,10 @@
 from telethon.tl.custom import Button
 from project_shared import *
 
+keyboard_start = [
+        [Button.text('Главное меню', resize=True), Button.text('Профиль', resize=True)]
+    ]
+
 keyboard_0 = [
     [
         Button.inline('\U0001F52C   ' + 'Анализ рынков', b'a1')
