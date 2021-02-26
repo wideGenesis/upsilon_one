@@ -6,14 +6,7 @@ import sys
 from quotes.sql_queries import *
 from time import sleep
 from PyQt5.QtWidgets import QApplication
-from PyQt5.QtWidgets import QLabel
 from PyQt5 import QtWidgets, uic
-from PyQt5.QtWidgets import QWidget
-from PyQt5.QtWidgets import QGridLayout
-from PyQt5.QtWidgets import QLineEdit
-from PyQt5.QtWidgets import QTextEdit
-from PyQt5.QtWidgets import QComboBox
-from PyQt5.QtWidgets import QMainWindow
 from PyQt5.QtWidgets import QDialog
 
 

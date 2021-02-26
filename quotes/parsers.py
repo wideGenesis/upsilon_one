@@ -16,6 +16,7 @@ import quandl
 from scipy.stats import norm
 import random
 from project_shared import *
+import xml.etree.ElementTree as xet
 
 
 # ============================== Inflows GET ================================
@@ -79,6 +80,8 @@ from project_shared import *
 #             im = Image.open(image_stream)
 #             im.save(os.path.join(img_out_path_, f'inflows_{etf}.png'))
 #     debug('Get Fund Flows complete' + '\n')
+from quotes.parsers_env import agents
+
 
 def get_etfdb_flows(driver=None, img_out_path_=IMAGES_OUT_PATH):
     etfs = ['SPY', 'VTI', 'VEA', 'VWO', 'QQQ', 'VXX', 'TLT', 'SHY', 'LQD', 'VCIT']
@@ -141,6 +144,60 @@ def advance_decline(ag=None, img_out_path_=IMAGES_OUT_PATH):
             write = csv.writer(f)
             write.writerow(rows_)
     debug('adv complete')
+
+
+# ============================== YAHOO GET RANKING DATA ================================
+def get_ranking_data(ticker, ag=agents()):
+    headers = {'User-Agent': ag}
+    url = f"https://finance.yahoo.com/quote/{ticker}/analysis?p={ticker}"
+    zzz = requests.get(url).text
+    soup = BeautifulSoup(zzz, "html.parser")
+
+    # Earnings Estimate
+    eet = soup.find("table", attrs={"class": "W(100%) M(0) BdB Bdc($seperatorColor) Mb(25px)", "data-reactid": "5"})
+    curr_avg_estimate = eet.find("span", attrs={"data-reactid": "46"}).text
+    next_qtr_avg_estimate = eet.find("span", attrs={"data-reactid": "48"}).text
+
+    # Revenue Estimate
+    ret = soup.find("table", attrs={"class": "W(100%) M(0) BdB Bdc($seperatorColor) Mb(25px)", "data-reactid": "86"})
+    revenue_estimate_current_year = ret.find("span", attrs={"data-reactid": "175"}).text
+    revenue_estimate_next_year = ret.find("span", attrs={"data-reactid": "177"}).text
+
+    # Earnings History
+    eht = soup.find("table", attrs={"class": "W(100%) M(0) BdB Bdc($seperatorColor) Mb(25px)", "data-reactid": "178"})
+    date1 = eht.find("span", attrs={"data-reactid": "184"}).text
+    date2 = eht.find("span", attrs={"data-reactid": "186"}).text
+    date3 = eht.find("span", attrs={"data-reactid": "188"}).text
+    date4 = eht.find("span", attrs={"data-reactid": "190"}).text
+    value1 = eht.find("span", attrs={"data-reactid": "207"}).text
+    if isinstance(value1, float):
+        value1 = float(value1)
+    value2 = eht.find("span", attrs={"data-reactid": "209"}).text
+    if isinstance(value2, float):
+        value2 = float(value2)
+    value3 = eht.find("span", attrs={"data-reactid": "211"}).text
+    if isinstance(value3, float):
+        value3 = float(value3)
+    value4 = eht.find("span", attrs={"data-reactid": "213"}).text
+    if isinstance(value4, float):
+        value4 = float(value4)
+    earning_history_eps_actual = {}
+    if date1 != "Invalid Date":
+        earning_history_eps_actual[datetime.datetime.strptime(date1, "%m/%d/%Y").date()] = value1
+    if date2 != "Invalid Date":
+        earning_history_eps_actual[datetime.datetime.strptime(date2, "%m/%d/%Y").date()] = value2
+    if date3 != "Invalid Date":
+        earning_history_eps_actual[datetime.datetime.strptime(date3, "%m/%d/%Y").date()] = value3
+    if date4 != "Invalid Date":
+        earning_history_eps_actual[datetime.datetime.strptime(date4, "%m/%d/%Y").date()] = value4
+
+    debug(f"### {ticker} ###")
+    debug(f"curr_avg_estimate={curr_avg_estimate}")
+    debug(f"next_qtr_avg_estimate={next_qtr_avg_estimate}")
+    debug(f"revenue_estimate_current_year={revenue_estimate_current_year}")
+    debug(f"revenue_estimate_next_year={revenue_estimate_next_year}")
+    debug(f"earning_history_eps_actual={earning_history_eps_actual}\n\n")
+    debug('%%% get_ranking_data complete')
 
 
 # ============================== FINVIZ TREEMAP GET ================================

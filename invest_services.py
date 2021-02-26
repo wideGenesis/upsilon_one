@@ -2,8 +2,7 @@
 
 from project_shared import *
 from quotes.parsers_env import chrome_init, agents, chrome_opt, firefox_init
-from quotes.parsers import get_etfdb_flows, advance_decline, get_finviz_treemaps,\
-    get_coins360_treemaps, get_economics, get_sma50, get_tw_charts, vix_curve, vix_cont, qt_curve, spx_yield
+from quotes.parsers import *
 from quotes.get_universe import *
 from quotes.quote_loader import *
 from quotes.portfolios.portfolios_calc import *
@@ -17,7 +16,7 @@ from quotes.historical_universe import *
 
 # ============================== Main  =============================
 def main():
-    get_company_rank("PLTR")
+    get_ranking_data("AAPL")
     exit(0)
     # 1) Первичный аплоад данных. Делаем один раз и больше данные не  трогаем.
     #    Ео если вдруг пришлось дропнуть таблицу quotes то лучше начать именно с первичного забора данных
