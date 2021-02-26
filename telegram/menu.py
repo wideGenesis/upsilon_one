@@ -21,10 +21,10 @@ async def start_menu(event, client, engine=None):
     # TODO Если бот будет двуязычным, то нужно будет сделать возможность выбора языка и сохранение его в базу
     # lang = await client.get_entity(PeerUser(sender_id))
     # await db_save_lang(str(lang.lang_code), sender_id, connection)
-    keyboard_start = [
-        [Button.text('Главное меню', resize=True), Button.text('Профиль', resize=True)]
-        # [Button.text('Помощь', resize=True), Button.text('Donate', resize=True)]
-    ]
+    # keyboard_start = [
+    #     [Button.text('Главное меню', resize=True), Button.text('Профиль', resize=True)]
+    #     # [Button.text('Помощь', resize=True), Button.text('Donate', resize=True)]
+    # ]
 
     message = await client.send_message(entity=entity, message='__Stand by__')
     sleep(0.9)
@@ -56,7 +56,7 @@ async def start_menu(event, client, engine=None):
                                       'Цели - /goals \n'
                                       'Мои навыки - /skills \n \n'
                                       'Важно! Если по какой-то причине у вас пропали кнопки Главного меню, '
-                                      'то вы можете напечатать Меню для вызова кнопок.', buttons=keyboard_start)
+                                      'то вы можете напечатать Меню для вызова кнопок.', buttons=buttons.keyboard_start)
 
 
 async def tools_menu(event, client):
