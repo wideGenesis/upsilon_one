@@ -16,7 +16,7 @@ import quandl
 from scipy.stats import norm
 import random
 from project_shared import *
-import xml.etree.ElementTree as xet
+from reuterspy import Reuters
 
 
 # ============================== Inflows GET ================================
@@ -196,7 +196,55 @@ def get_ranking_data(ticker, ag=agents()):
     debug(f"next_qtr_avg_estimate={next_qtr_avg_estimate}")
     debug(f"revenue_estimate_current_year={revenue_estimate_current_year}")
     debug(f"revenue_estimate_next_year={revenue_estimate_next_year}")
-    debug(f"earning_history_eps_actual={earning_history_eps_actual}\n\n")
+    debug(f"earning_history_eps_actual={earning_history_eps_actual}\n")
+
+    url1 = f"https://finance.yahoo.com/quote/{ticker}?p={ticker}"
+    zzz1 = requests.get(url1).text
+    soup = BeautifulSoup(zzz1, "html.parser")
+    next_earning_date = soup.find("td", attrs={"class": "Ta(end) Fw(600) Lh(14px)",
+                                               "data-reactid": "104",
+                                               "data-test": "EARNINGS_DATE-value"}).text
+    debug(f"next_earning_date={next_earning_date}\n")
+
+    debug(" >>> Reuters Data <<< ")
+    reuters = Reuters()
+    ticker_list = [ticker + ".O"]
+    df1 = reuters.get_income_statement(ticker_list, yearly=False)
+    # Total Revenue
+    tr = df1.loc[df1['metric'] == 'Total Revenue', ['year', 'metric', 'value', 'quarter']]
+    for index, row in tr.iterrows():
+        debug(f'Total Revenue [y:{row.year} q:{row.quarter}] : {row.value}')
+    # Diluted Normalized EPS
+    dneps = df1.loc[df1['metric'] == 'Diluted Normalized EPS', ['year', 'metric', 'value', 'quarter']]
+    for index, row in dneps.iterrows():
+        debug(f'Diluted Normalized EPS [y:{row.year} q:{row.quarter}] : {row.value}')
+
+    # df2 = reuters.get_balance_sheet(ticker_list, yearly=False)
+    # df3 = reuters.get_cash_flow(ticker_list, yearly=False)
+    df4 = reuters.get_key_metrics(ticker_list)
+    # Market Capitalization
+    mkt_cap = df4.loc[df4['metric'] == 'Market Capitalization', ['value']].value.values[0]
+    debug(f'Market Capitalization: {mkt_cap}')
+    # Beta
+    beta = df4.loc[df4['metric'] == 'Beta', ['value']].value.values[0]
+    debug(f'Beta: {beta}')
+    # Revenue per Share (Annual)
+    revenue_per_share_annual = df4.loc[df4['metric'] == 'Revenue per Share (Annual)', ['value']].value.values[0]
+    debug(f'Revenue Per Share (Annual): {revenue_per_share_annual}')
+    # Dividend (Per Share Annual)
+    divident_per_share_annual = df4.loc[df4['metric'] == 'Dividend (Per Share Annual)', ['value']].value.values[0]
+    debug(f'Dividend (Per Share Annual): {divident_per_share_annual}')
+    # Current Ratio (Quarterly)
+    current_ratio_quarterly = df4.loc[df4['metric'] == 'Current Ratio (Quarterly)', ['value']].value.values[0]
+    debug(f'Current Ratio (Quarterly): {current_ratio_quarterly}')
+    # Long Term Debt/Equity (Quarterly)
+    long_term_debt_equity_quarterly = df4.loc[df4['metric'] == 'Long Term Debt/Equity (Quarterly)', ['value']].value.values[0]
+    debug(f'Long Term Debt/Equity (Quarterly): {long_term_debt_equity_quarterly}')
+    # Net Profit Margin % (Annual)
+    net_profit_margin_percent_annual = df4.loc[df4['metric'] == 'Net Profit Margin % (Annual)', ['value']].value.values[0]
+    debug(f'Net Profit Margin % (Annual): {net_profit_margin_percent_annual}')
+
+
     debug('%%% get_ranking_data complete')
 
 
