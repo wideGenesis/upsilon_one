@@ -61,6 +61,7 @@ async def start_menu(event, client, engine=None):
 
 async def tools_menu(event, client):
     await client.send_message(event.input_sender, 'Главное меню', buttons=buttons.keyboard_0)
+    await client.send_message(event.input_sender, '\n', buttons=buttons.keyboard_start)
 
 
 async def profile_menu(event, client, engine=None):
