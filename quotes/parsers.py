@@ -213,6 +213,16 @@ def get_ranking_data(ticker, ag=agents()):
     reuters = Reuters()
     ticker_list = [ticker + ".O"]
     df1 = reuters.get_income_statement(ticker_list, yearly=False)
+    if df1 is None:
+        ticker_list = [ticker + ".N"]
+        df1 = reuters.get_income_statement(ticker_list, yearly=False)
+
+    if df1 is None:
+        ticker_list = [ticker + ".A"]
+        df1 = reuters.get_income_statement(ticker_list, yearly=False)
+
+    if df1 is None:
+        return {"rank": None, "data": None}
 
     # Total Revenue
     tr = df1.loc[df1['metric'] == 'Total Revenue', ['year', 'metric', 'value', 'quarter']]
@@ -353,6 +363,7 @@ def get_ranking_data(ticker, ag=agents()):
     debug("-------------- R A N K I N G --------------")
     debug(f'\n'
           f'revenue_estimate: {revenue_estimate_current_year_r}\n'
+          f'revenue_estimate_next_year: {revenue_estimate_next_year_r}\n'
           f'curr_avg_estimate: {curr_avg_estimate_r}\n'
           f'next_qtr_avg_estimate: {next_qtr_avg_estimate_r}\n'
           f'total_revenue: {total_revenue_r}\n'
@@ -367,6 +378,8 @@ def get_ranking_data(ticker, ag=agents()):
     finaly_rank = 0
     if revenue_estimate_current_year_r is not None:
         finaly_rank = finaly_rank + revenue_estimate_current_year_r
+    if revenue_estimate_next_year_r is not None:
+        finaly_rank = finaly_rank + revenue_estimate_next_year_r
     if curr_avg_estimate_r is not None:
         finaly_rank = finaly_rank + curr_avg_estimate_r
     if next_qtr_avg_estimate_r is not None:
@@ -382,7 +395,7 @@ def get_ranking_data(ticker, ag=agents()):
     if mkt_cap_r is not None:
         finaly_rank = finaly_rank + mkt_cap_r
     if beta_r is not None:
-        finaly_rank = finaly_rank + mkt_cap_r
+        finaly_rank = finaly_rank + beta_r
     if current_ratio_quarterly_r is not None:
         finaly_rank = finaly_rank + current_ratio_quarterly_r
     if long_term_debt_equity_quarterly_r is not None:
@@ -392,6 +405,7 @@ def get_ranking_data(ticker, ag=agents()):
 
     res = {"rank": finaly_rank,
            "revenue_estimate": revenue_estimate_current_year_r,
+           "revenue_estimate_next_year": revenue_estimate_current_year_r,
            "curr_avg_estimate": curr_avg_estimate_r,
            "next_qtr_avg_estimate": next_qtr_avg_estimate_r,
            "total_revenue": total_revenue_r,
