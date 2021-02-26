@@ -329,6 +329,8 @@ def get_ranking_data(ticker, ag=agents()):
     divident_per_share_annual_r = None
     if divident_per_share_annual is not None:
         divident_per_share_annual_r = 2 if divident_per_share_annual > 0 else -2
+    else:
+        divident_per_share_annual_r = -2
 
     mkt_cap_r = None
     if mkt_cap is not None:
