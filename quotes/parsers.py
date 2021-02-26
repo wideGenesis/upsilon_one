@@ -1,6 +1,7 @@
 import os
 from time import sleep
 from datetime import date, timedelta
+from fastnumbers import *
 import csv
 import numpy as np
 import pandas as pd
@@ -156,12 +157,18 @@ def get_ranking_data(ticker, ag=agents()):
     # Earnings Estimate
     eet = soup.find("table", attrs={"class": "W(100%) M(0) BdB Bdc($seperatorColor) Mb(25px)", "data-reactid": "5"})
     curr_avg_estimate = eet.find("span", attrs={"data-reactid": "46"}).text
+    curr_avg_estimate = fast_float(curr_avg_estimate, default=None)
+
     next_qtr_avg_estimate = eet.find("span", attrs={"data-reactid": "48"}).text
+    next_qtr_avg_estimate = fast_float(next_qtr_avg_estimate, default=None)
 
     # Revenue Estimate
     ret = soup.find("table", attrs={"class": "W(100%) M(0) BdB Bdc($seperatorColor) Mb(25px)", "data-reactid": "86"})
     revenue_estimate_current_year = ret.find("span", attrs={"data-reactid": "175"}).text
+    revenue_estimate_current_year = fast_float(revenue_estimate_current_year[: -1], default=None)
+
     revenue_estimate_next_year = ret.find("span", attrs={"data-reactid": "177"}).text
+    revenue_estimate_next_year = fast_float(revenue_estimate_next_year[: -1], default=None)
 
     # Earnings History
     eht = soup.find("table", attrs={"class": "W(100%) M(0) BdB Bdc($seperatorColor) Mb(25px)", "data-reactid": "178"})
@@ -169,22 +176,18 @@ def get_ranking_data(ticker, ag=agents()):
     date2 = eht.find("span", attrs={"data-reactid": "186"}).text
     date3 = eht.find("span", attrs={"data-reactid": "188"}).text
     date4 = eht.find("span", attrs={"data-reactid": "190"}).text
-    value1 = eht.find("span", attrs={"data-reactid": "207"}).text
-    if isinstance(value1, float):
-        value1 = float(value1)
-    value2 = eht.find("span", attrs={"data-reactid": "209"}).text
-    if isinstance(value2, float):
-        value2 = float(value2)
-    value3 = eht.find("span", attrs={"data-reactid": "211"}).text
-    if isinstance(value3, float):
-        value3 = float(value3)
-    value4 = eht.find("span", attrs={"data-reactid": "213"}).text
-    if isinstance(value4, float):
-        value4 = float(value4)
+    value1 = fast_float(eht.find("span", attrs={"data-reactid": "207"}).text, default=None)
+    value2 = fast_float(eht.find("span", attrs={"data-reactid": "209"}).text, default=None)
+    value3 = fast_float(eht.find("span", attrs={"data-reactid": "211"}).text, default=None)
+    value4 = fast_float(eht.find("span", attrs={"data-reactid": "213"}).text, default=None)
     earning_history_eps_actual = {}
+    earning_history_eps_actual_yearago = None
+    earning_history_eps_actual_nqyearago = None
     if date1 != "Invalid Date":
+        earning_history_eps_actual_yearago = value1
         earning_history_eps_actual[datetime.datetime.strptime(date1, "%m/%d/%Y").date()] = value1
     if date2 != "Invalid Date":
+        earning_history_eps_actual_nqyearago = value2
         earning_history_eps_actual[datetime.datetime.strptime(date2, "%m/%d/%Y").date()] = value2
     if date3 != "Invalid Date":
         earning_history_eps_actual[datetime.datetime.strptime(date3, "%m/%d/%Y").date()] = value3
@@ -210,42 +213,219 @@ def get_ranking_data(ticker, ag=agents()):
     reuters = Reuters()
     ticker_list = [ticker + ".O"]
     df1 = reuters.get_income_statement(ticker_list, yearly=False)
+
     # Total Revenue
     tr = df1.loc[df1['metric'] == 'Total Revenue', ['year', 'metric', 'value', 'quarter']]
-    for index, row in tr.iterrows():
-        debug(f'Total Revenue [y:{row.year} q:{row.quarter}] : {row.value}')
+    total_revenue_curr = None
+    total_revenue_yearago = None
+    if len(tr.values) == 5:
+        total_revenue_curr = fast_float(tr.values[0][2], default=None)
+        total_revenue_yearago = fast_float(tr.values[4][2], default=None)
+    debug(f'Total revenue last: {total_revenue_curr}')
+    debug(f'Total revenue first: {total_revenue_yearago}')
+
     # Diluted Normalized EPS
     dneps = df1.loc[df1['metric'] == 'Diluted Normalized EPS', ['year', 'metric', 'value', 'quarter']]
-    for index, row in dneps.iterrows():
-        debug(f'Diluted Normalized EPS [y:{row.year} q:{row.quarter}] : {row.value}')
+    diluted_normalized_eps_curr = None
+    diluted_normalized_eps_yearago = None
+    if len(dneps.values) == 5:
+        diluted_normalized_eps_curr = fast_float(dneps.values[0][2], default=None)
+        diluted_normalized_eps_yearago = fast_float(dneps.values[-1][2], default=None)
+    debug(f'Diluted Normalized EPS Last: {diluted_normalized_eps_curr}')
+    debug(f'Diluted Normalized EPS First: {diluted_normalized_eps_yearago}')
 
     # df2 = reuters.get_balance_sheet(ticker_list, yearly=False)
     # df3 = reuters.get_cash_flow(ticker_list, yearly=False)
     df4 = reuters.get_key_metrics(ticker_list)
     # Market Capitalization
     mkt_cap = df4.loc[df4['metric'] == 'Market Capitalization', ['value']].value.values[0]
+    mkt_cap = mkt_cap.replace(',', '')
+    if mkt_cap[-1] in ['B', 'M']:
+        mkt_cap = fast_float(mkt_cap[: -1], default=None)
+    else:
+        mkt_cap = fast_float(mkt_cap, default=None)
+
     debug(f'Market Capitalization: {mkt_cap}')
+
     # Beta
     beta = df4.loc[df4['metric'] == 'Beta', ['value']].value.values[0]
+    beta = fast_float(beta, default=None)
     debug(f'Beta: {beta}')
+
     # Revenue per Share (Annual)
-    revenue_per_share_annual = df4.loc[df4['metric'] == 'Revenue per Share (Annual)', ['value']].value.values[0]
-    debug(f'Revenue Per Share (Annual): {revenue_per_share_annual}')
+    # revenue_per_share_annual = df4.loc[df4['metric'] == 'Revenue per Share (Annual)', ['value']].value.values[0]
+    # debug(f'Revenue Per Share (Annual): {revenue_per_share_annual}')
+
     # Dividend (Per Share Annual)
     divident_per_share_annual = df4.loc[df4['metric'] == 'Dividend (Per Share Annual)', ['value']].value.values[0]
+    divident_per_share_annual =fast_float(divident_per_share_annual, default=None)
     debug(f'Dividend (Per Share Annual): {divident_per_share_annual}')
+
     # Current Ratio (Quarterly)
     current_ratio_quarterly = df4.loc[df4['metric'] == 'Current Ratio (Quarterly)', ['value']].value.values[0]
+    current_ratio_quarterly = fast_float(current_ratio_quarterly, default=None)
     debug(f'Current Ratio (Quarterly): {current_ratio_quarterly}')
+
     # Long Term Debt/Equity (Quarterly)
     long_term_debt_equity_quarterly = df4.loc[df4['metric'] == 'Long Term Debt/Equity (Quarterly)', ['value']].value.values[0]
+    long_term_debt_equity_quarterly = fast_float(long_term_debt_equity_quarterly, default=None)
     debug(f'Long Term Debt/Equity (Quarterly): {long_term_debt_equity_quarterly}')
+
     # Net Profit Margin % (Annual)
     net_profit_margin_percent_annual = df4.loc[df4['metric'] == 'Net Profit Margin % (Annual)', ['value']].value.values[0]
+    net_profit_margin_percent_annual = fast_float(net_profit_margin_percent_annual, default=None)
     debug(f'Net Profit Margin % (Annual): {net_profit_margin_percent_annual}')
 
+    revenue_estimate_current_year_r = None
+    if revenue_estimate_current_year is not None:
+        if revenue_estimate_current_year > 5:
+            revenue_estimate_current_year_r = 2
+        elif 0 <= revenue_estimate_current_year <= 5:
+            revenue_estimate_current_year_r = 1
+        elif revenue_estimate_current_year < 0:
+            revenue_estimate_current_year_r = -1
 
+    revenue_estimate_next_year_r = None
+    if revenue_estimate_next_year is not None:
+        revenue_estimate_next_year_r = 1 if revenue_estimate_next_year > 0 else -1
+
+    curr_avg_estimate_r = None
+    if earning_history_eps_actual_yearago is not None and curr_avg_estimate is not None:
+        curr_avg_estimate_r = 2 if curr_avg_estimate > earning_history_eps_actual_yearago else -2
+
+    next_qtr_avg_estimate_r = None
+    if earning_history_eps_actual_nqyearago is not None and next_qtr_avg_estimate is not None:
+        next_qtr_avg_estimate_r = 2 if next_qtr_avg_estimate > earning_history_eps_actual_nqyearago else -2
+
+    total_revenue_r = None
+    if total_revenue_curr is not None and total_revenue_yearago is not None:
+        total_revenue_r = 1 if total_revenue_curr > total_revenue_yearago else -1
+
+    diluted_normalized_eps_r = None
+    if diluted_normalized_eps_yearago is not None and diluted_normalized_eps_curr is not None:
+        diluted_normalized_eps_r = 1 if diluted_normalized_eps_curr > diluted_normalized_eps_yearago else -1
+
+    net_profit_margin_percent_annual_r = None
+    if net_profit_margin_percent_annual is not None:
+        if net_profit_margin_percent_annual > 2:
+            net_profit_margin_percent_annual_r = 2
+        elif 0 <= net_profit_margin_percent_annual <= 2:
+            net_profit_margin_percent_annual_r = 1
+        elif 0 > net_profit_margin_percent_annual >= -5:
+            net_profit_margin_percent_annual_r = -1
+        elif net_profit_margin_percent_annual < -5:
+            net_profit_margin_percent_annual_r = -2
+
+    divident_per_share_annual_r = None
+    if divident_per_share_annual is not None:
+        divident_per_share_annual_r = 2 if divident_per_share_annual > 0 else -2
+
+    mkt_cap_r = None
+    if mkt_cap is not None:
+        if mkt_cap > 200000:
+            mkt_cap_r = 2
+        elif 50000 < mkt_cap <= 200000:
+            mkt_cap_r = 1
+        elif 10000 < mkt_cap <= 50000:
+            mkt_cap_r = 0
+        elif 2000 < mkt_cap <= 10000:
+            mkt_cap_r = -1
+        elif 2000 < mkt_cap:
+            mkt_cap_r = -2
+
+    beta_r = None
+    if beta is not None:
+        beta_r = 1 if 0.75 <= beta <= 1.5 else -1
+
+    current_ratio_quarterly_r = None
+    if current_ratio_quarterly is not None:
+        current_ratio_quarterly_r = 2 if current_ratio_quarterly > 1 else -2
+
+    long_term_debt_equity_quarterly_r = None
+    if long_term_debt_equity_quarterly is not None:
+        if long_term_debt_equity_quarterly > 3:
+            long_term_debt_equity_quarterly_r = -2
+        elif 2 <= long_term_debt_equity_quarterly <= 3:
+            long_term_debt_equity_quarterly_r = -1
+        elif long_term_debt_equity_quarterly < 2:
+            long_term_debt_equity_quarterly_r = 1
+
+    debug("-------------- R A N K I N G --------------")
+    debug(f'\n'
+          f'revenue_estimate: {revenue_estimate_current_year_r}\n'
+          f'curr_avg_estimate: {curr_avg_estimate_r}\n'
+          f'next_qtr_avg_estimate: {next_qtr_avg_estimate_r}\n'
+          f'total_revenue: {total_revenue_r}\n'
+          f'diluted_normalized_eps: {diluted_normalized_eps_r}\n'
+          f'net_profit_margin_percent_annual: {net_profit_margin_percent_annual_r}\n'
+          f'divident_per_share_annual: {divident_per_share_annual_r}\n'
+          f'mkt_cap: {mkt_cap_r}\n'
+          f'beta: {beta_r}\n'
+          f'current_ratio_quarterly: {current_ratio_quarterly_r}\n'
+          f'long_term_debt_equity_quarterly: {long_term_debt_equity_quarterly_r}\n')
+
+    finaly_rank = 0
+    if revenue_estimate_current_year_r is not None:
+        finaly_rank = finaly_rank + revenue_estimate_current_year_r
+    if curr_avg_estimate_r is not None:
+        finaly_rank = finaly_rank + curr_avg_estimate_r
+    if next_qtr_avg_estimate_r is not None:
+        finaly_rank = finaly_rank + next_qtr_avg_estimate_r
+    if total_revenue_r is not None:
+        finaly_rank = finaly_rank + total_revenue_r
+    if diluted_normalized_eps_r is not None:
+        finaly_rank = finaly_rank + diluted_normalized_eps_r
+    if net_profit_margin_percent_annual_r is not None:
+        finaly_rank = finaly_rank + net_profit_margin_percent_annual_r
+    if divident_per_share_annual_r is not None:
+        finaly_rank = finaly_rank + divident_per_share_annual_r
+    if mkt_cap_r is not None:
+        finaly_rank = finaly_rank + mkt_cap_r
+    if beta_r is not None:
+        finaly_rank = finaly_rank + mkt_cap_r
+    if current_ratio_quarterly_r is not None:
+        finaly_rank = finaly_rank + current_ratio_quarterly_r
+    if long_term_debt_equity_quarterly_r is not None:
+        finaly_rank = finaly_rank + long_term_debt_equity_quarterly_r
+
+    debug(f"Finaly Rank: {finaly_rank}\n", WARNING)
+
+    res = {"rank": finaly_rank,
+           "revenue_estimate": revenue_estimate_current_year_r,
+           "curr_avg_estimate": curr_avg_estimate_r,
+           "next_qtr_avg_estimate": next_qtr_avg_estimate_r,
+           "total_revenue": total_revenue_r,
+           "diluted_normalized_eps": diluted_normalized_eps_r,
+           "net_profit_margin_percent_annual": net_profit_margin_percent_annual_r,
+           "divident_per_share_annual": divident_per_share_annual_r,
+           "mkt_cap": mkt_cap_r,
+           "beta": beta_r,
+           "current_ratio_quarterly": current_ratio_quarterly_r,
+           "long_term_debt_equity_quarterly_r": long_term_debt_equity_quarterly_r}
     debug('%%% get_ranking_data complete')
+    return res
+
+
+    # revenue_estimate_current_year > 5 % +2 / 0 - 5 % +1 < 0 % -1
+    # revenue_estimate_next_year  positive + 1 / negative - 1
+    #
+    # curr_avg_estimate > earning_history_eps_actual года назад + 2 else -2
+    # next_qtr_avg_estimate > earning_history_eps_actual года назад + 2 else -2
+    #
+    # Total Revenue > квартала год назад + 1 else -1
+    # Diluted Normalized EPS > квартала год назад + 1 else -1
+    # Net Profit Margin % (Annual) > 2 + 2 / 0 - 2 + 1 / < 0 - 5 - 1 / < -5 - 2
+    #
+    # Dividend(Per Share Annual) positive + 2 / negative - 2
+    #
+    # Market Capitalization > 200bln + 2 / 50 - 200bln + 1 / 2 - 10 + 0 / < 2bln - 2
+    # Beta 0.75 - 1.5 + 1 else -1
+    # Current Ratio(Quarterly) > 1 + 2 / < 1 - 2
+    # Long Term Debt / Equity(Quarterly) > 3 - 2 / 2 - 3 - 1 / < 2 + 1
+    #
+    # Rank = sum of all values
+    # return dict{rank: ..., next_report_date: ..., revenue_estimate_current_year: 2, ....}
+
 
 
 # ============================== FINVIZ TREEMAP GET ================================
