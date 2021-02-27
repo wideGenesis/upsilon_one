@@ -211,8 +211,12 @@ def get_ranking_data(ticker, ag=agents()):
 
     debug(" >>> Reuters Data <<< ")
     reuters = Reuters()
-    ticker_list = [ticker + ".O"]
+    ticker_list = [ticker + ".Z"]
     df1 = reuters.get_income_statement(ticker_list, yearly=False)
+    if df1 is None or df1.size == 0:
+        ticker_list = [ticker + ".O"]
+        df1 = reuters.get_income_statement(ticker_list, yearly=False)
+
     if df1 is None or df1.size == 0:
         ticker_list = [ticker + ".N"]
         df1 = reuters.get_income_statement(ticker_list, yearly=False)
@@ -224,6 +228,7 @@ def get_ranking_data(ticker, ag=agents()):
     if df1 is None or df1.size == 0:
         return {"rank": None, "data": None}
 
+    debug(f'%%% Find ticker on: {ticker_list} %%%')
     # Total Revenue
     tr = df1.loc[df1['metric'] == 'Total Revenue', ['year', 'metric', 'value', 'quarter']]
     total_revenue_curr = None
