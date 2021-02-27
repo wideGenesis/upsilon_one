@@ -213,15 +213,15 @@ def get_ranking_data(ticker, ag=agents()):
     reuters = Reuters()
     ticker_list = [ticker + ".O"]
     df1 = reuters.get_income_statement(ticker_list, yearly=False)
-    if df1 is None:
+    if df1 is None or df1.size == 0:
         ticker_list = [ticker + ".N"]
         df1 = reuters.get_income_statement(ticker_list, yearly=False)
 
-    if df1 is None:
+    if df1 is None or df1.size == 0:
         ticker_list = [ticker + ".A"]
         df1 = reuters.get_income_statement(ticker_list, yearly=False)
 
-    if df1 is None:
+    if df1 is None or df1.size == 0:
         return {"rank": None, "data": None}
 
     # Total Revenue
