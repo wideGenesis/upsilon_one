@@ -190,9 +190,10 @@ async def dialog_flow_handler(event, client_):
 async def quotes_to_handler(event, client_, limit=20):
     parse = str(event.text)
     parse = re.split('/q |#|@|\$', parse)
-    print(parse)
+    # print(parse)
     stock = parse[1]
     stock = stock.upper()
+    message = await client_.send_message(event.input_sender, message='Запрос обрабатывается, ожидайте...')
     img_path = os.path.join('results/ticker_stat', f'{stock}.png')
     ss = StockStat(stock=stock)
     try:
@@ -218,7 +219,6 @@ async def quotes_to_handler(event, client_, limit=20):
     except Exception as e4:
         debug(e4)
         msg3 = 'Рекомендация недоступна'
-    message = await client_.send_message(event.input_sender, message='Запрос обрабатывается, ожидайте...')
     await client_.edit_message(message, msg2)
     # await client_.send_message(event.input_sender, msg2)
     await client_.send_file(event.input_sender, img_path)
