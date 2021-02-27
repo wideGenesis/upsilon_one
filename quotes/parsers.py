@@ -150,6 +150,9 @@ def advance_decline(ag=None, img_out_path_=IMAGES_OUT_PATH):
 # ============================== GET RANKING DATA ================================
 def get_ranking_data(tick, ag=agents()):
     ticker = tick.upper()
+    if ticker is None or len(ticker) == 0:
+        return {"rank": None, "data": None}
+
     headers = {'User-Agent': ag}
     url = f"https://finance.yahoo.com/quote/{ticker}/analysis?p={ticker}"
     try:
