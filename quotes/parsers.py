@@ -151,8 +151,12 @@ def advance_decline(ag=None, img_out_path_=IMAGES_OUT_PATH):
 def get_ranking_data(ticker, ag=agents()):
     headers = {'User-Agent': ag}
     url = f"https://finance.yahoo.com/quote/{ticker}/analysis?p={ticker}"
-    zzz = requests.get(url).text
-    soup = BeautifulSoup(zzz, "html.parser")
+    try:
+        yahoo_analysis = requests.get(url).text
+        soup = BeautifulSoup(yahoo_analysis, "html.parser")
+    except Exception as e:
+        debug(e, "ERROR")
+        return {"rank": None, "data": None}
 
     # Earnings Estimate
     eet = soup.find("table", attrs={"class": "W(100%) M(0) BdB Bdc($seperatorColor) Mb(25px)", "data-reactid": "5"})
@@ -201,29 +205,53 @@ def get_ranking_data(ticker, ag=agents()):
     debug(f"revenue_estimate_next_year={revenue_estimate_next_year}")
     debug(f"earning_history_eps_actual={earning_history_eps_actual}\n")
 
+    next_earning_date = None
     url1 = f"https://finance.yahoo.com/quote/{ticker}?p={ticker}"
-    zzz1 = requests.get(url1).text
-    soup = BeautifulSoup(zzz1, "html.parser")
-    next_earning_date = soup.find("td", attrs={"class": "Ta(end) Fw(600) Lh(14px)",
-                                               "data-reactid": "104",
-                                               "data-test": "EARNINGS_DATE-value"}).text
+    try:
+        yahoo_quotes = requests.get(url1).text
+        soup = BeautifulSoup(yahoo_quotes, "html.parser")
+        next_earning_date = soup.find("td", attrs={"class": "Ta(end) Fw(600) Lh(14px)",
+                                                   "data-reactid": "104",
+                                                   "data-test": "EARNINGS_DATE-value"}).text
+    except Exception as e:
+        debug(e, "ERROR")
+        pass
+
     debug(f"next_earning_date={next_earning_date}\n")
 
     debug(" >>> Reuters Data <<< ")
     reuters = Reuters()
     ticker_list = [ticker + ".Z"]
-    df1 = reuters.get_income_statement(ticker_list, yearly=False)
+    df1 = None
+    try:
+        df1 = reuters.get_income_statement(ticker_list, yearly=False)
+    except Exception as e:
+        debug(e, "ERROR")
+        pass
+
     if df1 is None or df1.size == 0:
         ticker_list = [ticker + ".O"]
-        df1 = reuters.get_income_statement(ticker_list, yearly=False)
+        try:
+            df1 = reuters.get_income_statement(ticker_list, yearly=False)
+        except Exception as e:
+            debug(e, "ERROR")
+            pass
 
     if df1 is None or df1.size == 0:
         ticker_list = [ticker + ".N"]
-        df1 = reuters.get_income_statement(ticker_list, yearly=False)
+        try:
+            df1 = reuters.get_income_statement(ticker_list, yearly=False)
+        except Exception as e:
+            debug(e, "ERROR")
+            pass
 
     if df1 is None or df1.size == 0:
         ticker_list = [ticker + ".A"]
-        df1 = reuters.get_income_statement(ticker_list, yearly=False)
+        try:
+            df1 = reuters.get_income_statement(ticker_list, yearly=False)
+        except Exception as e:
+            debug(e, "ERROR")
+            pass
 
     if df1 is None or df1.size == 0:
         return {"rank": None, "data": None}
@@ -251,11 +279,17 @@ def get_ranking_data(ticker, ag=agents()):
 
     # df2 = reuters.get_balance_sheet(ticker_list, yearly=False)
     # df3 = reuters.get_cash_flow(ticker_list, yearly=False)
-    df4 = reuters.get_key_metrics(ticker_list)
+    def4 = None
+    try:
+        df4 = reuters.get_key_metrics(ticker_list)
+    except Exception as e:
+        debug(e, "ERROR")
+        return {"rank": None, "data": None}
+
     # Market Capitalization
     mkt_cap = df4.loc[df4['metric'] == 'Market Capitalization', ['value']].value.values[0]
     mkt_cap = mkt_cap.replace(',', '')
-    if mkt_cap[-1] in ['B', 'M']:
+    if mkt_cap[-1] in ['B', 'M', 'b', 'm']:
         mkt_cap = fast_float(mkt_cap[: -1], default=None)
     else:
         mkt_cap = fast_float(mkt_cap, default=None)
