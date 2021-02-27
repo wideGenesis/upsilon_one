@@ -211,11 +211,11 @@ class StockStat:
             price = finviz.get_stock(self.stock)
             sma50 = price['SMA50'].split('%')
             sma50 = float(sma50[0])
-            print(rank)
-            print(sma50)
+            print('РАНГ', rank['rank'])
+            print('SMA50', sma50)
 
         except Exception as e11:
-            msg1 = 'Ранг для данного тикера недоступен'
+            msg1 = 'Аналитика для данного тикера недоступна. '
             return msg1
 
         next_earning_date = None
@@ -223,12 +223,9 @@ class StockStat:
             if k == "next_earning_date":
                 next_earning_date = v
             elif k == 'data':
-                msg1 = 'Данные временно недоступны'
+                msg1 = 'Данные временно недоступны, попробуйте выполнить запрос через минуту. '
             else:
-                # k: {ins.ranking[k][v]}
-                # print(ins.ranking[k][v])
                 msg1 += '\n' + ins.ranking[k][v]
-        print(msg1)
         return msg1
 
             # print(f'Parameter: {k} : {ins.ranking[k][v]}')
