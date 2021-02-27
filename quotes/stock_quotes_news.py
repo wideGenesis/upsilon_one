@@ -218,10 +218,16 @@ class StockStat:
             msg1 = 'Ранг для данного тикера недоступен'
             return msg1
 
+        next_earning_date = None
         for k, v in rank.items():
-            # k: {ins.ranking[k][v]}
-            print(k)
-            msg1 += '\n' + ins.ranking[k][v]
+            if k == "next_earning_date":
+                next_earning_date = v
+            elif k == 'data':
+                msg1 = 'Данные временно недоступны'
+            else:
+                # k: {ins.ranking[k][v]}
+                # print(ins.ranking[k][v])
+                msg1 += '\n' + ins.ranking[k][v]
         print(msg1)
         return msg1
 
