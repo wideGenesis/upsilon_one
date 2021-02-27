@@ -458,7 +458,8 @@ def get_ranking_data(ticker, ag=agents()):
            "mkt_cap": mkt_cap_r,
            "beta": beta_r,
            "current_ratio_quarterly": current_ratio_quarterly_r,
-           "long_term_debt_equity_quarterly_r": long_term_debt_equity_quarterly_r}
+           "long_term_debt_equity_quarterly_r": long_term_debt_equity_quarterly_r,
+           "next_earning_date": next_earning_date}
     debug('%%% get_ranking_data complete')
     return res
 
