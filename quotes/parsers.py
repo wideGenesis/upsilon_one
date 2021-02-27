@@ -360,12 +360,14 @@ def get_ranking_data(ticker, ag=agents()):
 
     long_term_debt_equity_quarterly_r = None
     if long_term_debt_equity_quarterly is not None:
-        if long_term_debt_equity_quarterly > 3:
+        if long_term_debt_equity_quarterly > 30:
             long_term_debt_equity_quarterly_r = -2
-        elif 2 <= long_term_debt_equity_quarterly <= 3:
+        elif 20 <= long_term_debt_equity_quarterly <= 30:
             long_term_debt_equity_quarterly_r = -1
-        elif long_term_debt_equity_quarterly < 2:
+        elif long_term_debt_equity_quarterly < 20:
             long_term_debt_equity_quarterly_r = 1
+    else:
+        long_term_debt_equity_quarterly_r = -5
 
     debug("-------------- R A N K I N G --------------")
     debug(f'\n'
