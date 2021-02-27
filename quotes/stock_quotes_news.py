@@ -198,14 +198,14 @@ class StockStat:
             msg1 = 'Недостаточно данных для скоринга'
             return msg1
 # 'U+1F44D'
-#     {'rank': 2, 'revenue_estimate': -1, 'revenue_estimate_next_year': -1, 'curr_avg_estimate': 2,
-#      'next_qtr_avg_estimate': 2, 'total_revenue': -1, 'diluted_normalized_eps': 1,
-#      'net_profit_margin_percent_annual': -2, 'divident_per_share_annual': 2, 'mkt_cap': -1, 'beta': -1,
-#      'current_ratio_quarterly': 2, 'long_term_debt_equity_quarterly_r': -2}
+# {'rank': 16, 'revenue_estimate': 2, 'revenue_estimate_next_year': 2, 'curr_avg_estimate': 2,
+    # 'next_qtr_avg_estimate': 2, 'total_revenue': 1, 'diluted_normalized_eps': 1,
+    # 'net_profit_margin_percent_annual': 2, 'divident_per_share_annual': 2, 'mkt_cap': 2,
+    # 'beta': 1, 'current_ratio_quarterly': 2, 'long_term_debt_equity_quarterly_r': -2, 'next_earning_date': 'N/A'}
+
 
     def company_rank_v2(self):
         msg1 = ''
-        msg2 = ''
         try:
             rank = get_ranking_data(self.stock)
             price = finviz.get_stock(self.stock)
@@ -215,13 +215,17 @@ class StockStat:
             print(sma50)
 
         except Exception as e11:
-            msg1.replace('', 'Ранг для данного тикера недоступен')
+            msg1 = 'Ранг для данного тикера недоступен'
             return msg1
 
-        final = {}
-        for k, k2 in zip(rank, ins.ranking):
-            if k == k2:
-                final[dic2[k]] = dic1[k]
+        for k, v in rank.items():
+            # k: {ins.ranking[k][v]}
+            print(k)
+            msg1 += '\n' + ins.ranking[k][v]
+        print(msg1)
+        return msg1
+
+            # print(f'Parameter: {k} : {ins.ranking[k][v]}')
 
         # if rank['revenue_estimate'] == 2:
         #     msg1.replace(msg1, ins.ranking['revenue_estimate'][2])

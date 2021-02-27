@@ -12,12 +12,16 @@ from time import sleep
 from charter.charter import *
 import undetected_chromedriver as uc
 from quotes.historical_universe import *
+from quotes.stock_quotes_news import StockStat
 
 
 # ============================== Main  =============================
 def main():
-    x = get_ranking_data("AAPL")
-    print(x)
+    # x = get_ranking_data("ASML")
+    # print(x)
+    ss = StockStat(stock='AAPL')
+    out = ss.company_rank_v2()
+    print(out)
     exit(0)
     # 1) Первичный аплоад данных. Делаем один раз и больше данные не  трогаем.
     #    Ео если вдруг пришлось дропнуть таблицу quotes то лучше начать именно с первичного забора данных
