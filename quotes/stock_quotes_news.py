@@ -5,6 +5,8 @@ import finviz
 from finvizfinance.news import News
 import quantstats as qs
 from quotes.historical_universe import *
+from quotes.parsers import *
+from telegram import instructions as ins
 
 
 @dataclass
@@ -196,19 +198,45 @@ class StockStat:
             msg1 = 'Недостаточно данных для скоринга'
             return msg1
 # 'U+1F44D'
+#     {'rank': 2, 'revenue_estimate': -1, 'revenue_estimate_next_year': -1, 'curr_avg_estimate': 2,
+#      'next_qtr_avg_estimate': 2, 'total_revenue': -1, 'diluted_normalized_eps': 1,
+#      'net_profit_margin_percent_annual': -2, 'divident_per_share_annual': 2, 'mkt_cap': -1, 'beta': -1,
+#      'current_ratio_quarterly': 2, 'long_term_debt_equity_quarterly_r': -2}
 
-        # elif rank[2] and rank[1] and rank[0]:
-        #     msg1 = 'Стабильная, прибыльная компания c высоким потенциалом роста'
-        #     return msg1
-        # elif rank[2] is False and rank[1] is False and rank[0] is True:
-        #     msg1 = 'Компания убыточная, но увеличивает свою долю на рынке'
-        #     return msg1
-        # elif rank[2] is False and rank[1] is False and rank[0] is False:
-        #     msg1 = 'Убыточная компания. Можно рассматривать только как спекуляцию'
-        #     return msg1
-        # elif rank[2] is False and rank[1] is True and rank[0] is True:
-        #     msg1 = 'Убыточная компания. Можно рассматривать только как спекуляцию'
-        #     return msg1
+    def company_rank_v2(self):
+        msg1 = ''
+        msg2 = ''
+        try:
+            rank = get_ranking_data(self.stock)
+            price = finviz.get_stock(self.stock)
+            sma50 = price['SMA50'].split('%')
+            sma50 = float(sma50[0])
+            print(rank)
+            print(sma50)
+
+        except Exception as e11:
+            msg1.replace('', 'Ранг для данного тикера недоступен')
+            return msg1
+
+        final = {}
+        for k, k2 in zip(rank, ins.ranking):
+            if k == k2:
+                final[dic2[k]] = dic1[k]
+
+        # if rank['revenue_estimate'] == 2:
+        #     msg1.replace(msg1, ins.ranking['revenue_estimate'][2])
+        # elif rank['revenue_estimate'] == 1:
+        #     msg1.replace(msg1, ins.ranking['revenue_estimate'][1])
+        # elif rank['revenue_estimate'] == -1:
+        #     msg1.replace(msg1, ins.ranking['revenue_estimate'][3])
+        #
+        # if rank['revenue_estimate_next_year'] == 1:
+        #     msg2.replace(msg2, ins.ranking['revenue_estimate_next_year'][1])
+        # elif rank['revenue_estimate_next_year'] == -1:
+        #     msg2.replace(msg2, ins.ranking['revenue_estimate_next_year'][2])
+        # print(msg1 + '\n' + msg2)
+        # return msg1 + '\n' + msg2
+
 
     def stock_news(self):
         try:
