@@ -193,7 +193,9 @@ async def quotes_to_handler(event, client_, limit=20):
     # print(parse)
     stock = parse[1]
     stock = stock.upper()
-    message = await client_.send_message(event.input_sender, message='Запрос обрабатывается, ожидайте...')
+    message1 = await client_.send_message(event.input_sender, message='Получаю описание, ожидайте...')
+    message2 = await client_.send_message(event.input_sender, message='Рассчитываю ключевые статистики, ожидайте...')
+    message3 = await client_.send_message(event.input_sender, message='Строю скоринг, ожидайте...')
     img_path = os.path.join('results/ticker_stat', f'{stock}.png')
     ss = StockStat(stock=stock)
     try:
@@ -204,7 +206,7 @@ async def quotes_to_handler(event, client_, limit=20):
         msg1 = ss.stock_description()
     except Exception as e1:
         debug(e1)
-        msg1 = 'Описание для ETF недоступно или нет данных'
+        msg1 = 'Описание для данного тикера недоступно или нет данных'
     try:
         ss.stock_snapshot()
     except Exception as e2:
@@ -219,12 +221,14 @@ async def quotes_to_handler(event, client_, limit=20):
     except Exception as e4:
         debug(e4)
         msg3 = 'Рекомендация недоступна'
-    await client_.edit_message(message, msg2)
-    # await client_.send_message(event.input_sender, msg2)
+    await client_.edit_message(message1, msg1)
+    await client_.edit_message(message2, msg2)
     await client_.send_file(event.input_sender, img_path)
-    await client_.send_message(event.input_sender, msg1)
-    await client_.send_message(event.input_sender, 'Оценка Ипсилона: ' + '\n' + msg3 + '\n' +
-                               'Как использовать скоринг? - /instruction28')
+    # await client_.send_message(event.input_sender, msg1)
+    await client_.edit_message(message3, 'Оценка Ипсилона: ' + '\n' + msg3 + '\n \n ' +
+                               '\U00002757 Как использовать скоринг? - /instruction28')
+    # await client_.send_message(event.input_sender, 'Оценка Ипсилона: ' + '\n' + msg3 + '\n' +
+    #                            'Как использовать скоринг? - /instruction28')
     os.remove(img_path)
 
 

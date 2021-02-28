@@ -19,7 +19,7 @@ from quotes.stock_quotes_news import StockStat
 def main():
     x = get_ranking_data2("ASML")
     # print(x)
-    ss = StockStat(stock='KLR')
+    ss = StockStat(stock='AMGN')
     out = ss.company_rank_v2()
     print(out)
     exit(0)
