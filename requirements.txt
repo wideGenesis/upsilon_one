@@ -164,3 +164,4 @@ simfin
 reuterspy~=1.0
 PyQt5~=5.15.3
 fastnumbers>=3.1.0
+yahooquery>=2.2.15
