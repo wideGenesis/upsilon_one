@@ -501,6 +501,7 @@ def get_ranking_data(tick, ag=agents()):
     # return dict{rank: ..., next_report_date: ..., revenue_estimate_current_year: 2, ....}
 
 # ============================== GET RANKING DATA II ================================
+#
 def get_ranking_data2(tick, ag=agents()):
     ticker = tick.upper()
     if ticker is None or len(ticker) == 0:
@@ -509,7 +510,108 @@ def get_ranking_data2(tick, ag=agents()):
     ticker_data = Ticker(ticker)
     all_financial_data = ticker_data.all_financial_data('q')
 
-    pass
+    diluted_eps = all_financial_data.DilutedEPS.values
+    diluted_eps_last = None
+    for i in reversed(diluted_eps):
+        diluted_eps_last = fast_float(i, default=None)
+        if not pd.isna(diluted_eps_last):
+            break
+    diluted_eps_yearago = fast_float(all_financial_data.DilutedEPS.values[1], default=None)
+
+    total_revenue = all_financial_data.TotalRevenue.values
+    total_revenue_last = None
+    for i in reversed(total_revenue):
+        total_revenue_last = fast_float(i, default=None)
+        if not pd.isna(total_revenue_last):
+            break
+    total_revenue_yearago = fast_float(all_financial_data.TotalRevenue.values[1], default=None)
+
+    repurchase_of_capital_stock = all_financial_data.RepurchaseOfCapitalStock
+
+    country = ticker_data.asset_profile[ticker]['country']
+    industry = ticker_data.asset_profile[ticker]['industry']
+    sector = ticker_data.asset_profile[ticker]['sector']
+
+    regularMarketPrice = ticker_data.price[ticker]['regularMarketPrice']
+    marketState = ticker_data.price[ticker]['marketState']
+    longName = ticker_data.price[ticker]['longName']
+
+    beta = ticker_data.summary_detail[ticker]['beta']
+    volume = ticker_data.summary_detail[ticker]['volume']
+    averageDailyVolume10Day = ticker_data.summary_detail[ticker]['averageDailyVolume10Day']
+    trailingAnnualDividendRate = ticker_data.summary_detail[ticker]['trailingAnnualDividendRate']
+    trailingAnnualDividendYield = ticker_data.summary_detail[ticker]['trailingAnnualDividendRate']
+
+    quickRatio = ticker_data.financial_data[ticker]['quickRatio']
+    currentRatio = ticker_data.financial_data[ticker]['currentRatio']
+    debtToEquity = ticker_data.financial_data[ticker]['debtToEquity']
+    earningsGrowth = ticker_data.financial_data[ticker]['earningsGrowth']
+    revenueGrowth = ticker_data.financial_data[ticker]['revenueGrowth']
+    profitMargins = ticker_data.financial_data[ticker]['profitMargins']
+
+    # Earning trend data
+    et_period_0q = ticker_data.earnings_trend[ticker]['trend'][0]['period']
+    et_0q_endDate = ticker_data.earnings_trend[ticker]['trend'][0]['endDate']
+    et_earningsEstimate_avg = ticker_data.earnings_trend[ticker]['trend'][0]['earningsEstimate']['avg']
+    et_earningsEstimate_growth = ticker_data.earnings_trend[ticker]['trend'][0]['earningsEstimate']['growth']
+    et_revenueEstimate_avg = ticker_data.earnings_trend[ticker]['trend'][0]['revenueEstimate']['avg']
+    et_revenueEstimate_growth = ticker_data.earnings_trend[ticker]['trend'][0]['revenueEstimate']['growth']
+    et_epsTrend_current = ticker_data.earnings_trend[ticker]['trend'][0]['epsTrend']['current']
+    et_epsTrend_7daysAgo = ticker_data.earnings_trend[ticker]['trend'][0]['epsTrend']['7daysAgo']
+    et_epsTrend_30daysAgo = ticker_data.earnings_trend[ticker]['trend'][0]['epsTrend']['30daysAgo']
+    et_epsTrend_60daysAgo = ticker_data.earnings_trend[ticker]['trend'][0]['epsTrend']['60daysAgo']
+    et_epsTrend_90daysAgo = ticker_data.earnings_trend[ticker]['trend'][0]['epsTrend']['90daysAgo']
+    et_epsRevisions_upLast7days = ticker_data.earnings_trend[ticker]['trend'][0]['epsRevisions']['upLast7days']
+    et_epsRevisions_upLast30days = ticker_data.earnings_trend[ticker]['trend'][0]['epsRevisions']['upLast30days']
+    et_epsRevisions_downLast90days = ticker_data.earnings_trend[ticker]['trend'][0]['epsRevisions']['downLast90days']
+
+    et_period_p1q = ticker_data.earnings_trend[ticker]['trend'][1]['period']
+    et_p1q_endDate = ticker_data.earnings_trend[ticker]['trend'][1]['endDate']
+    et_p1q_growth = ticker_data.earnings_trend[ticker]['trend'][1]['growth']
+    et_p1q_earningsEstimate_avg = ticker_data.earnings_trend[ticker]['trend'][1]['earningsEstimate']['avg']
+    et_p1q_earningsEstimate_growth = ticker_data.earnings_trend[ticker]['trend'][1]['earningsEstimate']['growth']
+    et_p1q_revenueEstimate_avg = ticker_data.earnings_trend[ticker]['trend'][1]['revenueEstimate']['avg']
+    et_p1q_revenueEstimate_growth = ticker_data.earnings_trend[ticker]['trend'][1]['revenueEstimate']['growth']
+
+    et_period_0y = ticker_data.earnings_trend[ticker]['trend'][2]['period']
+    et_0y_endDate = ticker_data.earnings_trend[ticker]['trend'][2]['endDate']
+    et_0y_growth = ticker_data.earnings_trend[ticker]['trend'][2]['growth']
+    et_0y_earningsEstimate_avg = ticker_data.earnings_trend[ticker]['trend'][2]['earningsEstimate']['avg']
+    et_0y_earningsEstimate_low = ticker_data.earnings_trend[ticker]['trend'][2]['earningsEstimate']['low']
+    et_0y_earningsEstimate_high = ticker_data.earnings_trend[ticker]['trend'][2]['earningsEstimate']['high']
+    et_0y_earningsEstimate_yearAgoEps = ticker_data.earnings_trend[ticker]['trend'][2]['earningsEstimate']['yearAgoEps']
+    et_0y_earningsEstimate_numberOfAnalysts = ticker_data.earnings_trend[ticker]['trend'][2]['earningsEstimate']['numberOfAnalysts']
+    et_0y_earningsEstimate_growth = ticker_data.earnings_trend[ticker]['trend'][2]['earningsEstimate']['growth']
+    et_0y_revenueEstimate_avg = ticker_data.earnings_trend[ticker]['trend'][2]['revenueEstimate']['avg']
+    et_0y_revenueEstimate_yearAgoRevenue = ticker_data.earnings_trend[ticker]['trend'][2]['revenueEstimate']['yearAgoRevenue']
+    et_0y_revenueEstimate_growth = ticker_data.earnings_trend[ticker]['trend'][2]['revenueEstimate']['growth']
+
+    et_period_p1y = ticker_data.earnings_trend[ticker]['trend'][3]['period']
+    et_p1y_endDate = ticker_data.earnings_trend[ticker]['trend'][3]['endDate']
+    et_p1y_revenueEstimate_avg = ticker_data.earnings_trend[ticker]['trend'][3]['revenueEstimate']['avg']
+    et_p1y_revenueEstimate_yearAgoRevenue = ticker_data.earnings_trend[ticker]['trend'][3]['revenueEstimate']['yearAgoRevenue']
+    et_p1y_revenueEstimate_growth = ticker_data.earnings_trend[ticker]['trend'][3]['revenueEstimate']['growth']
+    et_p1y_epsTrend_current = ticker_data.earnings_trend[ticker]['trend'][3]['epsTrend']['current']
+    et_p1y_epsTrend_7daysAgo = ticker_data.earnings_trend[ticker]['trend'][3]['epsTrend']['7daysAgo']
+    et_p1y_epsTrend_30daysAgo = ticker_data.earnings_trend[ticker]['trend'][3]['epsTrend']['30daysAgo']
+    et_p1y_epsTrend_60daysAgo = ticker_data.earnings_trend[ticker]['trend'][3]['epsTrend']['60daysAgo']
+    et_p1y_epsTrend_90daysAgo = ticker_data.earnings_trend[ticker]['trend'][3]['epsTrend']['90daysAgo']
+    et_p1y_epsRevisions_upLast7days = ticker_data.earnings_trend[ticker]['trend'][3]['epsRevisions']['upLast7days']
+    et_p1y_epsRevisions_upLast30days = ticker_data.earnings_trend[ticker]['trend'][3]['epsRevisions']['upLast30days']
+    et_p1y_epsRevisions_downLast30days = ticker_data.earnings_trend[ticker]['trend'][3]['epsRevisions']['downLast30days']
+    et_p1y_epsRevisions_downLast90days = ticker_data.earnings_trend[ticker]['trend'][3]['epsRevisions']['downLast90days']
+
+    # Earnings
+    e_maxAge = ticker_data.earnings[ticker]['maxAge']
+    e_earningsChart_quarterly = ticker_data.earnings[ticker]['earningsChart']['quarterly']
+
+    # Calendar Events
+    ce_maxAge = ticker_data.calendar_events[ticker]['maxAge']
+    ce_exDividendDate = ticker_data.calendar_events[ticker]['exDividendDate']
+    ce_dividendDate = ticker_data.calendar_events[ticker]['dividendDate']
+    ce_earnings_earningsDate = ticker_data.calendar_events[ticker]['earnings']['earningsDate']
+
+    debug('')
     return
 
     headers = {'User-Agent': ag}
