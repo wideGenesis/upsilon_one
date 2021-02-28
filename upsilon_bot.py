@@ -190,7 +190,7 @@ def main():
 
 
 if __name__ == '__main__':
-    debug_init(file_name="bot.log")
+    # debug_init(file_name="bot.log")
     debug("__Ignition sequence start__")
     # print(sys.path)
     main()

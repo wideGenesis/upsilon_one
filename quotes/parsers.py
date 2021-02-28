@@ -225,42 +225,27 @@ def get_ranking_data(tick, ag=agents()):
 
     debug(" >>> Reuters Data <<< ")
     reuters = Reuters()
-    ticker_list = [ticker + ".Z"]
+    postfix_list = ['.Z', '.O', '.N', '.A']
+    ticker_list = []
     df1 = None
-    try:
-        df1 = reuters.get_income_statement(ticker_list, yearly=False)
-    except Exception as e:
-        debug(e, "ERROR")
-        pass
-
-    if df1 is None or df1.size == 0:
-        ticker_list = [ticker + ".O"]
+    found_postfix = ""
+    for postfix in postfix_list:
+        ticker_list = [ticker+postfix]
         try:
+            debug(f'Try get {ticker+postfix}')
             df1 = reuters.get_income_statement(ticker_list, yearly=False)
         except Exception as e:
             debug(e, "ERROR")
-            pass
+        if df1.size > 0:
+            found_postfix = postfix
+            break
+        sleep(2)
 
     if df1 is None or df1.size == 0:
-        ticker_list = [ticker + ".N"]
-        try:
-            df1 = reuters.get_income_statement(ticker_list, yearly=False)
-        except Exception as e:
-            debug(e, "ERROR")
-            pass
-
-    if df1 is None or df1.size == 0:
-        ticker_list = [ticker + ".A"]
-        try:
-            df1 = reuters.get_income_statement(ticker_list, yearly=False)
-        except Exception as e:
-            debug(e, "ERROR")
-            pass
-
-    if df1 is None or df1.size == 0:
+        debug(f"df1 is None or df1.size == 0", WARNING)
         return {"rank": None, "data": None}
 
-    debug(f'%%% Find ticker on: {ticker_list} %%%')
+    debug(f'%%% 1. Find ticker on: {ticker_list} %%%', WARNING)
     # Total Revenue
     tr = df1.loc[df1['metric'] == 'Total Revenue', ['year', 'metric', 'value', 'quarter']]
     total_revenue_curr = None
@@ -283,12 +268,31 @@ def get_ranking_data(tick, ag=agents()):
 
     # df2 = reuters.get_balance_sheet(ticker_list, yearly=False)
     # df3 = reuters.get_cash_flow(ticker_list, yearly=False)
-    def4 = None
+    df4 = None
     try:
+        debug(f'Try get {ticker_list}')
         df4 = reuters.get_key_metrics(ticker_list)
     except Exception as e:
         debug(e, "ERROR")
+    for postfix in postfix_list:
+        if postfix == found_postfix:
+            continue
+        sleep(2)
+        ticker_list = [ticker + postfix]
+        try:
+            debug(f'Try get {ticker+postfix}')
+            df4 = reuters.get_key_metrics(ticker_list)
+        except Exception as e:
+            debug(e, "ERROR")
+        if df4.size > 0:
+            found_postfix = postfix
+            break
+
+    if df4 is None or df4.size == 0:
+        debug(f"df1 is None or df1.size == 0", WARNING)
         return {"rank": None, "data": None}
+
+    debug(f'%%% 2. Find ticker on: {ticker_list} %%%', WARNING)
 
     # Market Capitalization
     mkt_cap = df4.loc[df4['metric'] == 'Market Capitalization', ['value']].value.values[0]
@@ -452,7 +456,7 @@ def get_ranking_data(tick, ag=agents()):
 
     res = {"rank": finaly_rank,
            "revenue_estimate": revenue_estimate_current_year_r,
-           "revenue_estimate_next_year": revenue_estimate_current_year_r,
+           "revenue_estimate_next_year": revenue_estimate_next_year_r,
            "curr_avg_estimate": curr_avg_estimate_r,
            "next_qtr_avg_estimate": next_qtr_avg_estimate_r,
            "total_revenue": total_revenue_r,
@@ -464,6 +468,8 @@ def get_ranking_data(tick, ag=agents()):
            "current_ratio_quarterly": current_ratio_quarterly_r,
            "long_term_debt_equity_quarterly_r": long_term_debt_equity_quarterly_r,
            "next_earning_date": next_earning_date}
+
+    debug(f"RESULT DICT: {res} ")
     debug('%%% get_ranking_data complete')
     return res
 
