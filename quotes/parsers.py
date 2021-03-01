@@ -529,9 +529,6 @@ def get_ranking_data2(tick, ag=agents()):
     averageVolume = ticker_data.summary_detail[ticker].get('averageVolume', None)
     trailingPE = ticker_data.summary_detail[ticker].get('trailingPE', None)
     forwardPE = ticker_data.summary_detail[ticker].get('forwardPE', None)
-    shortTermTrend = ticker_data.page_views[ticker].get('shortTermTrend', '')
-    midTermTrend = ticker_data.page_views[ticker].get('midTermTrend', '')
-    longTermTrend = ticker_data.page_views[ticker].get('longTermTrend', '')
     ce_exDividendDate = ticker_data.calendar_events[ticker].get('exDividendDate', None)
     ce_dividendDate = ticker_data.calendar_events[ticker].get('dividendDate', None)
     ce_earnings_earnings = ticker_data.calendar_events[ticker].get('earnings', None)
@@ -542,31 +539,66 @@ def get_ranking_data2(tick, ag=agents()):
     # % % % % % % % % % % % % % %
     # Estimetes  Block
     # % % % % % % % % % % % % % % %
-    et_0y_revenueEstimate_growth = ticker_data.earnings_trend[ticker]['trend'][2]['revenueEstimate']['growth']
-    et_p1y_revenueEstimate_growth = ticker_data.earnings_trend[ticker]['trend'][3]['revenueEstimate']['growth']
-    et_earningsEstimate_avg = ticker_data.earnings_trend[ticker]['trend'][0]['earningsEstimate']['avg']
-    e_earningsChart_quarterly = ticker_data.earnings[ticker]['earningsChart']['quarterly']
-    et_p1q_earningsEstimate_avg = ticker_data.earnings_trend[ticker]['trend'][1]['earningsEstimate']['avg']
+    et_0y_revenueEstimate_growth = None
+    et_p1y_revenueEstimate_growth = None
+    et_earningsEstimate_avg = None
+    et_p1q_earningsEstimate_avg = None
+    earnings_trend_data = ticker_data.earnings_trend[ticker]
+    if not isinstance(earnings_trend_data, str):
+        earnings_trend_ticker_trend = earnings_trend_data.get('trend', None)
+        if len(earnings_trend_ticker_trend) >= 3:
+            et_0y_revenueEstimate_growth = earnings_trend_ticker_trend[2]['revenueEstimate']['growth']
+            if isinstance(et_0y_revenueEstimate_growth, dict):
+                et_0y_revenueEstimate_growth = None
+
+        if len(earnings_trend_ticker_trend) >= 4:
+            et_p1y_revenueEstimate_growth = earnings_trend_ticker_trend[3]['revenueEstimate']['growth']
+            if isinstance(et_p1y_revenueEstimate_growth, dict):
+                et_p1y_revenueEstimate_growth = None
+
+        if len(earnings_trend_ticker_trend) >= 1:
+            et_earningsEstimate_avg = earnings_trend_ticker_trend[0]['earningsEstimate']['avg']
+            if isinstance(et_earningsEstimate_avg, dict):
+                et_earningsEstimate_avg = None
+
+        if len(earnings_trend_ticker_trend) >= 2:
+            et_p1q_earningsEstimate_avg = earnings_trend_ticker_trend[1]['earningsEstimate']['avg']
+            if isinstance(et_p1q_earningsEstimate_avg, dict):
+                et_p1q_earningsEstimate_avg = None
+
+    e_earningsChart_quarterly = None
+    earning_chart_data = ticker_data.earnings[ticker]
+    if not isinstance(earning_chart_data, str):
+        e_earningsChart = earning_chart_data.get('earningsChart', None)
+        if e_earningsChart is not None:
+            e_earningsChart_quarterly = e_earningsChart.get('quarterly', None)
+
 
     # % % % % % % % % % % % % %
     # Current  Block
     # % % % % % % % % % % % % %
 
-    total_revenue = all_financial_data.TotalRevenue.values
     total_revenue_last = None
-    for i in reversed(total_revenue):
-        total_revenue_last = fast_float(i, default=None)
-        if not pd.isna(total_revenue_last):
-            break
-    total_revenue_yearago = fast_float(all_financial_data.TotalRevenue.values[1], default=None)
+    total_revenue_yearago = None
+    total_revenue = all_financial_data.get('TotalRevenue', None)
+    if total_revenue is not None:
+        total_revenue_values = total_revenue.values
+        for i in reversed(total_revenue):
+            total_revenue_last = fast_float(i, default=None)
+            if not pd.isna(total_revenue_last):
+                break
+        total_revenue_yearago = fast_float(all_financial_data.TotalRevenue.values[1], default=None)
 
-    diluted_eps = all_financial_data.DilutedEPS.values
     diluted_eps_last = None
-    for i in reversed(diluted_eps):
-        diluted_eps_last = fast_float(i, default=None)
-        if not pd.isna(diluted_eps_last):
-            break
-    diluted_eps_yearago = fast_float(all_financial_data.DilutedEPS.values[1], default=None)
+    diluted_eps_yearago = None
+    diluted_eps = all_financial_data.get('DilutedEPS', None)
+    if diluted_eps is not None:
+        diluted_eps_values = diluted_eps.values
+        for i in reversed(diluted_eps):
+            diluted_eps_last = fast_float(i, default=None)
+            if not pd.isna(diluted_eps_last):
+                break
+        diluted_eps_yearago = fast_float(all_financial_data.DilutedEPS.values[1], default=None)
 
     profitMargins = ticker_data.financial_data[ticker].get('profitMargins', None)
     trailingAnnualDividendRate = ticker_data.summary_detail[ticker].get('trailingAnnualDividendRate', None)
@@ -601,7 +633,7 @@ def get_ranking_data2(tick, ag=agents()):
         et_p1y_revenueEstimate_growth_r = -1
 
     et_earningsEstimate_r = None
-    if et_earningsEstimate_avg is not None:
+    if et_earningsEstimate_avg is not None and e_earningsChart_quarterly is not None and len(e_earningsChart_quarterly) >= 2:
         if et_earningsEstimate_avg > e_earningsChart_quarterly[1]['actual']:
             et_earningsEstimate_r = 2
         else:
@@ -610,7 +642,7 @@ def get_ranking_data2(tick, ag=agents()):
         et_earningsEstimate_r = -2
 
     et_p1q_earningsEstimate_r = None
-    if et_p1q_earningsEstimate_avg is not None:
+    if et_p1q_earningsEstimate_avg is not None and e_earningsChart_quarterly is not None and len(e_earningsChart_quarterly) >= 3:
         if et_p1q_earningsEstimate_avg > e_earningsChart_quarterly[2]['actual']:
             et_p1q_earningsEstimate_r = 2
         else:
@@ -631,6 +663,17 @@ def get_ranking_data2(tick, ag=agents()):
             diluted_eps_r = 1
         else:
             diluted_eps_r = -1
+
+    profitMargins_r = None
+    if profitMargins is not None:
+        if profitMargins > 2:
+            profitMargins_r = 2
+        elif 0 < profitMargins <= 2:
+            profitMargins_r = 1
+        elif -5 < profitMargins <= 0:
+            profitMargins_r = -1
+        elif profitMargins <= -5:
+            profitMargins_r = -2
 
     trailingAnnualDividendYield_r = None
     if trailingAnnualDividendYield is not None:
@@ -680,7 +723,7 @@ def get_ranking_data2(tick, ag=agents()):
         currentRatio_r = 2
 
     debtToEquity_r = None
-    if debtToEquity is not None and pd.isna(debtToEquity):
+    if debtToEquity is not None and not pd.isna(debtToEquity):
         if debtToEquity > 3:
             debtToEquity_r = -2
         elif 2 <= debtToEquity <= 3:
@@ -703,6 +746,8 @@ def get_ranking_data2(tick, ag=agents()):
         rank += total_revenue_r
     if diluted_eps_r is not None:
         rank += diluted_eps_r
+    if profitMargins_r is not None:
+        rank += profitMargins_r
     if trailingAnnualDividendYield_r is not None:
         rank += trailingAnnualDividendYield_r
     if repurchase_of_capital_stock_avg_r is not None:
@@ -732,9 +777,6 @@ def get_ranking_data2(tick, ag=agents()):
           f'averageVolume: {averageVolume}\n'
           f'trailingPE: {trailingPE}\n'
           f'forwardPE: {forwardPE}\n'
-          f'shortTermTrend: {shortTermTrend}\n'
-          f'midTermTrend: {midTermTrend}\n'
-          f'longTermTrend: {longTermTrend}\n'
           f'exDividendDate: {ce_exDividendDate}\n'
           f'dividendDate: {ce_dividendDate}\n'
           f'earnings_earningsDate: {ce_earnings_earningsDate}\n'
@@ -747,6 +789,7 @@ def get_ranking_data2(tick, ag=agents()):
           f'et_p1q_earningsEstimate: {et_p1q_earningsEstimate_r}\n'
           f'total_revenue: {total_revenue_r}\n'
           f'diluted_eps: {diluted_eps_r}\n'
+          f'profitMargins: {profitMargins_r}\n'
           f'trailingAnnualDividendYield: {trailingAnnualDividendYield_r}\n'
           f'repurchase_of_capital_stock_avg: {repurchase_of_capital_stock_avg_r}\n'
           f'marketCap: {marketCap_r}\n'
@@ -784,9 +827,6 @@ def get_ranking_data2(tick, ag=agents()):
                    'averageVolume': averageVolume,
                    'trailingPE': trailingPE,
                    'forwardPE': forwardPE,
-                   'shortTermTrend': shortTermTrend,
-                   'midTermTrend': midTermTrend,
-                   'longTermTrend': longTermTrend,
                    'exDividendDate': ce_exDividendDate,
                    'dividendDate': ce_dividendDate,
                    'earnings_earningsDate': ce_earnings_earningsDate}
