@@ -806,6 +806,7 @@ def get_ranking_data2(tick, ag=agents()):
                    "et_p1q_earningsEstimate": et_p1q_earningsEstimate_r,
                    "total_revenue": total_revenue_r,
                    "diluted_eps": diluted_eps_r,
+                   "profitMargins": profitMargins_r,
                    "trailingAnnualDividendYield": trailingAnnualDividendYield_r,
                    "repurchase_of_capital_stock_avg": repurchase_of_capital_stock_avg_r,
                    "marketCap": marketCap_r,
