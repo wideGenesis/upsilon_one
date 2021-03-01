@@ -159,23 +159,23 @@ class StockStat:
         else:
             earnings_earningsDate = 'нет данных'
 
-        msg1 = 'Тикер: ' + str(description['ticker']) + '\n' + \
-            'Компания: ' + str(description['longName']) + '\n' + \
-            'Сектор: ' + str(description['sector']) + '\n' + \
-            'Индустрия: ' + str(description['industry']) + '\n' + \
-            'Страна: ' + str(description['country']) + '\n' + \
-            'Рыночная капитализация: ' + str(mc) + ' Млрд' + '\n' + \
-            'Бета: ' + str(beta) + '\n' + \
-            'Объём: ' + str(vol) + ' Млн' + '\n' + \
-            'Средний объём за квартал: ' + str(avol) + ' Млн' + '\n' + \
-            'Цена/Прибыль (P/E): ' + str(pe) + '\n' + \
-            'Цена/Прибыль прозноз (forward P/E): ' + str(fpe) + '\n' + \
-            'Тип: ' + str(description['quoteType']) + '\n' + \
-            'Цена: ' + str(description['regularMarketPrice']) + '\n' + \
-            'Состояние рынка: ' + str(description['marketState']) + '\n' + \
-            'exDividend Date: ' + str(exDividendDate) + '\n' + \
-            'Dividend Date: ' + str(dividendDate) + '\n' + \
-            'Earnings Date: ' + str(earnings_earningsDate) + '\n'
+        msg1 = '__Тикер:__ ' + str(description['ticker']) + '\n' + \
+            '__Компания:__ ' + str(description['longName']) + '\n' + \
+            '__Сектор:__ ' + str(description['sector']) + '\n' + \
+            '__Индустрия:__ ' + str(description['industry']) + '\n' + \
+            '__Страна:__ ' + str(description['country']) + '\n \n' + \
+            '__Капитализация:__ ' + str(mc) + ' Млрд' + '\n' + \
+            '__Бета:__ ' + str(beta) + '\n' + \
+            '__Объём:__ ' + str(vol) + ' Млн' + '\n' + \
+            '__Средний объём (3m):__ ' + str(avol) + ' Млн' + '\n' + \
+            '__P/E:__ ' + str(pe) + '\n' + \
+            '__Forward P/E:__ ' + str(fpe) + '\n' + \
+            '__Тип:__ ' + str(description['quoteType']) + '\n' + \
+            '__Цена:__ ' + str(description['regularMarketPrice']) + '\n' + \
+            '__Состояние рынка:__ ' + str(description['marketState']) + '\n \n' + \
+            '__exDividend Date:__ ' + str(exDividendDate) + '\n' + \
+            '__Dividend Date:__ ' + str(dividendDate) + '\n' + \
+            '__Earnings Date:__ ' + str(earnings_earningsDate) + '\n'
         # return msg1
         msg2 = ''
         # next_earning_date = None
