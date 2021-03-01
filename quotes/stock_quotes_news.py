@@ -113,20 +113,12 @@ class StockStat:
             'AvgVolume: ' + price['Avg Volume'] + '\n'
         return msg1
 
-    # 'ticker': 'AMGN', 'quoteType': 'EQUITY', 'longName': 'Amgen Inc.', 'sector': 'Healthcare',
-    # 'industry': 'Drug Manufacturers—General', 'country': 'United States',
-    # 'regularMarketPrice': 227.39, 'marketState': 'REGULAR',
-    # 'marketCap': 131332734976, 'beta': 0.728388,
-    # 'volume': 992621, 'averageVolume': 2491973, 'trailingPE': 18.471973, 'forwardPE': 12.418897,
-    # 'shortTermTrend': 'DOWN', 'midTermTrend': 'UP', 'longTermTrend': 'UP',
-    # 'exDividendDate': '2021-02-11 02:00:00', 'dividendDate': '2021-03-08 02:00:00', 'earnings_earningsDate': [
-    #     '2021-04-28 03:00:S', '2021-05-03 03:00:S']}
 
     def stock_description_v2(self):
         try:
             get_yahoo = get_ranking_data2(self.stock)
             description = get_yahoo[0]
-            rank = get_yahoo[0]
+            rank = get_yahoo[1]
         except Exception as e10:
             msg1 = 'Данные недоступны, попробуйте сделать запрос спустя несколько минут.'
             return msg1
@@ -139,11 +131,11 @@ class StockStat:
         else:
             beta = 'нет данных'
         if description['volume'] is not None:
-            vol = round(float(description['volume'] / 1000000), 2)
+            vol = round(float(description['volume'] / 1000000), 4)
         else:
             vol = 0
         if description['averageVolume'] is not None:
-            avol = round(float(description['averageVolume'] / 1000000), 2)
+            avol = round(float(description['averageVolume'] / 1000000), 4)
         else:
             avol = 0
         if description['trailingPE'] is not None:
@@ -184,15 +176,15 @@ class StockStat:
             'exDividend Date: ' + str(exDividendDate) + '\n' + \
             'Dividend Date: ' + str(dividendDate) + '\n' + \
             'Earnings Date: ' + str(earnings_earningsDate) + '\n'
-        return msg1
-        # msg2 = ''
+        # return msg1
+        msg2 = ''
         # next_earning_date = None
-        # for k, v in rank.items():
-        #     if k == "next_earning_date":
-        #         next_earning_date = v
-        #     else:
-        #         msg2 += '\n' + ins.ranking[k][v]
-        # return msg1, msg2
+        for k, v in rank.items():
+            if k == "next_earning_date":
+                next_earning_date = v
+            else:
+                msg2 += '\n' + ins.ranking[k][v]
+        return msg1, msg2
 
     def stock_news(self):
         try:
