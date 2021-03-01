@@ -88,14 +88,14 @@ def get_etfdb_flows(driver=None, img_out_path_=IMAGES_OUT_PATH):
     etfs = ['SPY', 'VTI', 'VEA', 'VWO', 'QQQ', 'VXX', 'TLT', 'SHY', 'LQD', 'VCIT']
     with driver:
         for etf in etfs:
-
             driver.get(f'https://etfdb.com/etf/{etf}/#fund-flows')
             img_path = os.path.join(img_out_path_, f'inflows_{etf}' + '.png')
             # html = driver.page_source
             # debug(html)
             # 'fund-flow-chart-container'
             sleep(5)
-            chart = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.XPATH, ".//*[@id='fund-flows']")))
+            chart = WebDriverWait(driver, 10).until(
+                EC.presence_of_element_located((By.XPATH, ".//*[@id='fund-flows']")))
             # chart = driver.find_element_by_xpath()
             # chart = driver.find_element_by_class_name("col-md-12")
             driver.execute_script("return arguments[0].scrollIntoView();", chart)
@@ -158,7 +158,6 @@ def get_ranking_data(tick, ag=agents()):
     all_financial = aapl.all_financial_data('q')
     summary = aapl.summary_detail
 
-
     headers = {'User-Agent': ag}
     url = f"https://finance.yahoo.com/quote/{ticker}/analysis?p={ticker}"
     try:
@@ -236,9 +235,9 @@ def get_ranking_data(tick, ag=agents()):
     df1 = None
     found_postfix = ""
     for postfix in postfix_list:
-        ticker_list = [ticker+postfix]
+        ticker_list = [ticker + postfix]
         try:
-            debug(f'Try get {ticker+postfix}')
+            debug(f'Try get {ticker + postfix}')
             df1 = reuters.get_income_statement(ticker_list, yearly=False)
         except Exception as e:
             debug(e, "ERROR")
@@ -286,7 +285,7 @@ def get_ranking_data(tick, ag=agents()):
         sleep(2)
         ticker_list = [ticker + postfix]
         try:
-            debug(f'Try get {ticker+postfix}')
+            debug(f'Try get {ticker + postfix}')
             df4 = reuters.get_key_metrics(ticker_list)
         except Exception as e:
             debug(e, "ERROR")
@@ -321,7 +320,7 @@ def get_ranking_data(tick, ag=agents()):
 
     # Dividend (Per Share Annual)
     divident_per_share_annual = df4.loc[df4['metric'] == 'Dividend (Per Share Annual)', ['value']].value.values[0]
-    divident_per_share_annual =fast_float(divident_per_share_annual, default=None)
+    divident_per_share_annual = fast_float(divident_per_share_annual, default=None)
     debug(f'Dividend (Per Share Annual): {divident_per_share_annual}')
 
     # Current Ratio (Quarterly)
@@ -330,12 +329,14 @@ def get_ranking_data(tick, ag=agents()):
     debug(f'Current Ratio (Quarterly): {current_ratio_quarterly}')
 
     # Long Term Debt/Equity (Quarterly)
-    long_term_debt_equity_quarterly = df4.loc[df4['metric'] == 'Long Term Debt/Equity (Quarterly)', ['value']].value.values[0]
+    long_term_debt_equity_quarterly = \
+    df4.loc[df4['metric'] == 'Long Term Debt/Equity (Quarterly)', ['value']].value.values[0]
     long_term_debt_equity_quarterly = fast_float(long_term_debt_equity_quarterly, default=None)
     debug(f'Long Term Debt/Equity (Quarterly): {long_term_debt_equity_quarterly}')
 
     # Net Profit Margin % (Annual)
-    net_profit_margin_percent_annual = df4.loc[df4['metric'] == 'Net Profit Margin % (Annual)', ['value']].value.values[0]
+    net_profit_margin_percent_annual = df4.loc[df4['metric'] == 'Net Profit Margin % (Annual)', ['value']].value.values[
+        0]
     net_profit_margin_percent_annual = fast_float(net_profit_margin_percent_annual, default=None)
     debug(f'Net Profit Margin % (Annual): {net_profit_margin_percent_annual}')
 
@@ -479,7 +480,6 @@ def get_ranking_data(tick, ag=agents()):
     debug('%%% get_ranking_data complete')
     return res
 
-
     # revenue_estimate_current_year > 5 % +2 / 0 - 5 % +1 < 0 % -1
     # revenue_estimate_next_year  positive + 1 / negative - 1
     #
@@ -499,6 +499,7 @@ def get_ranking_data(tick, ag=agents()):
     #
     # Rank = sum of all values
     # return dict{rank: ..., next_report_date: ..., revenue_estimate_current_year: 2, ....}
+
 
 # ============================== GET RANKING DATA II ================================
 #
@@ -510,13 +511,46 @@ def get_ranking_data2(tick, ag=agents()):
     ticker_data = Ticker(ticker)
     all_financial_data = ticker_data.all_financial_data('q')
 
-    diluted_eps = all_financial_data.DilutedEPS.values
-    diluted_eps_last = None
-    for i in reversed(diluted_eps):
-        diluted_eps_last = fast_float(i, default=None)
-        if not pd.isna(diluted_eps_last):
-            break
-    diluted_eps_yearago = fast_float(all_financial_data.DilutedEPS.values[1], default=None)
+    quoteType = ticker_data.quotes[ticker]['quoteType']
+
+    # % % % % % % % % % % % % % % % % % % %
+    # Description  Block
+    # % % % % % % % % % % % % % % % % % % %
+
+    longName = ticker_data.price[ticker].get('longName', '')
+    sector = ticker_data.asset_profile[ticker].get('sector', '')
+    industry = ticker_data.asset_profile[ticker].get('industry', '')
+    country = ticker_data.asset_profile[ticker].get('country', '')
+    regularMarketPrice = ticker_data.price[ticker].get('regularMarketPrice', None)
+    marketState = ticker_data.price[ticker].get('marketState', '')
+    marketCap = ticker_data.price[ticker].get('marketCap', None)
+    beta = ticker_data.summary_detail[ticker].get('beta', None)
+    volume = ticker_data.summary_detail[ticker].get('volume', None)
+    averageVolume = ticker_data.summary_detail[ticker].get('averageVolume', None)
+    trailingPE = ticker_data.summary_detail[ticker].get('trailingPE', None)
+    forwardPE = ticker_data.summary_detail[ticker].get('forwardPE', None)
+    shortTermTrend = ticker_data.page_views[ticker].get('shortTermTrend', '')
+    midTermTrend = ticker_data.page_views[ticker].get('midTermTrend', '')
+    longTermTrend = ticker_data.page_views[ticker].get('longTermTrend', '')
+    ce_exDividendDate = ticker_data.calendar_events[ticker].get('exDividendDate', None)
+    ce_dividendDate = ticker_data.calendar_events[ticker].get('dividendDate', None)
+    ce_earnings_earnings = ticker_data.calendar_events[ticker].get('earnings', None)
+    ce_earnings_earningsDate = ''
+    if ce_earnings_earnings is not None:
+        ce_earnings_earningsDate = ce_earnings_earnings.get('earningsDate', '')
+
+    # % % % % % % % % % % % % % %
+    # Estimetes  Block
+    # % % % % % % % % % % % % % % %
+    et_0y_revenueEstimate_growth = ticker_data.earnings_trend[ticker]['trend'][2]['revenueEstimate']['growth']
+    et_p1y_revenueEstimate_growth = ticker_data.earnings_trend[ticker]['trend'][3]['revenueEstimate']['growth']
+    et_earningsEstimate_avg = ticker_data.earnings_trend[ticker]['trend'][0]['earningsEstimate']['avg']
+    e_earningsChart_quarterly = ticker_data.earnings[ticker]['earningsChart']['quarterly']
+    et_p1q_earningsEstimate_avg = ticker_data.earnings_trend[ticker]['trend'][1]['earningsEstimate']['avg']
+
+    # % % % % % % % % % % % % %
+    # Current  Block
+    # % % % % % % % % % % % % %
 
     total_revenue = all_financial_data.TotalRevenue.values
     total_revenue_last = None
@@ -526,434 +560,241 @@ def get_ranking_data2(tick, ag=agents()):
             break
     total_revenue_yearago = fast_float(all_financial_data.TotalRevenue.values[1], default=None)
 
-    repurchase_of_capital_stock = all_financial_data.RepurchaseOfCapitalStock
-
-    country = ticker_data.asset_profile[ticker]['country']
-    industry = ticker_data.asset_profile[ticker]['industry']
-    sector = ticker_data.asset_profile[ticker]['sector']
-
-    regularMarketPrice = ticker_data.price[ticker]['regularMarketPrice']
-    marketState = ticker_data.price[ticker]['marketState']
-    longName = ticker_data.price[ticker]['longName']
-
-    beta = ticker_data.summary_detail[ticker]['beta']
-    volume = ticker_data.summary_detail[ticker]['volume']
-    averageDailyVolume10Day = ticker_data.summary_detail[ticker]['averageDailyVolume10Day']
-    trailingAnnualDividendRate = ticker_data.summary_detail[ticker]['trailingAnnualDividendRate']
-    trailingAnnualDividendYield = ticker_data.summary_detail[ticker]['trailingAnnualDividendRate']
-
-    quickRatio = ticker_data.financial_data[ticker]['quickRatio']
-    currentRatio = ticker_data.financial_data[ticker]['currentRatio']
-    debtToEquity = ticker_data.financial_data[ticker]['debtToEquity']
-    earningsGrowth = ticker_data.financial_data[ticker]['earningsGrowth']
-    revenueGrowth = ticker_data.financial_data[ticker]['revenueGrowth']
-    profitMargins = ticker_data.financial_data[ticker]['profitMargins']
-
-    # Earning trend data
-    et_period_0q = ticker_data.earnings_trend[ticker]['trend'][0]['period']
-    et_0q_endDate = ticker_data.earnings_trend[ticker]['trend'][0]['endDate']
-    et_earningsEstimate_avg = ticker_data.earnings_trend[ticker]['trend'][0]['earningsEstimate']['avg']
-    et_earningsEstimate_growth = ticker_data.earnings_trend[ticker]['trend'][0]['earningsEstimate']['growth']
-    et_revenueEstimate_avg = ticker_data.earnings_trend[ticker]['trend'][0]['revenueEstimate']['avg']
-    et_revenueEstimate_growth = ticker_data.earnings_trend[ticker]['trend'][0]['revenueEstimate']['growth']
-    et_epsTrend_current = ticker_data.earnings_trend[ticker]['trend'][0]['epsTrend']['current']
-    et_epsTrend_7daysAgo = ticker_data.earnings_trend[ticker]['trend'][0]['epsTrend']['7daysAgo']
-    et_epsTrend_30daysAgo = ticker_data.earnings_trend[ticker]['trend'][0]['epsTrend']['30daysAgo']
-    et_epsTrend_60daysAgo = ticker_data.earnings_trend[ticker]['trend'][0]['epsTrend']['60daysAgo']
-    et_epsTrend_90daysAgo = ticker_data.earnings_trend[ticker]['trend'][0]['epsTrend']['90daysAgo']
-    et_epsRevisions_upLast7days = ticker_data.earnings_trend[ticker]['trend'][0]['epsRevisions']['upLast7days']
-    et_epsRevisions_upLast30days = ticker_data.earnings_trend[ticker]['trend'][0]['epsRevisions']['upLast30days']
-    et_epsRevisions_downLast90days = ticker_data.earnings_trend[ticker]['trend'][0]['epsRevisions']['downLast90days']
-
-    et_period_p1q = ticker_data.earnings_trend[ticker]['trend'][1]['period']
-    et_p1q_endDate = ticker_data.earnings_trend[ticker]['trend'][1]['endDate']
-    et_p1q_growth = ticker_data.earnings_trend[ticker]['trend'][1]['growth']
-    et_p1q_earningsEstimate_avg = ticker_data.earnings_trend[ticker]['trend'][1]['earningsEstimate']['avg']
-    et_p1q_earningsEstimate_growth = ticker_data.earnings_trend[ticker]['trend'][1]['earningsEstimate']['growth']
-    et_p1q_revenueEstimate_avg = ticker_data.earnings_trend[ticker]['trend'][1]['revenueEstimate']['avg']
-    et_p1q_revenueEstimate_growth = ticker_data.earnings_trend[ticker]['trend'][1]['revenueEstimate']['growth']
-
-    et_period_0y = ticker_data.earnings_trend[ticker]['trend'][2]['period']
-    et_0y_endDate = ticker_data.earnings_trend[ticker]['trend'][2]['endDate']
-    et_0y_growth = ticker_data.earnings_trend[ticker]['trend'][2]['growth']
-    et_0y_earningsEstimate_avg = ticker_data.earnings_trend[ticker]['trend'][2]['earningsEstimate']['avg']
-    et_0y_earningsEstimate_low = ticker_data.earnings_trend[ticker]['trend'][2]['earningsEstimate']['low']
-    et_0y_earningsEstimate_high = ticker_data.earnings_trend[ticker]['trend'][2]['earningsEstimate']['high']
-    et_0y_earningsEstimate_yearAgoEps = ticker_data.earnings_trend[ticker]['trend'][2]['earningsEstimate']['yearAgoEps']
-    et_0y_earningsEstimate_numberOfAnalysts = ticker_data.earnings_trend[ticker]['trend'][2]['earningsEstimate']['numberOfAnalysts']
-    et_0y_earningsEstimate_growth = ticker_data.earnings_trend[ticker]['trend'][2]['earningsEstimate']['growth']
-    et_0y_revenueEstimate_avg = ticker_data.earnings_trend[ticker]['trend'][2]['revenueEstimate']['avg']
-    et_0y_revenueEstimate_yearAgoRevenue = ticker_data.earnings_trend[ticker]['trend'][2]['revenueEstimate']['yearAgoRevenue']
-    et_0y_revenueEstimate_growth = ticker_data.earnings_trend[ticker]['trend'][2]['revenueEstimate']['growth']
-
-    et_period_p1y = ticker_data.earnings_trend[ticker]['trend'][3]['period']
-    et_p1y_endDate = ticker_data.earnings_trend[ticker]['trend'][3]['endDate']
-    et_p1y_revenueEstimate_avg = ticker_data.earnings_trend[ticker]['trend'][3]['revenueEstimate']['avg']
-    et_p1y_revenueEstimate_yearAgoRevenue = ticker_data.earnings_trend[ticker]['trend'][3]['revenueEstimate']['yearAgoRevenue']
-    et_p1y_revenueEstimate_growth = ticker_data.earnings_trend[ticker]['trend'][3]['revenueEstimate']['growth']
-    et_p1y_epsTrend_current = ticker_data.earnings_trend[ticker]['trend'][3]['epsTrend']['current']
-    et_p1y_epsTrend_7daysAgo = ticker_data.earnings_trend[ticker]['trend'][3]['epsTrend']['7daysAgo']
-    et_p1y_epsTrend_30daysAgo = ticker_data.earnings_trend[ticker]['trend'][3]['epsTrend']['30daysAgo']
-    et_p1y_epsTrend_60daysAgo = ticker_data.earnings_trend[ticker]['trend'][3]['epsTrend']['60daysAgo']
-    et_p1y_epsTrend_90daysAgo = ticker_data.earnings_trend[ticker]['trend'][3]['epsTrend']['90daysAgo']
-    et_p1y_epsRevisions_upLast7days = ticker_data.earnings_trend[ticker]['trend'][3]['epsRevisions']['upLast7days']
-    et_p1y_epsRevisions_upLast30days = ticker_data.earnings_trend[ticker]['trend'][3]['epsRevisions']['upLast30days']
-    et_p1y_epsRevisions_downLast30days = ticker_data.earnings_trend[ticker]['trend'][3]['epsRevisions']['downLast30days']
-    et_p1y_epsRevisions_downLast90days = ticker_data.earnings_trend[ticker]['trend'][3]['epsRevisions']['downLast90days']
-
-    # Earnings
-    e_maxAge = ticker_data.earnings[ticker]['maxAge']
-    e_earningsChart_quarterly = ticker_data.earnings[ticker]['earningsChart']['quarterly']
-
-    # Calendar Events
-    ce_maxAge = ticker_data.calendar_events[ticker]['maxAge']
-    ce_exDividendDate = ticker_data.calendar_events[ticker]['exDividendDate']
-    ce_dividendDate = ticker_data.calendar_events[ticker]['dividendDate']
-    ce_earnings_earningsDate = ticker_data.calendar_events[ticker]['earnings']['earningsDate']
-
-    debug('')
-    return
-
-    headers = {'User-Agent': ag}
-    url = f"https://finance.yahoo.com/quote/{ticker}/analysis?p={ticker}"
-    try:
-        yahoo_analysis = requests.get(url).text
-        soup = BeautifulSoup(yahoo_analysis, "html.parser")
-    except Exception as e:
-        debug(e, "ERROR")
-        return {"rank": None, "data": None}
-
-    # Earnings Estimate
-    eet = soup.find("table", attrs={"class": "W(100%) M(0) BdB Bdc($seperatorColor) Mb(25px)", "data-reactid": "5"})
-    curr_avg_estimate = eet.find("span", attrs={"data-reactid": "46"}).text
-    curr_avg_estimate = fast_float(curr_avg_estimate, default=None)
-
-    next_qtr_avg_estimate = eet.find("span", attrs={"data-reactid": "48"}).text
-    next_qtr_avg_estimate = fast_float(next_qtr_avg_estimate, default=None)
-
-    # Revenue Estimate
-    ret = soup.find("table", attrs={"class": "W(100%) M(0) BdB Bdc($seperatorColor) Mb(25px)", "data-reactid": "86"})
-    revenue_estimate_current_year = ret.find("span", attrs={"data-reactid": "175"}).text
-    revenue_estimate_current_year = fast_float(revenue_estimate_current_year[: -1], default=None)
-
-    revenue_estimate_next_year = ret.find("span", attrs={"data-reactid": "177"}).text
-    revenue_estimate_next_year = fast_float(revenue_estimate_next_year[: -1], default=None)
-
-    # Earnings History
-    eht = soup.find("table", attrs={"class": "W(100%) M(0) BdB Bdc($seperatorColor) Mb(25px)", "data-reactid": "178"})
-    date1 = eht.find("span", attrs={"data-reactid": "184"}).text
-    date2 = eht.find("span", attrs={"data-reactid": "186"}).text
-    date3 = eht.find("span", attrs={"data-reactid": "188"}).text
-    date4 = eht.find("span", attrs={"data-reactid": "190"}).text
-    value1 = fast_float(eht.find("span", attrs={"data-reactid": "207"}).text, default=None)
-    value2 = fast_float(eht.find("span", attrs={"data-reactid": "209"}).text, default=None)
-    value3 = fast_float(eht.find("span", attrs={"data-reactid": "211"}).text, default=None)
-    value4 = fast_float(eht.find("span", attrs={"data-reactid": "213"}).text, default=None)
-    earning_history_eps_actual = {}
-    earning_history_eps_actual_yearago = None
-    earning_history_eps_actual_nqyearago = None
-    if date1 != "Invalid Date":
-        earning_history_eps_actual_yearago = value1
-        earning_history_eps_actual[datetime.datetime.strptime(date1, "%m/%d/%Y").date()] = value1
-    if date2 != "Invalid Date":
-        earning_history_eps_actual_nqyearago = value2
-        earning_history_eps_actual[datetime.datetime.strptime(date2, "%m/%d/%Y").date()] = value2
-    if date3 != "Invalid Date":
-        earning_history_eps_actual[datetime.datetime.strptime(date3, "%m/%d/%Y").date()] = value3
-    if date4 != "Invalid Date":
-        earning_history_eps_actual[datetime.datetime.strptime(date4, "%m/%d/%Y").date()] = value4
-
-    debug(f"### {ticker} ###")
-    debug(f"curr_avg_estimate={curr_avg_estimate}")
-    debug(f"next_qtr_avg_estimate={next_qtr_avg_estimate}")
-    debug(f"revenue_estimate_current_year={revenue_estimate_current_year}")
-    debug(f"revenue_estimate_next_year={revenue_estimate_next_year}")
-    debug(f"earning_history_eps_actual={earning_history_eps_actual}\n")
-
-    next_earning_date = None
-    url1 = f"https://finance.yahoo.com/quote/{ticker}?p={ticker}"
-    try:
-        yahoo_quotes = requests.get(url1).text
-        soup = BeautifulSoup(yahoo_quotes, "html.parser")
-        next_earning_date = soup.find("td", attrs={"class": "Ta(end) Fw(600) Lh(14px)",
-                                                   "data-reactid": "104",
-                                                   "data-test": "EARNINGS_DATE-value"}).text
-    except Exception as e:
-        debug(e, "ERROR")
-        pass
-
-    debug(f"next_earning_date={next_earning_date}\n")
-
-    debug(" >>> Reuters Data <<< ")
-    reuters = Reuters()
-    postfix_list = ['.Z', '.O', '.N', '.A']
-    ticker_list = []
-    df1 = None
-    found_postfix = ""
-    for postfix in postfix_list:
-        ticker_list = [ticker+postfix]
-        try:
-            debug(f'Try get {ticker+postfix}')
-            df1 = reuters.get_income_statement(ticker_list, yearly=False)
-        except Exception as e:
-            debug(e, "ERROR")
-        if df1.size > 0:
-            found_postfix = postfix
+    diluted_eps = all_financial_data.DilutedEPS.values
+    diluted_eps_last = None
+    for i in reversed(diluted_eps):
+        diluted_eps_last = fast_float(i, default=None)
+        if not pd.isna(diluted_eps_last):
             break
-        sleep(2)
+    diluted_eps_yearago = fast_float(all_financial_data.DilutedEPS.values[1], default=None)
 
-    if df1 is None or df1.size == 0:
-        debug(f"df1 is None or df1.size == 0", WARNING)
-        return {"rank": None, "data": None}
+    profitMargins = ticker_data.financial_data[ticker].get('profitMargins', None)
+    trailingAnnualDividendRate = ticker_data.summary_detail[ticker].get('trailingAnnualDividendRate', None)
+    trailingAnnualDividendYield = ticker_data.summary_detail[ticker].get('trailingAnnualDividendYield', None)
 
-    debug(f'%%% 1. Find ticker on: {ticker_list} %%%', WARNING)
-    # Total Revenue
-    tr = df1.loc[df1['metric'] == 'Total Revenue', ['year', 'metric', 'value', 'quarter']]
-    total_revenue_curr = None
-    total_revenue_yearago = None
-    if len(tr.values) == 5:
-        total_revenue_curr = fast_float(tr.values[0][2], default=None)
-        total_revenue_yearago = fast_float(tr.values[4][2], default=None)
-    debug(f'Total revenue last: {total_revenue_curr}')
-    debug(f'Total revenue first: {total_revenue_yearago}')
+    repurchase_of_capital_stock = all_financial_data.get('RepurchaseOfCapitalStock', None)
+    repurchase_of_capital_stock_avg = repurchase_of_capital_stock.mean(0) if repurchase_of_capital_stock is not None else None
 
-    # Diluted Normalized EPS
-    dneps = df1.loc[df1['metric'] == 'Diluted Normalized EPS', ['year', 'metric', 'value', 'quarter']]
-    diluted_normalized_eps_curr = None
-    diluted_normalized_eps_yearago = None
-    if len(dneps.values) == 5:
-        diluted_normalized_eps_curr = fast_float(dneps.values[0][2], default=None)
-        diluted_normalized_eps_yearago = fast_float(dneps.values[-1][2], default=None)
-    debug(f'Diluted Normalized EPS Last: {diluted_normalized_eps_curr}')
-    debug(f'Diluted Normalized EPS First: {diluted_normalized_eps_yearago}')
+    currentRatio = ticker_data.financial_data[ticker].get('currentRatio', None)
+    debtToEquity = ticker_data.financial_data[ticker].get('debtToEquity', None)
 
-    # df2 = reuters.get_balance_sheet(ticker_list, yearly=False)
-    # df3 = reuters.get_cash_flow(ticker_list, yearly=False)
-    df4 = None
-    try:
-        debug(f'Try get {ticker_list}')
-        df4 = reuters.get_key_metrics(ticker_list)
-    except Exception as e:
-        debug(e, "ERROR")
-    for postfix in postfix_list:
-        if postfix == found_postfix:
-            continue
-        sleep(2)
-        ticker_list = [ticker + postfix]
-        try:
-            debug(f'Try get {ticker+postfix}')
-            df4 = reuters.get_key_metrics(ticker_list)
-        except Exception as e:
-            debug(e, "ERROR")
-        if df4.size > 0:
-            found_postfix = postfix
-            break
+    # % % % % % % % % % % % % % % % %
+    # RANK   BLOCK
+    # % % % % % % % % % % % % % % %
+    et_0y_revenueEstimate_growth_r = None
+    if et_0y_revenueEstimate_growth is not None:
+        if et_0y_revenueEstimate_growth > 0.05:
+            et_0y_revenueEstimate_growth_r = 2
+        elif 0.05 >= et_0y_revenueEstimate_growth > 0.0:
+            et_0y_revenueEstimate_growth_r = 1
+        elif et_0y_revenueEstimate_growth < 0.0:
+            et_0y_revenueEstimate_growth_r = -1
 
-    if df4 is None or df4.size == 0:
-        debug(f"df1 is None or df1.size == 0", WARNING)
-        return {"rank": None, "data": None}
 
-    debug(f'%%% 2. Find ticker on: {ticker_list} %%%', WARNING)
-
-    # Market Capitalization
-    mkt_cap = df4.loc[df4['metric'] == 'Market Capitalization', ['value']].value.values[0]
-    mkt_cap = mkt_cap.replace(',', '')
-    if mkt_cap[-1] in ['B', 'M', 'b', 'm']:
-        mkt_cap = fast_float(mkt_cap[: -1], default=None)
+    et_p1y_revenueEstimate_growth_r = None
+    if et_p1y_revenueEstimate_growth is not None:
+        if et_p1y_revenueEstimate_growth > 0:
+            et_p1y_revenueEstimate_growth_r = 1
+        else:
+            et_p1y_revenueEstimate_growth_r = -1
     else:
-        mkt_cap = fast_float(mkt_cap, default=None)
+        et_p1y_revenueEstimate_growth_r = -1
 
-    debug(f'Market Capitalization: {mkt_cap}')
+    et_earningsEstimate_r = None
+    if et_earningsEstimate_avg is not None:
+        if et_earningsEstimate_avg > e_earningsChart_quarterly[1]['actual']:
+            et_earningsEstimate_r = 2
+        else:
+            et_earningsEstimate_r = -2
+    else:
+        et_earningsEstimate_r = -2
 
-    # Beta
-    beta = df4.loc[df4['metric'] == 'Beta', ['value']].value.values[0]
-    beta = fast_float(beta, default=None)
-    debug(f'Beta: {beta}')
-
-    # Revenue per Share (Annual)
-    # revenue_per_share_annual = df4.loc[df4['metric'] == 'Revenue per Share (Annual)', ['value']].value.values[0]
-    # debug(f'Revenue Per Share (Annual): {revenue_per_share_annual}')
-
-    # Dividend (Per Share Annual)
-    divident_per_share_annual = df4.loc[df4['metric'] == 'Dividend (Per Share Annual)', ['value']].value.values[0]
-    divident_per_share_annual =fast_float(divident_per_share_annual, default=None)
-    debug(f'Dividend (Per Share Annual): {divident_per_share_annual}')
-
-    # Current Ratio (Quarterly)
-    current_ratio_quarterly = df4.loc[df4['metric'] == 'Current Ratio (Quarterly)', ['value']].value.values[0]
-    current_ratio_quarterly = fast_float(current_ratio_quarterly, default=None)
-    debug(f'Current Ratio (Quarterly): {current_ratio_quarterly}')
-
-    # Long Term Debt/Equity (Quarterly)
-    long_term_debt_equity_quarterly = df4.loc[df4['metric'] == 'Long Term Debt/Equity (Quarterly)', ['value']].value.values[0]
-    long_term_debt_equity_quarterly = fast_float(long_term_debt_equity_quarterly, default=None)
-    debug(f'Long Term Debt/Equity (Quarterly): {long_term_debt_equity_quarterly}')
-
-    # Net Profit Margin % (Annual)
-    net_profit_margin_percent_annual = df4.loc[df4['metric'] == 'Net Profit Margin % (Annual)', ['value']].value.values[0]
-    net_profit_margin_percent_annual = fast_float(net_profit_margin_percent_annual, default=None)
-    debug(f'Net Profit Margin % (Annual): {net_profit_margin_percent_annual}')
-
-    revenue_estimate_current_year_r = None
-    if revenue_estimate_current_year is not None:
-        if revenue_estimate_current_year > 5:
-            revenue_estimate_current_year_r = 2
-        elif 0 <= revenue_estimate_current_year <= 5:
-            revenue_estimate_current_year_r = 1
-        elif revenue_estimate_current_year < 0:
-            revenue_estimate_current_year_r = -1
-
-    revenue_estimate_next_year_r = None
-    if revenue_estimate_next_year is not None:
-        revenue_estimate_next_year_r = 1 if revenue_estimate_next_year > 0 else -1
-
-    curr_avg_estimate_r = None
-    if earning_history_eps_actual_yearago is not None and curr_avg_estimate is not None:
-        curr_avg_estimate_r = 2 if curr_avg_estimate > earning_history_eps_actual_yearago else -2
-
-    next_qtr_avg_estimate_r = None
-    if earning_history_eps_actual_nqyearago is not None and next_qtr_avg_estimate is not None:
-        next_qtr_avg_estimate_r = 2 if next_qtr_avg_estimate > earning_history_eps_actual_nqyearago else -2
+    et_p1q_earningsEstimate_r = None
+    if et_p1q_earningsEstimate_avg is not None:
+        if et_p1q_earningsEstimate_avg > e_earningsChart_quarterly[2]['actual']:
+            et_p1q_earningsEstimate_r = 2
+        else:
+            et_p1q_earningsEstimate_r = -2
+    else:
+        et_p1q_earningsEstimate_r = -2
 
     total_revenue_r = None
-    if total_revenue_curr is not None and total_revenue_yearago is not None:
-        total_revenue_r = 1 if total_revenue_curr > total_revenue_yearago else -1
+    if total_revenue_last is not None and total_revenue_yearago is not None:
+        if total_revenue_last > total_revenue_yearago:
+            total_revenue_r = 1
+        else:
+            total_revenue_r = -1
 
-    diluted_normalized_eps_r = None
-    if diluted_normalized_eps_yearago is not None and diluted_normalized_eps_curr is not None:
-        diluted_normalized_eps_r = 1 if diluted_normalized_eps_curr > diluted_normalized_eps_yearago else -1
+    diluted_eps_r = None
+    if diluted_eps_last is not None and  diluted_eps_yearago is not None:
+        if diluted_eps_last > diluted_eps_yearago:
+            diluted_eps_r = 1
+        else:
+            diluted_eps_r = -1
 
-    net_profit_margin_percent_annual_r = None
-    if net_profit_margin_percent_annual is not None:
-        if net_profit_margin_percent_annual > 2:
-            net_profit_margin_percent_annual_r = 2
-        elif 0 <= net_profit_margin_percent_annual <= 2:
-            net_profit_margin_percent_annual_r = 1
-        elif 0 > net_profit_margin_percent_annual >= -5:
-            net_profit_margin_percent_annual_r = -1
-        elif net_profit_margin_percent_annual < -5:
-            net_profit_margin_percent_annual_r = -2
-
-    divident_per_share_annual_r = None
-    if divident_per_share_annual is not None:
-        divident_per_share_annual_r = 2 if divident_per_share_annual > 0 else -2
+    trailingAnnualDividendYield_r = None
+    if trailingAnnualDividendYield is not None:
+        if trailingAnnualDividendYield > 0:
+            trailingAnnualDividendYield_r = 2
+        else:
+            trailingAnnualDividendYield_r = -2
     else:
-        divident_per_share_annual_r = -2
+        trailingAnnualDividendYield_r = -2
 
-    mkt_cap_r = None
-    if mkt_cap is not None:
-        if mkt_cap > 200000:
-            mkt_cap_r = 2
-        elif 50000 < mkt_cap <= 200000:
-            mkt_cap_r = 1
-        elif 10000 < mkt_cap <= 50000:
-            mkt_cap_r = 0
-        elif 2000 < mkt_cap <= 10000:
-            mkt_cap_r = -1
-        elif 2000 < mkt_cap:
-            mkt_cap_r = -2
+    repurchase_of_capital_stock_avg_r = None
+    if repurchase_of_capital_stock_avg is not None:
+        if repurchase_of_capital_stock_avg > 0:
+            repurchase_of_capital_stock_avg_r = 2
+        else:
+            repurchase_of_capital_stock_avg_r = -2
+
+    marketCap_r = None
+    if marketCap is not None:
+        if marketCap > 200000000000:
+            marketCap_r = 2
+        elif 200000000000 >= marketCap > 50000000000:
+            marketCap_r = 1
+        elif 50000000000 >= marketCap > 10000000000:
+            marketCap_r = 0
+        elif 10000000000 >= marketCap >= 2000000000:
+            marketCap_r = -1
+        elif marketCap < 2000000000:
+            marketCap_r = -2
 
     beta_r = None
     if beta is not None:
-        beta_r = 1 if 0.75 <= beta <= 1.5 else -1
-
-    current_ratio_quarterly_r = None
-    if current_ratio_quarterly is not None:
-        current_ratio_quarterly_r = 2 if current_ratio_quarterly > 1 else -2
-
-    long_term_debt_equity_quarterly_r = None
-    if long_term_debt_equity_quarterly is not None:
-        if long_term_debt_equity_quarterly > 30:
-            long_term_debt_equity_quarterly_r = -2
-        elif 20 <= long_term_debt_equity_quarterly <= 30:
-            long_term_debt_equity_quarterly_r = -1
-        elif long_term_debt_equity_quarterly < 20:
-            long_term_debt_equity_quarterly_r = 1
+        if 0.75 <= beta <= 1.5:
+            beta_r = 1
+        else:
+            beta_r = -1
     else:
-        long_term_debt_equity_quarterly_r = -5
+        beta_r = -1
 
+    currentRatio_r = None
+    if currentRatio is not None:
+        if currentRatio > 1:
+            currentRatio_r = 2
+        else:
+            currentRatio_r = 2
+    else:
+        currentRatio_r = 2
+
+    debtToEquity_r = None
+    if debtToEquity is not None and pd.isna(debtToEquity):
+        if debtToEquity > 3:
+            debtToEquity_r = -2
+        elif 2 <= debtToEquity <= 3:
+            debtToEquity_r = -1
+        elif debtToEquity < 2:
+            debtToEquity_r = 1
+    else:
+        debtToEquity_r = -5
+
+    rank = 0
+    if et_0y_revenueEstimate_growth_r is not None:
+        rank += et_0y_revenueEstimate_growth_r
+    if et_p1y_revenueEstimate_growth_r is not None:
+        rank += et_p1y_revenueEstimate_growth_r
+    if et_earningsEstimate_r is not None:
+        rank += et_earningsEstimate_r
+    if et_p1q_earningsEstimate_r is not None:
+        rank += et_p1q_earningsEstimate_r
+    if total_revenue_r is not None:
+        rank += total_revenue_r
+    if diluted_eps_r is not None:
+        rank += diluted_eps_r
+    if trailingAnnualDividendYield_r is not None:
+        rank += trailingAnnualDividendYield_r
+    if repurchase_of_capital_stock_avg_r is not None:
+        rank += repurchase_of_capital_stock_avg_r
+    if marketCap_r is not None:
+        rank += marketCap_r
+    if beta_r is not None:
+        rank += beta_r
+    if currentRatio_r is not None:
+        rank += currentRatio_r
+    if debtToEquity_r is not None:
+        rank += debtToEquity_r
+
+    debug("-------------- I N F O --------------")
+    debug(f'\n'
+          f'Ticker: ### {ticker} ###\n'
+          f'quoteType: {quoteType}\n'
+          f'longName: {longName}\n'
+          f'sector: {sector}\n'
+          f'industry: {industry}\n'
+          f'country: {country}\n'
+          f'regularMarketPrice: {regularMarketPrice}\n'
+          f'marketState: {marketState}\n'
+          f'marketCap: {marketCap}\n'
+          f'beta: {beta}\n'
+          f'volume: {volume}\n'
+          f'averageVolume: {averageVolume}\n'
+          f'trailingPE: {trailingPE}\n'
+          f'forwardPE: {forwardPE}\n'
+          f'shortTermTrend: {shortTermTrend}\n'
+          f'midTermTrend: {midTermTrend}\n'
+          f'longTermTrend: {longTermTrend}\n'
+          f'exDividendDate: {ce_exDividendDate}\n'
+          f'dividendDate: {ce_dividendDate}\n'
+          f'earnings_earningsDate: {ce_earnings_earningsDate}\n'
+          )
     debug("-------------- R A N K I N G --------------")
     debug(f'\n'
-          f'revenue_estimate: {revenue_estimate_current_year_r}\n'
-          f'revenue_estimate_next_year: {revenue_estimate_next_year_r}\n'
-          f'curr_avg_estimate: {curr_avg_estimate_r}\n'
-          f'next_qtr_avg_estimate: {next_qtr_avg_estimate_r}\n'
+          f'et_0y_revenueEstimate_growth: {et_0y_revenueEstimate_growth_r}\n'
+          f'et_p1y_revenueEstimate: {et_p1y_revenueEstimate_growth_r}\n'
+          f'et_earningsEstimate: {et_earningsEstimate_r}\n'
+          f'et_p1q_earningsEstimate: {et_p1q_earningsEstimate_r}\n'
           f'total_revenue: {total_revenue_r}\n'
-          f'diluted_normalized_eps: {diluted_normalized_eps_r}\n'
-          f'net_profit_margin_percent_annual: {net_profit_margin_percent_annual_r}\n'
-          f'divident_per_share_annual: {divident_per_share_annual_r}\n'
-          f'mkt_cap: {mkt_cap_r}\n'
+          f'diluted_eps: {diluted_eps_r}\n'
+          f'trailingAnnualDividendYield: {trailingAnnualDividendYield_r}\n'
+          f'repurchase_of_capital_stock_avg: {repurchase_of_capital_stock_avg_r}\n'
+          f'marketCap: {marketCap_r}\n'
           f'beta: {beta_r}\n'
-          f'current_ratio_quarterly: {current_ratio_quarterly_r}\n'
-          f'long_term_debt_equity_quarterly: {long_term_debt_equity_quarterly_r}\n')
+          f'currentRatio: {currentRatio_r}\n'
+          f'debtToEquity: {debtToEquity_r}\n')
 
-    finaly_rank = 0
-    if revenue_estimate_current_year_r is not None:
-        finaly_rank = finaly_rank + revenue_estimate_current_year_r
-    if revenue_estimate_next_year_r is not None:
-        finaly_rank = finaly_rank + revenue_estimate_next_year_r
-    if curr_avg_estimate_r is not None:
-        finaly_rank = finaly_rank + curr_avg_estimate_r
-    if next_qtr_avg_estimate_r is not None:
-        finaly_rank = finaly_rank + next_qtr_avg_estimate_r
-    if total_revenue_r is not None:
-        finaly_rank = finaly_rank + total_revenue_r
-    if diluted_normalized_eps_r is not None:
-        finaly_rank = finaly_rank + diluted_normalized_eps_r
-    if net_profit_margin_percent_annual_r is not None:
-        finaly_rank = finaly_rank + net_profit_margin_percent_annual_r
-    if divident_per_share_annual_r is not None:
-        finaly_rank = finaly_rank + divident_per_share_annual_r
-    if mkt_cap_r is not None:
-        finaly_rank = finaly_rank + mkt_cap_r
-    if beta_r is not None:
-        finaly_rank = finaly_rank + beta_r
-    if current_ratio_quarterly_r is not None:
-        finaly_rank = finaly_rank + current_ratio_quarterly_r
-    if long_term_debt_equity_quarterly_r is not None:
-        finaly_rank = finaly_rank + long_term_debt_equity_quarterly_r
+    debug(f"Finaly Rank: {rank}\n", WARNING)
 
-    debug(f"Finaly Rank: {finaly_rank}\n", WARNING)
+    rank_result = {"rank": rank,
+                   "et_0y_revenueEstimate_growth": et_0y_revenueEstimate_growth_r,
+                   "et_p1y_revenueEstimate": et_p1y_revenueEstimate_growth_r,
+                   "et_earningsEstimate": et_earningsEstimate_r,
+                   "et_p1q_earningsEstimate": et_p1q_earningsEstimate_r,
+                   "total_revenue": total_revenue_r,
+                   "diluted_eps": diluted_eps_r,
+                   "trailingAnnualDividendYield": trailingAnnualDividendYield_r,
+                   "repurchase_of_capital_stock_avg": repurchase_of_capital_stock_avg_r,
+                   "marketCap": marketCap_r,
+                   "beta": beta_r,
+                   "currentRatio": currentRatio_r,
+                   "debtToEquity": debtToEquity_r}
 
-    res = {"rank": finaly_rank,
-           "revenue_estimate": revenue_estimate_current_year_r,
-           "revenue_estimate_next_year": revenue_estimate_next_year_r,
-           "curr_avg_estimate": curr_avg_estimate_r,
-           "next_qtr_avg_estimate": next_qtr_avg_estimate_r,
-           "total_revenue": total_revenue_r,
-           "diluted_normalized_eps": diluted_normalized_eps_r,
-           "net_profit_margin_percent_annual": net_profit_margin_percent_annual_r,
-           "divident_per_share_annual": divident_per_share_annual_r,
-           "mkt_cap": mkt_cap_r,
-           "beta": beta_r,
-           "current_ratio_quarterly": current_ratio_quarterly_r,
-           "long_term_debt_equity_quarterly_r": long_term_debt_equity_quarterly_r,
-           "next_earning_date": next_earning_date}
+    info_result = {'ticker': ticker,
+                   'quoteType': quoteType,
+                   'longName': longName,
+                   'sector': sector,
+                   'industry': industry,
+                   'country': country,
+                   'regularMarketPrice': regularMarketPrice,
+                   'marketState': marketState,
+                   'marketCap': marketCap,
+                   'beta': beta,
+                   'volume': volume,
+                   'averageVolume': averageVolume,
+                   'trailingPE': trailingPE,
+                   'forwardPE': forwardPE,
+                   'shortTermTrend': shortTermTrend,
+                   'midTermTrend': midTermTrend,
+                   'longTermTrend': longTermTrend,
+                   'exDividendDate': ce_exDividendDate,
+                   'dividendDate': ce_dividendDate,
+                   'earnings_earningsDate': ce_earnings_earningsDate}
 
-    debug(f"RESULT DICT: {res} ")
+    debug(f"INFO DICT: {info_result} ")
+    debug(f"RESULT DICT: {rank_result} ")
     debug('%%% get_ranking_data complete')
-    return res
-
-
-    # revenue_estimate_current_year > 5 % +2 / 0 - 5 % +1 < 0 % -1
-    # revenue_estimate_next_year  positive + 1 / negative - 1
-    #
-    # curr_avg_estimate > earning_history_eps_actual года назад + 2 else -2
-    # next_qtr_avg_estimate > earning_history_eps_actual года назад + 2 else -2
-    #
-    # Total Revenue > квартала год назад + 1 else -1
-    # Diluted Normalized EPS > квартала год назад + 1 else -1
-    # Net Profit Margin % (Annual) > 2 + 2 / 0 - 2 + 1 / < 0 - 5 - 1 / < -5 - 2
-    #
-    # Dividend(Per Share Annual) positive + 2 / negative - 2
-    #
-    # Market Capitalization > 200bln + 2 / 50 - 200bln + 1 / 2 - 10 + 0 / < 2bln - 2
-    # Beta 0.75 - 1.5 + 1 else -1
-    # Current Ratio(Quarterly) > 1 + 2 / < 1 - 2
-    # Long Term Debt / Equity(Quarterly) > 3 - 2 / 2 - 3 - 1 / < 2 + 1
-    #
-    # Rank = sum of all values
-    # return dict{rank: ..., next_report_date: ..., revenue_estimate_current_year: 2, ....}
+    return info_result, rank_result
 
 
 # ============================== FINVIZ TREEMAP GET ================================
@@ -1122,16 +963,19 @@ def get_sma50(ag=None, img_out_path_=IMAGES_OUT_PATH):
     except TypeError as e01:
         debug(e01)
         return
-    items_['NYSE Trending Stocks %'] = str(round(items_['NyseA'] * 100 / items_['NyseT'], 2)) + '%' + ' акций NYSE в тренде'
-    items_['NASDAQ Trending Stocks %'] = str(round(items_['NasdA'] * 100 / items_['NasdT'], 2)) + '%' + ' акций NASDAQ в тренде'
-    items_['SP500 Trending Stocks %'] = str(round(items_['SPXA'] * 100 / items_['SPXT'], 2)) + '%' + ' акций SP500 в тренде'
+    items_['NYSE Trending Stocks %'] = str(
+        round(items_['NyseA'] * 100 / items_['NyseT'], 2)) + '%' + ' акций NYSE в тренде'
+    items_['NASDAQ Trending Stocks %'] = str(
+        round(items_['NasdA'] * 100 / items_['NasdT'], 2)) + '%' + ' акций NASDAQ в тренде'
+    items_['SP500 Trending Stocks %'] = str(
+        round(items_['SPXA'] * 100 / items_['SPXT'], 2)) + '%' + ' акций SP500 в тренде'
     items_.pop('NyseT')
     items_.pop('NyseA')
     items_.pop('NasdT')
     items_.pop('NasdA')
     items_.pop('SPXT')
     items_.pop('SPXA')
-    with open(img_out_path_+'sma50.csv', 'w+') as f:
+    with open(img_out_path_ + 'sma50.csv', 'w+') as f:
         write = csv.DictWriter(f, items_.keys())
         # write.writeheader()
         write.writerow(items_)
@@ -1139,7 +983,6 @@ def get_sma50(ag=None, img_out_path_=IMAGES_OUT_PATH):
 
 
 # # ============================== Treasury Curve and Div Yield GET ================================
-
 
 
 # def qt_curve(img_out_path_=IMAGES_OUT_PATH):
@@ -1181,7 +1024,7 @@ def qt_curve(ag=None, img_out_path_=IMAGES_OUT_PATH):
 def spx_yield(img_out_path_=IMAGES_OUT_PATH):
     x = quandl.get("MULTPL/SP500_DIV_YIELD_MONTH", authtoken="gWq5SV_V-yFkXVMgrwwy", rows=1)
     x = str(x)
-    with open(img_out_path_+'spx_yield.csv', 'w+') as f:
+    with open(img_out_path_ + 'spx_yield.csv', 'w+') as f:
         f.write(f'{x}')
     debug('spx_yield complete')
 
@@ -1225,7 +1068,7 @@ def vix_cont(img_out_path_=IMAGES_OUT_PATH):
         vix = 'Contango'
     else:
         vix = 'Backwordation'
-    with open(img_out_path_+'vix_cont.csv', 'w+') as f:
+    with open(img_out_path_ + 'vix_cont.csv', 'w+') as f:
         f.write(f'{vix}')
     debug('vix_cont complete')
 
@@ -1239,4 +1082,3 @@ def users_count():
     with open(os.path.join('results', 'users.csv'), 'w+') as f:
         write = f.write(f'{int(users)}')
     debug(int(users))
-
