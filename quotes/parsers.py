@@ -797,7 +797,7 @@ def get_ranking_data2(tick, ag=agents()):
           f'currentRatio: {currentRatio_r}\n'
           f'debtToEquity: {debtToEquity_r}\n')
 
-    debug(f"Finaly Rank: {rank}\n", WARNING)
+    debug(f"Finaly Rank : {rank}\n", WARNING)
 
     rank_result = {"rank": rank,
                    "et_0y_revenueEstimate_growth": et_0y_revenueEstimate_growth_r,
