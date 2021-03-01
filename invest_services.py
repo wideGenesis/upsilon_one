@@ -18,7 +18,7 @@ from quotes.stock_quotes_news import StockStat
 # ============================== Main  =============================
 def main():
     x = get_ranking_data2("GILD")
-    y = x[0]
+    y = x[1]
     print('%%%%%%%%', y)
     exit(0)
     # print(x)
