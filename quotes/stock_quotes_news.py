@@ -113,6 +113,46 @@ class StockStat:
             'AvgVolume: ' + price['Avg Volume'] + '\n'
         return msg1
 
+    # 'ticker': 'AMGN', 'quoteType': 'EQUITY', 'longName': 'Amgen Inc.', 'sector': 'Healthcare',
+    # 'industry': 'Drug Manufacturers—General', 'country': 'United States',
+    # 'regularMarketPrice': 227.39, 'marketState': 'REGULAR',
+    # 'marketCap': 131332734976, 'beta': 0.728388,
+    # 'volume': 992621, 'averageVolume': 2491973, 'trailingPE': 18.471973, 'forwardPE': 12.418897,
+    # 'shortTermTrend': 'DOWN', 'midTermTrend': 'UP', 'longTermTrend': 'UP',
+    # 'exDividendDate': '2021-02-11 02:00:00', 'dividendDate': '2021-03-08 02:00:00', 'earnings_earningsDate': [
+    #     '2021-04-28 03:00:S', '2021-05-03 03:00:S']}
+
+    def stock_description_v2(self):
+        try:
+            description = get_ranking_data2(self.stock)
+            description = description[0]
+        except Exception as e10:
+            msg1 = 'Описание недоступно, попробуйте сделать запрос спустя несколько минут.'
+            return msg1
+        mc = description['marketCap']
+        beta = description['beta']
+        vol = description['volume']
+        avol = description['averageVolume']
+
+        msg1 = 'Тикер: ' + str(description['ticker']) + '\n' + \
+            'Компания: ' + str(description['longName']) + '\n' + \
+            'Сектор: ' + str(description['sector']) + '\n' + \
+            'Индустрия: ' + str(description['industry']) + '\n' + \
+            'Страна: ' + str(description['country']) + '\n' + \
+            'Рыночная капитализация: ' + str(mc) + '\n' + \
+            'Бета: ' + str(beta) + '\n' + \
+            'Объём: ' + str(vol) + '\n' + \
+            'Средний объём за квартал: ' + str(avol) + '\n' + \
+            'Соотношение цена/прибыль (P/E): ' + str(description['trailingPE']) + '\n' + \
+            'Прогноз соотношения цена/прибыль (forward P/E): ' + str(description['forwardPE']) + '\n' + \
+            'Тип: ' + str(description['quoteType']) + '\n' + \
+            'Цена: ' + str(description['regularMarketPrice']) + '\n' + \
+            'Состояние рынка: ' + str(description['marketState']) + '\n' + \
+            'exDividend Date: ' + str(description['exDividendDate']) + '\n' + \
+            'Dividend Date: ' + str(description['dividendDate']) + '\n' + \
+            'Earnings Date: ' + str(description['earnings_earningsDate']) + '\n'
+        return msg1
+
     def company_rank_v2(self):
         msg1 = ''
         try:
@@ -163,3 +203,8 @@ def fin_news(blogs=False, rows=20):
         msg += ' '.join(n) + '\n' + '\n'
     return msg
 
+
+def none_to_str(s):
+    if s is None:
+        return '*'
+    return str(s)

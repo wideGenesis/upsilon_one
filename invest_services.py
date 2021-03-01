@@ -17,13 +17,15 @@ from quotes.stock_quotes_news import StockStat
 
 # ============================== Main  =============================
 def main():
-    x = get_ranking_data2("ASML")
+    x = get_ranking_data2("GILD")
+    y = x[0]
+    print('%%%%%%%%', y)
     exit(0)
     # print(x)
-    ss = StockStat(stock='AMGN')
-    out = ss.company_rank_v2()
-    print(out)
-    exit(0)
+    # ss = StockStat(stock='AMGN')
+    # out = ss.company_rank_v2()
+    # print(out)
+    # exit(0)
     # 1) Первичный аплоад данных. Делаем один раз и больше данные не  трогаем.
     #    Ео если вдруг пришлось дропнуть таблицу quotes то лучше начать именно с первичного забора данных
     # Создадим максимально необходимый список тикеров. Он учитывет все конституенты Насдака + исторические
