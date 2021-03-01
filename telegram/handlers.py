@@ -229,7 +229,7 @@ async def quotes_to_handler(event, client_, limit=20):
     # await client_.edit_message(message2, msg2)
     # await client_.send_file(event.input_sender, img_path)
     await client_.edit_message(message3, 'Оценка Ипсилона: ' + '\n' + msg3 + '\n \n ' +
-                               '\U00002757 Как использовать скоринг? - /instruction28')
+                               '\U00002757 Как использовать скоринг? - \n /instruction28')
 
     os.remove(img_path)
 
