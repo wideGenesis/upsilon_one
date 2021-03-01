@@ -622,15 +622,12 @@ def get_ranking_data2(tick, ag=agents()):
         elif et_0y_revenueEstimate_growth < 0.0:
             et_0y_revenueEstimate_growth_r = -1
 
-
     et_p1y_revenueEstimate_growth_r = None
     if et_p1y_revenueEstimate_growth is not None:
         if et_p1y_revenueEstimate_growth > 0:
             et_p1y_revenueEstimate_growth_r = 1
         else:
             et_p1y_revenueEstimate_growth_r = -1
-    else:
-        et_p1y_revenueEstimate_growth_r = -1
 
     et_earningsEstimate_r = None
     if et_earningsEstimate_avg is not None and e_earningsChart_quarterly is not None and len(e_earningsChart_quarterly) >= 2:
@@ -638,7 +635,7 @@ def get_ranking_data2(tick, ag=agents()):
             et_earningsEstimate_r = 2
         else:
             et_earningsEstimate_r = -2
-    else:
+    else: #если старый None а новый есть то +2, старый есть а текущего нет, то none!!!!!!!!!!!!!!!!!!!!!
         et_earningsEstimate_r = -2
 
     et_p1q_earningsEstimate_r = None
@@ -647,7 +644,7 @@ def get_ranking_data2(tick, ag=agents()):
             et_p1q_earningsEstimate_r = 2
         else:
             et_p1q_earningsEstimate_r = -2
-    else:
+    else: #если старый None а новый есть то +2, старый есть а текущего нет, то none!!!!!!!!!!!!!!!!!!!!!
         et_p1q_earningsEstimate_r = -2
 
     total_revenue_r = None
@@ -658,7 +655,7 @@ def get_ranking_data2(tick, ag=agents()):
             total_revenue_r = -1
 
     diluted_eps_r = None
-    if diluted_eps_last is not None and  diluted_eps_yearago is not None:
+    if diluted_eps_last is not None and diluted_eps_yearago is not None:
         if diluted_eps_last > diluted_eps_yearago:
             diluted_eps_r = 1
         else:
@@ -666,13 +663,15 @@ def get_ranking_data2(tick, ag=agents()):
 
     profitMargins_r = None
     if profitMargins is not None:
-        if profitMargins > 2:
+        if profitMargins > 0.5:
+            profitMargins_r = 3
+        elif 0.25 < profitMargins <= 0.5:
             profitMargins_r = 2
-        elif 0 < profitMargins <= 2:
+        elif 0.05 < profitMargins <= 0.25:
             profitMargins_r = 1
-        elif -5 < profitMargins <= 0:
-            profitMargins_r = -1
-        elif profitMargins <= -5:
+        elif -0.05 < profitMargins <= 0.05:
+            profitMargins_r = 0
+        elif profitMargins <= -0.05:
             profitMargins_r = -2
 
     trailingAnnualDividendYield_r = None
@@ -686,10 +685,12 @@ def get_ranking_data2(tick, ag=agents()):
 
     repurchase_of_capital_stock_avg_r = None
     if repurchase_of_capital_stock_avg is not None:
-        if repurchase_of_capital_stock_avg > 0:
+        if repurchase_of_capital_stock_avg < 0:
             repurchase_of_capital_stock_avg_r = 2
         else:
             repurchase_of_capital_stock_avg_r = -2
+    else:
+        repurchase_of_capital_stock_avg_r = -2
 
     marketCap_r = None
     if marketCap is not None:
@@ -710,25 +711,21 @@ def get_ranking_data2(tick, ag=agents()):
             beta_r = 1
         else:
             beta_r = -1
-    else:
-        beta_r = -1
 
     currentRatio_r = None
     if currentRatio is not None:
         if currentRatio > 1:
             currentRatio_r = 2
         else:
-            currentRatio_r = 2
-    else:
-        currentRatio_r = 2
+            currentRatio_r = -2
 
     debtToEquity_r = None
     if debtToEquity is not None and not pd.isna(debtToEquity):
-        if debtToEquity > 3:
+        if debtToEquity > 300:
             debtToEquity_r = -2
-        elif 2 <= debtToEquity <= 3:
+        elif 200 <= debtToEquity <= 300:
             debtToEquity_r = -1
-        elif debtToEquity < 2:
+        elif debtToEquity < 200:
             debtToEquity_r = 1
     else:
         debtToEquity_r = -5
