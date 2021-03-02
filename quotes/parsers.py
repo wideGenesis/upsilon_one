@@ -526,6 +526,7 @@ def get_ranking_data2(tick, ag=agents()):
         if (quoteType is None or
                 quoteType == 'MUTUALFUND' or
                 quoteType == 'ECNQUOTE' or
+                quoteType == 'ETF' or
                 (quoteType == 'EQUITY' and fullExchangeName == 'Other OTC')):
             return err_info_result, err_rank_result
 
