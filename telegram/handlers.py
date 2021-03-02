@@ -198,35 +198,49 @@ async def quotes_to_handler(event, client_, limit=20):
     message3 = await client_.send_message(event.input_sender, message='Строю скоринг, ожидайте...')
     img_path = os.path.join('results/ticker_stat', f'{stock}.png')
     ss = StockStat(stock=stock)
-    try:
-        ss.stock_download()
-    except Exception as e0:
-        debug(e0)
-    try:
-        get = ss.stock_description_v2()
+    ss.stock_download()
+    if ss.returns is not None:
+        ss.stock_snapshot()
+        msg2 = ss.stock_stat()
+    else:
+        msg2 = 'Нет данных для данного тикера'
+
+    get = ss.stock_description_v2()
+    if get[0] or get[1] is not None:
         msg1 = get[0]
         msg3 = get[1]
-        print(msg1, '\n', msg3)
-    except Exception as e1:
-        debug(e1)
-        msg1 = 'Описание для данного тикера недоступно или нет данных'
-        msg3 = 'Описание для данного тикера недоступно или нет данных'
-    try:
-        ss.stock_snapshot()
-    except Exception as e2:
-        debug(e2)
-    try:
-        msg2 = ss.stock_stat()
-    except Exception as e3:
-        debug(e3)
-        msg2 = 'Статистика недоступна'
+    else:
+        msg1 = 'Нет данных для данного тикера22'
+        msg3 = msg1
+    # try:
+    #     ss.stock_download()
+    # except Exception as e0:
+    #     debug(e0)
+    # try:
+    #     get = ss.stock_description_v2()
+    #     msg1 = get[0]
+    #     msg3 = get[1]
+    # except Exception as e1:
+    #     debug(e1)
+    #     msg1 = 'Описание для данного тикера недоступно или нет данных'
+    #     msg3 = 'Описание для данного тикера недоступно или нет данных'
+    # try:
+    #     ss.stock_snapshot()
+    # except Exception as e2:
+    #     debug(e2)
+    #     print('Snap', e2)
+    # try:
+    #     msg2 = ss.stock_stat()
+    # except Exception as e3:
+    #     debug(e3)
+    #     print('Stat', e3)
+    #     msg2 = 'Статистика недоступна'
 
     await client_.edit_message(message1, msg1)
     await client_.edit_message(message2, msg2)
-    await client_.send_file(event.input_sender, img_path)
     await client_.edit_message(message3, '__Оценка Ипсилона:__ ' + '\n' + msg3 + '\n \n ' +
                                '\U00002757 Как использовать скоринг? - \n /instruction28')
-
+    await client_.send_file(event.input_sender, img_path)
     os.remove(img_path)
 
 
