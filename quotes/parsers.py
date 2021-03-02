@@ -330,7 +330,7 @@ def get_ranking_data(tick, ag=agents()):
 
     # Long Term Debt/Equity (Quarterly)
     long_term_debt_equity_quarterly = \
-    df4.loc[df4['metric'] == 'Long Term Debt/Equity (Quarterly)', ['value']].value.values[0]
+        df4.loc[df4['metric'] == 'Long Term Debt/Equity (Quarterly)', ['value']].value.values[0]
     long_term_debt_equity_quarterly = fast_float(long_term_debt_equity_quarterly, default=None)
     debug(f'Long Term Debt/Equity (Quarterly): {long_term_debt_equity_quarterly}')
 
@@ -515,13 +515,14 @@ def get_ranking_data2(tick, ag=agents()):
     else:
         quoteType = ticker_data.quotes[ticker].get('quoteType', None)
         fullExchangeName = ticker_data.quotes[ticker].get('fullExchangeName')
-        if quoteType is None or quoteType == "MUTUALFUND" or (quoteType == 'EQUITY'
-                                                              and fullExchangeName == 'Other OTC'):
+        if (quoteType is None or
+                quoteType == 'MUTUALFUND' or
+                quoteType == 'ECNQUOTE' or
+                (quoteType == 'EQUITY' and fullExchangeName == 'Other OTC')):
             return {"rank": None, "data": None}
 
     all_financial_data_q = ticker_data.all_financial_data('q')
     # all_financial_data_a = ticker_data.all_financial_data('a')
-
 
     # % % % % % % % % % % % % % % % % % % %
     # Description  Block
@@ -583,7 +584,6 @@ def get_ranking_data2(tick, ag=agents()):
         if e_earningsChart is not None:
             e_earningsChart_quarterly = e_earningsChart.get('quarterly', None)
 
-
     # % % % % % % % % % % % % %
     # Current  Block
     # % % % % % % % % % % % % %
@@ -625,7 +625,6 @@ def get_ranking_data2(tick, ag=agents()):
             if not pd.isna(interestExpense):
                 break
 
-
     profitMargins = ticker_data.financial_data[ticker].get('profitMargins', None)
     trailingAnnualDividendRate = ticker_data.summary_detail[ticker].get('trailingAnnualDividendRate', None)
     trailingAnnualDividendYield = ticker_data.summary_detail[ticker].get('trailingAnnualDividendYield', None)
@@ -661,7 +660,7 @@ def get_ranking_data2(tick, ag=agents()):
             et_earningsEstimate_r = 2
         else:
             et_earningsEstimate_r = -2
-    else: #если старый None а новый есть то +2, старый есть а текущего нет, то none!!!!!!!!!!!!!!!!!!!!!
+    else:  # если старый None а новый есть то +2, старый есть а текущего нет, то none!!!!!!!!!!!!!!!!!!!!!
         et_earningsEstimate_r = -2
 
     et_p1q_earningsEstimate_r = None
@@ -670,7 +669,7 @@ def get_ranking_data2(tick, ag=agents()):
             et_p1q_earningsEstimate_r = 2
         else:
             et_p1q_earningsEstimate_r = -2
-    else: #если старый None а новый есть то +2, старый есть а текущего нет, то none!!!!!!!!!!!!!!!!!!!!!
+    else:  # если старый None а новый есть то +2, старый есть а текущего нет, то none!!!!!!!!!!!!!!!!!!!!!
         et_p1q_earningsEstimate_r = -2
 
     total_revenue_r = None
