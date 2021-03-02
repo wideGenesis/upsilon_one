@@ -162,7 +162,7 @@ class StockStat:
         else:
             dividendDate = 'нет данных'
         if len(description['earnings_earningsDate']) == 0:
-            earnings_earningsDate = 'нет данных'
+            earn = 'нет данных'
         else:
             earnings_earningsDate = description['earnings_earningsDate']
             earn = ' - '.join(map(str, earnings_earningsDate))
