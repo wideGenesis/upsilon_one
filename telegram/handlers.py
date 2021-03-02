@@ -206,6 +206,7 @@ async def quotes_to_handler(event, client_, limit=20):
         get = ss.stock_description_v2()
         msg1 = get[0]
         msg3 = get[1]
+        print(msg1, '\n', msg3)
     except Exception as e1:
         debug(e1)
         msg1 = 'Описание для данного тикера недоступно или нет данных'

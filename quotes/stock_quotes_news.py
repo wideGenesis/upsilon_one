@@ -180,6 +180,8 @@ class StockStat:
         for k, v in rank.items():
             if k == "next_earning_date":
                 next_earning_date = v
+            elif k is None:
+                msg2 = 'Нет данных для введённого тикера '
             else:
                 msg2 += '\n' + ins.ranking[k][v]
         return msg1, msg2
