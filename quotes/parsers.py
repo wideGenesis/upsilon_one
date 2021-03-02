@@ -779,7 +779,7 @@ def get_ranking_data2(tick, ag=agents()):
         interest_coverage_r = -5
     if ebit is not None and interestExpense == 0:
         interest_coverage_r = 2
-    if ebit > 0 and interestExpense > 0:
+    if ebit > 0 and interestExpense is not None and interestExpense > 0:
         interest_coverage = ebit / abs(interestExpense)
         if interest_coverage > 21:
             interest_coverage_r = 2
