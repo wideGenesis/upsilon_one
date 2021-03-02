@@ -115,12 +115,14 @@ class StockStat:
 
     def stock_description_v2(self):
         try:
-            get_yahoo = get_ranking_data2(self.stock)
-            description = get_yahoo[0]
-            rank = get_yahoo[1]
+            description, rank = get_ranking_data2(self.stock)
         except Exception as e10:
             msg1 = 'Данные недоступны, попробуйте сделать запрос спустя несколько минут.'
             return msg1
+        if len(description) == 0 and rank['rank'] is None and rank['data'] is None:
+            msg1 = 'Нет описания по данному тикеру'
+            msg2 = 'Нет данных для введённого тикера '
+            return msg1, msg2
         if description['marketCap'] is not None:
             mc = round(float(description['marketCap'] / 1000000000), 2)
         else:

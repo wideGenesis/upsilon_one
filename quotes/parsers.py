@@ -505,13 +505,15 @@ def get_ranking_data(tick, ag=agents()):
 #
 def get_ranking_data2(tick, ag=agents()):
     ticker = tick.upper()
+    err_info_result = {}
+    err_rank_result = {"rank": None, "data": None}
     if ticker is None or len(ticker) == 0:
-        return {"rank": None, "data": None}
+        return err_info_result, err_rank_result
 
     ticker_data = Ticker(ticker)
     quoteType = None
     if ticker_data.quotes == 'No data found':
-        return {"rank": None, "data": None}
+        return err_info_result, err_rank_result
     else:
         quoteType = ticker_data.quotes[ticker].get('quoteType', None)
         fullExchangeName = ticker_data.quotes[ticker].get('fullExchangeName')
@@ -519,7 +521,7 @@ def get_ranking_data2(tick, ag=agents()):
                 quoteType == 'MUTUALFUND' or
                 quoteType == 'ECNQUOTE' or
                 (quoteType == 'EQUITY' and fullExchangeName == 'Other OTC')):
-            return {"rank": None, "data": None}
+            return err_info_result, err_rank_result
 
     all_financial_data_q = ticker_data.all_financial_data('q')
     # all_financial_data_a = ticker_data.all_financial_data('a')
