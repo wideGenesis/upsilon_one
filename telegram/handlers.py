@@ -212,29 +212,6 @@ async def quotes_to_handler(event, client_, limit=20):
     else:
         msg1 = 'Нет данных для данного тикера'
         msg3 = msg1
-    # try:
-    #     ss.stock_download()
-    # except Exception as e0:
-    #     debug(e0)
-    # try:
-    #     get = ss.stock_description_v2()
-    #     msg1 = get[0]
-    #     msg3 = get[1]
-    # except Exception as e1:
-    #     debug(e1)
-    #     msg1 = 'Описание для данного тикера недоступно или нет данных'
-    #     msg3 = 'Описание для данного тикера недоступно или нет данных'
-    # try:
-    #     ss.stock_snapshot()
-    # except Exception as e2:
-    #     debug(e2)
-    #     print('Snap', e2)
-    # try:
-    #     msg2 = ss.stock_stat()
-    # except Exception as e3:
-    #     debug(e3)
-    #     print('Stat', e3)
-    #     msg2 = 'Статистика недоступна'
 
     await client_.edit_message(message1, msg1)
     await client_.edit_message(message2, msg2)
