@@ -166,6 +166,7 @@ class StockStat:
             earnings_earningsDate = 'нет данных'
         else:
             earnings_earningsDate = description['earnings_earningsDate']
+            earn = ' - '.join(map(str, earnings_earningsDate))
 
         msg1 = '__Тикер:__ ' + str(description['ticker']) + '\n' + \
             '__Компания:__ ' + str(description['longName']) + '\n' + \
@@ -183,7 +184,7 @@ class StockStat:
             '__Состояние рынка:__ ' + str(description['marketState']) + '\n \n' + \
             '__exDividend Date:__ ' + str(exDividendDate) + '\n' + \
             '__Dividend Date:__ ' + str(dividendDate) + '\n' + \
-            '__Earnings Date:__ ' + str(earnings_earningsDate) + '\n'
+            '__Earnings Date:__ ' + str(earn) + '\n'
         msg2 = ''
         for k, v in rank.items():
             if k == "next_earning_date":
