@@ -509,7 +509,8 @@ def get_ranking_data2(tick, ag=agents()):
         return {"rank": None, "data": None}
 
     ticker_data = Ticker(ticker)
-    all_financial_data = ticker_data.all_financial_data('q')
+    all_financial_data_q = ticker_data.all_financial_data('q')
+    # all_financial_data_a = ticker_data.all_financial_data('a')
 
     quoteType = ticker_data.quotes[ticker]['quoteType']
 
@@ -580,31 +581,47 @@ def get_ranking_data2(tick, ag=agents()):
 
     total_revenue_last = None
     total_revenue_yearago = None
-    total_revenue = all_financial_data.get('TotalRevenue', None)
+    total_revenue = all_financial_data_q.get('TotalRevenue', None)
     if total_revenue is not None:
         total_revenue_values = total_revenue.values
         for i in reversed(total_revenue):
             total_revenue_last = fast_float(i, default=None)
             if not pd.isna(total_revenue_last):
                 break
-        total_revenue_yearago = fast_float(all_financial_data.TotalRevenue.values[1], default=None)
+        total_revenue_yearago = fast_float(all_financial_data_q.TotalRevenue.values[1], default=None)
 
     diluted_eps_last = None
     diluted_eps_yearago = None
-    diluted_eps = all_financial_data.get('DilutedEPS', None)
+    diluted_eps = all_financial_data_q.get('DilutedEPS', None)
     if diluted_eps is not None:
-        diluted_eps_values = diluted_eps.values
         for i in reversed(diluted_eps):
             diluted_eps_last = fast_float(i, default=None)
             if not pd.isna(diluted_eps_last):
                 break
-        diluted_eps_yearago = fast_float(all_financial_data.DilutedEPS.values[1], default=None)
+        diluted_eps_yearago = fast_float(all_financial_data_q.DilutedEPS.values[1], default=None)
+
+    ebit = None
+    ebit_data = all_financial_data_q.get('EBIT', None)
+    if ebit_data is not None:
+        for i in reversed(ebit_data):
+            ebit = fast_float(i, default=None)
+            if not pd.isna(ebit):
+                break
+
+    interestExpense = None
+    interestExpense_data = all_financial_data_q.get('InterestExpense', None)
+    if interestExpense_data is not None:
+        for i in reversed(interestExpense_data):
+            interestExpense = fast_float(i, default=None)
+            if not pd.isna(interestExpense):
+                break
+
 
     profitMargins = ticker_data.financial_data[ticker].get('profitMargins', None)
     trailingAnnualDividendRate = ticker_data.summary_detail[ticker].get('trailingAnnualDividendRate', None)
     trailingAnnualDividendYield = ticker_data.summary_detail[ticker].get('trailingAnnualDividendYield', None)
 
-    repurchase_of_capital_stock = all_financial_data.get('RepurchaseOfCapitalStock', None)
+    repurchase_of_capital_stock = all_financial_data_q.get('RepurchaseOfCapitalStock', None)
     repurchase_of_capital_stock_avg = repurchase_of_capital_stock.mean(0) if repurchase_of_capital_stock is not None else None
 
     currentRatio = ticker_data.financial_data[ticker].get('currentRatio', None)
@@ -730,6 +747,24 @@ def get_ranking_data2(tick, ag=agents()):
     else:
         debtToEquity_r = -5
 
+    interest_coverage_r = None
+    if ebit is None and interestExpense is None:
+        interest_coverage_r = None
+    if ebit is None and interestExpense < 0:
+        interest_coverage_r = -5
+    if ebit is not None and interestExpense == 0:
+        interest_coverage_r = 2
+    if ebit > 0 and interestExpense > 0:
+        interest_coverage = ebit / abs(interestExpense)
+        if interest_coverage > 21:
+            interest_coverage_r = 2
+        if 6 < interest_coverage <= 21:
+            interest_coverage_r = 1
+        if 1 < interest_coverage <= 6:
+            interest_coverage_r = -1
+        if interest_coverage < 1:
+            interest_coverage_r = -2
+
     rank = 0
     if et_0y_revenueEstimate_growth_r is not None:
         rank += et_0y_revenueEstimate_growth_r
@@ -757,6 +792,8 @@ def get_ranking_data2(tick, ag=agents()):
         rank += currentRatio_r
     if debtToEquity_r is not None:
         rank += debtToEquity_r
+    if interest_coverage_r is not None:
+        rank += interest_coverage_r
 
     debug("-------------- I N F O --------------")
     debug(f'\n'
@@ -792,7 +829,8 @@ def get_ranking_data2(tick, ag=agents()):
           f'marketCap: {marketCap_r}\n'
           f'beta: {beta_r}\n'
           f'currentRatio: {currentRatio_r}\n'
-          f'debtToEquity: {debtToEquity_r}\n')
+          f'debtToEquity: {debtToEquity_r}\n'
+          f'interest_coverage: {interest_coverage_r}\n')
 
     debug(f"Finaly Rank : {rank}\n", WARNING)
 
@@ -809,7 +847,8 @@ def get_ranking_data2(tick, ag=agents()):
                    "marketCap": marketCap_r,
                    "beta": beta_r,
                    "currentRatio": currentRatio_r,
-                   "debtToEquity": debtToEquity_r}
+                   "debtToEquity": debtToEquity_r,
+                   "interest_coverage": interest_coverage_r}
 
     info_result = {'ticker': ticker,
                    'quoteType': quoteType,
