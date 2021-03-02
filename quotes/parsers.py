@@ -510,7 +510,13 @@ def get_ranking_data2(tick, ag=agents()):
     if ticker is None or len(ticker) == 0:
         return err_info_result, err_rank_result
 
-    ticker_data = Ticker(ticker)
+    ticker_data = None
+    try:
+        ticker_data = Ticker(ticker)
+    except Exception as e:
+        debug(e, ERROR)
+        return err_info_result, err_rank_result
+
     quoteType = None
     if ticker_data.quotes == 'No data found':
         return err_info_result, err_rank_result
