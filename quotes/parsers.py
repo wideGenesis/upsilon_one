@@ -650,18 +650,18 @@ def get_ranking_data2(tick, ag=agents()):
     et_0y_revenueEstimate_growth_r = None
     if et_0y_revenueEstimate_growth is not None:
         if et_0y_revenueEstimate_growth > 0.05:
-            et_0y_revenueEstimate_growth_r = 2
+            et_0y_revenueEstimate_growth_r = 4
         elif 0.05 >= et_0y_revenueEstimate_growth > 0.0:
-            et_0y_revenueEstimate_growth_r = 1
+            et_0y_revenueEstimate_growth_r = 3
         elif et_0y_revenueEstimate_growth < 0.0:
-            et_0y_revenueEstimate_growth_r = -1
+            et_0y_revenueEstimate_growth_r = -2
 
     et_p1y_revenueEstimate_growth_r = None
     if et_p1y_revenueEstimate_growth is not None:
         if et_p1y_revenueEstimate_growth > 0:
-            et_p1y_revenueEstimate_growth_r = 1
+            et_p1y_revenueEstimate_growth_r = 2
         else:
-            et_p1y_revenueEstimate_growth_r = -1
+            et_p1y_revenueEstimate_growth_r = -2
 
     et_earningsEstimate_r = None
     if et_earningsEstimate_avg is not None and e_earningsChart_quarterly is not None and len(e_earningsChart_quarterly) >= 2:
@@ -679,12 +679,12 @@ def get_ranking_data2(tick, ag=agents()):
     et_p1q_earningsEstimate_r = None
     if et_p1q_earningsEstimate_avg is not None and e_earningsChart_quarterly is not None and len(e_earningsChart_quarterly) >= 3:
         if et_p1q_earningsEstimate_avg > e_earningsChart_quarterly[2]['actual']:
-            et_p1q_earningsEstimate_r = 2
+            et_p1q_earningsEstimate_r = 3
         else:
-            et_p1q_earningsEstimate_r = -2
+            et_p1q_earningsEstimate_r = -3
     else:  # если старый None а новый есть то +2, старый есть а текущего нет, то none!!!!!!!!!!!!!!!!!!!!!
         if et_p1q_earningsEstimate_avg is not None and e_earningsChart_quarterly is None:
-            et_p1q_earningsEstimate_r = 2
+            et_p1q_earningsEstimate_r = 3
         else:
             et_p1q_earningsEstimate_r = None
 
@@ -692,9 +692,9 @@ def get_ranking_data2(tick, ag=agents()):
     total_revenue_r = None
     if total_revenue_last is not None and total_revenue_yearago is not None:
         if total_revenue_last > total_revenue_yearago:
-            total_revenue_r = 1
+            total_revenue_r = 2
         else:
-            total_revenue_r = -1
+            total_revenue_r = -2
 
     diluted_eps_r = None
     if diluted_eps_last is not None and diluted_eps_yearago is not None:
@@ -714,16 +714,16 @@ def get_ranking_data2(tick, ag=agents()):
         elif -0.05 < profitMargins <= 0.05:
             profitMargins_r = 0
         elif profitMargins <= -0.05:
-            profitMargins_r = -2
+            profitMargins_r = -3
 
     trailingAnnualDividendYield_r = None
     if trailingAnnualDividendYield is not None:
         if trailingAnnualDividendYield > 0:
-            trailingAnnualDividendYield_r = 2
+            trailingAnnualDividendYield_r = 1
         else:
-            trailingAnnualDividendYield_r = -2
+            trailingAnnualDividendYield_r = -1
     else:
-        trailingAnnualDividendYield_r = -2
+        trailingAnnualDividendYield_r = -1
 
     repurchase_of_capital_stock_avg_r = None
     if repurchase_of_capital_stock_avg is not None:
@@ -769,8 +769,10 @@ def get_ranking_data2(tick, ag=agents()):
             debtToEquity_r = -1
         elif debtToEquity < 200:
             debtToEquity_r = 1
+        elif debtToEquity < 100:
+            debtToEquity_r = 2
     else:
-        debtToEquity_r = -5
+        debtToEquity_r = -4
 
     interest_coverage_r = None
     if ebit is None and interestExpense is None:
