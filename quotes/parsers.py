@@ -656,12 +656,16 @@ def get_ranking_data2(tick, ag=agents()):
 
     et_earningsEstimate_r = None
     if et_earningsEstimate_avg is not None and e_earningsChart_quarterly is not None and len(e_earningsChart_quarterly) >= 2:
-        if et_earningsEstimate_avg > e_earningsChart_quarterly[1]['actual']:
+        old_earning = e_earningsChart_quarterly[1]['actual']
+        if et_earningsEstimate_avg > old_earning:
             et_earningsEstimate_r = 2
         else:
             et_earningsEstimate_r = -2
     else:  # если старый None а новый есть то +2, старый есть а текущего нет, то none!!!!!!!!!!!!!!!!!!!!!
-        et_earningsEstimate_r = -2
+        if et_earningsEstimate_avg is not None and e_earningsChart_quarterly is None:
+            et_earningsEstimate_r = 2
+        else:
+            et_earningsEstimate_r = None
 
     et_p1q_earningsEstimate_r = None
     if et_p1q_earningsEstimate_avg is not None and e_earningsChart_quarterly is not None and len(e_earningsChart_quarterly) >= 3:
@@ -670,7 +674,11 @@ def get_ranking_data2(tick, ag=agents()):
         else:
             et_p1q_earningsEstimate_r = -2
     else:  # если старый None а новый есть то +2, старый есть а текущего нет, то none!!!!!!!!!!!!!!!!!!!!!
-        et_p1q_earningsEstimate_r = -2
+        if et_p1q_earningsEstimate_avg is not None and e_earningsChart_quarterly is None:
+            et_p1q_earningsEstimate_r = 2
+        else:
+            et_p1q_earningsEstimate_r = None
+
 
     total_revenue_r = None
     if total_revenue_last is not None and total_revenue_yearago is not None:
