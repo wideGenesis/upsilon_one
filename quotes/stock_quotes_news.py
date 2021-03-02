@@ -162,7 +162,6 @@ class StockStat:
         else:
             dividendDate = 'нет данных'
         if len(description['earnings_earningsDate']) == 0:
-            print('%%%%%%%%%', len(description['earnings_earningsDate']))
             earnings_earningsDate = 'нет данных'
         else:
             earnings_earningsDate = description['earnings_earningsDate']
