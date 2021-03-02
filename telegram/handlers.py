@@ -210,7 +210,7 @@ async def quotes_to_handler(event, client_, limit=20):
         msg1 = get[0]
         msg3 = get[1]
     else:
-        msg1 = 'Нет данных для данного тикера22'
+        msg1 = 'Нет данных для данного тикера'
         msg3 = msg1
     # try:
     #     ss.stock_download()
