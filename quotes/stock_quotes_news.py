@@ -154,10 +154,11 @@ class StockStat:
             dividendDate = description['dividendDate']
         else:
             dividendDate = 'нет данных'
-        if description['earnings_earningsDate'] is not None:
-            earnings_earningsDate = description['earnings_earningsDate']
-        else:
+        if len(description['earnings_earningsDate']) == 0:
+            print('%%%%%%%%%', len(description['earnings_earningsDate']))
             earnings_earningsDate = 'нет данных'
+        else:
+            earnings_earningsDate = description['earnings_earningsDate']
 
         msg1 = '__Тикер:__ ' + str(description['ticker']) + '\n' + \
             '__Компания:__ ' + str(description['longName']) + '\n' + \
