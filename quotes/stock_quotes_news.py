@@ -167,23 +167,41 @@ class StockStat:
             earnings_earningsDate = description['earnings_earningsDate']
             earn = ' - '.join(map(str, earnings_earningsDate))
 
-        msg1 = '__Тикер:__ ' + str(description['ticker']) + '\n' + \
-            '__Компания:__ ' + str(description['longName']) + '\n' + \
-            '__Сектор:__ ' + str(description['sector']) + '\n' + \
-            '__Индустрия:__ ' + str(description['industry']) + '\n' + \
-            '__Страна:__ ' + str(description['country']) + '\n \n' + \
-            '__Капитализация:__ ' + str(mc) + ' Млрд' + '\n' + \
-            '__Бета:__ ' + str(beta) + '\n' + \
-            '__Объём:__ ' + str(vol) + ' Млн' + '\n' + \
-            '__Средний объём (3m):__ ' + str(avol) + ' Млн' + '\n' + \
-            '__P/E:__ ' + str(pe) + '\n' + \
-            '__Forward P/E:__ ' + str(fpe) + '\n' + \
-            '__Тип:__ ' + str(description['quoteType']) + '\n' + \
-            '__Цена:__ ' + str(description['regularMarketPrice']) + '\n' + \
-            '__Состояние рынка:__ ' + str(description['marketState']) + '\n \n' + \
-            '__exDividend Date:__ ' + str(exDividendDate) + '\n' + \
-            '__Dividend Date:__ ' + str(dividendDate) + '\n' + \
-            '__Earnings Date:__ ' + str(earn) + '\n'
+        # msg1 = '__Тикер:__ ' + str(description['ticker']) + '\n' + \
+        #     '__Компания:__ ' + str(description['longName']) + '\n' + \
+        #     '__Сектор:__ ' + str(description['sector']) + '\n' + \
+        #     '__Индустрия:__ ' + str(description['industry']) + '\n' + \
+        #     '__Страна:__ ' + str(description['country']) + '\n \n' + \
+        #     '__Капитализация:__ ' + str(mc) + ' Млрд' + '\n' + \
+        #     '__Бета:__ ' + str(beta) + '\n' + \
+        #     '__Объём:__ ' + str(vol) + ' Млн' + '\n' + \
+        #     '__Средний объём (3m):__ ' + str(avol) + ' Млн' + '\n' + \
+        #     '__P/E:__ ' + str(pe) + '\n' + \
+        #     '__Forward P/E:__ ' + str(fpe) + '\n' + \
+        #     '__Тип:__ ' + str(description['quoteType']) + '\n' + \
+        #     '__Цена:__ ' + str(description['regularMarketPrice']) + '\n' + \
+        #     '__Состояние рынка:__ ' + str(description['marketState']) + '\n \n' + \
+        #     '__exDividend Date:__ ' + str(exDividendDate) + '\n' + \
+        #     '__Dividend Date:__ ' + str(dividendDate) + '\n' + \
+        #     '__Earnings Date:__ ' + str(earn) + '\n'
+
+        msg1 = f"__Тикер:__ {str(description['ticker'])}\n" \
+               f"__Компания:__ {str(description['longName'])}\n" \
+               f"__Сектор:__ {str(description['sector'])}\n" \
+               f"__Индустрия:__ {str(description['industry'])}\n" \
+               f"__Страна:__ {str(description['country'])}\n \n" \
+               f"__Капитализация:__ {str(mc)} Млрд\n" \
+               f"__Бета:__ {str(beta) }\n" \
+               f"__Объём:__ {str(vol)} Млн\n" \
+               f"__Средний объём (3m):__ {str(avol)} Млн\n" \
+               f"__P/E:__ {str(pe)} \n" \
+               f"__Forward P/E:__ {str(fpe)} \n" \
+               f"__Тип:__ {str(description['quoteType'])}\n" \
+               f"__Цена:__ {str(description['regularMarketPrice'])}\n" \
+               f"__Состояние рынка:__ {str(description['marketState'])}\n" \
+               f"__exDividend Date:__ {str(exDividendDate)}\n" \
+               f"__Dividend Date:__ {str(dividendDate)}\n" \
+               f"__Earnings Date:__ {str(earn)}\n"
         msg2 = ''
         for k, v in rank.items():
             if k == "next_earning_date":
