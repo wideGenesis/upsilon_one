@@ -194,7 +194,7 @@ async def quotes_to_handler(event, client_, limit=20):
     stock = parse[1]
     stock = stock.upper()
     message1 = await client_.send_message(event.input_sender, message='Получаю описание, ожидайте...')
-    # message2 = await client_.send_message(event.input_sender, message='Рассчитываю ключевые статистики, ожидайте...')
+    message2 = await client_.send_message(event.input_sender, message='Рассчитываю ключевые статистики, ожидайте...')
     message3 = await client_.send_message(event.input_sender, message='Строю скоринг, ожидайте...')
     img_path = os.path.join('results/ticker_stat', f'{stock}.png')
     ss = StockStat(stock=stock)
@@ -210,25 +210,20 @@ async def quotes_to_handler(event, client_, limit=20):
         debug(e1)
         msg1 = 'Описание для данного тикера недоступно или нет данных'
         msg3 = 'Описание для данного тикера недоступно или нет данных'
-    # try:
-    #     ss.stock_snapshot()
-    # except Exception as e2:
-    #     debug(e2)
-    # try:
-    #     msg2 = ss.stock_stat()
-    # except Exception as e3:
-    #     debug(e3)
-    #     msg2 = 'Статистика недоступна'
-    # try:
-    #     msg3 = ss.company_rank_v2()
-    # except Exception as e4:
-    #     debug(e4)
-    #     msg3 = 'Рекомендация недоступна'
+    try:
+        ss.stock_snapshot()
+    except Exception as e2:
+        debug(e2)
+    try:
+        msg2 = ss.stock_stat()
+    except Exception as e3:
+        debug(e3)
+        msg2 = 'Статистика недоступна'
 
     await client_.edit_message(message1, msg1)
-    # await client_.edit_message(message2, msg2)
-    # await client_.send_file(event.input_sender, img_path)
-    await client_.edit_message(message3, 'Оценка Ипсилона: ' + '\n' + msg3 + '\n \n ' +
+    await client_.edit_message(message2, msg2)
+    await client_.send_file(event.input_sender, img_path)
+    await client_.edit_message(message3, '__Оценка Ипсилона:__ ' + '\n' + msg3 + '\n \n ' +
                                '\U00002757 Как использовать скоринг? - \n /instruction28')
 
     os.remove(img_path)

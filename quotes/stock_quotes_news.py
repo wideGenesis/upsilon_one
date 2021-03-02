@@ -61,7 +61,7 @@ class StockStat:
                                       ticker_=self.stock,
                                       display=self.display)
         parse = json.loads(stats)
-        msg = '```Ключевые Характеристики:``` ' + '\n' + '\n' + 'Start Period ' + parse[self.stock]['Start Period'] + '\n' + \
+        msg = '__Ключевые Характеристики:__ ' + '\n' + '\n' + 'Start Period ' + parse[self.stock]['Start Period'] + '\n' + \
               'End Period ' + parse[self.stock]['End Period'] + '\n' + '\n' + \
               "```Total Return % ```" + '\n' + f'{self.stock} ' + str(parse[self.stock]['Total Return '])\
               + f'| {self.benchmark} ' + str(parse['Benchmark']['Total Return ']) + '\n' + '\n' + \
@@ -90,29 +90,28 @@ class StockStat:
 
         return msg
 
-    def stock_description(self):
-        try:
-            price = finviz.get_stock(self.stock)
-            sma50 = price['SMA50'].split('%')
-            sma50 = float(sma50[0])
-        except Exception as e10:
-            msg1 = 'Описание для ETF недоступно'
-            return msg1
-        if sma50 > 0:
-            mom = 'у акций компании наблюдается моментум'
-        elif sma50 <= 0:
-            mom = 'отсутствует'
-        msg1 = price['Company'] + '\n' + \
-            'Sector: ' + price['Sector'] + '\n' + \
-            'Industry: ' + price['Industry'] + '\n' + \
-            'Country: ' + price['Country'] + '\n' + \
-            'MarketCap: ' + price['Market Cap'] + '\n' + \
-            'Price: ' + price['Price'] + '\n' + \
-            'SMA50: ' + price['SMA50'] + '\n' + \
-            'Моментум: ' + mom + '\n' + \
-            'AvgVolume: ' + price['Avg Volume'] + '\n'
-        return msg1
-
+    # def stock_description(self):
+    #     try:
+    #         price = finviz.get_stock(self.stock)
+    #         sma50 = price['SMA50'].split('%')
+    #         sma50 = float(sma50[0])
+    #     except Exception as e10:
+    #         msg1 = 'Описание для ETF недоступно'
+    #         return msg1
+    #     if sma50 > 0:
+    #         mom = 'у акций компании наблюдается моментум'
+    #     elif sma50 <= 0:
+    #         mom = 'отсутствует'
+    #     msg1 = price['Company'] + '\n' + \
+    #         'Sector: ' + price['Sector'] + '\n' + \
+    #         'Industry: ' + price['Industry'] + '\n' + \
+    #         'Country: ' + price['Country'] + '\n' + \
+    #         'MarketCap: ' + price['Market Cap'] + '\n' + \
+    #         'Price: ' + price['Price'] + '\n' + \
+    #         'SMA50: ' + price['SMA50'] + '\n' + \
+    #         'Моментум: ' + mom + '\n' + \
+    #         'AvgVolume: ' + price['Avg Volume'] + '\n'
+    #     return msg1
 
     def stock_description_v2(self):
         try:
@@ -177,9 +176,7 @@ class StockStat:
             '__exDividend Date:__ ' + str(exDividendDate) + '\n' + \
             '__Dividend Date:__ ' + str(dividendDate) + '\n' + \
             '__Earnings Date:__ ' + str(earnings_earningsDate) + '\n'
-        # return msg1
         msg2 = ''
-        # next_earning_date = None
         for k, v in rank.items():
             if k == "next_earning_date":
                 next_earning_date = v
@@ -197,25 +194,24 @@ class StockStat:
         for n in news[0:15]:
             msg += ' '.join(n) + '\n' + '\n'
         return msg
-        return msg1
 
-    def company_rank_v2(self):
-        msg1 = ''
-        try:
-            rank = get_ranking_data(self.stock)
-        except Exception as e11:
-            msg1 = 'Аналитика для данного тикера недоступна. '
-            return msg1
-
-        next_earning_date = None
-        for k, v in rank.items():
-            if k == "next_earning_date":
-                next_earning_date = v
-            elif k == 'data':
-                msg1 = 'Данные временно недоступны, попробуйте выполнить запрос через минуту. '
-            else:
-                msg1 += '\n' + ins.ranking[k][v]
-        return msg1
+    # def company_rank_v2(self):
+    #     msg1 = ''
+    #     try:
+    #         rank = get_ranking_data(self.stock)
+    #     except Exception as e11:
+    #         msg1 = 'Аналитика для данного тикера недоступна. '
+    #         return msg1
+    #
+    #     next_earning_date = None
+    #     for k, v in rank.items():
+    #         if k == "next_earning_date":
+    #             next_earning_date = v
+    #         elif k == 'data':
+    #             msg1 = 'Данные временно недоступны, попробуйте выполнить запрос через минуту. '
+    #         else:
+    #             msg1 += '\n' + ins.ranking[k][v]
+    #     return msg1
 
     def stock_news(self):
         try:
