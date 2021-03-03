@@ -24,8 +24,9 @@ if os.path.exists(conf_dir+'local.conf'):
     print("Run local!!")
 
 LOGS_PATH = PROJECT_HOME_DIR + '/logs/'
-
 LOGS = conf['PATHS']['LOGS']
+
+
 WEBDRIVER = conf['PATHS']['WEBDRIVER']
 IMAGES_OUT_PATH = conf['PATHS']['IMAGES_OUT_PATH']
 RESULTS_PATH = conf['PATHS']['RESULTS_PATH']

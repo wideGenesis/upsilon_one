@@ -391,11 +391,25 @@ async def send_to_message(clnt, toid, msg):
 
 
 async def send_broadcast_message(clnt, engine, msg):
-    try:
-        users = await get_all_users(engine)
-        for user_id in users:
+    users = await get_all_users(engine)
+    succsess_message_log = "messages_send.log"
+    fail_message_log = "messages_fail.log"
+    sfname = f'{LOGS_PATH}{succsess_message_log}'
+    ffname = f'{LOGS_PATH}{fail_message_log}'
+    bufsize = 1
+    sm_log_file = open(sfname, "a", buffering=bufsize)
+    fm_log_file = open(ffname, "a", buffering=bufsize)
+    dt = datetime.datetime.now()
+    sm_log_file.write(f'[{dt.strftime("%H:%M:%S")}]:***************** Start send new message *****************\n')
+    fm_log_file.write(f'[{dt.strftime("%H:%M:%S")}]:***************** Start send new message *****************\n')
+    for user_id in users:
+        try:
             await clnt.send_message(user_id, msg)
-        return True
-    except Exception as e:
-        debug(e, ERROR)
-        return False
+            dt = datetime.datetime.now()
+            sm_log_file.write(f'[{dt.strftime("%H:%M:%S")}]:{user_id}\n')
+        except Exception as e:
+            debug(e, ERROR)
+            fm_log_file.write(f'[{dt.strftime("%H:%M:%S")}]:{user_id}\n')
+    sm_log_file.close()
+    fm_log_file.close()
+    return True
