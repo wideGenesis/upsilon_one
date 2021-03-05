@@ -128,5 +128,7 @@ def main():
 
 
 if __name__ == '__main__':
-    debug("***Start***")
+    if not IS_RUN_LOCAL:
+        debug_init(file_name="gatekeeper.log")
+    debug("*************** S T A R T ***************")
     main()

@@ -15,6 +15,9 @@ from telegram import buttons
 import re
 from project_shared import *
 from telegram.sql_queries import get_all_users
+from telethon.tl.types import InputMediaPoll, Poll, PollAnswer, DocumentAttributeFilename, DocumentAttributeVideo
+from telethon import functions, types
+from mimetypes import guess_type
 
 
 class WebHandler:
@@ -383,6 +386,11 @@ async def send_sac_pie(clnt, toid):
 
 async def send_to_message(clnt, toid, msg):
     try:
+        # results = await clnt.send_message(toid, file=InputMediaPoll(
+        #     poll=Poll(
+        #         id=53453159,
+        #         question="Вы хотите что бы мы сделели более глубокий анализ по акциям?",
+        #         answers=[PollAnswer('Yes', b'1'), PollAnswer('No', b'2')])))
         await clnt.send_message(toid, msg)
         return True
     except Exception as e:

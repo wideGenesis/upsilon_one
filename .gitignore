@@ -55,3 +55,9 @@ config/local.conf
 test_socket_cln.py
 test_socket_srv.py
 test_pillow.py
+spam_sender/for_send/allweather.mp4
+spam_sender/for_send/allweather1.gif
+spam_sender/for_send/amzn.mp4
+spam_sender/for_send/amzn1.gif
+spam_sender/for_send/start.mp4
+spam_sender/for_send/start1.gif

@@ -5,11 +5,14 @@ from time import sleep
 import json
 
 from telethon import events, TelegramClient, types, functions
-from telethon.tl.types import PeerUser, PeerChat, PeerChannel, InputPeerUser
+from telethon.tl.types import PeerUser, PeerChat, PeerChannel, InputPeerUser, DocumentAttributeVideo
 from aiohttp import web
 import sqlalchemy
 from project_shared import *
 from sql_queries import *
+from hachoir.metadata import extractMetadata
+from hachoir.parser import createParser
+
 
 my_sqlalchemy_engine = sqlalchemy.create_engine(
     'mysql+pymysql://gb_telethon2:J-KnpTx-Qz6V@mysql102.1gb.ru/gb_telethon2')
@@ -81,19 +84,53 @@ async def handle(request):
 
 app.router.add_post("/{token}/", handle)
 
-msg = "Простите я случайно, не тому пользователю написал"
-# msg = "Привет Макс, я наш новый бот спаммер. Буду вот так вот всех заспамливать! " \
-#       "\n Не сообщай о спаме про меня, пожалуйста!" \
-#       "\n Я успешно заработал, с теми пользователями у которых есть username." \
-#       "\n Нужно написать тексты! " \
-#       "\n Настроить временной интервал, чтобы не сразу писать пользователю как только он пришел в чат! " \
-#       "\n Клонировать меня для рассылки негатива." \
-#       "\n Запустить в продашкн :-)"
+msg = "Здравствуйте! " \
+      "Прошу прощения, что сразу не выслали @UpsilonBot " \
+      "Это наш бесплатный бот для всех новых пользователей.  " \
+      "\n" \
+      "@UpsilonBot - это сканер акций и менеджер портфелей. Мастхев для каждого инвестора! " \
+      "Прежде, чем задавать вопросы в чате, изучите бота! Он умеет отвечать на основные вопросы, " \
+      "делать анализ по акциям и собирать инвест портфели."
+
+
+# Printing upload progress
+async def progresscallback(current, total):
+    prgs = f'Uploaded {current} out of {total} bytes: {round((current / total)*100, 2)}%'
+    debug(prgs)
 
 
 async def send_to_message(toid):
     try:
+        filepath = PROJECT_HOME_DIR + '/spam_sender/for_send/'
+        filename1 = filepath + 'start.mp4'
+        filename2 = filepath + 'amzn.mp4'
+        filename3 = filepath + 'allweather.mp4'
+
+        metadata1 = extractMetadata(createParser(filename1))
+        metadata2 = extractMetadata(createParser(filename2))
+        metadata3 = extractMetadata(createParser(filename3))
+
         await client.send_message(toid, msg)
+        await client.send_message(toid, msg)
+
+        await client.send_file(toid, "http://104.154.228.185/start.mp4", video_note=True,
+                               attributes=(DocumentAttributeVideo(
+                                      (0, metadata1.get('duration').seconds)[metadata1.has('duration')],
+                                      (0, metadata1.get('width'))[metadata1.has('width')],
+                                      (0, metadata1.get('height'))[metadata1.has('height')]
+                                  ),))
+        await client.send_file(toid, "http://104.154.228.185/amzn.mp4", video_note=True,
+                               attributes=(DocumentAttributeVideo(
+                                      (0, metadata2.get('duration').seconds)[metadata2.has('duration')],
+                                      (0, metadata2.get('width'))[metadata2.has('width')],
+                                      (0, metadata2.get('height'))[metadata2.has('height')]
+                                  ),))
+        await client.send_file(toid, "http://104.154.228.185/allweather.mp4", video_note=True,
+                               attributes=(DocumentAttributeVideo(
+                                      (0, metadata3.get('duration').seconds)[metadata3.has('duration')],
+                                      (0, metadata3.get('width'))[metadata3.has('width')],
+                                      (0, metadata3.get('height'))[metadata3.has('height')]
+                                  ),))
         return True
     except Exception as e:
         debug(e, ERROR)
@@ -117,5 +154,7 @@ def main():
 
 
 if __name__ == '__main__':
-    debug("***Start***")
+    if not IS_RUN_LOCAL:
+        debug_init(file_name="spam_sender.log")
+    debug("*************** S T A R T ***************")
     main()

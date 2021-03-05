@@ -20,7 +20,9 @@ PROJECT_HOME_DIR, i_filename = os.path.split(__file__)
 conf_dir = f'{PROJECT_HOME_DIR}/config/'
 conf = yaml.safe_load(open(f'{PROJECT_HOME_DIR}/config/settings.yaml'))
 
+IS_RUN_LOCAL = False
 if os.path.exists(conf_dir+'local.conf'):
+    IS_RUN_LOCAL = True
     print("Run local!!")
 
 LOGS_PATH = PROJECT_HOME_DIR + '/logs/'
