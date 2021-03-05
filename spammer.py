@@ -68,7 +68,7 @@ async def handle(request):
                         username, append_dt = v
                         delta_t = int(now_dt) - int(append_dt)
                         debug(f'User[{k}] username[{username}] now_dt[{now_dt}] v[{append_dt}] delta_t[{delta_t}]')
-                        if delta_t > 25: #43200:
+                        if delta_t > 28800:
                             await client.get_dialogs()
                             entity = await client.get_entity(username)
                             res = await send_to_message(entity)
