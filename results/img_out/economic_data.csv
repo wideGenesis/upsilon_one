@@ -1,33 +1,33 @@
 Data,Country,Last,Previous,Reference,Unit
-Interest Rate,Russia,4.25,4.25,Dec/20,%
-Interest Rate,China,3.85,3.85,Jan/21,%
-Interest Rate,United States,0.25,0.25,Dec/20,%
-Interest Rate,United Kingdom,0.1,0.1,Dec/20,%
-Interest Rate,Euro Area,0,0,Dec/20,%
-Interest Rate,France,0,0,Dec/20,%
-Interest Rate,Germany,0,0,Dec/20,%
-Interest Rate,Japan,-0.1,-0.1,Dec/20,%
-Inflation Rate,Russia,4.9,4.4,Dec/20,%
-Inflation Rate,United States,1.4,1.2,Dec/20,%
-Inflation Rate,United Kingdom,0.3,0.7,Nov/20,%
-Inflation Rate,China,0.2,-0.5,Dec/20,%
-Inflation Rate,France,0,0.2,Dec/20,%
-Inflation Rate,Euro Area,-0.3,-0.3,Dec/20,%
-Inflation Rate,Germany,-0.3,-0.3,Dec/20,%
-Inflation Rate,Japan,-0.9,-0.4,Nov/20,%
-Unemployment Rate,France,9,7.1,Sep/20,%
-Unemployment Rate,Euro Area,8.3,8.4,Nov/20,%
-Unemployment Rate,United States,6.7,6.7,Dec/20,%
-Unemployment Rate,Russia,6.1,6.3,Nov/20,%
-Unemployment Rate,China,5.2,5.3,Nov/20,%
-Unemployment Rate,United Kingdom,4.9,4.8,Oct/20,%
-Unemployment Rate,Germany,4.5,4.5,Nov/20,%
-Unemployment Rate,Japan,2.9,3.1,Nov/20,%
-Composite PMI,China,55.8,57.5,Dec/20,points
-Composite PMI,Euro Area,49.1,45.3,Dec/20,points
-Composite PMI,France,49.5,40.6,Dec/20,points
-Composite PMI,Germany,52,51.7,Dec/20,points
-Composite PMI,Japan,48.5,48.1,Dec/20,points
-Composite PMI,Russia,48.3,47.8,Dec/20,points
-Composite PMI,United Kingdom,50.4,49,Dec/20,points
-Composite PMI,United States,55.3,58.6,Dec/20,points
+Interest Rate,Russia,4.25,4.25,Feb/21,%
+Interest Rate,China,3.85,3.85,Feb/21,%
+Interest Rate,United States,0.25,0.25,Jan/21,%
+Interest Rate,United Kingdom,0.1,0.1,Feb/21,%
+Interest Rate,Euro Area,0,0,Feb/21,%
+Interest Rate,France,0,0,Feb/21,%
+Interest Rate,Germany,0,0,Feb/21,%
+Interest Rate,Japan,-0.1,-0.1,Jan/21,%
+Inflation Rate,Russia,5.2,4.9,Jan/21,%
+Inflation Rate,United States,1.4,1.4,Jan/21,%
+Inflation Rate,Germany,1,-0.3,Jan/21,%
+Inflation Rate,Euro Area,0.9,-0.3,Jan/21,%
+Inflation Rate,United Kingdom,0.7,0.6,Jan/21,%
+Inflation Rate,France,0.4,0.6,Feb/21,%
+Inflation Rate,China,-0.3,0.2,Jan/21,%
+Inflation Rate,Japan,-0.6,-1.2,Jan/21,%
+Unemployment Rate,Euro Area,8.3,8.3,Dec/20,%
+Unemployment Rate,France,8,9.1,Dec/20,%
+Unemployment Rate,United States,6.3,6.7,Jan/21,%
+Unemployment Rate,Russia,5.8,5.9,Jan/21,%
+Unemployment Rate,China,5.2,5.2,Dec/20,%
+Unemployment Rate,United Kingdom,5.1,5,Dec/20,%
+Unemployment Rate,Germany,4.6,4.5,Dec/20,%
+Unemployment Rate,Japan,2.9,2.9,Dec/20,%
+Composite PMI,China,52.2,55.8,Jan/21,points
+Composite PMI,Euro Area,48.1,47.8,Feb/21,points
+Composite PMI,France,45.2,47.7,Feb/21,points
+Composite PMI,Germany,51.3,50.8,Feb/21,points
+Composite PMI,Japan,47.6,47.1,Feb/21,points
+Composite PMI,Russia,52.3,48.3,Jan/21,points
+Composite PMI,United Kingdom,49.8,41.2,Feb/21,points
+Composite PMI,United States,58.8,58.7,Feb/21,points
