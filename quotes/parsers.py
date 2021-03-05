@@ -989,6 +989,37 @@ def get_economics(ag=None, img_out_path_=IMAGES_OUT_PATH):
     debug('Get economics complete')
 
 
+def get_economics_v2(driver=None, img_out_path_=IMAGES_OUT_PATH):
+    charts = {
+        'Interest Rate': 'https://tradingeconomics.com/united-states/interest-rate',
+        'Inflation Rate': 'https://tradingeconomics.com/united-states/inflation-cpi',
+        'Unemployment Rate': 'https://tradingeconomics.com/united-states/unemployment-rate',
+        'Composite PMI': 'https://tradingeconomics.com/united-states/composite-pmi'
+    }
+    try:
+        with driver:
+            for k, v in charts.items():
+                im_path = os.path.join(img_out_path_, k + '.png')
+                driver.get(v)
+                sleep(5)
+                WebDriverWait(driver, 10).until(
+                    EC.element_to_be_clickable((By.LINK_TEXT, "Forecast"))).click()
+                WebDriverWait(driver, 10).until(
+                    EC.element_to_be_clickable((By.CLASS_NAME, "chart-link chart-lookback"))).click()
+                chart = driver.find_element_by_class_name("chart-figure")
+                image = chart.screenshot_as_png
+                image_stream = io.BytesIO(image)
+                im = Image.open(image_stream)
+                im.save(im_path)
+                add_watermark(im_path, im_path, 100)
+                debug(f"IMG Path:{im_path}")
+
+    except Exception as e06a:
+        debug(e06a)
+        return
+    debug('Get Economics complete' + '\n')
+
+
 # ============================== TW GET ================================
 def get_tw_charts(driver=None, img_out_path_=IMAGES_OUT_PATH):
     treemaps = {
