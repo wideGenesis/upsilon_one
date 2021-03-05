@@ -1,0 +1,6065 @@
+[ {
+  "dateAdded" : "December 21, 2020",
+  "addedSecurity" : "Okta Inc",
+  "removedTicker" : null,
+  "removedSecurity" : null,
+  "date" : "2020-12-21",
+  "reason" : "Market capitalization change",
+  "symbol" : "OKTA"
+}, {
+  "dateAdded" : "December 21, 2020",
+  "addedSecurity" : null,
+  "removedTicker" : "LBTYA",
+  "removedSecurity" : "Liberty Global plc",
+  "date" : "2020-12-21",
+  "reason" : "Market capitalization change",
+  "symbol" : "LBTYA"
+}, {
+  "dateAdded" : "December 21, 2020",
+  "addedSecurity" : null,
+  "removedTicker" : "LBTYK",
+  "removedSecurity" : "Liberty Global plc",
+  "date" : "2020-12-21",
+  "reason" : "Market capitalization change",
+  "symbol" : "LBTYK"
+}, {
+  "dateAdded" : "December 21, 2020",
+  "addedSecurity" : null,
+  "removedTicker" : "TTWO",
+  "removedSecurity" : "Take-Two Interactive Software, Inc",
+  "date" : "2020-12-21",
+  "reason" : "Market capitalization change",
+  "symbol" : "TTWO"
+}, {
+  "dateAdded" : "December 21, 2020",
+  "addedSecurity" : null,
+  "removedTicker" : "ULTA",
+  "removedSecurity" : "Ulta Beauty, Inc",
+  "date" : "2020-12-21",
+  "reason" : "Market capitalization change",
+  "symbol" : "ULTA"
+}, {
+  "dateAdded" : "December 21, 2020",
+  "addedSecurity" : "Marvell Technology Group Ltd",
+  "removedTicker" : null,
+  "removedSecurity" : null,
+  "date" : "2020-12-21",
+  "reason" : "Market capitalization change",
+  "symbol" : "MRVL"
+}, {
+  "dateAdded" : "December 21, 2020",
+  "addedSecurity" : "Match Group Inc",
+  "removedTicker" : null,
+  "removedSecurity" : null,
+  "date" : "2020-12-21",
+  "reason" : "Market capitalization change",
+  "symbol" : "MTCH"
+}, {
+  "dateAdded" : "December 21, 2020",
+  "addedSecurity" : null,
+  "removedTicker" : "CTXS",
+  "removedSecurity" : "Citrix Systems, Inc",
+  "date" : "2020-12-21",
+  "reason" : "Market capitalization change",
+  "symbol" : "CTXS"
+}, {
+  "dateAdded" : "December 21, 2020",
+  "addedSecurity" : null,
+  "removedTicker" : "BMRN",
+  "removedSecurity" : "BioMarin Pharmaceutical Inc",
+  "date" : "2020-12-21",
+  "reason" : "Market capitalization change",
+  "symbol" : "BMRN"
+}, {
+  "dateAdded" : "December 21, 2020",
+  "addedSecurity" : null,
+  "removedTicker" : "EXPE",
+  "removedSecurity" : "Expedia Group, Inc",
+  "date" : "2020-12-21",
+  "reason" : "Market capitalization change",
+  "symbol" : "EXPE"
+}, {
+  "dateAdded" : "December 21, 2020",
+  "addedSecurity" : "Peloton Interactive, Inc",
+  "removedTicker" : null,
+  "removedSecurity" : null,
+  "date" : "2020-12-21",
+  "reason" : "Market capitalization change",
+  "symbol" : "PTON"
+}, {
+  "dateAdded" : "December 21, 2020",
+  "addedSecurity" : "Atlassian Corporation Plc",
+  "removedTicker" : null,
+  "removedSecurity" : null,
+  "date" : "2020-12-21",
+  "reason" : "Market capitalization change",
+  "symbol" : "TEAM"
+}, {
+  "dateAdded" : "December 21, 2020",
+  "addedSecurity" : "American Electric Power Company, Inc",
+  "removedTicker" : null,
+  "removedSecurity" : null,
+  "date" : "2020-12-21",
+  "reason" : "Market capitalization change",
+  "symbol" : "AEP"
+}, {
+  "dateAdded" : "August 24, 2020",
+  "addedSecurity" : "Pinduoduo Inc",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2020-08-24",
+  "reason" : "Market capitalization change.",
+  "symbol" : "PDD"
+}, {
+  "dateAdded" : "August 24, 2020",
+  "addedSecurity" : "",
+  "removedTicker" : "NTAP",
+  "removedSecurity" : "NetApp Inc",
+  "date" : "2020-08-24",
+  "reason" : "Market capitalization change",
+  "symbol" : "NTAP"
+}, {
+  "dateAdded" : "July 20, 2020",
+  "addedSecurity" : "",
+  "removedTicker" : "CSGP",
+  "removedSecurity" : "CoStar Group Inc",
+  "date" : "2020-07-20",
+  "reason" : "Market capitalization change",
+  "symbol" : "CSGP"
+}, {
+  "dateAdded" : "July 20, 2020",
+  "addedSecurity" : "Moderna Inc",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2020-07-20",
+  "reason" : "Market capitalization change.",
+  "symbol" : "MRNA"
+}, {
+  "dateAdded" : "June 22, 2020",
+  "addedSecurity" : "DocuSign Inc",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2020-06-22",
+  "reason" : "Market capitalization change.",
+  "symbol" : "DOCU"
+}, {
+  "dateAdded" : "June 22, 2020",
+  "addedSecurity" : "",
+  "removedTicker" : "UAL",
+  "removedSecurity" : "United Airlines Holdings Inc",
+  "date" : "2020-06-22",
+  "reason" : "Market capitalization change",
+  "symbol" : "UAL"
+}, {
+  "dateAdded" : "April 30, 2020",
+  "addedSecurity" : "Zoom Video Communications Inc",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2020-04-30",
+  "reason" : "Market capitalization change.",
+  "symbol" : "ZM"
+}, {
+  "dateAdded" : "April 30, 2020",
+  "addedSecurity" : "",
+  "removedTicker" : "WLTW",
+  "removedSecurity" : "Willis Towers Watson PLC",
+  "date" : "2020-04-30",
+  "reason" : "Market capitalization change",
+  "symbol" : "WLTW"
+}, {
+  "dateAdded" : "April 20, 2020",
+  "addedSecurity" : "DexCom Inc",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2020-04-20",
+  "reason" : "Market capitalization change.",
+  "symbol" : "DXCM"
+}, {
+  "dateAdded" : "April 20, 2020",
+  "addedSecurity" : "",
+  "removedTicker" : "AAL",
+  "removedSecurity" : "American Airlines Group Inc",
+  "date" : "2020-04-20",
+  "reason" : "Market capitalization change",
+  "symbol" : "AAL"
+}, {
+  "dateAdded" : "December 23, 2019",
+  "addedSecurity" : "",
+  "removedTicker" : "HAS",
+  "removedSecurity" : "Hasbro Inc",
+  "date" : "2019-12-23",
+  "reason" : "Market capitalization change",
+  "symbol" : "HAS"
+}, {
+  "dateAdded" : "December 23, 2019",
+  "addedSecurity" : "",
+  "removedTicker" : "MYL",
+  "removedSecurity" : "Mylan NV",
+  "date" : "2019-12-23",
+  "reason" : "Market capitalization change",
+  "symbol" : "MYL"
+}, {
+  "dateAdded" : "December 23, 2019",
+  "addedSecurity" : "Copart Inc",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2019-12-23",
+  "reason" : "Market capitalization change.",
+  "symbol" : "CPRT"
+}, {
+  "dateAdded" : "December 23, 2019",
+  "addedSecurity" : "CDW Corp",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2019-12-23",
+  "reason" : "Market capitalization change.",
+  "symbol" : "CDW"
+}, {
+  "dateAdded" : "December 23, 2019",
+  "addedSecurity" : "ANSYS Inc",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2019-12-23",
+  "reason" : "Market capitalization change.",
+  "symbol" : "ANSS"
+}, {
+  "dateAdded" : "December 23, 2019",
+  "addedSecurity" : "",
+  "removedTicker" : "JBHT",
+  "removedSecurity" : "J B Hunt Transport Services Inc",
+  "date" : "2019-12-23",
+  "reason" : "Market capitalization change",
+  "symbol" : "JBHT"
+}, {
+  "dateAdded" : "December 23, 2019",
+  "addedSecurity" : "",
+  "removedTicker" : "HSIC",
+  "removedSecurity" : "Henry Schein Inc",
+  "date" : "2019-12-23",
+  "reason" : "Market capitalization change",
+  "symbol" : "HSIC"
+}, {
+  "dateAdded" : "December 23, 2019",
+  "addedSecurity" : "CoStar Group Inc",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2019-12-23",
+  "reason" : "Market capitalization change.",
+  "symbol" : "CSGP"
+}, {
+  "dateAdded" : "December 23, 2019",
+  "addedSecurity" : "",
+  "removedTicker" : "NLOK",
+  "removedSecurity" : "NortonLifeLock Inc",
+  "date" : "2019-12-23",
+  "reason" : "Market capitalization change",
+  "symbol" : "NLOK"
+}, {
+  "dateAdded" : "December 23, 2019",
+  "addedSecurity" : "Seattle Genetics Inc",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2019-12-23",
+  "reason" : "Market capitalization change.",
+  "symbol" : "SGEN"
+}, {
+  "dateAdded" : "December 23, 2019",
+  "addedSecurity" : "Splunk Inc",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2019-12-23",
+  "reason" : "Market capitalization change.",
+  "symbol" : "SPLK"
+}, {
+  "dateAdded" : "December 23, 2019",
+  "addedSecurity" : "",
+  "removedTicker" : "WYNN",
+  "removedSecurity" : "Wynn Resorts Ltd",
+  "date" : "2019-12-23",
+  "reason" : "Market capitalization change",
+  "symbol" : "WYNN"
+}, {
+  "dateAdded" : "November 21, 2019",
+  "addedSecurity" : "",
+  "removedTicker" : "CELG",
+  "removedSecurity" : "Celgene Corporation",
+  "date" : "2019-11-21",
+  "reason" : "Market capitalization change",
+  "symbol" : "CELG"
+}, {
+  "dateAdded" : "November 21, 2019",
+  "addedSecurity" : "Exelon Corp",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2019-11-21",
+  "reason" : "Market capitalization change.",
+  "symbol" : "EXC"
+}, {
+  "dateAdded" : "July 29, 2019",
+  "addedSecurity" : "",
+  "removedTicker" : "EFII",
+  "removedSecurity" : "Electronics for Imaging Inc.",
+  "date" : "2019-07-29",
+  "reason" : "Market capitalization change",
+  "symbol" : "EFII"
+}, {
+  "dateAdded" : "July 15, 2019",
+  "addedSecurity" : "",
+  "removedTicker" : "RHT",
+  "removedSecurity" : "Red Hat Inc.",
+  "date" : "2019-07-15",
+  "reason" : "Market capitalization change",
+  "symbol" : "RHT"
+}, {
+  "dateAdded" : "March 20, 2019",
+  "addedSecurity" : "",
+  "removedTicker" : "TFCFA",
+  "removedSecurity" : "TFCFA",
+  "date" : "2019-03-20",
+  "reason" : "Market capitalization change",
+  "symbol" : "TFCFA"
+}, {
+  "dateAdded" : "March 20, 2019",
+  "addedSecurity" : "",
+  "removedTicker" : "TFCF",
+  "removedSecurity" : "TFCF",
+  "date" : "2019-03-20",
+  "reason" : "Market capitalization change",
+  "symbol" : "TFCF"
+}, {
+  "dateAdded" : "March 19, 2019",
+  "addedSecurity" : "Twenty-First Century Fox Inc.",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2019-03-19",
+  "reason" : "Market capitalization change.",
+  "symbol" : "FOX"
+}, {
+  "dateAdded" : "March 19, 2019",
+  "addedSecurity" : "Fox Corp",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2019-03-19",
+  "reason" : "Market capitalization change.",
+  "symbol" : "FOXA"
+}, {
+  "dateAdded" : "December 24, 2018",
+  "addedSecurity" : "",
+  "removedTicker" : "STX",
+  "removedSecurity" : "Seagate Technology PLC",
+  "date" : "2018-12-24",
+  "reason" : "Market capitalization change",
+  "symbol" : "STX"
+}, {
+  "dateAdded" : "December 24, 2018",
+  "addedSecurity" : "",
+  "removedTicker" : "QRTEA",
+  "removedSecurity" : "Qurate Retail Inc",
+  "date" : "2018-12-24",
+  "reason" : "Market capitalization change",
+  "symbol" : "QRTEA"
+}, {
+  "dateAdded" : "December 24, 2018",
+  "addedSecurity" : "NetApp Inc",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2018-12-24",
+  "reason" : "Market capitalization change.",
+  "symbol" : "NTAP"
+}, {
+  "dateAdded" : "December 24, 2018",
+  "addedSecurity" : "Lululemon Athletica Inc",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2018-12-24",
+  "reason" : "Market capitalization change.",
+  "symbol" : "LULU"
+}, {
+  "dateAdded" : "December 24, 2018",
+  "addedSecurity" : "",
+  "removedTicker" : "HOLX",
+  "removedSecurity" : "Hologic Inc",
+  "date" : "2018-12-24",
+  "reason" : "Market capitalization change",
+  "symbol" : "HOLX"
+}, {
+  "dateAdded" : "December 24, 2018",
+  "addedSecurity" : "Advanced Micro Devices Inc",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2018-12-24",
+  "reason" : "Market capitalization change.",
+  "symbol" : "AMD"
+}, {
+  "dateAdded" : "December 24, 2018",
+  "addedSecurity" : "Willis Towers Watson PLC",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2018-12-24",
+  "reason" : "Market capitalization change.",
+  "symbol" : "WLTW"
+}, {
+  "dateAdded" : "December 24, 2018",
+  "addedSecurity" : "",
+  "removedTicker" : "VOD",
+  "removedSecurity" : "Vodafone Group Plc",
+  "date" : "2018-12-24",
+  "reason" : "Market capitalization change",
+  "symbol" : "VOD"
+}, {
+  "dateAdded" : "December 24, 2018",
+  "addedSecurity" : "Verisign Inc",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2018-12-24",
+  "reason" : "Market capitalization change.",
+  "symbol" : "VRSN"
+}, {
+  "dateAdded" : "December 24, 2018",
+  "addedSecurity" : "United Airlines Holdings Inc",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2018-12-24",
+  "reason" : "Market capitalization change.",
+  "symbol" : "UAL"
+}, {
+  "dateAdded" : "December 24, 2018",
+  "addedSecurity" : "",
+  "removedTicker" : "SHPG",
+  "removedSecurity" : "Shire plc",
+  "date" : "2018-12-24",
+  "reason" : "Market capitalization change",
+  "symbol" : "SHPG"
+}, {
+  "dateAdded" : "December 21, 2018",
+  "addedSecurity" : "",
+  "removedTicker" : "ESRX",
+  "removedSecurity" : "Express Scripts Holding Company",
+  "date" : "2018-12-21",
+  "reason" : "Market capitalization change",
+  "symbol" : "ESRX"
+}, {
+  "dateAdded" : "November 19, 2018",
+  "addedSecurity" : "",
+  "removedTicker" : "XRAY",
+  "removedSecurity" : "DENTSPLY SIRONA Inc",
+  "date" : "2018-11-19",
+  "reason" : "Market capitalization change",
+  "symbol" : "XRAY"
+}, {
+  "dateAdded" : "November 19, 2018",
+  "addedSecurity" : "Xcel Energy Inc",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2018-11-19",
+  "reason" : "Market capitalization change.",
+  "symbol" : "XEL"
+}, {
+  "dateAdded" : "November 5, 2018",
+  "addedSecurity" : "",
+  "removedTicker" : "CA",
+  "removedSecurity" : "CA Inc.",
+  "date" : "2018-11-05",
+  "reason" : "Market capitalization change",
+  "symbol" : "CA"
+}, {
+  "dateAdded" : "November 5, 2018",
+  "addedSecurity" : "NXP Semiconductors NV",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2018-11-05",
+  "reason" : "Market capitalization change.",
+  "symbol" : "NXPI"
+}, {
+  "dateAdded" : "July 23, 2018",
+  "addedSecurity" : "PepsiCo Inc",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2018-07-23",
+  "reason" : "Market capitalization change.",
+  "symbol" : "PEP"
+}, {
+  "dateAdded" : "July 23, 2018",
+  "addedSecurity" : "",
+  "removedTicker" : "DISH",
+  "removedSecurity" : "DISH Network Corp",
+  "date" : "2018-07-23",
+  "reason" : "Market capitalization change",
+  "symbol" : "DISH"
+}, {
+  "dateAdded" : "March 12, 2018",
+  "addedSecurity" : "",
+  "removedTicker" : "LVNTA",
+  "removedSecurity" : "LVNTA",
+  "date" : "2018-03-12",
+  "reason" : "Market capitalization change",
+  "symbol" : "LVNTA"
+}, {
+  "dateAdded" : "January 2, 2018",
+  "addedSecurity" : "",
+  "removedTicker" : "LILAK",
+  "removedSecurity" : "Liberty Latin America Ltd.",
+  "date" : "2018-01-02",
+  "reason" : "Market capitalization change",
+  "symbol" : "LILAK"
+}, {
+  "dateAdded" : "January 2, 2018",
+  "addedSecurity" : "",
+  "removedTicker" : "LILA",
+  "removedSecurity" : "Liberty Latin America Ltd",
+  "date" : "2018-01-02",
+  "reason" : "Market capitalization change",
+  "symbol" : "LILA"
+}, {
+  "dateAdded" : "December 18, 2017",
+  "addedSecurity" : "",
+  "removedTicker" : "TSCO",
+  "removedSecurity" : "Tractor Supply Co",
+  "date" : "2017-12-18",
+  "reason" : "Market capitalization change",
+  "symbol" : "TSCO"
+}, {
+  "dateAdded" : "December 18, 2017",
+  "addedSecurity" : "Workday Inc",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2017-12-18",
+  "reason" : "Market capitalization change.",
+  "symbol" : "WDAY"
+}, {
+  "dateAdded" : "December 18, 2017",
+  "addedSecurity" : "",
+  "removedTicker" : "VIAB",
+  "removedSecurity" : "Viacom Inc.",
+  "date" : "2017-12-18",
+  "reason" : "Market capitalization change",
+  "symbol" : "VIAB"
+}, {
+  "dateAdded" : "December 18, 2017",
+  "addedSecurity" : "Take-Two Interactive Software Inc",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2017-12-18",
+  "reason" : "Market capitalization change.",
+  "symbol" : "TTWO"
+}, {
+  "dateAdded" : "December 18, 2017",
+  "addedSecurity" : "Synopsys Inc",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2017-12-18",
+  "reason" : "Market capitalization change.",
+  "symbol" : "SNPS"
+}, {
+  "dateAdded" : "December 18, 2017",
+  "addedSecurity" : "",
+  "removedTicker" : "NCLH",
+  "removedSecurity" : "Norwegian Cruise Line Holdings Ltd",
+  "date" : "2017-12-18",
+  "reason" : "Market capitalization change",
+  "symbol" : "NCLH"
+}, {
+  "dateAdded" : "December 18, 2017",
+  "addedSecurity" : "",
+  "removedTicker" : "DISCK",
+  "removedSecurity" : "Discovery Communications Inc.",
+  "date" : "2017-12-18",
+  "reason" : "Market capitalization change",
+  "symbol" : "DISCK"
+}, {
+  "dateAdded" : "December 18, 2017",
+  "addedSecurity" : "",
+  "removedTicker" : "DISCA",
+  "removedSecurity" : "Discovery Inc",
+  "date" : "2017-12-18",
+  "reason" : "Market capitalization change",
+  "symbol" : "DISCA"
+}, {
+  "dateAdded" : "December 18, 2017",
+  "addedSecurity" : "Cadence Design Systems Inc",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2017-12-18",
+  "reason" : "Market capitalization change.",
+  "symbol" : "CDNS"
+}, {
+  "dateAdded" : "December 18, 2017",
+  "addedSecurity" : "ASML Holding N.V.",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2017-12-18",
+  "reason" : "Market capitalization change.",
+  "symbol" : "ASML"
+}, {
+  "dateAdded" : "December 18, 2017",
+  "addedSecurity" : "",
+  "removedTicker" : "AKAM",
+  "removedSecurity" : "Akamai Technologies Inc",
+  "date" : "2017-12-18",
+  "reason" : "Market capitalization change",
+  "symbol" : "AKAM"
+}, {
+  "dateAdded" : "October 23, 2017",
+  "addedSecurity" : "",
+  "removedTicker" : "MAT",
+  "removedSecurity" : "Mattel Inc",
+  "date" : "2017-10-23",
+  "reason" : "Market capitalization change",
+  "symbol" : "MAT"
+}, {
+  "dateAdded" : "October 23, 2017",
+  "addedSecurity" : "Align Technology Inc",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2017-10-23",
+  "reason" : "Market capitalization change.",
+  "symbol" : "ALGN"
+}, {
+  "dateAdded" : "June 19, 2017",
+  "addedSecurity" : "",
+  "removedTicker" : "AABA",
+  "removedSecurity" : "Altaba Inc.",
+  "date" : "2017-06-19",
+  "reason" : "Market capitalization change",
+  "symbol" : "AABA"
+}, {
+  "dateAdded" : "June 19, 2017",
+  "addedSecurity" : "Mercadolibre Inc",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2017-06-19",
+  "reason" : "Market capitalization change.",
+  "symbol" : "MELI"
+}, {
+  "dateAdded" : "April 24, 2017",
+  "addedSecurity" : "",
+  "removedTicker" : "TRIP",
+  "removedSecurity" : "TripAdvisor Inc",
+  "date" : "2017-04-24",
+  "reason" : "Market capitalization change",
+  "symbol" : "TRIP"
+}, {
+  "dateAdded" : "April 24, 2017",
+  "addedSecurity" : "Wynn Resorts Ltd",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2017-04-24",
+  "reason" : "Market capitalization change.",
+  "symbol" : "WYNN"
+}, {
+  "dateAdded" : "March 20, 2017",
+  "addedSecurity" : "IDEXX Laboratories Inc",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2017-03-20",
+  "reason" : "Market capitalization change.",
+  "symbol" : "IDXX"
+}, {
+  "dateAdded" : "March 20, 2017",
+  "addedSecurity" : "",
+  "removedTicker" : "SBAC",
+  "removedSecurity" : "SBA Communications Corp",
+  "date" : "2017-03-20",
+  "reason" : "Market capitalization change",
+  "symbol" : "SBAC"
+}, {
+  "dateAdded" : "February 7, 2017",
+  "addedSecurity" : "",
+  "removedTicker" : "NXPI",
+  "removedSecurity" : "NXP Semiconductors NV",
+  "date" : "2017-02-07",
+  "reason" : "Market capitalization change",
+  "symbol" : "NXPI"
+}, {
+  "dateAdded" : "February 7, 2017",
+  "addedSecurity" : "J B Hunt Transport Services Inc",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2017-02-07",
+  "reason" : "Market capitalization change.",
+  "symbol" : "JBHT"
+}, {
+  "dateAdded" : "December 19, 2016",
+  "addedSecurity" : "Liberty Latin America Ltd",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2016-12-19",
+  "reason" : "Market capitalization change.",
+  "symbol" : "LILA"
+}, {
+  "dateAdded" : "December 19, 2016",
+  "addedSecurity" : "Liberty Latin America Ltd.",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2016-12-19",
+  "reason" : "Market capitalization change.",
+  "symbol" : "LILAK"
+}, {
+  "dateAdded" : "December 19, 2016",
+  "addedSecurity" : "KLA Corp",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2016-12-19",
+  "reason" : "Market capitalization change.",
+  "symbol" : "KLAC"
+}, {
+  "dateAdded" : "December 19, 2016",
+  "addedSecurity" : "Hologic Inc",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2016-12-19",
+  "reason" : "Market capitalization change.",
+  "symbol" : "HOLX"
+}, {
+  "dateAdded" : "December 19, 2016",
+  "addedSecurity" : "Hasbro Inc",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2016-12-19",
+  "reason" : "Market capitalization change.",
+  "symbol" : "HAS"
+}, {
+  "dateAdded" : "December 19, 2016",
+  "addedSecurity" : "Cintas Corp",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2016-12-19",
+  "reason" : "Market capitalization change.",
+  "symbol" : "CTAS"
+}, {
+  "dateAdded" : "December 19, 2016",
+  "addedSecurity" : "",
+  "removedTicker" : "BBBY",
+  "removedSecurity" : "Bed Bath & Beyond Inc",
+  "date" : "2016-12-19",
+  "reason" : "Market capitalization change",
+  "symbol" : "BBBY"
+}, {
+  "dateAdded" : "December 19, 2016",
+  "addedSecurity" : "",
+  "removedTicker" : "NTAP",
+  "removedSecurity" : "NetApp Inc",
+  "date" : "2016-12-19",
+  "reason" : "Market capitalization change",
+  "symbol" : "NTAP"
+}, {
+  "dateAdded" : "December 19, 2016",
+  "addedSecurity" : "",
+  "removedTicker" : "SRCL",
+  "removedSecurity" : "Stericycle Inc",
+  "date" : "2016-12-19",
+  "reason" : "Market capitalization change",
+  "symbol" : "SRCL"
+}, {
+  "dateAdded" : "December 19, 2016",
+  "addedSecurity" : "",
+  "removedTicker" : "WFM",
+  "removedSecurity" : "WFM",
+  "date" : "2016-12-19",
+  "reason" : "Market capitalization change",
+  "symbol" : "WFM"
+}, {
+  "dateAdded" : "November 8, 2016",
+  "addedSecurity" : "",
+  "removedTicker" : "LEXEA",
+  "removedSecurity" : "Liberty Expedia Holdings Inc. Series A Common Stock",
+  "date" : "2016-11-08",
+  "reason" : "Market capitalization change",
+  "symbol" : "LEXEA"
+}, {
+  "dateAdded" : "November 7, 2016",
+  "addedSecurity" : "Liberty Expedia Holdings Inc. Series A Common Stock",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2016-11-07",
+  "reason" : "Market capitalization change.",
+  "symbol" : "LEXEA"
+}, {
+  "dateAdded" : "October 19, 2016",
+  "addedSecurity" : "",
+  "removedTicker" : "LLTC",
+  "removedSecurity" : "LLTC",
+  "date" : "2016-10-19",
+  "reason" : "Market capitalization change",
+  "symbol" : "LLTC"
+}, {
+  "dateAdded" : "October 19, 2016",
+  "addedSecurity" : "Shire plc",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2016-10-19",
+  "reason" : "Market capitalization change.",
+  "symbol" : "SHPG"
+}, {
+  "dateAdded" : "July 18, 2016",
+  "addedSecurity" : "",
+  "removedTicker" : "ENDP",
+  "removedSecurity" : "Endo International PLC",
+  "date" : "2016-07-18",
+  "reason" : "Market capitalization change",
+  "symbol" : "ENDP"
+}, {
+  "dateAdded" : "July 18, 2016",
+  "addedSecurity" : "Microchip Technology Inc",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2016-07-18",
+  "reason" : "Market capitalization change.",
+  "symbol" : "MCHP"
+}, {
+  "dateAdded" : "June 20, 2016",
+  "addedSecurity" : "",
+  "removedTicker" : "BATRK",
+  "removedSecurity" : "Liberty Media Corporation Series C Liberty Braves Common Stock",
+  "date" : "2016-06-20",
+  "reason" : "Market capitalization change",
+  "symbol" : "BATRK"
+}, {
+  "dateAdded" : "June 20, 2016",
+  "addedSecurity" : "",
+  "removedTicker" : "BATRA",
+  "removedSecurity" : "Liberty Media Corporation Series A Liberty Braves Common Stock",
+  "date" : "2016-06-20",
+  "reason" : "Market capitalization change",
+  "symbol" : "BATRA"
+}, {
+  "dateAdded" : "June 20, 2016",
+  "addedSecurity" : "",
+  "removedTicker" : "FWONK",
+  "removedSecurity" : "Liberty Media Corporation Series C",
+  "date" : "2016-06-20",
+  "reason" : "Market capitalization change",
+  "symbol" : "FWONK"
+}, {
+  "dateAdded" : "June 20, 2016",
+  "addedSecurity" : "",
+  "removedTicker" : "FWONA",
+  "removedSecurity" : "Liberty Media Corp",
+  "date" : "2016-06-20",
+  "reason" : "Market capitalization change",
+  "symbol" : "FWONA"
+}, {
+  "dateAdded" : "June 20, 2016",
+  "addedSecurity" : "DENTSPLY SIRONA Inc",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2016-06-20",
+  "reason" : "Market capitalization change.",
+  "symbol" : "XRAY"
+}, {
+  "dateAdded" : "April 19, 2016",
+  "addedSecurity" : "",
+  "removedTicker" : "LSXMA",
+  "removedSecurity" : "Liberty Media Corporation Series A Liberty SiriusXM Common Stock",
+  "date" : "2016-04-19",
+  "reason" : "Market capitalization change",
+  "symbol" : "LSXMA"
+}, {
+  "dateAdded" : "April 19, 2016",
+  "addedSecurity" : "",
+  "removedTicker" : "LSXMK",
+  "removedSecurity" : "Liberty Media Corporation Series C Liberty SiriusXM Common Stock",
+  "date" : "2016-04-19",
+  "reason" : "Market capitalization change",
+  "symbol" : "LSXMK"
+}, {
+  "dateAdded" : "April 18, 2016",
+  "addedSecurity" : "Liberty Media Corporation Series C Liberty Braves Common Stock",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2016-04-18",
+  "reason" : "Market capitalization change.",
+  "symbol" : "BATRK"
+}, {
+  "dateAdded" : "April 18, 2016",
+  "addedSecurity" : "Liberty Media Corporation Series A Liberty Braves Common Stock",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2016-04-18",
+  "reason" : "Market capitalization change.",
+  "symbol" : "BATRA"
+}, {
+  "dateAdded" : "April 18, 2016",
+  "addedSecurity" : "Liberty Media Corporation Series C Liberty SiriusXM Common Stock",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2016-04-18",
+  "reason" : "Market capitalization change.",
+  "symbol" : "LSXMK"
+}, {
+  "dateAdded" : "April 18, 2016",
+  "addedSecurity" : "Liberty Media Corporation Series A Liberty SiriusXM Common Stock",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2016-04-18",
+  "reason" : "Market capitalization change.",
+  "symbol" : "LSXMA"
+}, {
+  "dateAdded" : "March 16, 2016",
+  "addedSecurity" : "",
+  "removedTicker" : "SNDK",
+  "removedSecurity" : "SNDK",
+  "date" : "2016-03-16",
+  "reason" : "Market capitalization change",
+  "symbol" : "SNDK"
+}, {
+  "dateAdded" : "March 16, 2016",
+  "addedSecurity" : "NetEase Inc.",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2016-03-16",
+  "reason" : "Market capitalization change.",
+  "symbol" : "NTES"
+}, {
+  "dateAdded" : "February 22, 2016",
+  "addedSecurity" : "",
+  "removedTicker" : "KLAC",
+  "removedSecurity" : "KLA Corp",
+  "date" : "2016-02-22",
+  "reason" : "Market capitalization change",
+  "symbol" : "KLAC"
+}, {
+  "dateAdded" : "February 22, 2016",
+  "addedSecurity" : "CSX Corp",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2016-02-22",
+  "reason" : "Market capitalization change.",
+  "symbol" : "CSX"
+}, {
+  "dateAdded" : "December 21, 2015",
+  "addedSecurity" : "Expedia Group Inc",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2015-12-21",
+  "reason" : "Market capitalization change.",
+  "symbol" : "EXPE"
+}, {
+  "dateAdded" : "December 21, 2015",
+  "addedSecurity" : "Endo International PLC",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2015-12-21",
+  "reason" : "Market capitalization change.",
+  "symbol" : "ENDP"
+}, {
+  "dateAdded" : "December 21, 2015",
+  "addedSecurity" : "",
+  "removedTicker" : "CHRW",
+  "removedSecurity" : "CH Robinson Worldwide Inc",
+  "date" : "2015-12-21",
+  "reason" : "Market capitalization change",
+  "symbol" : "CHRW"
+}, {
+  "dateAdded" : "December 21, 2015",
+  "addedSecurity" : "",
+  "removedTicker" : "SPLS",
+  "removedSecurity" : "SPLS",
+  "date" : "2015-12-21",
+  "reason" : "Market capitalization change",
+  "symbol" : "SPLS"
+}, {
+  "dateAdded" : "December 21, 2015",
+  "addedSecurity" : "Norwegian Cruise Line Holdings Ltd",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2015-12-21",
+  "reason" : "Market capitalization change.",
+  "symbol" : "NCLH"
+}, {
+  "dateAdded" : "December 21, 2015",
+  "addedSecurity" : "Maxim Integrated Products Inc",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2015-12-21",
+  "reason" : "Market capitalization change.",
+  "symbol" : "MXIM"
+}, {
+  "dateAdded" : "December 21, 2015",
+  "addedSecurity" : "",
+  "removedTicker" : "LILA",
+  "removedSecurity" : "Liberty Latin America Ltd",
+  "date" : "2015-12-21",
+  "reason" : "Market capitalization change",
+  "symbol" : "LILA"
+}, {
+  "dateAdded" : "December 21, 2015",
+  "addedSecurity" : "",
+  "removedTicker" : "LILAK",
+  "removedSecurity" : "Liberty Latin America Ltd.",
+  "date" : "2015-12-21",
+  "reason" : "Market capitalization change",
+  "symbol" : "LILAK"
+}, {
+  "dateAdded" : "December 21, 2015",
+  "addedSecurity" : "",
+  "removedTicker" : "GMCR",
+  "removedSecurity" : "GMCR",
+  "date" : "2015-12-21",
+  "reason" : "Market capitalization change",
+  "symbol" : "GMCR"
+}, {
+  "dateAdded" : "December 21, 2015",
+  "addedSecurity" : "",
+  "removedTicker" : "GRMN",
+  "removedSecurity" : "Garmin Ltd",
+  "date" : "2015-12-21",
+  "reason" : "Market capitalization change",
+  "symbol" : "GRMN"
+}, {
+  "dateAdded" : "December 21, 2015",
+  "addedSecurity" : "",
+  "removedTicker" : "EXPD",
+  "removedSecurity" : "Expeditors International of Washington Inc",
+  "date" : "2015-12-21",
+  "reason" : "Market capitalization change",
+  "symbol" : "EXPD"
+}, {
+  "dateAdded" : "December 21, 2015",
+  "addedSecurity" : "T-Mobile US Inc",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2015-12-21",
+  "reason" : "Market capitalization change.",
+  "symbol" : "TMUS"
+}, {
+  "dateAdded" : "December 21, 2015",
+  "addedSecurity" : "Trip.com Group Ltd",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2015-12-21",
+  "reason" : "Market capitalization change.",
+  "symbol" : "TCOM"
+}, {
+  "dateAdded" : "December 21, 2015",
+  "addedSecurity" : "Ulta Beauty Inc",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2015-12-21",
+  "reason" : "Market capitalization change.",
+  "symbol" : "ULTA"
+}, {
+  "dateAdded" : "December 21, 2015",
+  "addedSecurity" : "",
+  "removedTicker" : "VEON",
+  "removedSecurity" : "VEON Ltd.",
+  "date" : "2015-12-21",
+  "reason" : "Market capitalization change",
+  "symbol" : "VEON"
+}, {
+  "dateAdded" : "December 21, 2015",
+  "addedSecurity" : "",
+  "removedTicker" : "WYNN",
+  "removedSecurity" : "Wynn Resorts Ltd",
+  "date" : "2015-12-21",
+  "reason" : "Market capitalization change",
+  "symbol" : "WYNN"
+}, {
+  "dateAdded" : "December 14, 2015",
+  "addedSecurity" : "",
+  "removedTicker" : "CMCSK",
+  "removedSecurity" : "CMCSK",
+  "date" : "2015-12-14",
+  "reason" : "Market capitalization change",
+  "symbol" : "CMCSK"
+}, {
+  "dateAdded" : "November 11, 2015",
+  "addedSecurity" : "",
+  "removedTicker" : "BRCM",
+  "removedSecurity" : "BRCM",
+  "date" : "2015-11-11",
+  "reason" : "Market capitalization change",
+  "symbol" : "BRCM"
+}, {
+  "dateAdded" : "November 11, 2015",
+  "addedSecurity" : "PayPal Holdings Inc",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2015-11-11",
+  "reason" : "Market capitalization change.",
+  "symbol" : "PYPL"
+}, {
+  "dateAdded" : "October 7, 2015",
+  "addedSecurity" : "Incyte Corp",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2015-10-07",
+  "reason" : "Market capitalization change.",
+  "symbol" : "INCY"
+}, {
+  "dateAdded" : "October 7, 2015",
+  "addedSecurity" : "",
+  "removedTicker" : "ALTR",
+  "removedSecurity" : "Altair Engineering Inc",
+  "date" : "2015-10-07",
+  "reason" : "Market capitalization change",
+  "symbol" : "ALTR"
+}, {
+  "dateAdded" : "August 3, 2015",
+  "addedSecurity" : "",
+  "removedTicker" : "SIAL",
+  "removedSecurity" : "SIAL",
+  "date" : "2015-08-03",
+  "reason" : "Market capitalization change",
+  "symbol" : "SIAL"
+}, {
+  "dateAdded" : "August 3, 2015",
+  "addedSecurity" : "Skyworks Solutions Inc",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2015-08-03",
+  "reason" : "Market capitalization change.",
+  "symbol" : "SWKS"
+}, {
+  "dateAdded" : "July 30, 2015",
+  "addedSecurity" : "JD.com Inc.",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2015-07-30",
+  "reason" : "Market capitalization change.",
+  "symbol" : "JD"
+}, {
+  "dateAdded" : "July 27, 2015",
+  "addedSecurity" : "Biomarin Pharmaceutical Inc",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2015-07-27",
+  "reason" : "Market capitalization change.",
+  "symbol" : "BMRN"
+}, {
+  "dateAdded" : "July 27, 2015",
+  "addedSecurity" : "",
+  "removedTicker" : "DTV",
+  "removedSecurity" : "DTE Energy Company 2016 Corporate Units",
+  "date" : "2015-07-27",
+  "reason" : "Market capitalization change",
+  "symbol" : "DTV"
+}, {
+  "dateAdded" : "July 24, 2015",
+  "addedSecurity" : "",
+  "removedTicker" : "CTRX",
+  "removedSecurity" : "CTRX",
+  "date" : "2015-07-24",
+  "reason" : "Market capitalization change",
+  "symbol" : "CTRX"
+}, {
+  "dateAdded" : "July 6, 2015",
+  "addedSecurity" : "",
+  "removedTicker" : "KRFT",
+  "removedSecurity" : "KRFT",
+  "date" : "2015-07-06",
+  "reason" : "Market capitalization change",
+  "symbol" : "KRFT"
+}, {
+  "dateAdded" : "July 6, 2015",
+  "addedSecurity" : "Kraft Heinz Co",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2015-07-06",
+  "reason" : "Market capitalization change.",
+  "symbol" : "KHC"
+}, {
+  "dateAdded" : "July 2, 2015",
+  "addedSecurity" : "Liberty Latin America Ltd.",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2015-07-02",
+  "reason" : "Market capitalization change.",
+  "symbol" : "LILAK"
+}, {
+  "dateAdded" : "July 2, 2015",
+  "addedSecurity" : "Liberty Latin America Ltd",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2015-07-02",
+  "reason" : "Market capitalization change.",
+  "symbol" : "LILA"
+}, {
+  "dateAdded" : "March 23, 2015",
+  "addedSecurity" : "",
+  "removedTicker" : "EQIX",
+  "removedSecurity" : "Equinix Inc",
+  "date" : "2015-03-23",
+  "reason" : "Market capitalization change",
+  "symbol" : "EQIX"
+}, {
+  "dateAdded" : "March 23, 2015",
+  "addedSecurity" : "Walgreens Boots Alliance Inc",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2015-03-23",
+  "reason" : "Market capitalization change.",
+  "symbol" : "WBA"
+}, {
+  "dateAdded" : "December 22, 2014",
+  "addedSecurity" : "Lam Research Corp",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2014-12-22",
+  "reason" : "Market capitalization change.",
+  "symbol" : "LRCX"
+}, {
+  "dateAdded" : "December 22, 2014",
+  "addedSecurity" : "TFCF",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2014-12-22",
+  "reason" : "Market capitalization change.",
+  "symbol" : "TFCF"
+}, {
+  "dateAdded" : "December 22, 2014",
+  "addedSecurity" : "",
+  "removedTicker" : "MXIM",
+  "removedSecurity" : "Maxim Integrated Products Inc",
+  "date" : "2014-12-22",
+  "reason" : "Market capitalization change",
+  "symbol" : "MXIM"
+}, {
+  "dateAdded" : "December 22, 2014",
+  "addedSecurity" : "Liberty Global plc",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2014-12-22",
+  "reason" : "Market capitalization change.",
+  "symbol" : "LBTYK"
+}, {
+  "dateAdded" : "December 22, 2014",
+  "addedSecurity" : "",
+  "removedTicker" : "FFIV",
+  "removedSecurity" : "F5 Networks Inc",
+  "date" : "2014-12-22",
+  "reason" : "Market capitalization change",
+  "symbol" : "FFIV"
+}, {
+  "dateAdded" : "December 22, 2014",
+  "addedSecurity" : "",
+  "removedTicker" : "EXPE",
+  "removedSecurity" : "Expedia Group Inc",
+  "date" : "2014-12-22",
+  "reason" : "Market capitalization change",
+  "symbol" : "EXPE"
+}, {
+  "dateAdded" : "December 22, 2014",
+  "addedSecurity" : "Electronic Arts Inc",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2014-12-22",
+  "reason" : "Market capitalization change.",
+  "symbol" : "EA"
+}, {
+  "dateAdded" : "December 22, 2014",
+  "addedSecurity" : "CMCSK",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2014-12-22",
+  "reason" : "Market capitalization change.",
+  "symbol" : "CMCSK"
+}, {
+  "dateAdded" : "December 22, 2014",
+  "addedSecurity" : "American Airlines Group Inc",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2014-12-22",
+  "reason" : "Market capitalization change.",
+  "symbol" : "AAL"
+}, {
+  "dateAdded" : "October 15, 2014",
+  "addedSecurity" : "LVNTA",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2014-10-15",
+  "reason" : "Market capitalization change.",
+  "symbol" : "LVNTA"
+}, {
+  "dateAdded" : "August 7, 2014",
+  "addedSecurity" : "Discovery Communications Inc.",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2014-08-07",
+  "reason" : "Market capitalization change.",
+  "symbol" : "DISCK"
+}, {
+  "dateAdded" : "July 24, 2014",
+  "addedSecurity" : "Liberty Media Corporation Series C",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2014-07-24",
+  "reason" : "Market capitalization change.",
+  "symbol" : "FWONK"
+}, {
+  "dateAdded" : "April 3, 2014",
+  "addedSecurity" : "Alphabet Inc.",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2014-04-03",
+  "reason" : "Market capitalization change.",
+  "symbol" : "GOOG"
+}, {
+  "dateAdded" : "December 23, 2013",
+  "addedSecurity" : "",
+  "removedTicker" : "XRAY",
+  "removedSecurity" : "DENTSPLY SIRONA Inc",
+  "date" : "2013-12-23",
+  "reason" : "Market capitalization change",
+  "symbol" : "XRAY"
+}, {
+  "dateAdded" : "December 23, 2013",
+  "addedSecurity" : "DISH Network Corp",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2013-12-23",
+  "reason" : "Market capitalization change.",
+  "symbol" : "DISH"
+}, {
+  "dateAdded" : "December 23, 2013",
+  "addedSecurity" : "",
+  "removedTicker" : "FOSL",
+  "removedSecurity" : "Fossil Group Inc",
+  "date" : "2013-12-23",
+  "reason" : "Market capitalization change",
+  "symbol" : "FOSL"
+}, {
+  "dateAdded" : "December 23, 2013",
+  "addedSecurity" : "Illumina Inc",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2013-12-23",
+  "reason" : "Market capitalization change.",
+  "symbol" : "ILMN"
+}, {
+  "dateAdded" : "December 23, 2013",
+  "addedSecurity" : "",
+  "removedTicker" : "MCHP",
+  "removedSecurity" : "Microchip Technology Inc",
+  "date" : "2013-12-23",
+  "reason" : "Market capitalization change",
+  "symbol" : "MCHP"
+}, {
+  "dateAdded" : "December 23, 2013",
+  "addedSecurity" : "",
+  "removedTicker" : "NUAN",
+  "removedSecurity" : "Nuance Communications Inc",
+  "date" : "2013-12-23",
+  "reason" : "Market capitalization change",
+  "symbol" : "NUAN"
+}, {
+  "dateAdded" : "December 23, 2013",
+  "addedSecurity" : "NXP Semiconductors NV",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2013-12-23",
+  "reason" : "Market capitalization change.",
+  "symbol" : "NXPI"
+}, {
+  "dateAdded" : "December 23, 2013",
+  "addedSecurity" : "",
+  "removedTicker" : "SHLD",
+  "removedSecurity" : "Sears Holdings Corporation",
+  "date" : "2013-12-23",
+  "reason" : "Market capitalization change",
+  "symbol" : "SHLD"
+}, {
+  "dateAdded" : "December 23, 2013",
+  "addedSecurity" : "Tractor Supply Co",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2013-12-23",
+  "reason" : "Market capitalization change.",
+  "symbol" : "TSCO"
+}, {
+  "dateAdded" : "December 23, 2013",
+  "addedSecurity" : "TripAdvisor Inc",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2013-12-23",
+  "reason" : "Market capitalization change.",
+  "symbol" : "TRIP"
+}, {
+  "dateAdded" : "November 18, 2013",
+  "addedSecurity" : "",
+  "removedTicker" : "GOLD",
+  "removedSecurity" : "Barrick Gold Corp",
+  "date" : "2013-11-18",
+  "reason" : "Market capitalization change",
+  "symbol" : "GOLD"
+}, {
+  "dateAdded" : "November 18, 2013",
+  "addedSecurity" : "Marriott International Inc",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2013-11-18",
+  "reason" : "Market capitalization change.",
+  "symbol" : "MAR"
+}, {
+  "dateAdded" : "October 29, 2013",
+  "addedSecurity" : "",
+  "removedTicker" : "DELL",
+  "removedSecurity" : "Dell Technologies Inc",
+  "date" : "2013-10-29",
+  "reason" : "Market capitalization change",
+  "symbol" : "DELL"
+}, {
+  "dateAdded" : "October 29, 2013",
+  "addedSecurity" : "VEON Ltd.",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2013-10-29",
+  "reason" : "Market capitalization change.",
+  "symbol" : "VEON"
+}, {
+  "dateAdded" : "August 22, 2013",
+  "addedSecurity" : "",
+  "removedTicker" : "LIFE",
+  "removedSecurity" : "aTyr Pharma Inc",
+  "date" : "2013-08-22",
+  "reason" : "Market capitalization change",
+  "symbol" : "LIFE"
+}, {
+  "dateAdded" : "August 22, 2013",
+  "addedSecurity" : "GMCR",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2013-08-22",
+  "reason" : "Market capitalization change.",
+  "symbol" : "GMCR"
+}, {
+  "dateAdded" : "July 25, 2013",
+  "addedSecurity" : "",
+  "removedTicker" : "BMC",
+  "removedSecurity" : "BMC",
+  "date" : "2013-07-25",
+  "reason" : "Market capitalization change",
+  "symbol" : "BMC"
+}, {
+  "dateAdded" : "July 25, 2013",
+  "addedSecurity" : "Charter Communications Inc",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2013-07-25",
+  "reason" : "Market capitalization change.",
+  "symbol" : "CHTR"
+}, {
+  "dateAdded" : "July 15, 2013",
+  "addedSecurity" : "Tesla Inc",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2013-07-15",
+  "reason" : "Market capitalization change.",
+  "symbol" : "TSLA"
+}, {
+  "dateAdded" : "July 15, 2013",
+  "addedSecurity" : "",
+  "removedTicker" : "ORCL",
+  "removedSecurity" : "Oracle Corp",
+  "date" : "2013-07-15",
+  "reason" : "Market capitalization change",
+  "symbol" : "ORCL"
+}, {
+  "dateAdded" : "June 6, 2013",
+  "addedSecurity" : "Netflix Inc",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2013-06-06",
+  "reason" : "Market capitalization change.",
+  "symbol" : "NFLX"
+}, {
+  "dateAdded" : "June 6, 2013",
+  "addedSecurity" : "",
+  "removedTicker" : "PRGO",
+  "removedSecurity" : "Perrigo Company PLC",
+  "date" : "2013-06-06",
+  "reason" : "Market capitalization change",
+  "symbol" : "PRGO"
+}, {
+  "dateAdded" : "June 5, 2013",
+  "addedSecurity" : "",
+  "removedTicker" : "VMED",
+  "removedSecurity" : "VMED",
+  "date" : "2013-06-05",
+  "reason" : "Market capitalization change",
+  "symbol" : "VMED"
+}, {
+  "dateAdded" : "June 5, 2013",
+  "addedSecurity" : "Liberty Media Corp",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2013-06-05",
+  "reason" : "Market capitalization change.",
+  "symbol" : "FWONA"
+}, {
+  "dateAdded" : "March 18, 2013",
+  "addedSecurity" : "",
+  "removedTicker" : "STRZA",
+  "removedSecurity" : "STRZA",
+  "date" : "2013-03-18",
+  "reason" : "Market capitalization change",
+  "symbol" : "STRZA"
+}, {
+  "dateAdded" : "March 18, 2013",
+  "addedSecurity" : "KRFT",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2013-03-18",
+  "reason" : "Market capitalization change.",
+  "symbol" : "KRFT"
+}, {
+  "dateAdded" : "December 24, 2012",
+  "addedSecurity" : "Discovery Inc",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2012-12-24",
+  "reason" : "Market capitalization change.",
+  "symbol" : "DISCA"
+}, {
+  "dateAdded" : "December 24, 2012",
+  "addedSecurity" : "Western Digital Corp",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2012-12-24",
+  "reason" : "Market capitalization change.",
+  "symbol" : "WDC"
+}, {
+  "dateAdded" : "December 24, 2012",
+  "addedSecurity" : "",
+  "removedTicker" : "WCRX",
+  "removedSecurity" : "WCRX",
+  "date" : "2012-12-24",
+  "reason" : "Market capitalization change",
+  "symbol" : "WCRX"
+}, {
+  "dateAdded" : "December 24, 2012",
+  "addedSecurity" : "Verisk Analytics Inc",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2012-12-24",
+  "reason" : "Market capitalization change.",
+  "symbol" : "VRSK"
+}, {
+  "dateAdded" : "December 24, 2012",
+  "addedSecurity" : "",
+  "removedTicker" : "VRSN",
+  "removedSecurity" : "Verisign Inc",
+  "date" : "2012-12-24",
+  "reason" : "Market capitalization change",
+  "symbol" : "VRSN"
+}, {
+  "dateAdded" : "December 24, 2012",
+  "addedSecurity" : "SBA Communications Corp",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2012-12-24",
+  "reason" : "Market capitalization change.",
+  "symbol" : "SBAC"
+}, {
+  "dateAdded" : "December 24, 2012",
+  "addedSecurity" : "Regeneron Pharmaceuticals Inc",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2012-12-24",
+  "reason" : "Market capitalization change.",
+  "symbol" : "REGN"
+}, {
+  "dateAdded" : "December 24, 2012",
+  "addedSecurity" : "",
+  "removedTicker" : "NFLX",
+  "removedSecurity" : "Netflix Inc",
+  "date" : "2012-12-24",
+  "reason" : "Market capitalization change",
+  "symbol" : "NFLX"
+}, {
+  "dateAdded" : "December 24, 2012",
+  "addedSecurity" : "",
+  "removedTicker" : "MRVL",
+  "removedSecurity" : "Marvell Technology Group Ltd",
+  "date" : "2012-12-24",
+  "reason" : "Market capitalization change",
+  "symbol" : "MRVL"
+}, {
+  "dateAdded" : "December 24, 2012",
+  "addedSecurity" : "Liberty Global PLC",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2012-12-24",
+  "reason" : "Market capitalization change.",
+  "symbol" : "LBTYA"
+}, {
+  "dateAdded" : "December 24, 2012",
+  "addedSecurity" : "",
+  "removedTicker" : "LRCX",
+  "removedSecurity" : "Lam Research Corp",
+  "date" : "2012-12-24",
+  "reason" : "Market capitalization change",
+  "symbol" : "LRCX"
+}, {
+  "dateAdded" : "December 24, 2012",
+  "addedSecurity" : "",
+  "removedTicker" : "GMCR",
+  "removedSecurity" : "GMCR",
+  "date" : "2012-12-24",
+  "reason" : "Market capitalization change",
+  "symbol" : "GMCR"
+}, {
+  "dateAdded" : "December 24, 2012",
+  "addedSecurity" : "",
+  "removedTicker" : "FLEX",
+  "removedSecurity" : "Flex Ltd",
+  "date" : "2012-12-24",
+  "reason" : "Market capitalization change",
+  "symbol" : "FLEX"
+}, {
+  "dateAdded" : "December 24, 2012",
+  "addedSecurity" : "Equinix Inc",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2012-12-24",
+  "reason" : "Market capitalization change.",
+  "symbol" : "EQIX"
+}, {
+  "dateAdded" : "December 24, 2012",
+  "addedSecurity" : "",
+  "removedTicker" : "EA",
+  "removedSecurity" : "Electronic Arts Inc",
+  "date" : "2012-12-24",
+  "reason" : "Market capitalization change",
+  "symbol" : "EA"
+}, {
+  "dateAdded" : "December 24, 2012",
+  "addedSecurity" : "CTRX",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2012-12-24",
+  "reason" : "Market capitalization change.",
+  "symbol" : "CTRX"
+}, {
+  "dateAdded" : "December 24, 2012",
+  "addedSecurity" : "",
+  "removedTicker" : "BB",
+  "removedSecurity" : "BlackBerry Ltd",
+  "date" : "2012-12-24",
+  "reason" : "Market capitalization change",
+  "symbol" : "BB"
+}, {
+  "dateAdded" : "December 24, 2012",
+  "addedSecurity" : "",
+  "removedTicker" : "APOL",
+  "removedSecurity" : "APOL",
+  "date" : "2012-12-24",
+  "reason" : "Market capitalization change",
+  "symbol" : "APOL"
+}, {
+  "dateAdded" : "December 24, 2012",
+  "addedSecurity" : "Analog Devices Inc",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2012-12-24",
+  "reason" : "Market capitalization change.",
+  "symbol" : "ADI"
+}, {
+  "dateAdded" : "December 12, 2012",
+  "addedSecurity" : "Facebook Inc",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2012-12-12",
+  "reason" : "Market capitalization change.",
+  "symbol" : "FB"
+}, {
+  "dateAdded" : "December 12, 2012",
+  "addedSecurity" : "",
+  "removedTicker" : "INFY",
+  "removedSecurity" : "Infosys Limited American Depositary Shares",
+  "date" : "2012-12-12",
+  "reason" : "Market capitalization change",
+  "symbol" : "INFY"
+}, {
+  "dateAdded" : "July 23, 2012",
+  "addedSecurity" : "",
+  "removedTicker" : "TCOM",
+  "removedSecurity" : "Trip.com Group Ltd",
+  "date" : "2012-07-23",
+  "reason" : "Market capitalization change",
+  "symbol" : "TCOM"
+}, {
+  "dateAdded" : "July 23, 2012",
+  "addedSecurity" : "Mondelez International Inc",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2012-07-23",
+  "reason" : "Market capitalization change.",
+  "symbol" : "MDLZ"
+}, {
+  "dateAdded" : "June 1, 2012",
+  "addedSecurity" : "",
+  "removedTicker" : "TEVA",
+  "removedSecurity" : "Teva Pharmaceutical Industries Limited American Depositary Shares",
+  "date" : "2012-06-01",
+  "reason" : "Market capitalization change",
+  "symbol" : "TEVA"
+}, {
+  "dateAdded" : "June 1, 2012",
+  "addedSecurity" : "Viacom Inc.",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2012-06-01",
+  "reason" : "Market capitalization change.",
+  "symbol" : "VIAB"
+}, {
+  "dateAdded" : "April 23, 2012",
+  "addedSecurity" : "Texas Instruments Inc",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2012-04-23",
+  "reason" : "Market capitalization change.",
+  "symbol" : "TXN"
+}, {
+  "dateAdded" : "April 23, 2012",
+  "addedSecurity" : "",
+  "removedTicker" : "FSLR",
+  "removedSecurity" : "First Solar Inc",
+  "date" : "2012-04-23",
+  "reason" : "Market capitalization change",
+  "symbol" : "FSLR"
+}, {
+  "dateAdded" : "December 19, 2011",
+  "addedSecurity" : "Broadcom Inc",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2011-12-19",
+  "reason" : "Market capitalization change.",
+  "symbol" : "AVGO"
+}, {
+  "dateAdded" : "December 19, 2011",
+  "addedSecurity" : "Fossil Group Inc",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2011-12-19",
+  "reason" : "Market capitalization change.",
+  "symbol" : "FOSL"
+}, {
+  "dateAdded" : "December 19, 2011",
+  "addedSecurity" : "",
+  "removedTicker" : "URBN",
+  "removedSecurity" : "Urban Outfitters Inc",
+  "date" : "2011-12-19",
+  "reason" : "Market capitalization change",
+  "symbol" : "URBN"
+}, {
+  "dateAdded" : "December 19, 2011",
+  "addedSecurity" : "",
+  "removedTicker" : "QGEN",
+  "removedSecurity" : "Qiagen NV",
+  "date" : "2011-12-19",
+  "reason" : "Market capitalization change",
+  "symbol" : "QGEN"
+}, {
+  "dateAdded" : "December 19, 2011",
+  "addedSecurity" : "Nuance Communications Inc",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2011-12-19",
+  "reason" : "Market capitalization change.",
+  "symbol" : "NUAN"
+}, {
+  "dateAdded" : "December 19, 2011",
+  "addedSecurity" : "",
+  "removedTicker" : "NIHD",
+  "removedSecurity" : "NII Holdings Inc.",
+  "date" : "2011-12-19",
+  "reason" : "Market capitalization change",
+  "symbol" : "NIHD"
+}, {
+  "dateAdded" : "December 19, 2011",
+  "addedSecurity" : "Monster Beverage Corp",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2011-12-19",
+  "reason" : "Market capitalization change.",
+  "symbol" : "MNST"
+}, {
+  "dateAdded" : "December 19, 2011",
+  "addedSecurity" : "",
+  "removedTicker" : "ILMN",
+  "removedSecurity" : "Illumina Inc",
+  "date" : "2011-12-19",
+  "reason" : "Market capitalization change",
+  "symbol" : "ILMN"
+}, {
+  "dateAdded" : "December 19, 2011",
+  "addedSecurity" : "Barrick Gold Corp",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2011-12-19",
+  "reason" : "Market capitalization change.",
+  "symbol" : "GOLD"
+}, {
+  "dateAdded" : "December 19, 2011",
+  "addedSecurity" : "",
+  "removedTicker" : "FLIR",
+  "removedSecurity" : "FLIR Systems Inc",
+  "date" : "2011-12-19",
+  "reason" : "Market capitalization change",
+  "symbol" : "FLIR"
+}, {
+  "dateAdded" : "December 6, 2011",
+  "addedSecurity" : "Perrigo Company PLC",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2011-12-06",
+  "reason" : "Market capitalization change.",
+  "symbol" : "PRGO"
+}, {
+  "dateAdded" : "December 6, 2011",
+  "addedSecurity" : "",
+  "removedTicker" : "JOY",
+  "removedSecurity" : "JOY",
+  "date" : "2011-12-06",
+  "reason" : "Market capitalization change",
+  "symbol" : "JOY"
+}, {
+  "dateAdded" : "July 15, 2011",
+  "addedSecurity" : "Sirius XM Holdings Inc",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2011-07-15",
+  "reason" : "Market capitalization change.",
+  "symbol" : "SIRI"
+}, {
+  "dateAdded" : "July 15, 2011",
+  "addedSecurity" : "",
+  "removedTicker" : "CEPH",
+  "removedSecurity" : "CEPH",
+  "date" : "2011-07-15",
+  "reason" : "Market capitalization change",
+  "symbol" : "CEPH"
+}, {
+  "dateAdded" : "May 27, 2011",
+  "addedSecurity" : "GMCR",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2011-05-27",
+  "reason" : "Market capitalization change.",
+  "symbol" : "GMCR"
+}, {
+  "dateAdded" : "May 27, 2011",
+  "addedSecurity" : "",
+  "removedTicker" : "MICC",
+  "removedSecurity" : "MICC",
+  "date" : "2011-05-27",
+  "reason" : "Market capitalization change",
+  "symbol" : "MICC"
+}, {
+  "dateAdded" : "April 4, 2011",
+  "addedSecurity" : "",
+  "removedTicker" : "GENZ",
+  "removedSecurity" : "GENZ",
+  "date" : "2011-04-04",
+  "reason" : "Market capitalization change",
+  "symbol" : "GENZ"
+}, {
+  "dateAdded" : "April 4, 2011",
+  "addedSecurity" : "Alexion Pharmaceuticals Inc",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2011-04-04",
+  "reason" : "Market capitalization change.",
+  "symbol" : "ALXN"
+}, {
+  "dateAdded" : "December 20, 2010",
+  "addedSecurity" : "Akamai Technologies Inc",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2010-12-20",
+  "reason" : "Market capitalization change.",
+  "symbol" : "AKAM"
+}, {
+  "dateAdded" : "December 20, 2010",
+  "addedSecurity" : "WFM",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2010-12-20",
+  "reason" : "Market capitalization change.",
+  "symbol" : "WFM"
+}, {
+  "dateAdded" : "December 20, 2010",
+  "addedSecurity" : "Trip.com Group Ltd",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2010-12-20",
+  "reason" : "Market capitalization change.",
+  "symbol" : "TCOM"
+}, {
+  "dateAdded" : "December 20, 2010",
+  "addedSecurity" : "",
+  "removedTicker" : "PDCO",
+  "removedSecurity" : "Patterson Companies Inc",
+  "date" : "2010-12-20",
+  "reason" : "Market capitalization change",
+  "symbol" : "PDCO"
+}, {
+  "dateAdded" : "December 20, 2010",
+  "addedSecurity" : "Netflix Inc",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2010-12-20",
+  "reason" : "Market capitalization change.",
+  "symbol" : "NFLX"
+}, {
+  "dateAdded" : "December 20, 2010",
+  "addedSecurity" : "Micron Technology Inc",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2010-12-20",
+  "reason" : "Market capitalization change.",
+  "symbol" : "MU"
+}, {
+  "dateAdded" : "December 20, 2010",
+  "addedSecurity" : "",
+  "removedTicker" : "LOGI",
+  "removedSecurity" : "Logitech International SA",
+  "date" : "2010-12-20",
+  "reason" : "Market capitalization change",
+  "symbol" : "LOGI"
+}, {
+  "dateAdded" : "December 20, 2010",
+  "addedSecurity" : "",
+  "removedTicker" : "JBHT",
+  "removedSecurity" : "J B Hunt Transport Services Inc",
+  "date" : "2010-12-20",
+  "reason" : "Market capitalization change",
+  "symbol" : "JBHT"
+}, {
+  "dateAdded" : "December 20, 2010",
+  "addedSecurity" : "",
+  "removedTicker" : "HOLX",
+  "removedSecurity" : "Hologic Inc",
+  "date" : "2010-12-20",
+  "reason" : "Market capitalization change",
+  "symbol" : "HOLX"
+}, {
+  "dateAdded" : "December 20, 2010",
+  "addedSecurity" : "",
+  "removedTicker" : "FWLT",
+  "removedSecurity" : "FWLT",
+  "date" : "2010-12-20",
+  "reason" : "Market capitalization change",
+  "symbol" : "FWLT"
+}, {
+  "dateAdded" : "December 20, 2010",
+  "addedSecurity" : "F5 Networks Inc",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2010-12-20",
+  "reason" : "Market capitalization change.",
+  "symbol" : "FFIV"
+}, {
+  "dateAdded" : "December 20, 2010",
+  "addedSecurity" : "Dollar Tree Inc",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2010-12-20",
+  "reason" : "Market capitalization change.",
+  "symbol" : "DLTR"
+}, {
+  "dateAdded" : "December 20, 2010",
+  "addedSecurity" : "",
+  "removedTicker" : "DISH",
+  "removedSecurity" : "DISH Network Corp",
+  "date" : "2010-12-20",
+  "reason" : "Market capitalization change",
+  "symbol" : "DISH"
+}, {
+  "dateAdded" : "December 20, 2010",
+  "addedSecurity" : "",
+  "removedTicker" : "CTAS",
+  "removedSecurity" : "Cintas Corp",
+  "date" : "2010-12-20",
+  "reason" : "Market capitalization change",
+  "symbol" : "CTAS"
+}, {
+  "dateAdded" : "December 22, 2009",
+  "addedSecurity" : "Mylan NV",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2009-12-22",
+  "reason" : "Market capitalization change.",
+  "symbol" : "MYL"
+}, {
+  "dateAdded" : "December 22, 2009",
+  "addedSecurity" : "Vodafone Group Plc",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2009-12-22",
+  "reason" : "Market capitalization change.",
+  "symbol" : "VOD"
+}, {
+  "dateAdded" : "December 22, 2009",
+  "addedSecurity" : "VMED",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2009-12-22",
+  "reason" : "Market capitalization change.",
+  "symbol" : "VMED"
+}, {
+  "dateAdded" : "December 22, 2009",
+  "addedSecurity" : "",
+  "removedTicker" : "STLD",
+  "removedSecurity" : "Steel Dynamics Inc",
+  "date" : "2009-12-22",
+  "reason" : "Market capitalization change",
+  "symbol" : "STLD"
+}, {
+  "dateAdded" : "December 22, 2009",
+  "addedSecurity" : "SNDK",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2009-12-22",
+  "reason" : "Market capitalization change.",
+  "symbol" : "SNDK"
+}, {
+  "dateAdded" : "December 22, 2009",
+  "addedSecurity" : "",
+  "removedTicker" : "RYAAY",
+  "removedSecurity" : "Ryanair Holdings plc American Depositary Shares each representing five Ordinary Shares",
+  "date" : "2009-12-22",
+  "reason" : "Market capitalization change",
+  "symbol" : "RYAAY"
+}, {
+  "dateAdded" : "December 22, 2009",
+  "addedSecurity" : "Qiagen NV",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2009-12-22",
+  "reason" : "Market capitalization change.",
+  "symbol" : "QGEN"
+}, {
+  "dateAdded" : "December 22, 2009",
+  "addedSecurity" : "",
+  "removedTicker" : "PPDI",
+  "removedSecurity" : "PPDI",
+  "date" : "2009-12-22",
+  "reason" : "Market capitalization change",
+  "symbol" : "PPDI"
+}, {
+  "dateAdded" : "December 22, 2009",
+  "addedSecurity" : "",
+  "removedTicker" : "MNST",
+  "removedSecurity" : "Monster Beverage Corp",
+  "date" : "2009-12-22",
+  "reason" : "Market capitalization change",
+  "symbol" : "MNST"
+}, {
+  "dateAdded" : "December 22, 2009",
+  "addedSecurity" : "Mattel Inc",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2009-12-22",
+  "reason" : "Market capitalization change.",
+  "symbol" : "MAT"
+}, {
+  "dateAdded" : "December 22, 2009",
+  "addedSecurity" : "",
+  "removedTicker" : "LBTYA",
+  "removedSecurity" : "Liberty Global PLC",
+  "date" : "2009-12-22",
+  "reason" : "Market capitalization change",
+  "symbol" : "LBTYA"
+}, {
+  "dateAdded" : "December 22, 2009",
+  "addedSecurity" : "",
+  "removedTicker" : "IAC",
+  "removedSecurity" : "IAC/Interactivecorp",
+  "date" : "2009-12-22",
+  "reason" : "Market capitalization change",
+  "symbol" : "IAC"
+}, {
+  "dateAdded" : "December 22, 2009",
+  "addedSecurity" : "BMC",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2009-12-22",
+  "reason" : "Market capitalization change.",
+  "symbol" : "BMC"
+}, {
+  "dateAdded" : "December 22, 2009",
+  "addedSecurity" : "",
+  "removedTicker" : "AKAM",
+  "removedSecurity" : "Akamai Technologies Inc",
+  "date" : "2009-12-22",
+  "reason" : "Market capitalization change",
+  "symbol" : "AKAM"
+}, {
+  "dateAdded" : "October 29, 2009",
+  "addedSecurity" : "",
+  "removedTicker" : "JNPR",
+  "removedSecurity" : "Juniper Networks Inc",
+  "date" : "2009-10-29",
+  "reason" : "Market capitalization change",
+  "symbol" : "JNPR"
+}, {
+  "dateAdded" : "October 29, 2009",
+  "addedSecurity" : "Booking Holdings Inc",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2009-10-29",
+  "reason" : "Market capitalization change.",
+  "symbol" : "BKNG"
+}, {
+  "dateAdded" : "July 23, 2009",
+  "addedSecurity" : "",
+  "removedTicker" : "JAVA",
+  "removedSecurity" : "JAVA",
+  "date" : "2009-07-23",
+  "reason" : "Market capitalization change",
+  "symbol" : "JAVA"
+}, {
+  "dateAdded" : "July 20, 2009",
+  "addedSecurity" : "Cerner Corp",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2009-07-20",
+  "reason" : "Market capitalization change.",
+  "symbol" : "CERN"
+}, {
+  "dateAdded" : "January 20, 2009",
+  "addedSecurity" : "",
+  "removedTicker" : "FMCN",
+  "removedSecurity" : "FMCN",
+  "date" : "2009-01-20",
+  "reason" : "Market capitalization change",
+  "symbol" : "FMCN"
+}, {
+  "dateAdded" : "January 20, 2009",
+  "addedSecurity" : "TFCFA",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2009-01-20",
+  "reason" : "Market capitalization change.",
+  "symbol" : "TFCFA"
+}, {
+  "dateAdded" : "December 23, 2008",
+  "addedSecurity" : "Automatic Data Processing Inc",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2008-12-23",
+  "reason" : "Market capitalization change.",
+  "symbol" : "ADP"
+}, {
+  "dateAdded" : "December 23, 2008",
+  "addedSecurity" : "aTyr Pharma Inc",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2008-12-23",
+  "reason" : "Market capitalization change.",
+  "symbol" : "LIFE"
+}, {
+  "dateAdded" : "December 23, 2008",
+  "addedSecurity" : "Maxim Integrated Products Inc",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2008-12-23",
+  "reason" : "Market capitalization change.",
+  "symbol" : "MXIM"
+}, {
+  "dateAdded" : "December 23, 2008",
+  "addedSecurity" : "O'Reilly Automotive Inc",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2008-12-23",
+  "reason" : "Market capitalization change.",
+  "symbol" : "ORLY"
+}, {
+  "dateAdded" : "December 23, 2008",
+  "addedSecurity" : "PPDI",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2008-12-23",
+  "reason" : "Market capitalization change.",
+  "symbol" : "PPDI"
+}, {
+  "dateAdded" : "December 23, 2008",
+  "addedSecurity" : "Ross Stores Inc",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2008-12-23",
+  "reason" : "Market capitalization change.",
+  "symbol" : "ROST"
+}, {
+  "dateAdded" : "December 23, 2008",
+  "addedSecurity" : "Urban Outfitters Inc",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2008-12-23",
+  "reason" : "Market capitalization change.",
+  "symbol" : "URBN"
+}, {
+  "dateAdded" : "December 23, 2008",
+  "addedSecurity" : "WCRX",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2008-12-23",
+  "reason" : "Market capitalization change.",
+  "symbol" : "WCRX"
+}, {
+  "dateAdded" : "December 22, 2008",
+  "addedSecurity" : "",
+  "removedTicker" : "CDNS",
+  "removedSecurity" : "Cadence Design Systems Inc",
+  "date" : "2008-12-22",
+  "reason" : "Market capitalization change",
+  "symbol" : "CDNS"
+}, {
+  "dateAdded" : "December 22, 2008",
+  "addedSecurity" : "",
+  "removedTicker" : "SNDK",
+  "removedSecurity" : "SNDK",
+  "date" : "2008-12-22",
+  "reason" : "Market capitalization change",
+  "symbol" : "SNDK"
+}, {
+  "dateAdded" : "December 22, 2008",
+  "addedSecurity" : "",
+  "removedTicker" : "SIRI",
+  "removedSecurity" : "Sirius XM Holdings Inc",
+  "date" : "2008-12-22",
+  "reason" : "Market capitalization change",
+  "symbol" : "SIRI"
+}, {
+  "dateAdded" : "December 22, 2008",
+  "addedSecurity" : "",
+  "removedTicker" : "VMED",
+  "removedSecurity" : "VMED",
+  "date" : "2008-12-22",
+  "reason" : "Market capitalization change",
+  "symbol" : "VMED"
+}, {
+  "dateAdded" : "December 22, 2008",
+  "addedSecurity" : "",
+  "removedTicker" : "LEAP",
+  "removedSecurity" : "LEAP",
+  "date" : "2008-12-22",
+  "reason" : "Market capitalization change",
+  "symbol" : "LEAP"
+}, {
+  "dateAdded" : "December 22, 2008",
+  "addedSecurity" : "",
+  "removedTicker" : "LAMR",
+  "removedSecurity" : "Lamar Advertising Co",
+  "date" : "2008-12-22",
+  "reason" : "Market capitalization change",
+  "symbol" : "LAMR"
+}, {
+  "dateAdded" : "December 22, 2008",
+  "addedSecurity" : "J B Hunt Transport Services Inc",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2008-12-22",
+  "reason" : "Market capitalization change.",
+  "symbol" : "JBHT"
+}, {
+  "dateAdded" : "December 22, 2008",
+  "addedSecurity" : "Illumina Inc",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2008-12-22",
+  "reason" : "Market capitalization change.",
+  "symbol" : "ILMN"
+}, {
+  "dateAdded" : "December 22, 2008",
+  "addedSecurity" : "First Solar Inc",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2008-12-22",
+  "reason" : "Market capitalization change.",
+  "symbol" : "FSLR"
+}, {
+  "dateAdded" : "December 22, 2008",
+  "addedSecurity" : "",
+  "removedTicker" : "DISCA",
+  "removedSecurity" : "Discovery Inc",
+  "date" : "2008-12-22",
+  "reason" : "Market capitalization change",
+  "symbol" : "DISCA"
+}, {
+  "dateAdded" : "December 22, 2008",
+  "addedSecurity" : "",
+  "removedTicker" : "AMLN",
+  "removedSecurity" : "AMLN",
+  "date" : "2008-12-22",
+  "reason" : "Market capitalization change",
+  "symbol" : "AMLN"
+}, {
+  "dateAdded" : "December 22, 2008",
+  "addedSecurity" : "",
+  "removedTicker" : "WFM",
+  "removedSecurity" : "WFM",
+  "date" : "2008-12-22",
+  "reason" : "Market capitalization change",
+  "symbol" : "WFM"
+}, {
+  "dateAdded" : "December 22, 2008",
+  "addedSecurity" : "",
+  "removedTicker" : "LVLT",
+  "removedSecurity" : "LVLT",
+  "date" : "2008-12-22",
+  "reason" : "Market capitalization change",
+  "symbol" : "LVLT"
+}, {
+  "dateAdded" : "December 22, 2008",
+  "addedSecurity" : "",
+  "removedTicker" : "PETM",
+  "removedSecurity" : "PETM",
+  "date" : "2008-12-22",
+  "reason" : "Market capitalization change",
+  "symbol" : "PETM"
+}, {
+  "dateAdded" : "November 10, 2008",
+  "addedSecurity" : "Seagate Technology PLC",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2008-11-10",
+  "reason" : "Market capitalization change.",
+  "symbol" : "STX"
+}, {
+  "dateAdded" : "November 10, 2008",
+  "addedSecurity" : "",
+  "removedTicker" : "MWW",
+  "removedSecurity" : "MWW",
+  "date" : "2008-11-10",
+  "reason" : "Market capitalization change",
+  "symbol" : "MWW"
+}, {
+  "dateAdded" : "July 21, 2008",
+  "addedSecurity" : "",
+  "removedTicker" : "UAL",
+  "removedSecurity" : "United Airlines Holdings Inc",
+  "date" : "2008-07-21",
+  "reason" : "Market capitalization change",
+  "symbol" : "UAL"
+}, {
+  "dateAdded" : "July 21, 2008",
+  "addedSecurity" : "FLIR Systems Inc",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2008-07-21",
+  "reason" : "Market capitalization change.",
+  "symbol" : "FLIR"
+}, {
+  "dateAdded" : "July 10, 2008",
+  "addedSecurity" : "Activision Blizzard Inc",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2008-07-10",
+  "reason" : "Market capitalization change.",
+  "symbol" : "ATVI"
+}, {
+  "dateAdded" : "July 10, 2008",
+  "addedSecurity" : "",
+  "removedTicker" : "ATVI",
+  "removedSecurity" : "Activision Blizzard Inc",
+  "date" : "2008-07-10",
+  "reason" : "Market capitalization change",
+  "symbol" : "ATVI"
+}, {
+  "dateAdded" : "May 19, 2008",
+  "addedSecurity" : "",
+  "removedTicker" : "TLAB",
+  "removedSecurity" : "TLAB",
+  "date" : "2008-05-19",
+  "reason" : "Market capitalization change",
+  "symbol" : "TLAB"
+}, {
+  "dateAdded" : "May 19, 2008",
+  "addedSecurity" : "CA Inc.",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2008-05-19",
+  "reason" : "Market capitalization change.",
+  "symbol" : "CA"
+}, {
+  "dateAdded" : "April 30, 2008",
+  "addedSecurity" : "DTE Energy Company 2016 Corporate Units",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2008-04-30",
+  "reason" : "Market capitalization change.",
+  "symbol" : "DTV"
+}, {
+  "dateAdded" : "April 30, 2008",
+  "addedSecurity" : "",
+  "removedTicker" : "BEAS",
+  "removedSecurity" : "BEAS",
+  "date" : "2008-04-30",
+  "reason" : "Market capitalization change",
+  "symbol" : "BEAS"
+}, {
+  "dateAdded" : "December 24, 2007",
+  "addedSecurity" : "Monster Beverage Corp",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2007-12-24",
+  "reason" : "Market capitalization change.",
+  "symbol" : "MNST"
+}, {
+  "dateAdded" : "December 24, 2007",
+  "addedSecurity" : "",
+  "removedTicker" : "XMSR",
+  "removedSecurity" : "XMSR",
+  "date" : "2007-12-24",
+  "reason" : "Market capitalization change",
+  "symbol" : "XMSR"
+}, {
+  "dateAdded" : "December 24, 2007",
+  "addedSecurity" : "",
+  "removedTicker" : "SEPR",
+  "removedSecurity" : "SEPR",
+  "date" : "2007-12-24",
+  "reason" : "Market capitalization change",
+  "symbol" : "SEPR"
+}, {
+  "dateAdded" : "December 24, 2007",
+  "addedSecurity" : "Stericycle Inc",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2007-12-24",
+  "reason" : "Market capitalization change.",
+  "symbol" : "SRCL"
+}, {
+  "dateAdded" : "December 24, 2007",
+  "addedSecurity" : "Steel Dynamics Inc",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2007-12-24",
+  "reason" : "Market capitalization change.",
+  "symbol" : "STLD"
+}, {
+  "dateAdded" : "December 24, 2007",
+  "addedSecurity" : "",
+  "removedTicker" : "ROST",
+  "removedSecurity" : "Ross Stores Inc",
+  "date" : "2007-12-24",
+  "reason" : "Market capitalization change",
+  "symbol" : "ROST"
+}, {
+  "dateAdded" : "December 24, 2007",
+  "addedSecurity" : "",
+  "removedTicker" : "PTEN",
+  "removedSecurity" : "Patterson-UTI Energy Inc",
+  "date" : "2007-12-24",
+  "reason" : "Market capitalization change",
+  "symbol" : "PTEN"
+}, {
+  "dateAdded" : "December 24, 2007",
+  "addedSecurity" : "Hologic Inc",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2007-12-24",
+  "reason" : "Market capitalization change.",
+  "symbol" : "HOLX"
+}, {
+  "dateAdded" : "December 24, 2007",
+  "addedSecurity" : "FMCN",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2007-12-24",
+  "reason" : "Market capitalization change.",
+  "symbol" : "FMCN"
+}, {
+  "dateAdded" : "December 24, 2007",
+  "addedSecurity" : "",
+  "removedTicker" : "ERIC",
+  "removedSecurity" : "Ericsson",
+  "date" : "2007-12-24",
+  "reason" : "Market capitalization change",
+  "symbol" : "ERIC"
+}, {
+  "dateAdded" : "December 4, 2007",
+  "addedSecurity" : "",
+  "removedTicker" : "CKFR",
+  "removedSecurity" : "CKFR",
+  "date" : "2007-12-04",
+  "reason" : "Market capitalization change",
+  "symbol" : "CKFR"
+}, {
+  "dateAdded" : "December 4, 2007",
+  "addedSecurity" : "Baidu Inc",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2007-12-04",
+  "reason" : "Market capitalization change.",
+  "symbol" : "BIDU"
+}, {
+  "dateAdded" : "October 8, 2007",
+  "addedSecurity" : "",
+  "removedTicker" : "CDWC",
+  "removedSecurity" : "CDWC",
+  "date" : "2007-10-08",
+  "reason" : "Market capitalization change",
+  "symbol" : "CDWC"
+}, {
+  "dateAdded" : "October 8, 2007",
+  "addedSecurity" : "LEAP",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2007-10-08",
+  "reason" : "Market capitalization change.",
+  "symbol" : "LEAP"
+}, {
+  "dateAdded" : "October 2, 2007",
+  "addedSecurity" : "Henry Schein Inc",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2007-10-02",
+  "reason" : "Market capitalization change.",
+  "symbol" : "HSIC"
+}, {
+  "dateAdded" : "October 2, 2007",
+  "addedSecurity" : "",
+  "removedTicker" : "MXIM",
+  "removedSecurity" : "Maxim Integrated Products Inc",
+  "date" : "2007-10-02",
+  "reason" : "Market capitalization change",
+  "symbol" : "MXIM"
+}, {
+  "dateAdded" : "July 11, 2007",
+  "addedSecurity" : "",
+  "removedTicker" : "BMET",
+  "removedSecurity" : "BMET",
+  "date" : "2007-07-11",
+  "reason" : "Market capitalization change",
+  "symbol" : "BMET"
+}, {
+  "dateAdded" : "July 11, 2007",
+  "addedSecurity" : "FWLT",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2007-07-11",
+  "reason" : "Market capitalization change.",
+  "symbol" : "FWLT"
+}, {
+  "dateAdded" : "June 1, 2007",
+  "addedSecurity" : "",
+  "removedTicker" : "MEDI",
+  "removedSecurity" : "MEDI",
+  "date" : "2007-06-01",
+  "reason" : "Market capitalization change",
+  "symbol" : "MEDI"
+}, {
+  "dateAdded" : "June 1, 2007",
+  "addedSecurity" : "CEPH",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2007-06-01",
+  "reason" : "Market capitalization change.",
+  "symbol" : "CEPH"
+}, {
+  "dateAdded" : "March 8, 2007",
+  "addedSecurity" : "",
+  "removedTicker" : "AEO",
+  "removedSecurity" : "American Eagle Outfitters Inc",
+  "date" : "2007-03-08",
+  "reason" : "Market capitalization change",
+  "symbol" : "AEO"
+}, {
+  "dateAdded" : "March 8, 2007",
+  "addedSecurity" : "United Airlines Holdings Inc",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2007-03-08",
+  "reason" : "Market capitalization change.",
+  "symbol" : "UAL"
+}, {
+  "dateAdded" : "February 14, 2007",
+  "addedSecurity" : "Ryanair Holdings plc American Depositary Shares each representing five Ordinary Shares",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2007-02-14",
+  "reason" : "Market capitalization change.",
+  "symbol" : "RYAAY"
+}, {
+  "dateAdded" : "February 14, 2007",
+  "addedSecurity" : "",
+  "removedTicker" : "APCC",
+  "removedSecurity" : "APCC",
+  "date" : "2007-02-14",
+  "reason" : "Market capitalization change",
+  "symbol" : "APCC"
+}, {
+  "dateAdded" : "February 8, 2007",
+  "addedSecurity" : "",
+  "removedTicker" : "VMED",
+  "removedSecurity" : "VMED",
+  "date" : "2007-02-08",
+  "reason" : "Market capitalization change",
+  "symbol" : "VMED"
+}, {
+  "dateAdded" : "February 8, 2007",
+  "addedSecurity" : "VMED",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2007-02-08",
+  "reason" : "Market capitalization change.",
+  "symbol" : "VMED"
+}, {
+  "dateAdded" : "February 1, 2007",
+  "addedSecurity" : "",
+  "removedTicker" : "CMVT",
+  "removedSecurity" : "CMVT",
+  "date" : "2007-02-01",
+  "reason" : "Market capitalization change",
+  "symbol" : "CMVT"
+}, {
+  "dateAdded" : "February 1, 2007",
+  "addedSecurity" : "Logitech International SA",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2007-02-01",
+  "reason" : "Market capitalization change.",
+  "symbol" : "LOGI"
+}, {
+  "dateAdded" : "December 18, 2006",
+  "addedSecurity" : "",
+  "removedTicker" : "LNCR",
+  "removedSecurity" : "LNCR",
+  "date" : "2006-12-18",
+  "reason" : "Market capitalization change",
+  "symbol" : "LNCR"
+}, {
+  "dateAdded" : "December 18, 2006",
+  "addedSecurity" : "",
+  "removedTicker" : "VIAV",
+  "removedSecurity" : "Viavi Solutions Inc",
+  "date" : "2006-12-18",
+  "reason" : "Market capitalization change",
+  "symbol" : "VIAV"
+}, {
+  "dateAdded" : "December 18, 2006",
+  "addedSecurity" : "Vertex Pharmaceuticals Inc",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2006-12-18",
+  "reason" : "Market capitalization change.",
+  "symbol" : "VRTX"
+}, {
+  "dateAdded" : "December 18, 2006",
+  "addedSecurity" : "",
+  "removedTicker" : "URBN",
+  "removedSecurity" : "Urban Outfitters Inc",
+  "date" : "2006-12-18",
+  "reason" : "Market capitalization change",
+  "symbol" : "URBN"
+}, {
+  "dateAdded" : "December 18, 2006",
+  "addedSecurity" : "LVLT",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2006-12-18",
+  "reason" : "Market capitalization change.",
+  "symbol" : "LVLT"
+}, {
+  "dateAdded" : "December 18, 2006",
+  "addedSecurity" : "Infosys Limited American Depositary Shares",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2006-12-18",
+  "reason" : "Market capitalization change.",
+  "symbol" : "INFY"
+}, {
+  "dateAdded" : "December 12, 2006",
+  "addedSecurity" : "American Eagle Outfitters Inc",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2006-12-12",
+  "reason" : "Market capitalization change.",
+  "symbol" : "AEO"
+}, {
+  "dateAdded" : "October 24, 2006",
+  "addedSecurity" : "Qurate Retail Inc",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2006-10-24",
+  "reason" : "Market capitalization change.",
+  "symbol" : "QRTEA"
+}, {
+  "dateAdded" : "October 24, 2006",
+  "addedSecurity" : "",
+  "removedTicker" : "ATYT",
+  "removedSecurity" : "ATYT",
+  "date" : "2006-10-24",
+  "reason" : "Market capitalization change",
+  "symbol" : "ATYT"
+}, {
+  "dateAdded" : "May 10, 2006",
+  "addedSecurity" : "MICC",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2006-05-10",
+  "reason" : "Market capitalization change.",
+  "symbol" : "MICC"
+}, {
+  "dateAdded" : "May 8, 2006",
+  "addedSecurity" : "",
+  "removedTicker" : "PIXR",
+  "removedSecurity" : "PIXR",
+  "date" : "2006-05-08",
+  "reason" : "Market capitalization change",
+  "symbol" : "PIXR"
+}, {
+  "dateAdded" : "April 21, 2006",
+  "addedSecurity" : "Akamai Technologies Inc",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2006-04-21",
+  "reason" : "Market capitalization change.",
+  "symbol" : "AKAM"
+}, {
+  "dateAdded" : "April 21, 2006",
+  "addedSecurity" : "",
+  "removedTicker" : "CHIR",
+  "removedSecurity" : "Global X MSCI China Real Estate ETF",
+  "date" : "2006-04-21",
+  "reason" : "Market capitalization change",
+  "symbol" : "CHIR"
+}, {
+  "dateAdded" : "March 6, 2006",
+  "addedSecurity" : "",
+  "removedTicker" : "NTLI",
+  "removedSecurity" : "NTLI",
+  "date" : "2006-03-06",
+  "reason" : "Market capitalization change",
+  "symbol" : "NTLI"
+}, {
+  "dateAdded" : "March 6, 2006",
+  "addedSecurity" : "VMED",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2006-03-06",
+  "reason" : "Market capitalization change.",
+  "symbol" : "VMED"
+}, {
+  "dateAdded" : "February 1, 2006",
+  "addedSecurity" : "Intuitive Surgical Inc",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2006-02-01",
+  "reason" : "Market capitalization change.",
+  "symbol" : "ISRG"
+}, {
+  "dateAdded" : "February 1, 2006",
+  "addedSecurity" : "",
+  "removedTicker" : "SEBL",
+  "removedSecurity" : "SEBL",
+  "date" : "2006-02-01",
+  "reason" : "Market capitalization change",
+  "symbol" : "SEBL"
+}, {
+  "dateAdded" : "January 9, 2006",
+  "addedSecurity" : "AMLN",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2006-01-09",
+  "reason" : "Market capitalization change.",
+  "symbol" : "AMLN"
+}, {
+  "dateAdded" : "January 9, 2006",
+  "addedSecurity" : "",
+  "removedTicker" : "MCIP",
+  "removedSecurity" : "MCIP",
+  "date" : "2006-01-09",
+  "reason" : "Market capitalization change",
+  "symbol" : "MCIP"
+}, {
+  "dateAdded" : "January 4, 2006",
+  "addedSecurity" : "",
+  "removedTicker" : "MERQE",
+  "removedSecurity" : "MERQE",
+  "date" : "2006-01-04",
+  "reason" : "Market capitalization change",
+  "symbol" : "MERQE"
+}, {
+  "dateAdded" : "January 4, 2006",
+  "addedSecurity" : "JOY",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2006-01-04",
+  "reason" : "Market capitalization change.",
+  "symbol" : "JOY"
+}, {
+  "dateAdded" : "December 21, 2005",
+  "addedSecurity" : "",
+  "removedTicker" : "LIFE",
+  "removedSecurity" : "aTyr Pharma Inc",
+  "date" : "2005-12-21",
+  "reason" : "Market capitalization change",
+  "symbol" : "LIFE"
+}, {
+  "dateAdded" : "December 21, 2005",
+  "addedSecurity" : "",
+  "removedTicker" : "ISIL",
+  "removedSecurity" : "ISIL",
+  "date" : "2005-12-21",
+  "reason" : "Market capitalization change",
+  "symbol" : "ISIL"
+}, {
+  "dateAdded" : "December 21, 2005",
+  "addedSecurity" : "Expedia Group Inc",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2005-12-21",
+  "reason" : "Market capitalization change.",
+  "symbol" : "EXPE"
+}, {
+  "dateAdded" : "December 21, 2005",
+  "addedSecurity" : "",
+  "removedTicker" : "DLTR",
+  "removedSecurity" : "Dollar Tree Inc",
+  "date" : "2005-12-21",
+  "reason" : "Market capitalization change",
+  "symbol" : "DLTR"
+}, {
+  "dateAdded" : "December 21, 2005",
+  "addedSecurity" : "Discovery Inc",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2005-12-21",
+  "reason" : "Market capitalization change.",
+  "symbol" : "DISCA"
+}, {
+  "dateAdded" : "December 21, 2005",
+  "addedSecurity" : "CKFR",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2005-12-21",
+  "reason" : "Market capitalization change.",
+  "symbol" : "CKFR"
+}, {
+  "dateAdded" : "December 21, 2005",
+  "addedSecurity" : "Cadence Design Systems Inc",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2005-12-21",
+  "reason" : "Market capitalization change.",
+  "symbol" : "CDNS"
+}, {
+  "dateAdded" : "December 21, 2005",
+  "addedSecurity" : "Alphabet Inc",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2005-12-21",
+  "reason" : "Market capitalization change.",
+  "symbol" : "GOOGL"
+}, {
+  "dateAdded" : "December 21, 2005",
+  "addedSecurity" : "Activision Blizzard Inc",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2005-12-21",
+  "reason" : "Market capitalization change.",
+  "symbol" : "ATVI"
+}, {
+  "dateAdded" : "December 21, 2005",
+  "addedSecurity" : "",
+  "removedTicker" : "LVLT",
+  "removedSecurity" : "LVLT",
+  "date" : "2005-12-21",
+  "reason" : "Market capitalization change",
+  "symbol" : "LVLT"
+}, {
+  "dateAdded" : "December 21, 2005",
+  "addedSecurity" : "Urban Outfitters Inc",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2005-12-21",
+  "reason" : "Market capitalization change.",
+  "symbol" : "URBN"
+}, {
+  "dateAdded" : "December 21, 2005",
+  "addedSecurity" : "",
+  "removedTicker" : "SNPS",
+  "removedSecurity" : "Synopsys Inc",
+  "date" : "2005-12-21",
+  "reason" : "Market capitalization change",
+  "symbol" : "SNPS"
+}, {
+  "dateAdded" : "December 21, 2005",
+  "addedSecurity" : "",
+  "removedTicker" : "SSCC",
+  "removedSecurity" : "SSCC",
+  "date" : "2005-12-21",
+  "reason" : "Market capitalization change",
+  "symbol" : "SSCC"
+}, {
+  "dateAdded" : "December 21, 2005",
+  "addedSecurity" : "",
+  "removedTicker" : "SANM",
+  "removedSecurity" : "Sanmina Corp",
+  "date" : "2005-12-21",
+  "reason" : "Market capitalization change",
+  "symbol" : "SANM"
+}, {
+  "dateAdded" : "December 21, 2005",
+  "addedSecurity" : "Red Hat Inc.",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2005-12-21",
+  "reason" : "Market capitalization change.",
+  "symbol" : "RHT"
+}, {
+  "dateAdded" : "December 21, 2005",
+  "addedSecurity" : "",
+  "removedTicker" : "QLGC",
+  "removedSecurity" : "QLGC",
+  "date" : "2005-12-21",
+  "reason" : "Market capitalization change",
+  "symbol" : "QLGC"
+}, {
+  "dateAdded" : "December 21, 2005",
+  "addedSecurity" : "",
+  "removedTicker" : "PRDO",
+  "removedSecurity" : "Perdoceo Education Corp",
+  "date" : "2005-12-21",
+  "reason" : "Market capitalization change",
+  "symbol" : "PRDO"
+}, {
+  "dateAdded" : "December 21, 2005",
+  "addedSecurity" : "Patterson-UTI Energy Inc",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2005-12-21",
+  "reason" : "Market capitalization change.",
+  "symbol" : "PTEN"
+}, {
+  "dateAdded" : "December 21, 2005",
+  "addedSecurity" : "NVIDIA Corp",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2005-12-21",
+  "reason" : "Market capitalization change.",
+  "symbol" : "NVDA"
+}, {
+  "dateAdded" : "December 21, 2005",
+  "addedSecurity" : "",
+  "removedTicker" : "NVLS",
+  "removedSecurity" : "NVLS",
+  "date" : "2005-12-21",
+  "reason" : "Market capitalization change",
+  "symbol" : "NVLS"
+}, {
+  "dateAdded" : "December 21, 2005",
+  "addedSecurity" : "NII Holdings Inc.",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2005-12-21",
+  "reason" : "Market capitalization change.",
+  "symbol" : "NIHD"
+}, {
+  "dateAdded" : "December 21, 2005",
+  "addedSecurity" : "MWW",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2005-12-21",
+  "reason" : "Market capitalization change.",
+  "symbol" : "MWW"
+}, {
+  "dateAdded" : "December 21, 2005",
+  "addedSecurity" : "",
+  "removedTicker" : "MOLX",
+  "removedSecurity" : "MOLX",
+  "date" : "2005-12-21",
+  "reason" : "Market capitalization change",
+  "symbol" : "MOLX"
+}, {
+  "dateAdded" : "December 21, 2005",
+  "addedSecurity" : "",
+  "removedTicker" : "MLNM",
+  "removedSecurity" : "MLNM",
+  "date" : "2005-12-21",
+  "reason" : "Market capitalization change",
+  "symbol" : "MLNM"
+}, {
+  "dateAdded" : "August 15, 2005",
+  "addedSecurity" : "",
+  "removedTicker" : "NXTL",
+  "removedSecurity" : "NXTL",
+  "date" : "2005-08-15",
+  "reason" : "Market capitalization change",
+  "symbol" : "NXTL"
+}, {
+  "dateAdded" : "August 15, 2005",
+  "addedSecurity" : "SEPR",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2005-08-15",
+  "reason" : "Market capitalization change.",
+  "symbol" : "SEPR"
+}, {
+  "dateAdded" : "July 5, 2005",
+  "addedSecurity" : "Celgene Corporation",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2005-07-05",
+  "reason" : "Market capitalization change.",
+  "symbol" : "CELG"
+}, {
+  "dateAdded" : "July 5, 2005",
+  "addedSecurity" : "",
+  "removedTicker" : "VRTS",
+  "removedSecurity" : "Virtus Investment Partners Inc",
+  "date" : "2005-07-05",
+  "reason" : "Market capitalization change",
+  "symbol" : "VRTS"
+}, {
+  "dateAdded" : "December 29, 2004",
+  "addedSecurity" : "Cognizant Technology Solutions Corp",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2004-12-29",
+  "reason" : "Market capitalization change.",
+  "symbol" : "CTSH"
+}, {
+  "dateAdded" : "December 29, 2004",
+  "addedSecurity" : "",
+  "removedTicker" : "PSFT",
+  "removedSecurity" : "PSFT",
+  "date" : "2004-12-29",
+  "reason" : "Market capitalization change",
+  "symbol" : "PSFT"
+}, {
+  "dateAdded" : "December 19, 2004",
+  "addedSecurity" : "",
+  "removedTicker" : "CEPH",
+  "removedSecurity" : "CEPH",
+  "date" : "2004-12-19",
+  "reason" : "Market capitalization change",
+  "symbol" : "CEPH"
+}, {
+  "dateAdded" : "December 19, 2004",
+  "addedSecurity" : "XMSR",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2004-12-19",
+  "reason" : "Market capitalization change.",
+  "symbol" : "XMSR"
+}, {
+  "dateAdded" : "December 19, 2004",
+  "addedSecurity" : "Wynn Resorts Ltd",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2004-12-19",
+  "reason" : "Market capitalization change.",
+  "symbol" : "WYNN"
+}, {
+  "dateAdded" : "December 19, 2004",
+  "addedSecurity" : "NTLI",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2004-12-19",
+  "reason" : "Market capitalization change.",
+  "symbol" : "NTLI"
+}, {
+  "dateAdded" : "December 19, 2004",
+  "addedSecurity" : "Sirius XM Holdings Inc",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2004-12-19",
+  "reason" : "Market capitalization change.",
+  "symbol" : "SIRI"
+}, {
+  "dateAdded" : "December 19, 2004",
+  "addedSecurity" : "",
+  "removedTicker" : "RYAAY",
+  "removedSecurity" : "Ryanair Holdings plc American Depositary Shares each representing five Ordinary Shares",
+  "date" : "2004-12-19",
+  "reason" : "Market capitalization change",
+  "symbol" : "RYAAY"
+}, {
+  "dateAdded" : "December 19, 2004",
+  "addedSecurity" : "",
+  "removedTicker" : "PTEN",
+  "removedSecurity" : "Patterson-UTI Energy Inc",
+  "date" : "2004-12-19",
+  "reason" : "Market capitalization change",
+  "symbol" : "PTEN"
+}, {
+  "dateAdded" : "December 19, 2004",
+  "addedSecurity" : "",
+  "removedTicker" : "NVDA",
+  "removedSecurity" : "NVIDIA Corp",
+  "date" : "2004-12-19",
+  "reason" : "Market capitalization change",
+  "symbol" : "NVDA"
+}, {
+  "dateAdded" : "December 19, 2004",
+  "addedSecurity" : "MCIP",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2004-12-19",
+  "reason" : "Market capitalization change.",
+  "symbol" : "MCIP"
+}, {
+  "dateAdded" : "December 19, 2004",
+  "addedSecurity" : "Liberty Global PLC",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2004-12-19",
+  "reason" : "Market capitalization change.",
+  "symbol" : "LBTYA"
+}, {
+  "dateAdded" : "December 19, 2004",
+  "addedSecurity" : "",
+  "removedTicker" : "HSIC",
+  "removedSecurity" : "Henry Schein Inc",
+  "date" : "2004-12-19",
+  "reason" : "Market capitalization change",
+  "symbol" : "HSIC"
+}, {
+  "dateAdded" : "December 19, 2004",
+  "addedSecurity" : "",
+  "removedTicker" : "GNTX",
+  "removedSecurity" : "Gentex Corp",
+  "date" : "2004-12-19",
+  "reason" : "Market capitalization change",
+  "symbol" : "GNTX"
+}, {
+  "dateAdded" : "December 19, 2004",
+  "addedSecurity" : "",
+  "removedTicker" : "FHCC",
+  "removedSecurity" : "FHCC",
+  "date" : "2004-12-19",
+  "reason" : "Market capitalization change",
+  "symbol" : "FHCC"
+}, {
+  "dateAdded" : "December 19, 2004",
+  "addedSecurity" : "Ericsson",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2004-12-19",
+  "reason" : "Market capitalization change.",
+  "symbol" : "ERIC"
+}, {
+  "dateAdded" : "December 19, 2004",
+  "addedSecurity" : "",
+  "removedTicker" : "CPWR",
+  "removedSecurity" : "CPWR",
+  "date" : "2004-12-19",
+  "reason" : "Market capitalization change",
+  "symbol" : "CPWR"
+}, {
+  "dateAdded" : "December 19, 2004",
+  "addedSecurity" : "Autodesk Inc",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2004-12-19",
+  "reason" : "Market capitalization change.",
+  "symbol" : "ADSK"
+}, {
+  "dateAdded" : "August 20, 2004",
+  "addedSecurity" : "Sears Holdings Corporation",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2004-08-20",
+  "reason" : "Market capitalization change.",
+  "symbol" : "SHLD"
+}, {
+  "dateAdded" : "August 19, 2004",
+  "addedSecurity" : "",
+  "removedTicker" : "SPOT",
+  "removedSecurity" : "Spotify Technology SA",
+  "date" : "2004-08-19",
+  "reason" : "Market capitalization change",
+  "symbol" : "SPOT"
+}, {
+  "dateAdded" : "December 22, 2003",
+  "addedSecurity" : "BlackBerry Ltd",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2003-12-22",
+  "reason" : "Market capitalization change.",
+  "symbol" : "BB"
+}, {
+  "dateAdded" : "December 22, 2003",
+  "addedSecurity" : "",
+  "removedTicker" : "BRCD",
+  "removedSecurity" : "BRCD",
+  "date" : "2003-12-22",
+  "reason" : "Market capitalization change",
+  "symbol" : "BRCD"
+}, {
+  "dateAdded" : "December 22, 2003",
+  "addedSecurity" : "Marvell Technology Group Ltd",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2003-12-22",
+  "reason" : "Market capitalization change.",
+  "symbol" : "MRVL"
+}, {
+  "dateAdded" : "December 22, 2003",
+  "addedSecurity" : "ATYT",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2003-12-22",
+  "reason" : "Market capitalization change.",
+  "symbol" : "ATYT"
+}, {
+  "dateAdded" : "December 22, 2003",
+  "addedSecurity" : "LVLT",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2003-12-22",
+  "reason" : "Market capitalization change.",
+  "symbol" : "LVLT"
+}, {
+  "dateAdded" : "December 22, 2003",
+  "addedSecurity" : "",
+  "removedTicker" : "CIEN",
+  "removedSecurity" : "Ciena Corp",
+  "date" : "2003-12-22",
+  "reason" : "Market capitalization change",
+  "symbol" : "CIEN"
+}, {
+  "dateAdded" : "December 22, 2003",
+  "addedSecurity" : "",
+  "removedTicker" : "RFMD",
+  "removedSecurity" : "RFMD",
+  "date" : "2003-12-22",
+  "reason" : "Market capitalization change",
+  "symbol" : "RFMD"
+}, {
+  "dateAdded" : "December 22, 2003",
+  "addedSecurity" : "Perdoceo Education Corp",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2003-12-22",
+  "reason" : "Market capitalization change.",
+  "symbol" : "PRDO"
+}, {
+  "dateAdded" : "December 22, 2003",
+  "addedSecurity" : "",
+  "removedTicker" : "MWW",
+  "removedSecurity" : "MWW",
+  "date" : "2003-12-22",
+  "reason" : "Market capitalization change",
+  "symbol" : "MWW"
+}, {
+  "dateAdded" : "December 22, 2003",
+  "addedSecurity" : "",
+  "removedTicker" : "ADCT",
+  "removedSecurity" : "ADC Therapeutics SA",
+  "date" : "2003-12-22",
+  "reason" : "Market capitalization change",
+  "symbol" : "ADCT"
+}, {
+  "dateAdded" : "December 22, 2003",
+  "addedSecurity" : "",
+  "removedTicker" : "ERIC",
+  "removedSecurity" : "Ericsson",
+  "date" : "2003-12-22",
+  "reason" : "Market capitalization change",
+  "symbol" : "ERIC"
+}, {
+  "dateAdded" : "December 22, 2003",
+  "addedSecurity" : "",
+  "removedTicker" : "HGSI",
+  "removedSecurity" : "HGSI",
+  "date" : "2003-12-22",
+  "reason" : "Market capitalization change",
+  "symbol" : "HGSI"
+}, {
+  "dateAdded" : "December 22, 2003",
+  "addedSecurity" : "",
+  "removedTicker" : "ICOS",
+  "removedSecurity" : "ICOS",
+  "date" : "2003-12-22",
+  "reason" : "Market capitalization change",
+  "symbol" : "ICOS"
+}, {
+  "dateAdded" : "December 22, 2003",
+  "addedSecurity" : "ISIL",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2003-12-22",
+  "reason" : "Market capitalization change.",
+  "symbol" : "ISIL"
+}, {
+  "dateAdded" : "December 22, 2003",
+  "addedSecurity" : "Lam Research Corp",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2003-12-22",
+  "reason" : "Market capitalization change.",
+  "symbol" : "LRCX"
+}, {
+  "dateAdded" : "November 13, 2003",
+  "addedSecurity" : "SNDK",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2003-11-13",
+  "reason" : "Market capitalization change.",
+  "symbol" : "SNDK"
+}, {
+  "dateAdded" : "November 13, 2003",
+  "addedSecurity" : "",
+  "removedTicker" : "BGEN",
+  "removedSecurity" : "BGEN",
+  "date" : "2003-11-13",
+  "reason" : "Market capitalization change",
+  "symbol" : "BGEN"
+}, {
+  "dateAdded" : "December 23, 2002",
+  "addedSecurity" : "Fastenal Co",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2002-12-23",
+  "reason" : "Market capitalization change.",
+  "symbol" : "FAST"
+}, {
+  "dateAdded" : "December 23, 2002",
+  "addedSecurity" : "Expeditors International of Washington Inc",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2002-12-23",
+  "reason" : "Market capitalization change.",
+  "symbol" : "EXPD"
+}, {
+  "dateAdded" : "December 23, 2002",
+  "addedSecurity" : "DENTSPLY SIRONA Inc",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2002-12-23",
+  "reason" : "Market capitalization change.",
+  "symbol" : "XRAY"
+}, {
+  "dateAdded" : "December 23, 2002",
+  "addedSecurity" : "",
+  "removedTicker" : "CYTC",
+  "removedSecurity" : "CYTC",
+  "date" : "2002-12-23",
+  "reason" : "Market capitalization change",
+  "symbol" : "CYTC"
+}, {
+  "dateAdded" : "December 23, 2002",
+  "addedSecurity" : "",
+  "removedTicker" : "CHTR",
+  "removedSecurity" : "Charter Communications Inc",
+  "date" : "2002-12-23",
+  "reason" : "Market capitalization change",
+  "symbol" : "CHTR"
+}, {
+  "dateAdded" : "December 23, 2002",
+  "addedSecurity" : "CH Robinson Worldwide Inc",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2002-12-23",
+  "reason" : "Market capitalization change.",
+  "symbol" : "CHRW"
+}, {
+  "dateAdded" : "December 23, 2002",
+  "addedSecurity" : "",
+  "removedTicker" : "ATML",
+  "removedSecurity" : "ATML",
+  "date" : "2002-12-23",
+  "reason" : "Market capitalization change",
+  "symbol" : "ATML"
+}, {
+  "dateAdded" : "December 23, 2002",
+  "addedSecurity" : "",
+  "removedTicker" : "AMCC",
+  "removedSecurity" : "AMCC",
+  "date" : "2002-12-23",
+  "reason" : "Market capitalization change",
+  "symbol" : "AMCC"
+}, {
+  "dateAdded" : "December 23, 2002",
+  "addedSecurity" : "",
+  "removedTicker" : "ADRX",
+  "removedSecurity" : "ADRX",
+  "date" : "2002-12-23",
+  "reason" : "Market capitalization change",
+  "symbol" : "ADRX"
+}, {
+  "dateAdded" : "December 23, 2002",
+  "addedSecurity" : "",
+  "removedTicker" : "ABGX",
+  "removedSecurity" : "ABGX",
+  "date" : "2002-12-23",
+  "reason" : "Market capitalization change",
+  "symbol" : "ABGX"
+}, {
+  "dateAdded" : "December 23, 2002",
+  "addedSecurity" : "FHCC",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2002-12-23",
+  "reason" : "Market capitalization change.",
+  "symbol" : "FHCC"
+}, {
+  "dateAdded" : "December 23, 2002",
+  "addedSecurity" : "",
+  "removedTicker" : "SEPR",
+  "removedSecurity" : "SEPR",
+  "date" : "2002-12-23",
+  "reason" : "Market capitalization change",
+  "symbol" : "SEPR"
+}, {
+  "dateAdded" : "December 23, 2002",
+  "addedSecurity" : "WFM",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2002-12-23",
+  "reason" : "Market capitalization change.",
+  "symbol" : "WFM"
+}, {
+  "dateAdded" : "December 23, 2002",
+  "addedSecurity" : "Ryanair Holdings plc American Depositary Shares each representing five Ordinary Shares",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2002-12-23",
+  "reason" : "Market capitalization change.",
+  "symbol" : "RYAAY"
+}, {
+  "dateAdded" : "December 23, 2002",
+  "addedSecurity" : "Ross Stores Inc",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2002-12-23",
+  "reason" : "Market capitalization change.",
+  "symbol" : "ROST"
+}, {
+  "dateAdded" : "December 23, 2002",
+  "addedSecurity" : "PIXR",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2002-12-23",
+  "reason" : "Market capitalization change.",
+  "symbol" : "PIXR"
+}, {
+  "dateAdded" : "December 23, 2002",
+  "addedSecurity" : "PETM",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2002-12-23",
+  "reason" : "Market capitalization change.",
+  "symbol" : "PETM"
+}, {
+  "dateAdded" : "December 23, 2002",
+  "addedSecurity" : "",
+  "removedTicker" : "PDLI",
+  "removedSecurity" : "PDL BioPharma Inc",
+  "date" : "2002-12-23",
+  "reason" : "Market capitalization change",
+  "symbol" : "PDLI"
+}, {
+  "dateAdded" : "December 23, 2002",
+  "addedSecurity" : "Patterson-UTI Energy Inc",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2002-12-23",
+  "reason" : "Market capitalization change.",
+  "symbol" : "PTEN"
+}, {
+  "dateAdded" : "December 23, 2002",
+  "addedSecurity" : "",
+  "removedTicker" : "PMCS",
+  "removedSecurity" : "PMCS",
+  "date" : "2002-12-23",
+  "reason" : "Market capitalization change",
+  "symbol" : "PMCS"
+}, {
+  "dateAdded" : "December 23, 2002",
+  "addedSecurity" : "",
+  "removedTicker" : "VTSS",
+  "removedSecurity" : "VTSS",
+  "date" : "2002-12-23",
+  "reason" : "Market capitalization change",
+  "symbol" : "VTSS"
+}, {
+  "dateAdded" : "December 23, 2002",
+  "addedSecurity" : "Lamar Advertising Co",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2002-12-23",
+  "reason" : "Market capitalization change.",
+  "symbol" : "LAMR"
+}, {
+  "dateAdded" : "December 23, 2002",
+  "addedSecurity" : "",
+  "removedTicker" : "CNXT",
+  "removedSecurity" : "VanEck Vectors ChinaAMC SME-ChNext",
+  "date" : "2002-12-23",
+  "reason" : "Market capitalization change",
+  "symbol" : "CNXT"
+}, {
+  "dateAdded" : "December 23, 2002",
+  "addedSecurity" : "",
+  "removedTicker" : "IDTI",
+  "removedSecurity" : "Integrated Device Technology Inc.",
+  "date" : "2002-12-23",
+  "reason" : "Market capitalization change",
+  "symbol" : "IDTI"
+}, {
+  "dateAdded" : "December 23, 2002",
+  "addedSecurity" : "",
+  "removedTicker" : "IMCL",
+  "removedSecurity" : "IMCL",
+  "date" : "2002-12-23",
+  "reason" : "Market capitalization change",
+  "symbol" : "IMCL"
+}, {
+  "dateAdded" : "December 23, 2002",
+  "addedSecurity" : "",
+  "removedTicker" : "ITWOE",
+  "removedSecurity" : "ITWOE",
+  "date" : "2002-12-23",
+  "reason" : "Market capitalization change",
+  "symbol" : "ITWOE"
+}, {
+  "dateAdded" : "December 23, 2002",
+  "addedSecurity" : "Henry Schein Inc",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2002-12-23",
+  "reason" : "Market capitalization change.",
+  "symbol" : "HSIC"
+}, {
+  "dateAdded" : "December 23, 2002",
+  "addedSecurity" : "Gentex Corp",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2002-12-23",
+  "reason" : "Market capitalization change.",
+  "symbol" : "GNTX"
+}, {
+  "dateAdded" : "December 23, 2002",
+  "addedSecurity" : "APCC",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2002-12-23",
+  "reason" : "Market capitalization change.",
+  "symbol" : "APCC"
+}, {
+  "dateAdded" : "December 16, 2002",
+  "addedSecurity" : "",
+  "removedTicker" : "GMST",
+  "removedSecurity" : "GMST",
+  "date" : "2002-12-16",
+  "reason" : "Market capitalization change",
+  "symbol" : "GMST"
+}, {
+  "dateAdded" : "December 16, 2002",
+  "addedSecurity" : "Patterson Companies Inc",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2002-12-16",
+  "reason" : "Market capitalization change.",
+  "symbol" : "PDCO"
+}, {
+  "dateAdded" : "November 20, 2002",
+  "addedSecurity" : "Comcast Corp",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2002-11-20",
+  "reason" : "Market capitalization change.",
+  "symbol" : "CMCSA"
+}, {
+  "dateAdded" : "November 20, 2002",
+  "addedSecurity" : "",
+  "removedTicker" : "CMCSK",
+  "removedSecurity" : "CMCSK",
+  "date" : "2002-11-20",
+  "reason" : "Market capitalization change",
+  "symbol" : "CMCSK"
+}, {
+  "dateAdded" : "November 11, 2002",
+  "addedSecurity" : "",
+  "removedTicker" : "CE",
+  "removedSecurity" : "Celanese Corp",
+  "date" : "2002-11-11",
+  "reason" : "Market capitalization change",
+  "symbol" : "CE"
+}, {
+  "dateAdded" : "November 7, 2002",
+  "addedSecurity" : "Teva Pharmaceutical Industries Limited American Depositary Shares",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2002-11-07",
+  "reason" : "Market capitalization change.",
+  "symbol" : "TEVA"
+}, {
+  "dateAdded" : "July 24, 2002",
+  "addedSecurity" : "",
+  "removedTicker" : "WCOEQ",
+  "removedSecurity" : "WCOEQ",
+  "date" : "2002-07-24",
+  "reason" : "Market capitalization change",
+  "symbol" : "WCOEQ"
+}, {
+  "dateAdded" : "July 24, 2002",
+  "addedSecurity" : "LNCR",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2002-07-24",
+  "reason" : "Market capitalization change.",
+  "symbol" : "LNCR"
+}, {
+  "dateAdded" : "July 16, 2002",
+  "addedSecurity" : "SIAL",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2002-07-16",
+  "reason" : "Market capitalization change.",
+  "symbol" : "SIAL"
+}, {
+  "dateAdded" : "July 16, 2002",
+  "addedSecurity" : "",
+  "removedTicker" : "IMNX",
+  "removedSecurity" : "IMNX",
+  "date" : "2002-07-16",
+  "reason" : "Market capitalization change",
+  "symbol" : "IMNX"
+}, {
+  "dateAdded" : "June 3, 2002",
+  "addedSecurity" : "Dollar Tree Inc",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2002-06-03",
+  "reason" : "Market capitalization change.",
+  "symbol" : "DLTR"
+}, {
+  "dateAdded" : "June 3, 2002",
+  "addedSecurity" : "",
+  "removedTicker" : "ADLAE",
+  "removedSecurity" : "ADLAE",
+  "date" : "2002-06-03",
+  "reason" : "Market capitalization change",
+  "symbol" : "ADLAE"
+}, {
+  "dateAdded" : "December 24, 2001",
+  "addedSecurity" : "SEPR",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2001-12-24",
+  "reason" : "Market capitalization change.",
+  "symbol" : "SEPR"
+}, {
+  "dateAdded" : "December 24, 2001",
+  "addedSecurity" : "IMCL",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2001-12-24",
+  "reason" : "Market capitalization change.",
+  "symbol" : "IMCL"
+}, {
+  "dateAdded" : "December 24, 2001",
+  "addedSecurity" : "ICOS",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2001-12-24",
+  "reason" : "Market capitalization change.",
+  "symbol" : "ICOS"
+}, {
+  "dateAdded" : "December 24, 2001",
+  "addedSecurity" : "Express Scripts Holding Company",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2001-12-24",
+  "reason" : "Market capitalization change.",
+  "symbol" : "ESRX"
+}, {
+  "dateAdded" : "December 24, 2001",
+  "addedSecurity" : "CYTC",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2001-12-24",
+  "reason" : "Market capitalization change.",
+  "symbol" : "CYTC"
+}, {
+  "dateAdded" : "December 24, 2001",
+  "addedSecurity" : "Charter Communications Inc",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2001-12-24",
+  "reason" : "Market capitalization change.",
+  "symbol" : "CHTR"
+}, {
+  "dateAdded" : "December 24, 2001",
+  "addedSecurity" : "CEPH",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2001-12-24",
+  "reason" : "Market capitalization change.",
+  "symbol" : "CEPH"
+}, {
+  "dateAdded" : "December 24, 2001",
+  "addedSecurity" : "CDWC",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2001-12-24",
+  "reason" : "Market capitalization change.",
+  "symbol" : "CDWC"
+}, {
+  "dateAdded" : "December 24, 2001",
+  "addedSecurity" : "",
+  "removedTicker" : "CNET",
+  "removedSecurity" : "Chinanet Online Holdings Inc",
+  "date" : "2001-12-24",
+  "reason" : "Market capitalization change",
+  "symbol" : "CNET"
+}, {
+  "dateAdded" : "December 24, 2001",
+  "addedSecurity" : "",
+  "removedTicker" : "BVSN",
+  "removedSecurity" : "BroadVision Inc.",
+  "date" : "2001-12-24",
+  "reason" : "Market capitalization change",
+  "symbol" : "BVSN"
+}, {
+  "dateAdded" : "December 24, 2001",
+  "addedSecurity" : "",
+  "removedTicker" : "ARBA",
+  "removedSecurity" : "ARBA",
+  "date" : "2001-12-24",
+  "reason" : "Market capitalization change",
+  "symbol" : "ARBA"
+}, {
+  "dateAdded" : "December 24, 2001",
+  "addedSecurity" : "",
+  "removedTicker" : "COMS",
+  "removedSecurity" : "COMS",
+  "date" : "2001-12-24",
+  "reason" : "Market capitalization change",
+  "symbol" : "COMS"
+}, {
+  "dateAdded" : "December 24, 2001",
+  "addedSecurity" : "",
+  "removedTicker" : "INKT",
+  "removedSecurity" : "INKT",
+  "date" : "2001-12-24",
+  "reason" : "Market capitalization change",
+  "symbol" : "INKT"
+}, {
+  "dateAdded" : "December 24, 2001",
+  "addedSecurity" : "",
+  "removedTicker" : "STCN",
+  "removedSecurity" : "Steel Connect Inc",
+  "date" : "2001-12-24",
+  "reason" : "Market capitalization change",
+  "symbol" : "STCN"
+}, {
+  "dateAdded" : "December 24, 2001",
+  "addedSecurity" : "",
+  "removedTicker" : "RNWK",
+  "removedSecurity" : "RealNetworks Inc",
+  "date" : "2001-12-24",
+  "reason" : "Market capitalization change",
+  "symbol" : "RNWK"
+}, {
+  "dateAdded" : "December 24, 2001",
+  "addedSecurity" : "",
+  "removedTicker" : "PTC",
+  "removedSecurity" : "PTC Inc",
+  "date" : "2001-12-24",
+  "reason" : "Market capitalization change",
+  "symbol" : "PTC"
+}, {
+  "dateAdded" : "December 24, 2001",
+  "addedSecurity" : "PDL BioPharma Inc",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2001-12-24",
+  "reason" : "Market capitalization change.",
+  "symbol" : "PDLI"
+}, {
+  "dateAdded" : "December 24, 2001",
+  "addedSecurity" : "",
+  "removedTicker" : "PALM",
+  "removedSecurity" : "PALM",
+  "date" : "2001-12-24",
+  "reason" : "Market capitalization change",
+  "symbol" : "PALM"
+}, {
+  "dateAdded" : "December 24, 2001",
+  "addedSecurity" : "NortonLifeLock Inc",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2001-12-24",
+  "reason" : "Market capitalization change.",
+  "symbol" : "NLOK"
+}, {
+  "dateAdded" : "December 24, 2001",
+  "addedSecurity" : "",
+  "removedTicker" : "NOVL",
+  "removedSecurity" : "NOVL",
+  "date" : "2001-12-24",
+  "reason" : "Market capitalization change",
+  "symbol" : "NOVL"
+}, {
+  "dateAdded" : "December 24, 2001",
+  "addedSecurity" : "",
+  "removedTicker" : "MCLDQ",
+  "removedSecurity" : "MCLDQ",
+  "date" : "2001-12-24",
+  "reason" : "Market capitalization change",
+  "symbol" : "MCLDQ"
+}, {
+  "dateAdded" : "December 24, 2001",
+  "addedSecurity" : "aTyr Pharma Inc",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2001-12-24",
+  "reason" : "Market capitalization change.",
+  "symbol" : "LIFE"
+}, {
+  "dateAdded" : "December 24, 2001",
+  "addedSecurity" : "",
+  "removedTicker" : "LVLT",
+  "removedSecurity" : "LVLT",
+  "date" : "2001-12-24",
+  "reason" : "Market capitalization change",
+  "symbol" : "LVLT"
+}, {
+  "dateAdded" : "December 24, 2001",
+  "addedSecurity" : "Integrated Device Technology Inc.",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2001-12-24",
+  "reason" : "Market capitalization change.",
+  "symbol" : "IDTI"
+}, {
+  "dateAdded" : "December 24, 2001",
+  "addedSecurity" : "Synopsys Inc",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2001-12-24",
+  "reason" : "Market capitalization change.",
+  "symbol" : "SNPS"
+}, {
+  "dateAdded" : "December 19, 2001",
+  "addedSecurity" : "MCLDQ",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2001-12-19",
+  "reason" : "Market capitalization change.",
+  "symbol" : "MCLDQ"
+}, {
+  "dateAdded" : "December 19, 2001",
+  "addedSecurity" : "RealNetworks Inc",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2001-12-19",
+  "reason" : "Market capitalization change.",
+  "symbol" : "RNWK"
+}, {
+  "dateAdded" : "December 19, 2001",
+  "addedSecurity" : "PALM",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2001-12-19",
+  "reason" : "Market capitalization change.",
+  "symbol" : "PALM"
+}, {
+  "dateAdded" : "December 19, 2001",
+  "addedSecurity" : "Steel Connect Inc",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2001-12-19",
+  "reason" : "Market capitalization change.",
+  "symbol" : "STCN"
+}, {
+  "dateAdded" : "December 19, 2001",
+  "addedSecurity" : "LVLT",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2001-12-19",
+  "reason" : "Market capitalization change.",
+  "symbol" : "LVLT"
+}, {
+  "dateAdded" : "December 19, 2001",
+  "addedSecurity" : "NOVL",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2001-12-19",
+  "reason" : "Market capitalization change.",
+  "symbol" : "NOVL"
+}, {
+  "dateAdded" : "December 19, 2001",
+  "addedSecurity" : "COMS",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2001-12-19",
+  "reason" : "Market capitalization change.",
+  "symbol" : "COMS"
+}, {
+  "dateAdded" : "December 19, 2001",
+  "addedSecurity" : "BroadVision Inc.",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2001-12-19",
+  "reason" : "Market capitalization change.",
+  "symbol" : "BVSN"
+}, {
+  "dateAdded" : "December 19, 2001",
+  "addedSecurity" : "Chinanet Online Holdings Inc",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2001-12-19",
+  "reason" : "Market capitalization change.",
+  "symbol" : "CNET"
+}, {
+  "dateAdded" : "December 19, 2001",
+  "addedSecurity" : "INKT",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2001-12-19",
+  "reason" : "Market capitalization change.",
+  "symbol" : "INKT"
+}, {
+  "dateAdded" : "December 17, 2001",
+  "addedSecurity" : "APOL",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2001-12-17",
+  "reason" : "Market capitalization change.",
+  "symbol" : "APOL"
+}, {
+  "dateAdded" : "December 17, 2001",
+  "addedSecurity" : "",
+  "removedTicker" : "XOXO",
+  "removedSecurity" : "XO Group Inc.",
+  "date" : "2001-12-17",
+  "reason" : "Market capitalization change",
+  "symbol" : "XOXO"
+}, {
+  "dateAdded" : "October 8, 2001",
+  "addedSecurity" : "",
+  "removedTicker" : "EXDSQ",
+  "removedSecurity" : "EXDSQ",
+  "date" : "2001-10-08",
+  "reason" : "Market capitalization change",
+  "symbol" : "EXDSQ"
+}, {
+  "dateAdded" : "October 4, 2001",
+  "addedSecurity" : "ADRX",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2001-10-04",
+  "reason" : "Market capitalization change.",
+  "symbol" : "ADRX"
+}, {
+  "dateAdded" : "October 4, 2001",
+  "addedSecurity" : "",
+  "removedTicker" : "ATHMQ",
+  "removedSecurity" : "ATHMQ",
+  "date" : "2001-10-04",
+  "reason" : "Market capitalization change",
+  "symbol" : "ATHMQ"
+}, {
+  "dateAdded" : "October 4, 2001",
+  "addedSecurity" : "Gilead Sciences Inc",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2001-10-04",
+  "reason" : "Market capitalization change.",
+  "symbol" : "GILD"
+}, {
+  "dateAdded" : "September 24, 2001",
+  "addedSecurity" : "",
+  "removedTicker" : "COMS",
+  "removedSecurity" : "COMS",
+  "date" : "2001-09-24",
+  "reason" : "Market capitalization change",
+  "symbol" : "COMS"
+}, {
+  "dateAdded" : "September 24, 2001",
+  "addedSecurity" : "",
+  "removedTicker" : "STCN",
+  "removedSecurity" : "Steel Connect Inc",
+  "date" : "2001-09-24",
+  "reason" : "Market capitalization change",
+  "symbol" : "STCN"
+}, {
+  "dateAdded" : "September 24, 2001",
+  "addedSecurity" : "",
+  "removedTicker" : "RNWK",
+  "removedSecurity" : "RealNetworks Inc",
+  "date" : "2001-09-24",
+  "reason" : "Market capitalization change",
+  "symbol" : "RNWK"
+}, {
+  "dateAdded" : "September 24, 2001",
+  "addedSecurity" : "",
+  "removedTicker" : "PALM",
+  "removedSecurity" : "PALM",
+  "date" : "2001-09-24",
+  "reason" : "Market capitalization change",
+  "symbol" : "PALM"
+}, {
+  "dateAdded" : "September 24, 2001",
+  "addedSecurity" : "",
+  "removedTicker" : "MCLDQ",
+  "removedSecurity" : "MCLDQ",
+  "date" : "2001-09-24",
+  "reason" : "Market capitalization change",
+  "symbol" : "MCLDQ"
+}, {
+  "dateAdded" : "September 24, 2001",
+  "addedSecurity" : "",
+  "removedTicker" : "LVLT",
+  "removedSecurity" : "LVLT",
+  "date" : "2001-09-24",
+  "reason" : "Market capitalization change",
+  "symbol" : "LVLT"
+}, {
+  "dateAdded" : "September 24, 2001",
+  "addedSecurity" : "",
+  "removedTicker" : "INKT",
+  "removedSecurity" : "INKT",
+  "date" : "2001-09-24",
+  "reason" : "Market capitalization change",
+  "symbol" : "INKT"
+}, {
+  "dateAdded" : "September 24, 2001",
+  "addedSecurity" : "",
+  "removedTicker" : "CNET",
+  "removedSecurity" : "Chinanet Online Holdings Inc",
+  "date" : "2001-09-24",
+  "reason" : "Market capitalization change",
+  "symbol" : "CNET"
+}, {
+  "dateAdded" : "September 24, 2001",
+  "addedSecurity" : "",
+  "removedTicker" : "BVSN",
+  "removedSecurity" : "BroadVision Inc.",
+  "date" : "2001-09-24",
+  "reason" : "Market capitalization change",
+  "symbol" : "BVSN"
+}, {
+  "dateAdded" : "July 18, 2001",
+  "addedSecurity" : "",
+  "removedTicker" : "NOVL",
+  "removedSecurity" : "NOVL",
+  "date" : "2001-07-18",
+  "reason" : "Market capitalization change",
+  "symbol" : "NOVL"
+}, {
+  "dateAdded" : "May 31, 2001",
+  "addedSecurity" : "",
+  "removedTicker" : "VSTR",
+  "removedSecurity" : "VSTR",
+  "date" : "2001-05-31",
+  "reason" : "Market capitalization change",
+  "symbol" : "VSTR"
+}, {
+  "dateAdded" : "May 31, 2001",
+  "addedSecurity" : "NVIDIA Corp",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2001-05-31",
+  "reason" : "Market capitalization change.",
+  "symbol" : "NVDA"
+}, {
+  "dateAdded" : "March 19, 2001",
+  "addedSecurity" : "NVLS",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2001-03-19",
+  "reason" : "Market capitalization change.",
+  "symbol" : "NVLS"
+}, {
+  "dateAdded" : "March 19, 2001",
+  "addedSecurity" : "",
+  "removedTicker" : "BMC",
+  "removedSecurity" : "BMC",
+  "date" : "2001-03-19",
+  "reason" : "Market capitalization change",
+  "symbol" : "BMC"
+}, {
+  "dateAdded" : "February 13, 2001",
+  "addedSecurity" : "",
+  "removedTicker" : "SDLI",
+  "removedSecurity" : "SDLI",
+  "date" : "2001-02-13",
+  "reason" : "Market capitalization change",
+  "symbol" : "SDLI"
+}, {
+  "dateAdded" : "February 13, 2001",
+  "addedSecurity" : "BRCD",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2001-02-13",
+  "reason" : "Market capitalization change.",
+  "symbol" : "BRCD"
+}, {
+  "dateAdded" : "December 18, 2000",
+  "addedSecurity" : "HGSI",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2000-12-18",
+  "reason" : "Market capitalization change.",
+  "symbol" : "HGSI"
+}, {
+  "dateAdded" : "December 18, 2000",
+  "addedSecurity" : "",
+  "removedTicker" : "MLHR",
+  "removedSecurity" : "Herman Miller Inc",
+  "date" : "2000-12-18",
+  "reason" : "Market capitalization change",
+  "symbol" : "MLHR"
+}, {
+  "dateAdded" : "December 18, 2000",
+  "addedSecurity" : "Flex Ltd",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2000-12-18",
+  "reason" : "Market capitalization change.",
+  "symbol" : "FLEX"
+}, {
+  "dateAdded" : "December 18, 2000",
+  "addedSecurity" : "EXDSQ",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2000-12-18",
+  "reason" : "Market capitalization change.",
+  "symbol" : "EXDSQ"
+}, {
+  "dateAdded" : "December 18, 2000",
+  "addedSecurity" : "",
+  "removedTicker" : "DLTR",
+  "removedSecurity" : "Dollar Tree Inc",
+  "date" : "2000-12-18",
+  "reason" : "Market capitalization change",
+  "symbol" : "DLTR"
+}, {
+  "dateAdded" : "December 18, 2000",
+  "addedSecurity" : "Check Point Software Technologies Ltd",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2000-12-18",
+  "reason" : "Market capitalization change.",
+  "symbol" : "CHKP"
+}, {
+  "dateAdded" : "December 18, 2000",
+  "addedSecurity" : "Biogen Inc",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2000-12-18",
+  "reason" : "Market capitalization change.",
+  "symbol" : "BIIB"
+}, {
+  "dateAdded" : "December 18, 2000",
+  "addedSecurity" : "BEAS",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2000-12-18",
+  "reason" : "Market capitalization change.",
+  "symbol" : "BEAS"
+}, {
+  "dateAdded" : "December 18, 2000",
+  "addedSecurity" : "",
+  "removedTicker" : "APOL",
+  "removedSecurity" : "APOL",
+  "date" : "2000-12-18",
+  "reason" : "Market capitalization change",
+  "symbol" : "APOL"
+}, {
+  "dateAdded" : "December 18, 2000",
+  "addedSecurity" : "ABGX",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2000-12-18",
+  "reason" : "Market capitalization change.",
+  "symbol" : "ABGX"
+}, {
+  "dateAdded" : "December 18, 2000",
+  "addedSecurity" : "",
+  "removedTicker" : "NWACQ",
+  "removedSecurity" : "NWACQ",
+  "date" : "2000-12-18",
+  "reason" : "Market capitalization change",
+  "symbol" : "NWACQ"
+}, {
+  "dateAdded" : "December 18, 2000",
+  "addedSecurity" : "MWW",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2000-12-18",
+  "reason" : "Market capitalization change.",
+  "symbol" : "MWW"
+}, {
+  "dateAdded" : "December 18, 2000",
+  "addedSecurity" : "MLNM",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2000-12-18",
+  "reason" : "Market capitalization change.",
+  "symbol" : "MLNM"
+}, {
+  "dateAdded" : "December 18, 2000",
+  "addedSecurity" : "MERQE",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2000-12-18",
+  "reason" : "Market capitalization change.",
+  "symbol" : "MERQE"
+}, {
+  "dateAdded" : "December 18, 2000",
+  "addedSecurity" : "",
+  "removedTicker" : "MFE",
+  "removedSecurity" : "MFE",
+  "date" : "2000-12-18",
+  "reason" : "Market capitalization change",
+  "symbol" : "MFE"
+}, {
+  "dateAdded" : "December 18, 2000",
+  "addedSecurity" : "",
+  "removedTicker" : "LGTO",
+  "removedSecurity" : "LGTO",
+  "date" : "2000-12-18",
+  "reason" : "Market capitalization change",
+  "symbol" : "LGTO"
+}, {
+  "dateAdded" : "December 18, 2000",
+  "addedSecurity" : "INKT",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2000-12-18",
+  "reason" : "Market capitalization change.",
+  "symbol" : "INKT"
+}, {
+  "dateAdded" : "December 18, 2000",
+  "addedSecurity" : "",
+  "removedTicker" : "PHS",
+  "removedSecurity" : "PHS",
+  "date" : "2000-12-18",
+  "reason" : "Market capitalization change",
+  "symbol" : "PHS"
+}, {
+  "dateAdded" : "December 18, 2000",
+  "addedSecurity" : "",
+  "removedTicker" : "QTRN",
+  "removedSecurity" : "QTRN",
+  "date" : "2000-12-18",
+  "reason" : "Market capitalization change",
+  "symbol" : "QTRN"
+}, {
+  "dateAdded" : "December 18, 2000",
+  "addedSecurity" : "",
+  "removedTicker" : "APCC",
+  "removedSecurity" : "APCC",
+  "date" : "2000-12-18",
+  "reason" : "Market capitalization change",
+  "symbol" : "APCC"
+}, {
+  "dateAdded" : "December 18, 2000",
+  "addedSecurity" : "",
+  "removedTicker" : "SIAL",
+  "removedSecurity" : "SIAL",
+  "date" : "2000-12-18",
+  "reason" : "Market capitalization change",
+  "symbol" : "SIAL"
+}, {
+  "dateAdded" : "December 18, 2000",
+  "addedSecurity" : "",
+  "removedTicker" : "ADPT",
+  "removedSecurity" : "Adaptive Biotechnologies Corp",
+  "date" : "2000-12-18",
+  "reason" : "Market capitalization change",
+  "symbol" : "ADPT"
+}, {
+  "dateAdded" : "December 18, 2000",
+  "addedSecurity" : "",
+  "removedTicker" : "SNPS",
+  "removedSecurity" : "Synopsys Inc",
+  "date" : "2000-12-18",
+  "reason" : "Market capitalization change",
+  "symbol" : "SNPS"
+}, {
+  "dateAdded" : "November 6, 2000",
+  "addedSecurity" : "PALM",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2000-11-06",
+  "reason" : "Market capitalization change.",
+  "symbol" : "PALM"
+}, {
+  "dateAdded" : "November 6, 2000",
+  "addedSecurity" : "",
+  "removedTicker" : "GX",
+  "removedSecurity" : "GX",
+  "date" : "2000-11-06",
+  "reason" : "Market capitalization change",
+  "symbol" : "GX"
+}, {
+  "dateAdded" : "October 30, 2000",
+  "addedSecurity" : "BRCM",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2000-10-30",
+  "reason" : "Market capitalization change.",
+  "symbol" : "BRCM"
+}, {
+  "dateAdded" : "October 30, 2000",
+  "addedSecurity" : "",
+  "removedTicker" : "LCOS",
+  "removedSecurity" : "LCOS",
+  "date" : "2000-10-30",
+  "reason" : "Market capitalization change",
+  "symbol" : "LCOS"
+}, {
+  "dateAdded" : "October 27, 2000",
+  "addedSecurity" : "ARBA",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2000-10-27",
+  "reason" : "Market capitalization change.",
+  "symbol" : "ARBA"
+}, {
+  "dateAdded" : "October 27, 2000",
+  "addedSecurity" : "",
+  "removedTicker" : "NLI",
+  "removedSecurity" : "NLI",
+  "date" : "2000-10-27",
+  "reason" : "Market capitalization change",
+  "symbol" : "NLI"
+}, {
+  "dateAdded" : "September 7, 2000",
+  "addedSecurity" : "",
+  "removedTicker" : "EYE",
+  "removedSecurity" : "National Vision Holdings Inc",
+  "date" : "2000-09-07",
+  "reason" : "Market capitalization change",
+  "symbol" : "EYE"
+}, {
+  "dateAdded" : "September 7, 2000",
+  "addedSecurity" : "Juniper Networks Inc",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2000-09-07",
+  "reason" : "Market capitalization change.",
+  "symbol" : "JNPR"
+}, {
+  "dateAdded" : "June 9, 2000",
+  "addedSecurity" : "Verisign Inc",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2000-06-09",
+  "reason" : "Market capitalization change.",
+  "symbol" : "VRSN"
+}, {
+  "dateAdded" : "June 9, 2000",
+  "addedSecurity" : "",
+  "removedTicker" : "NSOL",
+  "removedSecurity" : "NSOL",
+  "date" : "2000-06-09",
+  "reason" : "Market capitalization change",
+  "symbol" : "NSOL"
+}, {
+  "dateAdded" : "May 10, 2000",
+  "addedSecurity" : "NSOL",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2000-05-10",
+  "reason" : "Market capitalization change.",
+  "symbol" : "NSOL"
+}, {
+  "dateAdded" : "May 10, 2000",
+  "addedSecurity" : "NetApp Inc",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2000-05-10",
+  "reason" : "Market capitalization change.",
+  "symbol" : "NTAP"
+}, {
+  "dateAdded" : "May 10, 2000",
+  "addedSecurity" : "PMCS",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2000-05-10",
+  "reason" : "Market capitalization change.",
+  "symbol" : "PMCS"
+}, {
+  "dateAdded" : "May 10, 2000",
+  "addedSecurity" : "MEDI",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2000-05-10",
+  "reason" : "Market capitalization change.",
+  "symbol" : "MEDI"
+}, {
+  "dateAdded" : "May 10, 2000",
+  "addedSecurity" : "",
+  "removedTicker" : "LNCR",
+  "removedSecurity" : "LNCR",
+  "date" : "2000-05-10",
+  "reason" : "Market capitalization change",
+  "symbol" : "LNCR"
+}, {
+  "dateAdded" : "May 10, 2000",
+  "addedSecurity" : "LGTO",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2000-05-10",
+  "reason" : "Market capitalization change.",
+  "symbol" : "LGTO"
+}, {
+  "dateAdded" : "May 10, 2000",
+  "addedSecurity" : "ITWOE",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2000-05-10",
+  "reason" : "Market capitalization change.",
+  "symbol" : "ITWOE"
+}, {
+  "dateAdded" : "May 10, 2000",
+  "addedSecurity" : "",
+  "removedTicker" : "FHCC",
+  "removedSecurity" : "FHCC",
+  "date" : "2000-05-10",
+  "reason" : "Market capitalization change",
+  "symbol" : "FHCC"
+}, {
+  "dateAdded" : "May 10, 2000",
+  "addedSecurity" : "",
+  "removedTicker" : "FAST",
+  "removedSecurity" : "Fastenal Co",
+  "date" : "2000-05-10",
+  "reason" : "Market capitalization change",
+  "symbol" : "FAST"
+}, {
+  "dateAdded" : "May 10, 2000",
+  "addedSecurity" : "DISH Network Corp",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2000-05-10",
+  "reason" : "Market capitalization change.",
+  "symbol" : "DISH"
+}, {
+  "dateAdded" : "May 10, 2000",
+  "addedSecurity" : "",
+  "removedTicker" : "TRIN",
+  "removedSecurity" : "TRIN",
+  "date" : "2000-05-10",
+  "reason" : "Market capitalization change",
+  "symbol" : "TRIN"
+}, {
+  "dateAdded" : "May 10, 2000",
+  "addedSecurity" : "",
+  "removedTicker" : "ANDW",
+  "removedSecurity" : "ANDW",
+  "date" : "2000-05-10",
+  "reason" : "Market capitalization change",
+  "symbol" : "ANDW"
+}, {
+  "dateAdded" : "May 10, 2000",
+  "addedSecurity" : "",
+  "removedTicker" : "CATP",
+  "removedSecurity" : "CATP",
+  "date" : "2000-05-10",
+  "reason" : "Market capitalization change",
+  "symbol" : "CATP"
+}, {
+  "dateAdded" : "May 10, 2000",
+  "addedSecurity" : "BroadVision Inc.",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2000-05-10",
+  "reason" : "Market capitalization change.",
+  "symbol" : "BVSN"
+}, {
+  "dateAdded" : "May 10, 2000",
+  "addedSecurity" : "",
+  "removedTicker" : "ADSK",
+  "removedSecurity" : "Autodesk Inc",
+  "date" : "2000-05-10",
+  "reason" : "Market capitalization change",
+  "symbol" : "ADSK"
+}, {
+  "dateAdded" : "May 10, 2000",
+  "addedSecurity" : "AMCC",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2000-05-10",
+  "reason" : "Market capitalization change.",
+  "symbol" : "AMCC"
+}, {
+  "dateAdded" : "May 10, 2000",
+  "addedSecurity" : "ADLAE",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2000-05-10",
+  "reason" : "Market capitalization change.",
+  "symbol" : "ADLAE"
+}, {
+  "dateAdded" : "May 10, 2000",
+  "addedSecurity" : "",
+  "removedTicker" : "CBRL",
+  "removedSecurity" : "Cracker Barrel Old Country Store Inc",
+  "date" : "2000-05-10",
+  "reason" : "Market capitalization change",
+  "symbol" : "CBRL"
+}, {
+  "dateAdded" : "May 10, 2000",
+  "addedSecurity" : "",
+  "removedTicker" : "TECD",
+  "removedSecurity" : "Tech Data Corporation",
+  "date" : "2000-05-10",
+  "reason" : "Market capitalization change",
+  "symbol" : "TECD"
+}, {
+  "dateAdded" : "May 10, 2000",
+  "addedSecurity" : "",
+  "removedTicker" : "STEI",
+  "removedSecurity" : "STEI",
+  "date" : "2000-05-10",
+  "reason" : "Market capitalization change",
+  "symbol" : "STEI"
+}, {
+  "dateAdded" : "May 10, 2000",
+  "addedSecurity" : "SDLI",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2000-05-10",
+  "reason" : "Market capitalization change.",
+  "symbol" : "SDLI"
+}, {
+  "dateAdded" : "May 10, 2000",
+  "addedSecurity" : "GMST",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2000-05-10",
+  "reason" : "Market capitalization change.",
+  "symbol" : "GMST"
+}, {
+  "dateAdded" : "May 10, 2000",
+  "addedSecurity" : "",
+  "removedTicker" : "ROST",
+  "removedSecurity" : "Ross Stores Inc",
+  "date" : "2000-05-10",
+  "reason" : "Market capitalization change",
+  "symbol" : "ROST"
+}, {
+  "dateAdded" : "May 10, 2000",
+  "addedSecurity" : "RFMD",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2000-05-10",
+  "reason" : "Market capitalization change.",
+  "symbol" : "RFMD"
+}, {
+  "dateAdded" : "May 10, 2000",
+  "addedSecurity" : "",
+  "removedTicker" : "RXSD",
+  "removedSecurity" : "RXSD",
+  "date" : "2000-05-10",
+  "reason" : "Market capitalization change",
+  "symbol" : "RXSD"
+}, {
+  "dateAdded" : "May 10, 2000",
+  "addedSecurity" : "",
+  "removedTicker" : "Q",
+  "removedSecurity" : "Q",
+  "date" : "2000-05-10",
+  "reason" : "Market capitalization change",
+  "symbol" : "Q"
+}, {
+  "dateAdded" : "May 10, 2000",
+  "addedSecurity" : "QLGC",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2000-05-10",
+  "reason" : "Market capitalization change.",
+  "symbol" : "QLGC"
+}, {
+  "dateAdded" : "May 10, 2000",
+  "addedSecurity" : "XO Group Inc.",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2000-05-10",
+  "reason" : "Market capitalization change.",
+  "symbol" : "XOXO"
+}, {
+  "dateAdded" : "May 10, 2000",
+  "addedSecurity" : "",
+  "removedTicker" : "WOR",
+  "removedSecurity" : "Worthington Industries Inc",
+  "date" : "2000-05-10",
+  "reason" : "Market capitalization change",
+  "symbol" : "WOR"
+}, {
+  "dateAdded" : "May 10, 2000",
+  "addedSecurity" : "",
+  "removedTicker" : "WWWW",
+  "removedSecurity" : "WWWW",
+  "date" : "2000-05-10",
+  "reason" : "Market capitalization change",
+  "symbol" : "WWWW"
+}, {
+  "dateAdded" : "January 18, 2000",
+  "addedSecurity" : "RealNetworks Inc",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "2000-01-18",
+  "reason" : "Market capitalization change.",
+  "symbol" : "RNWK"
+}, {
+  "dateAdded" : "January 18, 2000",
+  "addedSecurity" : "",
+  "removedTicker" : "COMR",
+  "removedSecurity" : "COMR",
+  "date" : "2000-01-18",
+  "reason" : "Market capitalization change",
+  "symbol" : "COMR"
+}, {
+  "dateAdded" : "October 27, 1999",
+  "addedSecurity" : "",
+  "removedTicker" : "CEXP",
+  "removedSecurity" : "CEXP",
+  "date" : "1999-10-27",
+  "reason" : "Market capitalization change",
+  "symbol" : "CEXP"
+}, {
+  "dateAdded" : "October 27, 1999",
+  "addedSecurity" : "VSTR",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "1999-10-27",
+  "reason" : "Market capitalization change.",
+  "symbol" : "VSTR"
+}, {
+  "dateAdded" : "October 11, 1999",
+  "addedSecurity" : "",
+  "removedTicker" : "CNTO",
+  "removedSecurity" : "CNTO",
+  "date" : "1999-10-11",
+  "reason" : "Market capitalization change",
+  "symbol" : "CNTO"
+}, {
+  "dateAdded" : "October 6, 1999",
+  "addedSecurity" : "eBay Inc",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "1999-10-06",
+  "reason" : "Market capitalization change.",
+  "symbol" : "EBAY"
+}, {
+  "dateAdded" : "September 9, 1999",
+  "addedSecurity" : "GX",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "1999-09-09",
+  "reason" : "Market capitalization change.",
+  "symbol" : "GX"
+}, {
+  "dateAdded" : "September 9, 1999",
+  "addedSecurity" : "",
+  "removedTicker" : "FDLNB",
+  "removedSecurity" : "FDLNB",
+  "date" : "1999-09-09",
+  "reason" : "Market capitalization change",
+  "symbol" : "FDLNB"
+}, {
+  "dateAdded" : "August 4, 1999",
+  "addedSecurity" : "Ciena Corp",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "1999-08-04",
+  "reason" : "Market capitalization change.",
+  "symbol" : "CIEN"
+}, {
+  "dateAdded" : "August 4, 1999",
+  "addedSecurity" : "",
+  "removedTicker" : "QMCO",
+  "removedSecurity" : "Quantum Corp",
+  "date" : "1999-08-04",
+  "reason" : "Market capitalization change",
+  "symbol" : "QMCO"
+}, {
+  "dateAdded" : "July 14, 1999",
+  "addedSecurity" : "",
+  "removedTicker" : "AMFM",
+  "removedSecurity" : "AMFM",
+  "date" : "1999-07-14",
+  "reason" : "Market capitalization change",
+  "symbol" : "AMFM"
+}, {
+  "dateAdded" : "July 14, 1999",
+  "addedSecurity" : "VanEck Vectors ChinaAMC SME-ChNext",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "1999-07-14",
+  "reason" : "Market capitalization change.",
+  "symbol" : "CNXT"
+}, {
+  "dateAdded" : "July 7, 1999",
+  "addedSecurity" : "LCOS",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "1999-07-07",
+  "reason" : "Market capitalization change.",
+  "symbol" : "LCOS"
+}, {
+  "dateAdded" : "July 7, 1999",
+  "addedSecurity" : "SEBL",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "1999-07-07",
+  "reason" : "Market capitalization change.",
+  "symbol" : "SEBL"
+}, {
+  "dateAdded" : "July 7, 1999",
+  "addedSecurity" : "",
+  "removedTicker" : "JWN",
+  "removedSecurity" : "Nordstrom Inc",
+  "date" : "1999-07-07",
+  "reason" : "Market capitalization change",
+  "symbol" : "JWN"
+}, {
+  "dateAdded" : "July 7, 1999",
+  "addedSecurity" : "",
+  "removedTicker" : "MKC",
+  "removedSecurity" : "McCormick & Company Inc",
+  "date" : "1999-07-07",
+  "reason" : "Market capitalization change",
+  "symbol" : "MKC"
+}, {
+  "dateAdded" : "July 7, 1999",
+  "addedSecurity" : "FDLNB",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "1999-07-07",
+  "reason" : "Market capitalization change.",
+  "symbol" : "FDLNB"
+}, {
+  "dateAdded" : "July 7, 1999",
+  "addedSecurity" : "",
+  "removedTicker" : "DZB",
+  "removedSecurity" : "DZB",
+  "date" : "1999-07-07",
+  "reason" : "Market capitalization change",
+  "symbol" : "DZB"
+}, {
+  "dateAdded" : "July 7, 1999",
+  "addedSecurity" : "National Vision Holdings Inc",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "1999-07-07",
+  "reason" : "Market capitalization change.",
+  "symbol" : "EYE"
+}, {
+  "dateAdded" : "July 7, 1999",
+  "addedSecurity" : "AMFM",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "1999-07-07",
+  "reason" : "Market capitalization change.",
+  "symbol" : "AMFM"
+}, {
+  "dateAdded" : "July 7, 1999",
+  "addedSecurity" : "",
+  "removedTicker" : "AFM",
+  "removedSecurity" : "AFM",
+  "date" : "1999-07-07",
+  "reason" : "Market capitalization change",
+  "symbol" : "AFM"
+}, {
+  "dateAdded" : "June 25, 1999",
+  "addedSecurity" : "",
+  "removedTicker" : "ASND",
+  "removedSecurity" : "Ascendis Pharma A/S",
+  "date" : "1999-06-25",
+  "reason" : "Market capitalization change",
+  "symbol" : "ASND"
+}, {
+  "dateAdded" : "June 16, 1999",
+  "addedSecurity" : "",
+  "removedTicker" : "FORE",
+  "removedSecurity" : "FORE",
+  "date" : "1999-06-16",
+  "reason" : "Market capitalization change",
+  "symbol" : "FORE"
+}, {
+  "dateAdded" : "June 16, 1999",
+  "addedSecurity" : "Chinanet Online Holdings Inc",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "1999-06-16",
+  "reason" : "Market capitalization change.",
+  "symbol" : "CNET"
+}, {
+  "dateAdded" : "May 5, 1999",
+  "addedSecurity" : "Viavi Solutions Inc",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "1999-05-05",
+  "reason" : "Market capitalization change.",
+  "symbol" : "VIAV"
+}, {
+  "dateAdded" : "May 5, 1999",
+  "addedSecurity" : "",
+  "removedTicker" : "JCOR",
+  "removedSecurity" : "JCOR",
+  "date" : "1999-05-05",
+  "reason" : "Market capitalization change",
+  "symbol" : "JCOR"
+}, {
+  "dateAdded" : "March 18, 1999",
+  "addedSecurity" : "Steel Connect Inc",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "1999-03-18",
+  "reason" : "Market capitalization change.",
+  "symbol" : "STCN"
+}, {
+  "dateAdded" : "March 18, 1999",
+  "addedSecurity" : "",
+  "removedTicker" : "NSCP",
+  "removedSecurity" : "NSCP",
+  "date" : "1999-03-18",
+  "reason" : "Market capitalization change",
+  "symbol" : "NSCP"
+}, {
+  "dateAdded" : "March 10, 1999",
+  "addedSecurity" : "",
+  "removedTicker" : "TCOMA",
+  "removedSecurity" : "TCOMA",
+  "date" : "1999-03-10",
+  "reason" : "Market capitalization change",
+  "symbol" : "TCOMA"
+}, {
+  "dateAdded" : "March 10, 1999",
+  "addedSecurity" : "ATHMQ",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "1999-03-10",
+  "reason" : "Market capitalization change.",
+  "symbol" : "ATHMQ"
+}, {
+  "dateAdded" : "January 13, 1999",
+  "addedSecurity" : "",
+  "removedTicker" : "HBOC",
+  "removedSecurity" : "HBOC",
+  "date" : "1999-01-13",
+  "reason" : "Market capitalization change",
+  "symbol" : "HBOC"
+}, {
+  "dateAdded" : "January 13, 1999",
+  "addedSecurity" : "CMVT",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "1999-01-13",
+  "reason" : "Market capitalization change.",
+  "symbol" : "CMVT"
+}, {
+  "dateAdded" : "December 30, 1998",
+  "addedSecurity" : "Sanmina Corp",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "1998-12-30",
+  "reason" : "Market capitalization change.",
+  "symbol" : "SANM"
+}, {
+  "dateAdded" : "December 30, 1998",
+  "addedSecurity" : "",
+  "removedTicker" : "AW",
+  "removedSecurity" : "AW",
+  "date" : "1998-12-30",
+  "reason" : "Market capitalization change",
+  "symbol" : "AW"
+}, {
+  "dateAdded" : "December 21, 1998",
+  "addedSecurity" : "",
+  "removedTicker" : "PHYCQ",
+  "removedSecurity" : "PHYCQ",
+  "date" : "1998-12-21",
+  "reason" : "Market capitalization change",
+  "symbol" : "PHYCQ"
+}, {
+  "dateAdded" : "December 21, 1998",
+  "addedSecurity" : "Virtus Investment Partners Inc",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "1998-12-21",
+  "reason" : "Market capitalization change.",
+  "symbol" : "VRTS"
+}, {
+  "dateAdded" : "December 21, 1998",
+  "addedSecurity" : "",
+  "removedTicker" : "ADTN",
+  "removedSecurity" : "ADTRAN Inc",
+  "date" : "1998-12-21",
+  "reason" : "Market capitalization change",
+  "symbol" : "ADTN"
+}, {
+  "dateAdded" : "December 21, 1998",
+  "addedSecurity" : "Amazon.com Inc",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "1998-12-21",
+  "reason" : "Market capitalization change.",
+  "symbol" : "AMZN"
+}, {
+  "dateAdded" : "December 21, 1998",
+  "addedSecurity" : "",
+  "removedTicker" : "SY",
+  "removedSecurity" : "So-Young International Inc",
+  "date" : "1998-12-21",
+  "reason" : "Market capitalization change",
+  "symbol" : "SY"
+}, {
+  "dateAdded" : "December 21, 1998",
+  "addedSecurity" : "",
+  "removedTicker" : "PAIR",
+  "removedSecurity" : "PAIR",
+  "date" : "1998-12-21",
+  "reason" : "Market capitalization change",
+  "symbol" : "PAIR"
+}, {
+  "dateAdded" : "December 21, 1998",
+  "addedSecurity" : "",
+  "removedTicker" : "OXHP",
+  "removedSecurity" : "OXHP",
+  "date" : "1998-12-21",
+  "reason" : "Market capitalization change",
+  "symbol" : "OXHP"
+}, {
+  "dateAdded" : "December 21, 1998",
+  "addedSecurity" : "VTSS",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "1998-12-21",
+  "reason" : "Market capitalization change.",
+  "symbol" : "VTSS"
+}, {
+  "dateAdded" : "December 21, 1998",
+  "addedSecurity" : "MCLDQ",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "1998-12-21",
+  "reason" : "Market capitalization change.",
+  "symbol" : "MCLDQ"
+}, {
+  "dateAdded" : "December 21, 1998",
+  "addedSecurity" : "LNCR",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "1998-12-21",
+  "reason" : "Market capitalization change.",
+  "symbol" : "LNCR"
+}, {
+  "dateAdded" : "December 21, 1998",
+  "addedSecurity" : "Intuit Inc",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "1998-12-21",
+  "reason" : "Market capitalization change.",
+  "symbol" : "INTU"
+}, {
+  "dateAdded" : "December 21, 1998",
+  "addedSecurity" : "",
+  "removedTicker" : "GNCI",
+  "removedSecurity" : "GNCI",
+  "date" : "1998-12-21",
+  "reason" : "Market capitalization change",
+  "symbol" : "GNCI"
+}, {
+  "dateAdded" : "December 21, 1998",
+  "addedSecurity" : "",
+  "removedTicker" : "DURA",
+  "removedSecurity" : "VanEck Vectors Morningstar Durable Dividend ETF",
+  "date" : "1998-12-21",
+  "reason" : "Market capitalization change",
+  "symbol" : "DURA"
+}, {
+  "dateAdded" : "December 21, 1998",
+  "addedSecurity" : "Dollar Tree Inc",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "1998-12-21",
+  "reason" : "Market capitalization change.",
+  "symbol" : "DLTR"
+}, {
+  "dateAdded" : "December 21, 1998",
+  "addedSecurity" : "COMR",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "1998-12-21",
+  "reason" : "Market capitalization change.",
+  "symbol" : "COMR"
+}, {
+  "dateAdded" : "December 21, 1998",
+  "addedSecurity" : "",
+  "removedTicker" : "OFISE",
+  "removedSecurity" : "OFISE",
+  "date" : "1998-12-21",
+  "reason" : "Market capitalization change",
+  "symbol" : "OFISE"
+}, {
+  "dateAdded" : "December 21, 1998",
+  "addedSecurity" : "",
+  "removedTicker" : "WCLX",
+  "removedSecurity" : "WCLX",
+  "date" : "1998-12-21",
+  "reason" : "Market capitalization change",
+  "symbol" : "WCLX"
+}, {
+  "dateAdded" : "December 21, 1998",
+  "addedSecurity" : "NLI",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "1998-12-21",
+  "reason" : "Market capitalization change.",
+  "symbol" : "NLI"
+}, {
+  "dateAdded" : "September 16, 1998",
+  "addedSecurity" : "Altaba Inc.",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "1998-09-16",
+  "reason" : "Market capitalization change.",
+  "symbol" : "AABA"
+}, {
+  "dateAdded" : "September 16, 1998",
+  "addedSecurity" : "",
+  "removedTicker" : "MCIC",
+  "removedSecurity" : "MCIC",
+  "date" : "1998-09-16",
+  "reason" : "Market capitalization change",
+  "symbol" : "MCIC"
+}, {
+  "dateAdded" : "September 15, 1998",
+  "addedSecurity" : "",
+  "removedTicker" : "IT",
+  "removedSecurity" : "Gartner Inc",
+  "date" : "1998-09-15",
+  "reason" : "Market capitalization change",
+  "symbol" : "IT"
+}, {
+  "dateAdded" : "September 15, 1998",
+  "addedSecurity" : "IAC/Interactivecorp",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "1998-09-15",
+  "reason" : "Market capitalization change.",
+  "symbol" : "IAC"
+}, {
+  "dateAdded" : "August 28, 1998",
+  "addedSecurity" : "Q",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "1998-08-28",
+  "reason" : "Market capitalization change.",
+  "symbol" : "Q"
+}, {
+  "dateAdded" : "August 28, 1998",
+  "addedSecurity" : "",
+  "removedTicker" : "DIGI",
+  "removedSecurity" : "DIGI",
+  "date" : "1998-08-28",
+  "reason" : "Market capitalization change",
+  "symbol" : "DIGI"
+}, {
+  "dateAdded" : "August 27, 1998",
+  "addedSecurity" : "",
+  "removedTicker" : "VKNG",
+  "removedSecurity" : "VKNG",
+  "date" : "1998-08-27",
+  "reason" : "Market capitalization change",
+  "symbol" : "VKNG"
+}, {
+  "dateAdded" : "August 27, 1998",
+  "addedSecurity" : "LVLT",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "1998-08-27",
+  "reason" : "Market capitalization change.",
+  "symbol" : "LVLT"
+}, {
+  "dateAdded" : "February 11, 1998",
+  "addedSecurity" : "",
+  "removedTicker" : "AM",
+  "removedSecurity" : "Antero Midstream Corp",
+  "date" : "1998-02-11",
+  "reason" : "Market capitalization change",
+  "symbol" : "AM"
+}, {
+  "dateAdded" : "February 11, 1998",
+  "addedSecurity" : "RXSD",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "1998-02-11",
+  "reason" : "Market capitalization change.",
+  "symbol" : "RXSD"
+}, {
+  "dateAdded" : "January 7, 1998",
+  "addedSecurity" : "",
+  "removedTicker" : "CRUS",
+  "removedSecurity" : "Cirrus Logic Inc",
+  "date" : "1998-01-07",
+  "reason" : "Market capitalization change",
+  "symbol" : "CRUS"
+}, {
+  "dateAdded" : "January 7, 1998",
+  "addedSecurity" : "CATP",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "1998-01-07",
+  "reason" : "Market capitalization change.",
+  "symbol" : "CATP"
+}, {
+  "dateAdded" : "January 7, 1998",
+  "addedSecurity" : "",
+  "removedTicker" : "BOSTQ",
+  "removedSecurity" : "BOSTQ",
+  "date" : "1998-01-07",
+  "reason" : "Market capitalization change",
+  "symbol" : "BOSTQ"
+}, {
+  "dateAdded" : "January 7, 1998",
+  "addedSecurity" : "",
+  "removedTicker" : "ASCL",
+  "removedSecurity" : "ASCL",
+  "date" : "1998-01-07",
+  "reason" : "Market capitalization change",
+  "symbol" : "ASCL"
+}, {
+  "dateAdded" : "January 7, 1998",
+  "addedSecurity" : "APOL",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "1998-01-07",
+  "reason" : "Market capitalization change.",
+  "symbol" : "APOL"
+}, {
+  "dateAdded" : "January 7, 1998",
+  "addedSecurity" : "AFM",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "1998-01-07",
+  "reason" : "Market capitalization change.",
+  "symbol" : "AFM"
+}, {
+  "dateAdded" : "January 7, 1998",
+  "addedSecurity" : "AW",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "1998-01-07",
+  "reason" : "Market capitalization change.",
+  "symbol" : "AW"
+}, {
+  "dateAdded" : "January 7, 1998",
+  "addedSecurity" : "Tech Data Corporation",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "1998-01-07",
+  "reason" : "Market capitalization change.",
+  "symbol" : "TECD"
+}, {
+  "dateAdded" : "January 7, 1998",
+  "addedSecurity" : "TRIN",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "1998-01-07",
+  "reason" : "Market capitalization change.",
+  "symbol" : "TRIN"
+}, {
+  "dateAdded" : "January 7, 1998",
+  "addedSecurity" : "",
+  "removedTicker" : "KMAGQ",
+  "removedSecurity" : "KMAGQ",
+  "date" : "1998-01-07",
+  "reason" : "Market capitalization change",
+  "symbol" : "KMAGQ"
+}, {
+  "dateAdded" : "January 7, 1998",
+  "addedSecurity" : "",
+  "removedTicker" : "RPM",
+  "removedSecurity" : "RPM International Inc",
+  "date" : "1998-01-07",
+  "reason" : "Market capitalization change",
+  "symbol" : "RPM"
+}, {
+  "dateAdded" : "January 7, 1998",
+  "addedSecurity" : "",
+  "removedTicker" : "PAGE",
+  "removedSecurity" : "PAGE",
+  "date" : "1998-01-07",
+  "reason" : "Market capitalization change",
+  "symbol" : "PAGE"
+}, {
+  "dateAdded" : "January 7, 1998",
+  "addedSecurity" : "",
+  "removedTicker" : "PETM",
+  "removedSecurity" : "PETM",
+  "date" : "1998-01-07",
+  "reason" : "Market capitalization change",
+  "symbol" : "PETM"
+}, {
+  "dateAdded" : "January 7, 1998",
+  "addedSecurity" : "",
+  "removedTicker" : "OSI",
+  "removedSecurity" : "OSI",
+  "date" : "1998-01-07",
+  "reason" : "Market capitalization change",
+  "symbol" : "OSI"
+}, {
+  "dateAdded" : "January 7, 1998",
+  "addedSecurity" : "JCOR",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "1998-01-07",
+  "reason" : "Market capitalization change.",
+  "symbol" : "JCOR"
+}, {
+  "dateAdded" : "January 7, 1998",
+  "addedSecurity" : "",
+  "removedTicker" : "INTU",
+  "removedSecurity" : "Intuit Inc",
+  "date" : "1998-01-07",
+  "reason" : "Market capitalization change",
+  "symbol" : "INTU"
+}, {
+  "dateAdded" : "January 7, 1998",
+  "addedSecurity" : "IMNX",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "1998-01-07",
+  "reason" : "Market capitalization change.",
+  "symbol" : "IMNX"
+}, {
+  "dateAdded" : "January 7, 1998",
+  "addedSecurity" : "",
+  "removedTicker" : "IDXX",
+  "removedSecurity" : "IDEXX Laboratories Inc",
+  "date" : "1998-01-07",
+  "reason" : "Market capitalization change",
+  "symbol" : "IDXX"
+}, {
+  "dateAdded" : "January 7, 1998",
+  "addedSecurity" : "Ericsson",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "1998-01-07",
+  "reason" : "Market capitalization change.",
+  "symbol" : "ERIC"
+}, {
+  "dateAdded" : "January 7, 1998",
+  "addedSecurity" : "",
+  "removedTicker" : "EDCI",
+  "removedSecurity" : "EDCI",
+  "date" : "1998-01-07",
+  "reason" : "Market capitalization change",
+  "symbol" : "EDCI"
+}, {
+  "dateAdded" : "January 7, 1998",
+  "addedSecurity" : "VanEck Vectors Morningstar Durable Dividend ETF",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "1998-01-07",
+  "reason" : "Market capitalization change.",
+  "symbol" : "DURA"
+}, {
+  "dateAdded" : "January 7, 1998",
+  "addedSecurity" : "Citrix Systems Inc",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "1998-01-07",
+  "reason" : "Market capitalization change.",
+  "symbol" : "CTXS"
+}, {
+  "dateAdded" : "December 2, 1997",
+  "addedSecurity" : "FHCC",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "1997-12-02",
+  "reason" : "Market capitalization change.",
+  "symbol" : "FHCC"
+}, {
+  "dateAdded" : "December 2, 1997",
+  "addedSecurity" : "Fastenal Co",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "1997-12-02",
+  "reason" : "Market capitalization change.",
+  "symbol" : "FAST"
+}, {
+  "dateAdded" : "December 2, 1997",
+  "addedSecurity" : "Electronic Arts Inc",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "1997-12-02",
+  "reason" : "Market capitalization change.",
+  "symbol" : "EA"
+}, {
+  "dateAdded" : "December 2, 1997",
+  "addedSecurity" : "Electronics for Imaging Inc.",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "1997-12-02",
+  "reason" : "Market capitalization change.",
+  "symbol" : "EFII"
+}, {
+  "dateAdded" : "December 2, 1997",
+  "addedSecurity" : "EDCI",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "1997-12-02",
+  "reason" : "Market capitalization change.",
+  "symbol" : "EDCI"
+}, {
+  "dateAdded" : "December 2, 1997",
+  "addedSecurity" : "Dell Technologies Inc",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "1997-12-02",
+  "reason" : "Market capitalization change.",
+  "symbol" : "DELL"
+}, {
+  "dateAdded" : "December 2, 1997",
+  "addedSecurity" : "DZB",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "1997-12-02",
+  "reason" : "Market capitalization change.",
+  "symbol" : "DZB"
+}, {
+  "dateAdded" : "December 2, 1997",
+  "addedSecurity" : "Cracker Barrel Old Country Store Inc",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "1997-12-02",
+  "reason" : "Market capitalization change.",
+  "symbol" : "CBRL"
+}, {
+  "dateAdded" : "December 2, 1997",
+  "addedSecurity" : "Costco Wholesale Corp",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "1997-12-02",
+  "reason" : "Market capitalization change.",
+  "symbol" : "COST"
+}, {
+  "dateAdded" : "December 2, 1997",
+  "addedSecurity" : "CEXP",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "1997-12-02",
+  "reason" : "Market capitalization change.",
+  "symbol" : "CEXP"
+}, {
+  "dateAdded" : "December 2, 1997",
+  "addedSecurity" : "Celanese Corp",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "1997-12-02",
+  "reason" : "Market capitalization change.",
+  "symbol" : "CE"
+}, {
+  "dateAdded" : "December 2, 1997",
+  "addedSecurity" : "CPWR",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "1997-12-02",
+  "reason" : "Market capitalization change.",
+  "symbol" : "CPWR"
+}, {
+  "dateAdded" : "December 2, 1997",
+  "addedSecurity" : "ANDW",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "1997-12-02",
+  "reason" : "Market capitalization change.",
+  "symbol" : "ANDW"
+}, {
+  "dateAdded" : "December 2, 1997",
+  "addedSecurity" : "ADC Therapeutics SA",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "1997-12-02",
+  "reason" : "Market capitalization change.",
+  "symbol" : "ADCT"
+}, {
+  "dateAdded" : "December 2, 1997",
+  "addedSecurity" : "CMCSK",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "1997-12-02",
+  "reason" : "Market capitalization change.",
+  "symbol" : "CMCSK"
+}, {
+  "dateAdded" : "December 2, 1997",
+  "addedSecurity" : "Cisco Systems Inc",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "1997-12-02",
+  "reason" : "Market capitalization change.",
+  "symbol" : "CSCO"
+}, {
+  "dateAdded" : "December 2, 1997",
+  "addedSecurity" : "Cirrus Logic Inc",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "1997-12-02",
+  "reason" : "Market capitalization change.",
+  "symbol" : "CRUS"
+}, {
+  "dateAdded" : "December 2, 1997",
+  "addedSecurity" : "Cintas Corp",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "1997-12-02",
+  "reason" : "Market capitalization change.",
+  "symbol" : "CTAS"
+}, {
+  "dateAdded" : "December 2, 1997",
+  "addedSecurity" : "OFISE",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "1997-12-02",
+  "reason" : "Market capitalization change.",
+  "symbol" : "OFISE"
+}, {
+  "dateAdded" : "December 2, 1997",
+  "addedSecurity" : "BOSTQ",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "1997-12-02",
+  "reason" : "Market capitalization change.",
+  "symbol" : "BOSTQ"
+}, {
+  "dateAdded" : "December 2, 1997",
+  "addedSecurity" : "BMC",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "1997-12-02",
+  "reason" : "Market capitalization change.",
+  "symbol" : "BMC"
+}, {
+  "dateAdded" : "December 2, 1997",
+  "addedSecurity" : "BMET",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "1997-12-02",
+  "reason" : "Market capitalization change.",
+  "symbol" : "BMET"
+}, {
+  "dateAdded" : "December 2, 1997",
+  "addedSecurity" : "BGEN",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "1997-12-02",
+  "reason" : "Market capitalization change.",
+  "symbol" : "BGEN"
+}, {
+  "dateAdded" : "December 2, 1997",
+  "addedSecurity" : "Bed Bath & Beyond Inc",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "1997-12-02",
+  "reason" : "Market capitalization change.",
+  "symbol" : "BBBY"
+}, {
+  "dateAdded" : "December 2, 1997",
+  "addedSecurity" : "PHYCQ",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "1997-12-02",
+  "reason" : "Market capitalization change.",
+  "symbol" : "PHYCQ"
+}, {
+  "dateAdded" : "December 2, 1997",
+  "addedSecurity" : "Autodesk Inc",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "1997-12-02",
+  "reason" : "Market capitalization change.",
+  "symbol" : "ADSK"
+}, {
+  "dateAdded" : "December 2, 1997",
+  "addedSecurity" : "ATML",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "1997-12-02",
+  "reason" : "Market capitalization change.",
+  "symbol" : "ATML"
+}, {
+  "dateAdded" : "December 2, 1997",
+  "addedSecurity" : "ASCL",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "1997-12-02",
+  "reason" : "Market capitalization change.",
+  "symbol" : "ASCL"
+}, {
+  "dateAdded" : "December 2, 1997",
+  "addedSecurity" : "Ascendis Pharma A/S",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "1997-12-02",
+  "reason" : "Market capitalization change.",
+  "symbol" : "ASND"
+}, {
+  "dateAdded" : "December 2, 1997",
+  "addedSecurity" : "Applied Materials Inc",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "1997-12-02",
+  "reason" : "Market capitalization change.",
+  "symbol" : "AMAT"
+}, {
+  "dateAdded" : "December 2, 1997",
+  "addedSecurity" : "Amgen Inc",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "1997-12-02",
+  "reason" : "Market capitalization change.",
+  "symbol" : "AMGN"
+}, {
+  "dateAdded" : "December 2, 1997",
+  "addedSecurity" : "Antero Midstream Corp",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "1997-12-02",
+  "reason" : "Market capitalization change.",
+  "symbol" : "AM"
+}, {
+  "dateAdded" : "December 2, 1997",
+  "addedSecurity" : "Altair Engineering Inc",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "1997-12-02",
+  "reason" : "Market capitalization change.",
+  "symbol" : "ALTR"
+}, {
+  "dateAdded" : "December 2, 1997",
+  "addedSecurity" : "DIGI",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "1997-12-02",
+  "reason" : "Market capitalization change.",
+  "symbol" : "DIGI"
+}, {
+  "dateAdded" : "December 2, 1997",
+  "addedSecurity" : "ADTRAN Inc",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "1997-12-02",
+  "reason" : "Market capitalization change.",
+  "symbol" : "ADTN"
+}, {
+  "dateAdded" : "December 2, 1997",
+  "addedSecurity" : "Adobe Inc",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "1997-12-02",
+  "reason" : "Market capitalization change.",
+  "symbol" : "ADBE"
+}, {
+  "dateAdded" : "December 2, 1997",
+  "addedSecurity" : "COMS",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "1997-12-02",
+  "reason" : "Market capitalization change.",
+  "symbol" : "COMS"
+}, {
+  "dateAdded" : "December 2, 1997",
+  "addedSecurity" : "Apple Inc",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "1997-12-02",
+  "reason" : "Market capitalization change.",
+  "symbol" : "AAPL"
+}, {
+  "dateAdded" : "December 2, 1997",
+  "addedSecurity" : "Xilinx Inc",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "1997-12-02",
+  "reason" : "Market capitalization change.",
+  "symbol" : "XLNX"
+}, {
+  "dateAdded" : "December 2, 1997",
+  "addedSecurity" : "Worthington Industries Inc",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "1997-12-02",
+  "reason" : "Market capitalization change.",
+  "symbol" : "WOR"
+}, {
+  "dateAdded" : "December 2, 1997",
+  "addedSecurity" : "WCLX",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "1997-12-02",
+  "reason" : "Market capitalization change.",
+  "symbol" : "WCLX"
+}, {
+  "dateAdded" : "December 2, 1997",
+  "addedSecurity" : "WWWW",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "1997-12-02",
+  "reason" : "Market capitalization change.",
+  "symbol" : "WWWW"
+}, {
+  "dateAdded" : "December 2, 1997",
+  "addedSecurity" : "KMAGQ",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "1997-12-02",
+  "reason" : "Market capitalization change.",
+  "symbol" : "KMAGQ"
+}, {
+  "dateAdded" : "December 2, 1997",
+  "addedSecurity" : "VKNG",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "1997-12-02",
+  "reason" : "Market capitalization change.",
+  "symbol" : "VKNG"
+}, {
+  "dateAdded" : "December 2, 1997",
+  "addedSecurity" : "TLAB",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "1997-12-02",
+  "reason" : "Market capitalization change.",
+  "symbol" : "TLAB"
+}, {
+  "dateAdded" : "December 2, 1997",
+  "addedSecurity" : "TCOMA",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "1997-12-02",
+  "reason" : "Market capitalization change.",
+  "symbol" : "TCOMA"
+}, {
+  "dateAdded" : "December 2, 1997",
+  "addedSecurity" : "Synopsys Inc",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "1997-12-02",
+  "reason" : "Market capitalization change.",
+  "symbol" : "SNPS"
+}, {
+  "dateAdded" : "December 2, 1997",
+  "addedSecurity" : "So-Young International Inc",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "1997-12-02",
+  "reason" : "Market capitalization change.",
+  "symbol" : "SY"
+}, {
+  "dateAdded" : "December 2, 1997",
+  "addedSecurity" : "STEI",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "1997-12-02",
+  "reason" : "Market capitalization change.",
+  "symbol" : "STEI"
+}, {
+  "dateAdded" : "December 2, 1997",
+  "addedSecurity" : "Adaptive Biotechnologies Corp",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "1997-12-02",
+  "reason" : "Market capitalization change.",
+  "symbol" : "ADPT"
+}, {
+  "dateAdded" : "December 2, 1997",
+  "addedSecurity" : "Starbucks Corp",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "1997-12-02",
+  "reason" : "Market capitalization change.",
+  "symbol" : "SBUX"
+}, {
+  "dateAdded" : "December 2, 1997",
+  "addedSecurity" : "SPLS",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "1997-12-02",
+  "reason" : "Market capitalization change.",
+  "symbol" : "SPLS"
+}, {
+  "dateAdded" : "December 2, 1997",
+  "addedSecurity" : "SSCC",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "1997-12-02",
+  "reason" : "Market capitalization change.",
+  "symbol" : "SSCC"
+}, {
+  "dateAdded" : "December 2, 1997",
+  "addedSecurity" : "SIAL",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "1997-12-02",
+  "reason" : "Market capitalization change.",
+  "symbol" : "SIAL"
+}, {
+  "dateAdded" : "December 2, 1997",
+  "addedSecurity" : "APCC",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "1997-12-02",
+  "reason" : "Market capitalization change.",
+  "symbol" : "APCC"
+}, {
+  "dateAdded" : "December 2, 1997",
+  "addedSecurity" : "RPM International Inc",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "1997-12-02",
+  "reason" : "Market capitalization change.",
+  "symbol" : "RPM"
+}, {
+  "dateAdded" : "December 2, 1997",
+  "addedSecurity" : "Ross Stores Inc",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "1997-12-02",
+  "reason" : "Market capitalization change.",
+  "symbol" : "ROST"
+}, {
+  "dateAdded" : "December 2, 1997",
+  "addedSecurity" : "QTRN",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "1997-12-02",
+  "reason" : "Market capitalization change.",
+  "symbol" : "QTRN"
+}, {
+  "dateAdded" : "December 2, 1997",
+  "addedSecurity" : "Quantum Corp",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "1997-12-02",
+  "reason" : "Market capitalization change.",
+  "symbol" : "QMCO"
+}, {
+  "dateAdded" : "December 2, 1997",
+  "addedSecurity" : "Qualcomm Inc",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "1997-12-02",
+  "reason" : "Market capitalization change.",
+  "symbol" : "QCOM"
+}, {
+  "dateAdded" : "December 2, 1997",
+  "addedSecurity" : "PTC Inc",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "1997-12-02",
+  "reason" : "Market capitalization change.",
+  "symbol" : "PTC"
+}, {
+  "dateAdded" : "December 2, 1997",
+  "addedSecurity" : "PETM",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "1997-12-02",
+  "reason" : "Market capitalization change.",
+  "symbol" : "PETM"
+}, {
+  "dateAdded" : "December 2, 1997",
+  "addedSecurity" : "PSFT",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "1997-12-02",
+  "reason" : "Market capitalization change.",
+  "symbol" : "PSFT"
+}, {
+  "dateAdded" : "December 2, 1997",
+  "addedSecurity" : "Paychex Inc",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "1997-12-02",
+  "reason" : "Market capitalization change.",
+  "symbol" : "PAYX"
+}, {
+  "dateAdded" : "December 2, 1997",
+  "addedSecurity" : "PAIR",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "1997-12-02",
+  "reason" : "Market capitalization change.",
+  "symbol" : "PAIR"
+}, {
+  "dateAdded" : "December 2, 1997",
+  "addedSecurity" : "PAGE",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "1997-12-02",
+  "reason" : "Market capitalization change.",
+  "symbol" : "PAGE"
+}, {
+  "dateAdded" : "December 2, 1997",
+  "addedSecurity" : "PHS",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "1997-12-02",
+  "reason" : "Market capitalization change.",
+  "symbol" : "PHS"
+}, {
+  "dateAdded" : "December 2, 1997",
+  "addedSecurity" : "Paccar Inc",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "1997-12-02",
+  "reason" : "Market capitalization change.",
+  "symbol" : "PCAR"
+}, {
+  "dateAdded" : "December 2, 1997",
+  "addedSecurity" : "OXHP",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "1997-12-02",
+  "reason" : "Market capitalization change.",
+  "symbol" : "OXHP"
+}, {
+  "dateAdded" : "December 2, 1997",
+  "addedSecurity" : "OSI",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "1997-12-02",
+  "reason" : "Market capitalization change.",
+  "symbol" : "OSI"
+}, {
+  "dateAdded" : "December 2, 1997",
+  "addedSecurity" : "JAVA",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "1997-12-02",
+  "reason" : "Market capitalization change.",
+  "symbol" : "JAVA"
+}, {
+  "dateAdded" : "December 2, 1997",
+  "addedSecurity" : "Oracle Corp",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "1997-12-02",
+  "reason" : "Market capitalization change.",
+  "symbol" : "ORCL"
+}, {
+  "dateAdded" : "December 2, 1997",
+  "addedSecurity" : "Global X MSCI China Real Estate ETF",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "1997-12-02",
+  "reason" : "Market capitalization change.",
+  "symbol" : "CHIR"
+}, {
+  "dateAdded" : "December 2, 1997",
+  "addedSecurity" : "NWACQ",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "1997-12-02",
+  "reason" : "Market capitalization change.",
+  "symbol" : "NWACQ"
+}, {
+  "dateAdded" : "December 2, 1997",
+  "addedSecurity" : "Nordstrom Inc",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "1997-12-02",
+  "reason" : "Market capitalization change.",
+  "symbol" : "JWN"
+}, {
+  "dateAdded" : "December 2, 1997",
+  "addedSecurity" : "NXTL",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "1997-12-02",
+  "reason" : "Market capitalization change.",
+  "symbol" : "NXTL"
+}, {
+  "dateAdded" : "December 2, 1997",
+  "addedSecurity" : "NSCP",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "1997-12-02",
+  "reason" : "Market capitalization change.",
+  "symbol" : "NSCP"
+}, {
+  "dateAdded" : "December 2, 1997",
+  "addedSecurity" : "MOLX",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "1997-12-02",
+  "reason" : "Market capitalization change.",
+  "symbol" : "MOLX"
+}, {
+  "dateAdded" : "December 2, 1997",
+  "addedSecurity" : "Microsoft Corp",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "1997-12-02",
+  "reason" : "Market capitalization change.",
+  "symbol" : "MSFT"
+}, {
+  "dateAdded" : "December 2, 1997",
+  "addedSecurity" : "Microchip Technology Inc",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "1997-12-02",
+  "reason" : "Market capitalization change.",
+  "symbol" : "MCHP"
+}, {
+  "dateAdded" : "December 2, 1997",
+  "addedSecurity" : "NOVL",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "1997-12-02",
+  "reason" : "Market capitalization change.",
+  "symbol" : "NOVL"
+}, {
+  "dateAdded" : "December 2, 1997",
+  "addedSecurity" : "MCIC",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "1997-12-02",
+  "reason" : "Market capitalization change.",
+  "symbol" : "MCIC"
+}, {
+  "dateAdded" : "December 2, 1997",
+  "addedSecurity" : "WCOEQ",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "1997-12-02",
+  "reason" : "Market capitalization change.",
+  "symbol" : "WCOEQ"
+}, {
+  "dateAdded" : "December 2, 1997",
+  "addedSecurity" : "McCormick & Company Inc",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "1997-12-02",
+  "reason" : "Market capitalization change.",
+  "symbol" : "MKC"
+}, {
+  "dateAdded" : "December 2, 1997",
+  "addedSecurity" : "MFE",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "1997-12-02",
+  "reason" : "Market capitalization change.",
+  "symbol" : "MFE"
+}, {
+  "dateAdded" : "December 2, 1997",
+  "addedSecurity" : "Maxim Integrated Products Inc",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "1997-12-02",
+  "reason" : "Market capitalization change.",
+  "symbol" : "MXIM"
+}, {
+  "dateAdded" : "December 2, 1997",
+  "addedSecurity" : "LLTC",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "1997-12-02",
+  "reason" : "Market capitalization change.",
+  "symbol" : "LLTC"
+}, {
+  "dateAdded" : "December 2, 1997",
+  "addedSecurity" : "KLA Corp",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "1997-12-02",
+  "reason" : "Market capitalization change.",
+  "symbol" : "KLAC"
+}, {
+  "dateAdded" : "December 2, 1997",
+  "addedSecurity" : "CNTO",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "1997-12-02",
+  "reason" : "Market capitalization change.",
+  "symbol" : "CNTO"
+}, {
+  "dateAdded" : "December 2, 1997",
+  "addedSecurity" : "Intuit Inc",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "1997-12-02",
+  "reason" : "Market capitalization change.",
+  "symbol" : "INTU"
+}, {
+  "dateAdded" : "December 2, 1997",
+  "addedSecurity" : "Spotify Technology SA",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "1997-12-02",
+  "reason" : "Market capitalization change.",
+  "symbol" : "SPOT"
+}, {
+  "dateAdded" : "December 2, 1997",
+  "addedSecurity" : "Intel Corp",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "1997-12-02",
+  "reason" : "Market capitalization change.",
+  "symbol" : "INTC"
+}, {
+  "dateAdded" : "December 2, 1997",
+  "addedSecurity" : "IDEXX Laboratories Inc",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "1997-12-02",
+  "reason" : "Market capitalization change.",
+  "symbol" : "IDXX"
+}, {
+  "dateAdded" : "December 2, 1997",
+  "addedSecurity" : "Herman Miller Inc",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "1997-12-02",
+  "reason" : "Market capitalization change.",
+  "symbol" : "MLHR"
+}, {
+  "dateAdded" : "December 2, 1997",
+  "addedSecurity" : "HBOC",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "1997-12-02",
+  "reason" : "Market capitalization change.",
+  "symbol" : "HBOC"
+}, {
+  "dateAdded" : "December 2, 1997",
+  "addedSecurity" : "GENZ",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "1997-12-02",
+  "reason" : "Market capitalization change.",
+  "symbol" : "GENZ"
+}, {
+  "dateAdded" : "December 2, 1997",
+  "addedSecurity" : "GNCI",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "1997-12-02",
+  "reason" : "Market capitalization change.",
+  "symbol" : "GNCI"
+}, {
+  "dateAdded" : "December 2, 1997",
+  "addedSecurity" : "Gartner Inc",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "1997-12-02",
+  "reason" : "Market capitalization change.",
+  "symbol" : "IT"
+}, {
+  "dateAdded" : "December 2, 1997",
+  "addedSecurity" : "FORE",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "1997-12-02",
+  "reason" : "Market capitalization change.",
+  "symbol" : "FORE"
+}, {
+  "dateAdded" : "December 2, 1997",
+  "addedSecurity" : "Fiserv Inc",
+  "removedTicker" : "",
+  "removedSecurity" : "",
+  "date" : "1997-12-02",
+  "reason" : "Market capitalization change.",
+  "symbol" : "FISV"
+} ]
