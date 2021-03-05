@@ -989,7 +989,7 @@ def get_economics(ag=None, img_out_path_=IMAGES_OUT_PATH):
     debug('Get economics complete')
 
 
-def get_economics_v2(driver=None, img_out_path_=IMAGES_OUT_PATH):
+def get_economics_v2(driver=None, img_out_path_='/home/gene/PycharmProjects/webscraper/webdriver/'):
     charts = {
         'Interest Rate': 'https://tradingeconomics.com/united-states/interest-rate',
         'Inflation Rate': 'https://tradingeconomics.com/united-states/inflation-cpi',
@@ -1002,17 +1002,20 @@ def get_economics_v2(driver=None, img_out_path_=IMAGES_OUT_PATH):
                 im_path = os.path.join(img_out_path_, k + '.png')
                 driver.get(v)
                 sleep(5)
-                WebDriverWait(driver, 10).until(
+                WebDriverWait(driver, 20).until(
                     EC.element_to_be_clickable((By.LINK_TEXT, "Forecast"))).click()
-                WebDriverWait(driver, 10).until(
-                    EC.element_to_be_clickable((By.CLASS_NAME, "chart-link chart-lookback"))).click()
+                debug(f'Button Forecast has been clicked for {k}')
+                five = WebDriverWait(driver, 10).until(
+                    EC.element_to_be_clickable((By.LINK_TEXT, "5Y")))
+                driver.execute_script("return arguments[0].click();", five)
+                debug(f'Button 5y has been clicked for {k}')
                 chart = driver.find_element_by_class_name("chart-figure")
+                sleep(6)
                 image = chart.screenshot_as_png
                 image_stream = io.BytesIO(image)
                 im = Image.open(image_stream)
                 im.save(im_path)
-                add_watermark(im_path, im_path, 100)
-                debug(f"IMG Path:{im_path}")
+                debug(f'{k} Chart has been saved')
 
     except Exception as e06a:
         debug(e06a)
