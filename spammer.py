@@ -136,13 +136,13 @@ async def send_to_message(toid):
                                       (0, metadata1.get('width'))[metadata1.has('width')],
                                       (0, metadata1.get('height'))[metadata1.has('height')]
                                   ),))
-        await client.send_file(toid, "http://104.154.228.185/amzn.mp4", video_note=True,
+        await client.send_file(toid, "http://www.watchlister.ru/amzn.mp4", video_note=True,
                                attributes=(DocumentAttributeVideo(
                                       (0, metadata2.get('duration').seconds)[metadata2.has('duration')],
                                       (0, metadata2.get('width'))[metadata2.has('width')],
                                       (0, metadata2.get('height'))[metadata2.has('height')]
                                   ),))
-        await client.send_file(toid, "http://104.154.228.185/allweather.mp4", video_note=True,
+        await client.send_file(toid, "http://www.watchlister.ru/allweather.mp4", video_note=True,
                                attributes=(DocumentAttributeVideo(
                                       (0, metadata3.get('duration').seconds)[metadata3.has('duration')],
                                       (0, metadata3.get('width'))[metadata3.has('width')],
