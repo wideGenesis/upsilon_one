@@ -68,7 +68,7 @@ async def handle(request):
                 return web.json_response(res_nack)
             return web.json_response(res_ack)
         if action == "check_user":
-            res = await schedule_send(28)
+            res = await schedule_send(7200) # спустя 2 часа будет отпавлять мессаги
             if res:
                 return web.json_response(res_ack)
             else:
@@ -184,18 +184,23 @@ async def schedule_send(send_interval):
 
 
 def send_check_signal():
-    with requests.Session() as session:
-        url = f'http://{WEB_LISTEN_HOST}:{WEB_LISTEN_PORT}/{spammer_token}/'
-        data = {'action': "check_user", 'user_id': '1', 'username': ''}
-        headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}
-        request_result = None
-        try:
-            request_result = session.post(url, data=json.dumps(data), headers=headers)
-        except Exception as e:
-            debug(e, ERROR)
-        if request_result.status_code == requests.codes.ok:
-            parsed_json = json.loads(request_result.text)
-            debug(parsed_json)
+    now = datetime.datetime.now()
+    if 8 <= now.hour <= 21:
+        debug(f"NOW: {str(now)} -- It's time to send ;-)")
+        with requests.Session() as sess:
+            url = f'http://{WEB_LISTEN_HOST}:{WEB_LISTEN_PORT}/{spammer_token}/'
+            data = {'action': "check_user", 'user_id': '1', 'username': ''}
+            headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}
+            request_result = None
+            try:
+                request_result = sess.post(url, data=json.dumps(data), headers=headers)
+            except Exception as e:
+                debug(e, ERROR)
+            if request_result.status_code == requests.codes.ok:
+                parsed_json = json.loads(request_result.text)
+                debug(parsed_json)
+    else:
+        debug(f"NOT NOW {str(now)} -- No time to send ;-(")
 
 
 def run_my_scheduler():
