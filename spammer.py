@@ -35,6 +35,7 @@ app = web.Application()
 client = TelegramClient(session, api_id, api_hash).start()
 
 user_table_name = "new_users"
+spammer_token = '9e098ea3706511eb94d2d8c497581578'
 
 
 async def handle(request):
@@ -66,6 +67,8 @@ async def handle(request):
                 debug(e, ERROR)
                 return web.json_response(res_nack)
             return web.json_response(res_ack)
+        if action == "check_user":
+            await schedule_send(28)
 
 
 app.router.add_post("/{token}/", handle)
@@ -149,7 +152,7 @@ async def webserver_starter():
     debug("Web Server was started!")
 
 
-def schedule_send(send_interval):
+async def schedule_send(send_interval):
     debug("Check users")
     # _______Выберем всех пользователей которым можно разослать сообщения
     new_users = select_users(engine=my_sqlalchemy_engine)
@@ -163,16 +166,30 @@ def schedule_send(send_interval):
         if delta_t > send_interval:
             debug(f"delta_t > send_interval [{delta_t} > {send_interval}] -- "
                   f"Try send messages for username[{username}]")
-            client.get_dialogs()
-            entity = client.get_entity(username)
-            res = send_to_message(entity)
+            await client.get_dialogs()
+            entity = await client.get_entity(username)
+            res = await send_to_message(entity)
             if res:
                 set_wstatus(k, now_dt, engine=my_sqlalchemy_engine)
 
 
+def send_check_signal():
+    with requests.Session() as session:
+        url = f'http://{WEB_LISTEN_HOST}:{WEB_LISTEN_PORT}/{spammer_token}/'
+        data = {'action': "check_user", 'user_id': '', 'username': ''}
+        headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}
+        try:
+            request_result = session.post(url, data=json.dumps(data), headers=headers)
+        except Exception as e:
+            debug(e, ERROR)
+        if request_result.status_code == requests.codes.ok:
+            parsed_json = json.loads(request_result.text)
+            debug(parsed_json)
+
+
 def run_my_scheduler():
     debug("&&&&&&&  Run scheduler &&&&&&&")
-    schedule.every(1).minutes.do(lambda: schedule_send(28))  # 28800
+    schedule.every(1).minutes.do(lambda: send_check_signal())  # 28800
     while True:
         schedule.run_pending()
         sleep(20)
