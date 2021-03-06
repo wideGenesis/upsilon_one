@@ -174,7 +174,7 @@ def main():
     client.run_until_disconnected()
 
     debug("&&&&&&&  Run scheduler &&&&&&&")
-    schedule.every(1).minutes.do(lambda: schedule_send(28800))
+    schedule.every(1).minutes.do(lambda: schedule_send(28)) #28800
     while True:
         schedule.run_pending()
         sleep(5)
