@@ -555,54 +555,62 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
     # ============================== Основные макро данные =============================
     elif event.data == b'cm1':
         await event.edit()
-        await client.send_message(entity=entity, message='Interest Rates')
-        await client.send_message(entity=entity, message='Data, Country, Last, Previous, Reference, Unit')
-        filename = os.path.join(yahoo_path, 'economic_data.csv')
-        with open(filename, newline='') as f:
-            data = csv.reader(f, delimiter=',')
-            for row in data:
-                if row[0] == 'Interest Rate':
-                    new_row = ',  '.join(row)
-                    await client.send_message(entity=entity, message=f'{new_row}')
+        await client.send_message(entity=entity, message='Прогноз процентной ставки в США')
+        await client.send_file(entity, IMAGES_OUT_PATH + 'Interest Rate.png')
+
+        # await client.send_message(entity=entity, message='Data, Country, Last, Previous, Reference, Unit')
+        # filename = os.path.join(yahoo_path, 'economic_data.csv')
+        # with open(filename, newline='') as f:
+        #     data = csv.reader(f, delimiter=',')
+        #     for row in data:
+        #         if row[0] == 'Interest Rate':
+        #             new_row = ',  '.join(row)
+        #             await client.send_message(entity=entity, message=f'{new_row}')
         await client.send_message(event.input_sender, 'Процентная ставка \n /instruction10',
                                   buttons=buttons.keyboard_core_macro_back)
     elif event.data == b'cm2':
         await event.edit()
-        await client.send_message(entity=entity, message='Interest Rates')
-        await client.send_message(entity=entity, message='Data, Country, Last, Previous, Reference, Unit')
-        filename = os.path.join(yahoo_path, 'economic_data.csv')
-        with open(filename, newline='') as f:
-            data = csv.reader(f, delimiter=',')
-            for row in data:
-                if row[0] == 'Inflation Rate':
-                    new_row = ',  '.join(row)
-                    await client.send_message(entity=entity, message=f'{new_row}')
+        await client.send_message(entity=entity, message='Прогноз уровня инфляции в США')
+        await client.send_file(entity, IMAGES_OUT_PATH + 'Inflation Rate.png')
+
+        # await client.send_message(entity=entity, message='Data, Country, Last, Previous, Reference, Unit')
+        # filename = os.path.join(yahoo_path, 'economic_data.csv')
+        # with open(filename, newline='') as f:
+        #     data = csv.reader(f, delimiter=',')
+        #     for row in data:
+        #         if row[0] == 'Inflation Rate':
+        #             new_row = ',  '.join(row)
+        #             await client.send_message(entity=entity, message=f'{new_row}')
         await client.send_message(event.input_sender, 'Уровень инфляции \n /instruction11',
                                   buttons=buttons.keyboard_core_macro_back)
     elif event.data == b'cm3':
         await event.edit()
-        await client.send_message(entity=entity, message='Interest Rates')
-        await client.send_message(entity=entity, message='Data, Country, Last, Previous, Reference, Unit')
-        filename = os.path.join(yahoo_path, 'economic_data.csv')
-        with open(filename, newline='') as f:
-            data = csv.reader(f, delimiter=',')
-            for row in data:
-                if row[0] == 'Unemployment Rate':
-                    new_row = ',  '.join(row)
-                    await client.send_message(entity=entity, message=f'{new_row}')
+        await client.send_message(entity=entity, message='Прогноз уровня безработицы в США')
+        await client.send_file(entity, IMAGES_OUT_PATH + 'Unemployment Rate.png')
+
+        # await client.send_message(entity=entity, message='Data, Country, Last, Previous, Reference, Unit')
+        # filename = os.path.join(yahoo_path, 'economic_data.csv')
+        # with open(filename, newline='') as f:
+        #     data = csv.reader(f, delimiter=',')
+        #     for row in data:
+        #         if row[0] == 'Unemployment Rate':
+        #             new_row = ',  '.join(row)
+        #             await client.send_message(entity=entity, message=f'{new_row}')
         await client.send_message(event.input_sender, 'Уровень безработицы \n /instruction13',
                                   buttons=buttons.keyboard_core_macro_back)
     elif event.data == b'cm4':
         await event.edit()
-        await client.send_message(entity=entity, message='Interest Rates')
-        await client.send_message(entity=entity, message='Data, Country, Last, Previous, Reference, Unit')
-        filename = os.path.join(yahoo_path, 'economic_data.csv')
-        with open(filename, newline='') as f:
-            data = csv.reader(f, delimiter=',')
-            for row in data:
-                if row[0] == 'Composite PMI':
-                    new_row = ',  '.join(row)
-                    await client.send_message(entity=entity, message=f'{new_row}')
+        await client.send_message(entity=entity, message='Прогноз индекса PMI в США')
+        await client.send_file(entity, IMAGES_OUT_PATH + 'Composite PMI.png')
+
+        # await client.send_message(entity=entity, message='Data, Country, Last, Previous, Reference, Unit')
+        # filename = os.path.join(yahoo_path, 'economic_data.csv')
+        # with open(filename, newline='') as f:
+        #     data = csv.reader(f, delimiter=',')
+        #     for row in data:
+        #         if row[0] == 'Composite PMI':
+        #             new_row = ',  '.join(row)
+        #             await client.send_message(entity=entity, message=f'{new_row}')
         await client.send_message(event.input_sender, 'Композитный индекс менеджеров по закупкам \n /instruction12',
                                   buttons=buttons.keyboard_core_macro_back)
     elif event.data == b'cm-1':
