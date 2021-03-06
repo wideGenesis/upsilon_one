@@ -29,7 +29,7 @@ api_hash = 'ee430fe3f8307871277d27059b09f3e7'
 command_token = '9e098ea3706511eb94d2d8c497581578'
 
 WEB_LISTEN_HOST = "0.0.0.0"
-WEB_LISTEN_PORT = 8441
+WEB_LISTEN_PORT = 8446
 app = web.Application()
 
 client = TelegramClient(session, api_id, api_hash).start()
