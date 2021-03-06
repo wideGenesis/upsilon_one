@@ -176,7 +176,7 @@ async def schedule_send(send_interval):
 def send_check_signal():
     with requests.Session() as session:
         url = f'http://{WEB_LISTEN_HOST}:{WEB_LISTEN_PORT}/{spammer_token}/'
-        data = {'action': "check_user", 'user_id': '', 'username': ''}
+        data = {'action': "check_user", 'user_id': '1', 'username': ''}
         headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}
         try:
             request_result = session.post(url, data=json.dumps(data), headers=headers)
