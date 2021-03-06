@@ -13,6 +13,7 @@ from spam_sender.sql_queries import *
 from hachoir.metadata import extractMetadata
 from hachoir.parser import createParser
 import schedule
+import threading
 
 
 my_sqlalchemy_engine = sqlalchemy.create_engine('mysql+pymysql://spammer:m4sQvpkrva7CnfcI@localhost/spammer')
@@ -178,7 +179,8 @@ def main():
     debug("__Try start web server__")
     loop = asyncio.get_event_loop()
     loop.run_until_complete(webserver_starter())
-    loop.run_until_complete(run_my_scheduler())
+    debug("__Try start scheduler__")
+    threading.Thread(target=run_my_scheduler).start()
     debug("__Try start telethon client__")
     client.run_until_disconnected()
 
