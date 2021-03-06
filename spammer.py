@@ -159,9 +159,9 @@ def schedule_send(send_interval):
         delta_t = int(now_dt) - int(append_dt)
         debug(f'User[{k}] username[{username}] now_dt[{now_dt}] v[{append_dt}] delta_t[{delta_t}]')
         if delta_t > send_interval:
-            await client.get_dialogs()
-            entity = await client.get_entity(username)
-            res = await send_to_message(entity)
+            client.get_dialogs()
+            entity = client.get_entity(username)
+            res = send_to_message(entity)
             if res:
                 set_wstatus(k, now_dt, engine=my_sqlalchemy_engine)
 
