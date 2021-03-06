@@ -161,6 +161,8 @@ async def schedule_send(send_interval):
     debug("Check users")
     # _______Выберем всех пользователей которым можно разослать сообщения
     new_users = select_users(engine=my_sqlalchemy_engine)
+    if len(new_users) == 0:
+        return True
     # _______Идем по юзерам и если он добавился в чат более 12 часов назад - шлем ему мессагу
     for k, v in new_users.items():
         dt = datetime.datetime.now()
