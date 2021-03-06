@@ -74,7 +74,7 @@ def chrome_opt(agent_rotation=agents(), headless=True):
 
 def chrome_init(webdriver_path=WEBDRIVER, agent_rotation=agents(), chrome_options=chrome_opt()):
 
-    driver_path = os.path.join(webdriver_path, 'chromedriver_89')
+    driver_path = os.path.join(webdriver_path, 'chromedriver_87')
     driver = webdriver.Chrome(driver_path, options=chrome_options)
     driver.execute_cdp_cmd('Network.setUserAgentOverride', {"userAgent": f'{agent_rotation}'})
     debug(driver.execute_script("return navigator.userAgent"))
