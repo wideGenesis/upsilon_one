@@ -160,6 +160,8 @@ def schedule_send(send_interval):
         delta_t = int(now_dt) - int(append_dt)
         debug(f'User[{k}] username[{username}] now_dt[{now_dt}] v[{append_dt}] delta_t[{delta_t}]')
         if delta_t > send_interval:
+            debug(f"delta_t > send_interval [{delta_t} > {send_interval}] -- "
+                  f"Try send messages for username[{username}]")
             client.get_dialogs()
             entity = client.get_entity(username)
             res = send_to_message(entity)
