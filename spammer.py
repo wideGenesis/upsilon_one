@@ -166,18 +166,21 @@ def schedule_send(send_interval):
                 set_wstatus(k, now_dt, engine=my_sqlalchemy_engine)
 
 
+def run_my_scheduler():
+    debug("&&&&&&&  Run scheduler &&&&&&&")
+    schedule.every(1).minutes.do(lambda: schedule_send(28))  # 28800
+    while True:
+        schedule.run_pending()
+        sleep(20)
+
+
 def main():
     debug("__Try start web server__")
     loop = asyncio.get_event_loop()
     loop.run_until_complete(webserver_starter())
+    loop.run_until_complete(run_my_scheduler())
     debug("__Try start telethon client__")
     client.run_until_disconnected()
-
-    debug("&&&&&&&  Run scheduler &&&&&&&")
-    schedule.every(1).minutes.do(lambda: schedule_send(28)) #28800
-    while True:
-        schedule.run_pending()
-        sleep(5)
 
 
 if __name__ == '__main__':
