@@ -12,7 +12,8 @@ from aiohttp import web
 import sqlalchemy
 from project_shared import *
 
-my_sqlalchemy_engine = sqlalchemy.create_engine('mysql+pymysql://gb_telethon1:7edz7a66567@mysql100.1gb.ru/gb_telethon1')
+# my_sqlalchemy_engine = sqlalchemy.create_engine('mysql+pymysql://gb_telethon1:7edz7a66567@mysql100.1gb.ru/gb_telethon1')
+my_sqlalchemy_engine = sqlalchemy.create_engine('mysql+pymysql://gkeeper:KtSAKZBWtplszNGC@localhost/gkeeper')
 container = AlchemySessionContainer(engine=my_sqlalchemy_engine)
 session = container.new_session('gkeeper_session')
 
