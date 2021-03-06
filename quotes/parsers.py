@@ -989,7 +989,7 @@ def get_economics(ag=None, img_out_path_=IMAGES_OUT_PATH):
     debug('Get economics complete')
 
 
-def get_economics_v2(driver=None, img_out_path_='/home/gene/PycharmProjects/webscraper/webdriver/'):
+def get_economics_v2(driver=None, img_out_path_=IMAGES_OUT_PATH):
     charts = {
         'Interest Rate': 'https://tradingeconomics.com/united-states/interest-rate',
         'Inflation Rate': 'https://tradingeconomics.com/united-states/inflation-cpi',
@@ -1015,6 +1015,11 @@ def get_economics_v2(driver=None, img_out_path_='/home/gene/PycharmProjects/webs
                 image_stream = io.BytesIO(image)
                 im = Image.open(image_stream)
                 im.save(im_path)
+                im = Image.open(im_path)
+                img_h = 338
+                img_w = 748
+                im = im.crop((0, 0, img_w - 26, img_h - 30))
+                im.save(im_path, quality=100, subsampling=0)
                 debug(f'{k} Chart has been saved')
 
     except Exception as e06a:
