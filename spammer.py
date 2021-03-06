@@ -68,7 +68,12 @@ async def handle(request):
                 return web.json_response(res_nack)
             return web.json_response(res_ack)
         if action == "check_user":
-            await schedule_send(28)
+            res = await schedule_send(28)
+            if res:
+                return web.json_response(res_ack)
+            else:
+                return web.json_response(res_nack)
+
 
 
 app.router.add_post("/{token}/", handle)
@@ -171,6 +176,9 @@ async def schedule_send(send_interval):
             res = await send_to_message(entity)
             if res:
                 set_wstatus(k, now_dt, engine=my_sqlalchemy_engine)
+                return True
+            else:
+                return False
 
 
 def send_check_signal():
@@ -178,6 +186,7 @@ def send_check_signal():
         url = f'http://{WEB_LISTEN_HOST}:{WEB_LISTEN_PORT}/{spammer_token}/'
         data = {'action': "check_user", 'user_id': '1', 'username': ''}
         headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}
+        request_result = None
         try:
             request_result = session.post(url, data=json.dumps(data), headers=headers)
         except Exception as e:
