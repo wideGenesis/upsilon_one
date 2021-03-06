@@ -12,6 +12,7 @@ from project_shared import *
 from spam_sender.sql_queries import *
 from hachoir.metadata import extractMetadata
 from hachoir.parser import createParser
+import schedule
 
 
 my_sqlalchemy_engine = sqlalchemy.create_engine('mysql+pymysql://spammer:m4sQvpkrva7CnfcI@localhost/spammer')
@@ -58,21 +59,6 @@ async def handle(request):
                         dt = datetime.datetime.now()
                         append_dt = dt.timestamp()
                         insert_new_user(new_user_id, new_username, append_dt, engine=my_sqlalchemy_engine)
-                    # _______Выберем всех пользователей которым можно разослать сообщения
-                    new_users = select_users(engine=my_sqlalchemy_engine)
-                    # _______Идем по юзерам и если он добавился в чат более 12 часов назад - шлем ему мессагу
-                    for k, v in new_users.items():
-                        dt = datetime.datetime.now()
-                        now_dt = dt.timestamp()
-                        username, append_dt = v
-                        delta_t = int(now_dt) - int(append_dt)
-                        debug(f'User[{k}] username[{username}] now_dt[{now_dt}] v[{append_dt}] delta_t[{delta_t}]')
-                        if delta_t > 28800:
-                            await client.get_dialogs()
-                            entity = await client.get_entity(username)
-                            res = await send_to_message(entity)
-                            if res:
-                                set_wstatus(k, now_dt, engine=my_sqlalchemy_engine)
                 else:
                     return web.json_response(res_nack)
             except Exception as e:
@@ -161,12 +147,37 @@ async def webserver_starter():
     debug("Web Server was started!")
 
 
+def schedule_send(send_interval):
+    debug("Check users")
+    # _______Выберем всех пользователей которым можно разослать сообщения
+    new_users = select_users(engine=my_sqlalchemy_engine)
+    # _______Идем по юзерам и если он добавился в чат более 12 часов назад - шлем ему мессагу
+    for k, v in new_users.items():
+        dt = datetime.datetime.now()
+        now_dt = dt.timestamp()
+        username, append_dt = v
+        delta_t = int(now_dt) - int(append_dt)
+        debug(f'User[{k}] username[{username}] now_dt[{now_dt}] v[{append_dt}] delta_t[{delta_t}]')
+        if delta_t > send_interval:
+            await client.get_dialogs()
+            entity = await client.get_entity(username)
+            res = await send_to_message(entity)
+            if res:
+                set_wstatus(k, now_dt, engine=my_sqlalchemy_engine)
+
+
 def main():
     debug("__Try start web server__")
     loop = asyncio.get_event_loop()
     loop.run_until_complete(webserver_starter())
     debug("__Try start telethon client__")
     client.run_until_disconnected()
+
+    debug("&&&&&&&  Run scheduler &&&&&&&")
+    schedule.every(1).minutes.do(lambda: schedule_send(28800))
+    while True:
+        schedule.run_pending()
+        sleep(5)
 
 
 if __name__ == '__main__':

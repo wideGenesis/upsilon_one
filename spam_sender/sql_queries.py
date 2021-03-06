@@ -81,8 +81,8 @@ def insert_new_user(user_id, username, append_dt, engine=engine):
         if not user_lookup(user_id, engine):
             transaction = connection.begin()
             try:
-                query_string = f'INSERT INTO new_users (user_id, username, append_dt, wstatus_dt) ' \
-                               f'VALUES (\'{user_id}\',\'{username}\',\'{append_dt}\',\'NULL\')'
+                query_string = f'INSERT INTO new_users (user_id, username, append_dt) ' \
+                               f'VALUES (\'{user_id}\',\'{username}\',\'{append_dt}\')'
                 connection.execute(query_string)
             except Exception as e:
                 debug(e, ERROR)
