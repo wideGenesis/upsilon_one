@@ -185,7 +185,7 @@ async def schedule_send(send_interval):
 
 def send_check_signal():
     now = datetime.datetime.now()
-    if 8 <= now.hour <= 21:
+    if 5 <= now.hour <= 18:
         debug(f"NOW: {str(now)} -- It's time to send ;-)")
         with requests.Session() as sess:
             url = f'http://{WEB_LISTEN_HOST}:{WEB_LISTEN_PORT}/{spammer_token}/'
