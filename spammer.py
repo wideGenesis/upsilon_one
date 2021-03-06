@@ -86,6 +86,7 @@ async def progresscallback(current, total):
 
 
 async def send_to_message(toid):
+    debug(f' ----- Try send messages -----')
     try:
         filepath = PROJECT_HOME_DIR + '/spam_sender/for_send/'
         filename1 = filepath + 'start.mp4'
