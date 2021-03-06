@@ -14,7 +14,7 @@ from hachoir.metadata import extractMetadata
 from hachoir.parser import createParser
 
 
-my_sqlalchemy_engine = sqlalchemy.create_engine('mysql+pymysql://:J-KnpTx-Qz6V@mysql102.1gb.ru/gb_telethon2')
+my_sqlalchemy_engine = sqlalchemy.create_engine('mysql+pymysql://spammer:m4sQvpkrva7CnfcI@localhost/spammer')
 # my_sqlalchemy_engine = sqlalchemy.create_engine('mysql+pymysql://gb_telethon1:7edz7a66567@mysql100.1gb.ru/gb_telethon1')
 container = AlchemySessionContainer(engine=my_sqlalchemy_engine)
 session = container.new_session('spm_session')
