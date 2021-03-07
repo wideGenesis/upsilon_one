@@ -391,6 +391,7 @@ async def send_to_message(clnt, toid, msg):
         #         id=53453159,
         #         question="Вы хотите что бы мы сделели более глубокий анализ по акциям?",
         #         answers=[PollAnswer('Yes', b'1'), PollAnswer('No', b'2')])))
+        # debug(f"Result:{results}")
         await clnt.send_message(toid, msg)
         return True
     except Exception as e:

@@ -100,6 +100,12 @@ async def callback(event):
                                      engine=engine)
 
 
+# @client.on(events.Raw)
+# async def handler(update):
+#     # Print all incoming updates
+#     debug(update.stringify())
+
+
 # ============================== Instructions ===============================
 @client.on(events.NewMessage(pattern='/about'))
 async def about(event):
