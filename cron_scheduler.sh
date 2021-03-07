@@ -8,29 +8,34 @@
 # Start every 30 min
 # */30 * * * * /home/upsilonsfather/projects/ups_one/cron_scheduler.sh "30"
 #
-# Start every 120 min  (в первую минуту, каждого 2го часа)
-# 1 */2 * * * /home/upsilonsfather/projects/ups_one/cron_scheduler.sh "120"
+# Start every 120 min  (в четвертую минуту, каждого 2го часа)
+# 4 */2 * * * /home/upsilonsfather/projects/ups_one/cron_scheduler.sh "120"
 #
-# Start every 480 min  (в пятую минуту, каждого 8го часа)
-# 5 */8 * * * /home/upsilonsfather/projects/ups_one/cron_scheduler.sh "480"
+# Start every 480 min  (в шестую минуту, каждого 8го часа)
+# 6 */8 * * * /home/upsilonsfather/projects/ups_one/cron_scheduler.sh "480"
 #
-# Start every 720 min  (в десятую минуту, каждого 12го часа)
-# 10 */12 * * * /home/upsilonsfather/projects/ups_one/cron_scheduler.sh "720"
+# Start every 720 min  (в восьмую минуту, каждого 12го часа)
+# 8 */12 * * * /home/upsilonsfather/projects/ups_one/cron_scheduler.sh "720"
 #
-# Start everyday  (каждый день в 3:00)
+# Start everyday  (каждый день в 2:10)
+# на инстансе +5часов по отношению к New York Time ориентируемся при запуске на NYT
+# что бы запустить что-то в 2:10 по NYT надо запускать в 7:10 по времени инстанса
+# 10 7 * * * /home/upsilonsfather/projects/ups_one/cron_scheduler.sh "EVERYDAY"
+#
+# Start monday  (каждый понедельник в 3:13)
 # на инстансе +5часов по отношению к New York Time ориентируемся при запуске на NYT
 # что бы запустить что-то в 3:00 по NYT надо запускать в 8:00 по времени инстанса
-# 0 8 * * * /home/upsilonsfather/projects/ups_one/cron_scheduler.sh "EVERYDAY"
+# 13 8 * * MON /home/upsilonsfather/projects/ups_one/cron_scheduler.sh "MONDAY"
 #
-# Start monday  (каждый понедельник в 3:10)
+# Start wednesday  (каждую среду в 3:10)
 # на инстансе +5часов по отношению к New York Time ориентируемся при запуске на NYT
 # что бы запустить что-то в 3:00 по NYT надо запускать в 8:00 по времени инстанса
-# 10 8 * * 0 /home/upsilonsfather/projects/ups_one/cron_scheduler.sh "MONDAY"
+# 15 18 * * WED /home/upsilonsfather/projects/ups_one/cron_scheduler.sh "WEDNESDAY"
 #
 # Start first date of month  (каждое первое число месяца в 4:00)
 # на инстансе +5часов по отношению к New York Time ориентируемся при запуске на NYT
 # что бы запустить что-то в 3:00 по NYT надо запускать в 8:00 по времени инстанса
-# 0 9 1 * * /home/upsilonsfather/projects/ups_one/cron_scheduler.sh "FIRST_DAY_OF_MONTH"
+# 20 4 1 * * /home/upsilonsfather/projects/ups_one/cron_scheduler.sh "FIRST_DAY_OF_MONTH"
 #
 #
 #
@@ -73,6 +78,10 @@ elif [ "$1" == 'MONDAY' ]
 then
   echo "#Every $1 [$(date +'%Y-%m-%d %H:%M:%S')]"  >> $LOGDIR/$LOG_FILE_NAME
   python3 $BASEDIR/cron_every_monday.py --fname=$LOG_FILE_NAME >> $LOGDIR/$LOG_FILE_NAME  2>&1 &
+elif [ "$1" == 'WEDNESDAY' ]
+then
+  echo "#Every $1 [$(date +'%Y-%m-%d %H:%M:%S')]"  >> $LOGDIR/$LOG_FILE_NAME
+  python3 $BASEDIR/cron_every_wednesday.py --fname=$LOG_FILE_NAME >> $LOGDIR/$LOG_FILE_NAME  2>&1 &
 elif [ "$1" == 'EVERYDAY' ]
 then
   echo "#Every $1 [$(date +'%Y-%m-%d %H:%M:%S')]"  >> $LOGDIR/$LOG_FILE_NAME
