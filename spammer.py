@@ -198,24 +198,24 @@ async def schedule_send(send_interval):
 
 
 def send_check_signal():
-    # pass
-    now = datetime.datetime.now()
-    if 5 <= now.hour <= 18:
-        debug(f"NOW: {str(now)} -- It's time to send ;-)")
-        with requests.Session() as sess:
-            url = f'http://{WEB_LISTEN_HOST}:{WEB_LISTEN_PORT}/{spammer_token}/'
-            data = {'action': "check_user", 'user_id': '1', 'username': ''}
-            headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}
-            request_result = None
-            try:
-                request_result = sess.post(url, data=json.dumps(data), headers=headers)
-            except Exception as e:
-                debug(e, ERROR)
-            if request_result.status_code == requests.codes.ok:
-                parsed_json = json.loads(request_result.text)
-                debug(parsed_json)
-    else:
-        debug(f"NOT NOW {str(now)} -- No time to send ;-(")
+    pass
+    # now = datetime.datetime.now()
+    # if 5 <= now.hour <= 18:
+    #     debug(f"NOW: {str(now)} -- It's time to send ;-)")
+    #     with requests.Session() as sess:
+    #         url = f'http://{WEB_LISTEN_HOST}:{WEB_LISTEN_PORT}/{spammer_token}/'
+    #         data = {'action': "check_user", 'user_id': '1', 'username': ''}
+    #         headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}
+    #         request_result = None
+    #         try:
+    #             request_result = sess.post(url, data=json.dumps(data), headers=headers)
+    #         except Exception as e:
+    #             debug(e, ERROR)
+    #         if request_result.status_code == requests.codes.ok:
+    #             parsed_json = json.loads(request_result.text)
+    #             debug(parsed_json)
+    # else:
+    #     debug(f"NOT NOW {str(now)} -- No time to send ;-(")
 
 
 def run_my_scheduler():
