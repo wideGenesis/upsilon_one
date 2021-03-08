@@ -251,10 +251,10 @@ keyboard_core_macro_back = [
 
 keyboard_us_market = [
     [
-        Button.inline('\U0001F503   ' + 'Статистика роста/падения', b'us1')
+        Button.inline('\U0001F9E9	' + 'Подробный анализ', b'us2')
     ],
     [
-        Button.inline('\U0001F5BC   ' + 'Общая картина', b'us2')
+        Button.inline('\U0001F503   ' + 'Статистика роста/падения', b'us1')
     ],
     [
         Button.inline('\U00002197   ' + 'Моментум в акциях', b'us6')
