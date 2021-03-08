@@ -81,7 +81,7 @@ async def handler(event):
         username = event.user.username
         if user_id is not None and username is not None:
             host = '127.0.0.1'
-            port = 8446
+            port = 8448
             debug(f"Joined user id: {user_id}")
             debug("Try send joined command")
             with requests.Session() as session:
