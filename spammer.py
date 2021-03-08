@@ -189,9 +189,9 @@ async def schedule_send(send_interval):
                 scount += 1
                 set_wstatus(k, now_dt, engine=my_sqlalchemy_engine)
                 debug(f">>>>>>>>>>>> s c o u n t = {scount} <<<<<<<<<<<<<<<<<<<<")
-                return True
             else:
                 return False
+    return True
 
 
 def send_check_signal():
