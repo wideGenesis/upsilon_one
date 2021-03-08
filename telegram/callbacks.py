@@ -154,7 +154,7 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
         await client.send_file(entity, img_path + 'sectors.png')
         await client.edit_message(message, 'Подробный анализ')
         await client.send_message(event.input_sender, 'Как интерпретировать графики выше? \n'
-                                                      '/instruction02\n /instruction05\n /instruction06',
+                                                      '/instruction02\n/instruction05\n/instruction06',
                                   buttons=buttons.keyboard_us_market_back)
     elif event.data == b'us6':
         await event.edit()

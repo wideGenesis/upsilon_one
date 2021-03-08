@@ -48,9 +48,9 @@ keyboard_a1 = [
     [
         Button.inline('\U0001F30D  ' + 'Мировые рынки в картах', b'a1a5')
     ],
-    [
-        Button.inline('\U0001F9ED   ' + 'Основные макро индикаторы', b'a1a6')
-    ],
+    # [
+    #     Button.inline('\U0001F9ED   ' + 'Основные макро индикаторы', b'a1a6')
+    # ],
     [
         Button.inline('\U0001F519  ' + 'Назад', b'main')
     ]
@@ -262,14 +262,14 @@ keyboard_us_market = [
     [
         Button.inline('\U0001F3A8   ' + 'Тепловые карты', b'us3')
     ],
-    # [
-    #     Button.inline('\U0001F4C8   ' + 'Кривая доходности и дивиденды', b'us4')
-    # ],
+    [
+        Button.inline('\U0001F4E3	' + 'Макро индикаторы и прогнозы', b'a1a6')
+    ],
     [
         Button.inline('\U0001F4C9   ' + 'Кривая волатильности', b'us5')
     ],
     [
-        Button.inline('\U0001F9ED   ' + 'Ключевые статистики компании', b'us7')
+        Button.inline('\U0001F9ED   ' + 'Ключевые статистики компаний', b'us7')
     ],
     [
         Button.inline('\U0001F519  ' + 'Назад', b'cm-2')
