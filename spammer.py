@@ -27,14 +27,18 @@ PYTHON_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pa
 # api_id = 3730224   # Nik Kin
 # api_hash = 'ee430fe3f8307871277d27059b09f3e7' # Nik Kin
 
-api_id = 2534378  # Elena Fomichova
-api_hash = 'a27d1afab5bd054770968466f8f87018'  # Elena Fomichova
+# api_id = 2534378  # Elena Fomichova
+# api_hash = 'a27d1afab5bd054770968466f8f87018'  # Elena Fomichova
+
+api_id = 3271859  # Ekaterina Derevyanko
+api_hash = '9fd1a805b4b419cd521c30fb51728b8d'  # Ekaterina Derevyanko
 
 command_token = '9e098ea3706511eb94d2d8c497581578'
 
 WEB_LISTEN_HOST = "0.0.0.0"
 # WEB_LISTEN_PORT = 8446  # Nik Kin
-WEB_LISTEN_PORT = 8447  # Elena Fomichova
+# WEB_LISTEN_PORT = 8447  # Elena Fomichova
+WEB_LISTEN_PORT = 8448  # Ekaterina Derevyanko
 app = web.Application()
 
 client = TelegramClient(session, api_id, api_hash).start()
@@ -178,7 +182,6 @@ async def schedule_send(send_interval):
         delta_t = int(now_dt) - int(append_dt)
         debug(f'User[{k}] username[{username}] now_dt[{now_dt}] v[{append_dt}] delta_t[{delta_t}]')
         if delta_t > send_interval:
-            sleep(120)
             debug(f"delta_t > send_interval [{delta_t} > {send_interval}] -- "
                   f"Try send messages for username[{username}]")
             await client.get_dialogs()
@@ -189,9 +192,9 @@ async def schedule_send(send_interval):
                 scount += 1
                 set_wstatus(k, now_dt, engine=my_sqlalchemy_engine)
                 debug(f">>>>>>>>>>>> s c o u n t = {scount} <<<<<<<<<<<<<<<<<<<<")
+                return True
             else:
                 return False
-    return True
 
 
 def send_check_signal():
@@ -217,7 +220,7 @@ def send_check_signal():
 
 def run_my_scheduler():
     debug("&&&&&&&  Run scheduler &&&&&&&")
-    schedule.every(1).minutes.do(lambda: send_check_signal())  # 28800
+    schedule.every(3).minutes.do(lambda: send_check_signal())  # 28800
     while True:
         schedule.run_pending()
         sleep(20)
