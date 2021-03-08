@@ -15,6 +15,7 @@ from payments.payagregator import PaymentAgregator
 from project_shared import *
 from telegram import instructions as ins
 from quotes.stock_quotes_news import fin_news
+from quotes.parsers import nyse_nasdaq_stat
 
 PAYMENT_AGGREGATOR = None
 PAYMENT_AGGREGATOR_TIMER = None
@@ -133,14 +134,16 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
     # ============================== Анализ рынков уровень 3 =============================
     elif event.data == b'us1':
         await event.edit()
+        msg = nyse_nasdaq_stat()
         message = await client.send_message(entity=entity, message='Загрузка...')
-        filename1 = os.path.join(img_path, 'adv.csv')
-        await client.send_message(entity=entity, message='NYSE, NASDAQ')
-        with open(filename1, newline='') as f1:
-            data1 = csv.reader(f1, delimiter=',')
-            for row1 in data1:
-                r1 = str(row1).strip("['']").replace("'", "")
-                await client.send_message(entity=entity, message=f'{r1}')
+        await client.send_message(entity=entity, message=msg)
+        # filename1 = os.path.join(img_path, 'adv.csv')
+        # await client.send_message(entity=entity, message='NYSE, NASDAQ')
+        # with open(filename1, newline='') as f1:
+        #     data1 = csv.reader(f1, delimiter=',')
+        #     for row1 in data1:
+        #         r1 = str(row1).strip("['']").replace("'", "")
+        #         await client.send_message(entity=entity, message=f'{r1}')
         await client.edit_message(message, 'Количество растущих/падающих акций и объёмы за сегодня')
         await client.send_message(event.input_sender, 'Как интепритировать статистику торгов? \n'
                                                       '/instruction01',
@@ -149,7 +152,7 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
         await event.edit()
         message = await client.send_message(entity=entity, message='Загрузка...')
         await client.send_file(entity, img_path + 'sectors.png')
-        await client.edit_message(message, 'Общая картина рынка')
+        await client.edit_message(message, 'Подробный анализ')
         await client.send_message(event.input_sender, 'Как интерпретировать графики выше? \n'
                                                       '/instruction02',
                                   buttons=buttons.keyboard_us_market_back)

@@ -147,6 +147,30 @@ def advance_decline(ag=None, img_out_path_=IMAGES_OUT_PATH):
     debug('adv complete')
 
 
+def nyse_nasdaq_stat(img_out_path_=IMAGES_OUT_PATH):
+    file = pd.read_csv(os.path.join(img_out_path_, 'adv.csv'), header=None)
+
+    advNY = round(int(file[1].iloc[0]) * 100 / int(file[1].iloc[3]), 2)
+    advTV = file[1].iloc[8]
+    advAV = file[1].iloc[5]
+    advDV = file[1].iloc[6]
+
+    advNA = round(int(file[2].iloc[0]) * 100 / int(file[2].iloc[3]), 2)
+    advTVq = file[2].iloc[8]
+    advAVq = file[2].iloc[5]
+    advDVq = file[2].iloc[6]
+    msg = f'NYSE Advancing Issues - {advNY}% \n' \
+          f'NYSE Total Volume - {advTV} \n' \
+          f'NYSE Advancing Volume - {advAV} \n' \
+          f'NYSE Declining Volume - {advDV} \n' \
+          f'______________________________\n' \
+          f'NASDAQ Advancing Issues - {advNA}% \n' \
+          f'NASDAQ Total Volume - {advTVq} \n' \
+          f'NASDAQ Advancing Volume - {advAVq} \n' \
+          f'NASDAQ Declining Volume - {advDVq} \n'
+
+    return msg
+
 # ============================== GET RANKING DATA ================================
 def get_ranking_data(tick, ag=agents()):
     ticker = tick.upper()
