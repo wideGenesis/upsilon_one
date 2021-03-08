@@ -24,8 +24,12 @@ session = container.new_session('spm_session')
 PYTHON_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir))
 
 # Use your own values from my.telegram.org
-api_id = 3730224
-api_hash = 'ee430fe3f8307871277d27059b09f3e7'
+# api_id = 3730224   # Nik Kin
+# api_hash = 'ee430fe3f8307871277d27059b09f3e7' # Nik Kin
+
+api_id = 2534378  # Elena Fomichova
+api_hash = 'a27d1afab5bd054770968466f8f87018'  # Elena Fomichova
+
 command_token = '9e098ea3706511eb94d2d8c497581578'
 
 WEB_LISTEN_HOST = "0.0.0.0"
