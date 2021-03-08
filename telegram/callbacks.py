@@ -154,7 +154,7 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
         await client.send_file(entity, img_path + 'sectors.png')
         await client.edit_message(message, 'Подробный анализ')
         await client.send_message(event.input_sender, 'Как интерпретировать графики выше? \n'
-                                                      '/instruction02',
+                                                      '/instruction02\n /instruction05\n /instruction06',
                                   buttons=buttons.keyboard_us_market_back)
     elif event.data == b'us6':
         await event.edit()
@@ -181,30 +181,30 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
         await client.send_message(event.input_sender, 'Как интерпретировать тепловые карты? \n'
                                                       '/instruction04',
                                   buttons=buttons.keyboard_us_market_back)
-    elif event.data == b'us4':
-        await event.edit()
-        message = await client.send_message(entity=entity, message='Загрузка...')
-        filename4 = os.path.join(img_path, 'treasury_curve.csv')
-        with open(filename4, newline='') as f4:
-            data4 = csv.reader(f4, delimiter=',')
-            for row4 in data4:
-                row4 = str(row4).replace("'", "").strip("[]")
-                await client.send_message(entity=entity, message=f'{row4}')
-
-        msg01 = 'SP500 DIV YIELD'
-        await client.send_message(entity=entity, message=msg01)
-        filename5 = os.path.join(img_path, 'spx_yield.csv')
-        temp = []
-        with open(filename5, newline='') as f5:
-            data5 = csv.reader(f5, delimiter=' ')
-            for row5 in data5:
-                temp.append(row5)
-        msg0 = str(temp[-1]).strip("[]")
-        msg0 = msg0.split(',')
-        await client.send_message(entity=entity, message=f'{msg0[0]} {msg0[-1]}')
-        await client.edit_message(message, 'Кривая доходности и дивиденды')
-        await client.send_message(event.input_sender, 'Как интерпретировать кривую доходности? /instruction05',
-                                  buttons=buttons.keyboard_us_market_back)
+    # elif event.data == b'us4':
+    #     await event.edit()
+    #     message = await client.send_message(entity=entity, message='Загрузка...')
+    #     filename4 = os.path.join(img_path, 'treasury_curve.csv')
+    #     with open(filename4, newline='') as f4:
+    #         data4 = csv.reader(f4, delimiter=',')
+    #         for row4 in data4:
+    #             row4 = str(row4).replace("'", "").strip("[]")
+    #             await client.send_message(entity=entity, message=f'{row4}')
+    #
+    #     msg01 = 'SP500 DIV YIELD'
+    #     await client.send_message(entity=entity, message=msg01)
+    #     filename5 = os.path.join(img_path, 'spx_yield.csv')
+    #     temp = []
+    #     with open(filename5, newline='') as f5:
+    #         data5 = csv.reader(f5, delimiter=' ')
+    #         for row5 in data5:
+    #             temp.append(row5)
+    #     msg0 = str(temp[-1]).strip("[]")
+    #     msg0 = msg0.split(',')
+    #     await client.send_message(entity=entity, message=f'{msg0[0]} {msg0[-1]}')
+    #     await client.edit_message(message, 'Кривая доходности и дивиденды')
+    #     await client.send_message(event.input_sender, 'Как интерпретировать кривую доходности? /instruction05',
+    #                               buttons=buttons.keyboard_us_market_back)
     elif event.data == b'us5':
         await event.edit()
         message = await client.send_message(entity=entity, message='Загрузка...')

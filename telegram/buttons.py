@@ -262,9 +262,9 @@ keyboard_us_market = [
     [
         Button.inline('\U0001F3A8   ' + 'Тепловые карты', b'us3')
     ],
-    [
-        Button.inline('\U0001F4C8   ' + 'Кривая доходности и дивиденды', b'us4')
-    ],
+    # [
+    #     Button.inline('\U0001F4C8   ' + 'Кривая доходности и дивиденды', b'us4')
+    # ],
     [
         Button.inline('\U0001F4C9   ' + 'Кривая волатильности', b'us5')
     ],
