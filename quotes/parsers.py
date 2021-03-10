@@ -969,48 +969,48 @@ def get_coins360_treemaps(driver=None, img_out_path_=IMAGES_OUT_PATH):
     debug('Get coin360 Treemap complete' + '\n')
 
 
-def get_economics(ag=None, img_out_path_=IMAGES_OUT_PATH):
-    headers = {'User-Agent': ag}
-    url_ = {
-        'Interest Rate': 'https://tradingeconomics.com/country-list/interest-rate?continent=g20',
-        'Inflation Rate': 'https://tradingeconomics.com/country-list/inflation-rate?continent=g20',
-        'Unemployment Rate': 'https://tradingeconomics.com/country-list/unemployment-rate?continent=g20',
-        'Composite PMI': 'https://tradingeconomics.com/country-list/composite-pmi?continent=g20'
-    }
-    items_ = []
-    try:
-        for k, v in url_.items():
-            html = requests.get(v, headers=headers).text
-            soup = BeautifulSoup(html, "html.parser")
-            items_table = soup.find('table', {"class": "table table-hover"})
-            for row in items_table.find_all('tr'):
-                cols = row.find_all('td')
-                if len(cols) != 0:
-                    p = tuple([k])
-                    entries_list = []
-                    for i in range(0, len(cols)):
-                        entries_list.append(cols[i].text.strip())
-                        entries_tuple = tuple(entries_list)
-                        info = ()
-                        info = p + entries_tuple
-                    items_.append(info)
-        array = np.asarray(items_)
-        df = pd.DataFrame(array)
-        df.columns = ['Data', 'Country', 'Last', 'Previous', 'Reference', 'Unit']
-    except Exception as e05:
-        debug(e05)
-        return
-    df = df.drop(df[(df.Country != 'Russia')
-                    & (df.Country != 'China')
-                    & (df.Country != 'United States')
-                    & (df.Country != 'United Kingdom')
-                    & (df.Country != 'Euro Area')
-                    & (df.Country != 'France')
-                    & (df.Country != 'Germany')
-                    & (df.Country != 'Japan')].index)
-    filename = os.path.join(img_out_path_, 'economic_data.csv')
-    df.to_csv(filename, index=False)
-    debug('Get economics complete')
+# def get_economics(ag=None, img_out_path_=IMAGES_OUT_PATH):
+#     headers = {'User-Agent': ag}
+#     url_ = {
+#         'Interest Rate': 'https://tradingeconomics.com/country-list/interest-rate?continent=g20',
+#         'Inflation Rate': 'https://tradingeconomics.com/country-list/inflation-rate?continent=g20',
+#         'Unemployment Rate': 'https://tradingeconomics.com/country-list/unemployment-rate?continent=g20',
+#         'Composite PMI': 'https://tradingeconomics.com/country-list/composite-pmi?continent=g20'
+#     }
+#     items_ = []
+#     try:
+#         for k, v in url_.items():
+#             html = requests.get(v, headers=headers).text
+#             soup = BeautifulSoup(html, "html.parser")
+#             items_table = soup.find('table', {"class": "table table-hover"})
+#             for row in items_table.find_all('tr'):
+#                 cols = row.find_all('td')
+#                 if len(cols) != 0:
+#                     p = tuple([k])
+#                     entries_list = []
+#                     for i in range(0, len(cols)):
+#                         entries_list.append(cols[i].text.strip())
+#                         entries_tuple = tuple(entries_list)
+#                         info = ()
+#                         info = p + entries_tuple
+#                     items_.append(info)
+#         array = np.asarray(items_)
+#         df = pd.DataFrame(array)
+#         df.columns = ['Data', 'Country', 'Last', 'Previous', 'Reference', 'Unit']
+#     except Exception as e05:
+#         debug(e05)
+#         return
+#     df = df.drop(df[(df.Country != 'Russia')
+#                     & (df.Country != 'China')
+#                     & (df.Country != 'United States')
+#                     & (df.Country != 'United Kingdom')
+#                     & (df.Country != 'Euro Area')
+#                     & (df.Country != 'France')
+#                     & (df.Country != 'Germany')
+#                     & (df.Country != 'Japan')].index)
+#     filename = os.path.join(img_out_path_, 'economic_data.csv')
+#     df.to_csv(filename, index=False)
+#     debug('Get economics complete')
 
 
 def get_economics_v2(driver=None, img_out_path_=IMAGES_OUT_PATH):
@@ -1058,13 +1058,14 @@ def get_tw_charts(driver=None, img_out_path_=IMAGES_OUT_PATH):
         'sectors': 'https://www.tradingview.com/chart/8ql9Y9yV/',
         'crypto': 'https://www.tradingview.com/chart/HHWJel9w/',
         'rtsi': 'https://www.tradingview.com/chart/PV8hXeeD/',
+        'world': 'https://www.tradingview.com/chart/Z9Sidx11/',
     }
     try:
         with driver:
             for k, v in treemaps.items():
                 im_path = os.path.join(img_out_path_, k + '.png')
                 driver.get(v)
-                sleep(22)
+                sleep(20)
                 elem = driver.find_element_by_class_name("chart-container-border")
                 webdriver.ActionChains(driver).move_to_element(elem).perform()
                 driver.execute_script("return arguments[0].scrollIntoView();", elem)
@@ -1147,6 +1148,32 @@ def get_sma50(ag=None, img_out_path_=IMAGES_OUT_PATH):
         # write.writeheader()
         write.writerow(items_)
     debug('sma50 complete')
+
+
+def get_moex(driver=None, img_out_path_=IMAGES_OUT_PATH):
+    try:
+        with driver:
+            driver.get('https://smart-lab.ru/q/map/')
+            sleep(10)
+            im_path = os.path.join(img_out_path_, 'moex_map.png')
+            WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.ID, "chart_div_shares")))
+            chart = driver.find_element_by_id("chart_div_shares")
+            sleep(6)
+            image = chart.screenshot_as_png
+            image_stream = io.BytesIO(image)
+            im = Image.open(image_stream)
+            im.save(im_path)
+            # im = Image.open(im_path)
+            # img_h = 338
+            # img_w = 748
+            # im = im.crop((0, 0, img_w - 2, img_h - 4))
+            # im.save(im_path, quality=100, subsampling=0)
+            debug(f'Chart has been saved')
+
+    except Exception as e06a:
+        debug(e06a)
+        return
+    debug('Get moexmap complete' + '\n')
 
 
 # # ============================== Treasury Curve and Div Yield GET ================================

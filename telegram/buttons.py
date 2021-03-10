@@ -28,7 +28,7 @@ keyboard_0 = [
     #     Button.inline('\U0001F92F   ' + 'Налоги', b'a7')
     # ],
     [
-        Button.inline('\U0001F5C3   ' + 'Новости и блоги', b'a8')
+        Button.inline('\U0001F5C3   ' + 'Лента новостей', b'a8')
     ]
 ]
 
@@ -46,7 +46,7 @@ keyboard_a1 = [
         Button.inline('\U0001F504  ' + 'ETF сантимент', b'a1a4')
     ],
     [
-        Button.inline('\U0001F30D  ' + 'Мировые рынки в картах', b'a1a5')
+        Button.inline('\U0001F30D  ' + 'Мировые рынки', b'a1a5')
     ],
     # [
     #     Button.inline('\U0001F9ED   ' + 'Основные макро индикаторы', b'a1a6')
@@ -206,10 +206,10 @@ keyboard_a7_back = [
 
 keyboard_a8 = [
     [
-        Button.inline('\U0001F5DE  ' + 'Последние новости', b'a9a1')
+        Button.inline('\U0001F5DE  ' + 'Новости о рынках', b'a9a1')
     ],
     [
-        Button.inline('\U0001F4B1   ' + 'Последние статьи в блогах ', b'a9a2')
+        Button.inline('\U0001F4B1   ' + 'Аналитические статьи', b'a9a2')
     ],
     [
         Button.inline('\U0001F50D	' + 'Последние новости компании', b'a9a3')
@@ -251,7 +251,7 @@ keyboard_core_macro_back = [
 
 keyboard_us_market = [
     [
-        Button.inline('\U0001F9E9	' + 'Подробный анализ', b'us2')
+        Button.inline('\U0001F9E9	' + 'Подробный анализ рынка', b'us2')
     ],
     [
         Button.inline('\U0001F503   ' + 'Статистика роста/падения', b'us1')
@@ -269,7 +269,7 @@ keyboard_us_market = [
         Button.inline('\U0001F4C9   ' + 'Кривая волатильности', b'us5')
     ],
     [
-        Button.inline('\U0001F9ED   ' + 'Ключевые статистики компаний', b'us7')
+        Button.inline('\U0001F9ED   ' + 'Анализ акций компаний', b'us7')
     ],
     [
         Button.inline('\U0001F519  ' + 'Назад', b'cm-2')
