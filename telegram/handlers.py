@@ -446,8 +446,8 @@ async def send_broadcast_poll(clnt):
     fdt = datetime.datetime.now()
     sm_log_file.write(f'[{fdt.strftime("%H:%M:%S")}]:***************** Start send new poll *****************\n')
     fm_log_file.write(f'[{fdt.strftime("%H:%M:%S")}]:***************** Start send new poll *****************\n')
-    msgdict = {"Question": _question, _answersdict}
-    msg_id = save_message(msgdict, '', fdt, POLL_MESSAGE_TYPE)
+    # msgdict = {"Question": _question, _answersdict}
+    # msg_id = save_message(msgdict, '', fdt, POLL_MESSAGE_TYPE)
     sent_users_dict = {}
     fail_users_dict = {}
     for user_id in users:
@@ -461,7 +461,7 @@ async def send_broadcast_poll(clnt):
             dt = datetime.datetime.now()
             fm_log_file.write(f'[{dt.strftime("%H:%M:%S")}]:{user_id}\n')
             fail_users_dict[user_id] = dt
-    update_mailing_lists(msg_id, sent_users_dict, fail_users_dict, {})
+    # update_mailing_lists(msg_id, sent_users_dict, fail_users_dict, {})
     sm_log_file.close()
     fm_log_file.close()
     return True
