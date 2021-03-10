@@ -46,7 +46,7 @@ keyboard_a1 = [
         Button.inline('\U0001F504  ' + 'ETF сантимент', b'a1a4')
     ],
     [
-        Button.inline('\U0001F30D  ' + 'Мировые рынки в картах', b'a1a5')
+        Button.inline('\U0001F30D  ' + 'Мировые рынки', b'a1a5')
     ],
     # [
     #     Button.inline('\U0001F9ED   ' + 'Основные макро индикаторы', b'a1a6')
