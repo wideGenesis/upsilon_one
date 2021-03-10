@@ -17,7 +17,9 @@ from quotes.stock_quotes_news import StockStat
 
 # ============================== Main  =============================
 def main():
-    get_tw_charts(driver=chrome_init())
+    img_out_path = PROJECT_HOME_DIR + '/' + IMAGES_OUT_PATH
+    get_tw_charts(driver=chrome_init(), img_out_path_=img_out_path)
+    get_moex(driver=chrome_init(), img_out_path_=img_out_path)
     exit()
     # x = get_ranking_data2("GILD")
     # y = x[1]
