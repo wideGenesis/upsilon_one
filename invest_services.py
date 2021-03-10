@@ -17,7 +17,7 @@ from quotes.stock_quotes_news import StockStat
 
 # ============================== Main  =============================
 def main():
-    get_economics_v2(driver=chrome_init())
+    get_moex(driver=chrome_init())
     exit()
     # x = get_ranking_data2("GILD")
     # y = x[1]

@@ -1150,6 +1150,32 @@ def get_sma50(ag=None, img_out_path_=IMAGES_OUT_PATH):
     debug('sma50 complete')
 
 
+def get_moex(driver=None, img_out_path_=IMAGES_OUT_PATH):
+    try:
+        with driver:
+            driver.get('https://smart-lab.ru/q/map/')
+            sleep(10)
+            im_path = os.path.join(img_out_path_, 'moex_map.png')
+            WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.ID, "chart_div_shares")))
+            chart = driver.find_element_by_id("chart_div_shares")
+            sleep(6)
+            image = chart.screenshot_as_png
+            image_stream = io.BytesIO(image)
+            im = Image.open(image_stream)
+            im.save(im_path)
+            # im = Image.open(im_path)
+            # img_h = 338
+            # img_w = 748
+            # im = im.crop((0, 0, img_w - 2, img_h - 4))
+            # im.save(im_path, quality=100, subsampling=0)
+            debug(f'Chart has been saved')
+
+    except Exception as e06a:
+        debug(e06a)
+        return
+    debug('Get moexmap complete' + '\n')
+
+
 # # ============================== Treasury Curve and Div Yield GET ================================
 
 
