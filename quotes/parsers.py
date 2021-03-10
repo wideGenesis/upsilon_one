@@ -1058,6 +1058,7 @@ def get_tw_charts(driver=None, img_out_path_=IMAGES_OUT_PATH):
         'sectors': 'https://www.tradingview.com/chart/8ql9Y9yV/',
         'crypto': 'https://www.tradingview.com/chart/HHWJel9w/',
         'rtsi': 'https://www.tradingview.com/chart/PV8hXeeD/',
+        'world': 'https://www.tradingview.com/chart/Z9Sidx11/',
     }
     try:
         with driver:
