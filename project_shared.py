@@ -124,6 +124,10 @@ alchemy_session = container.new_session('default')
 
 # ============================== Bot messages settings ======================
 EXCLUDE_USERS = conf['EXCLUDE_USERS']
+MSG_TABLE_NAME = conf['SQL_TABLE_NAMES']['MSG_TABLE_NAME']
+MAILING_DATA_TABLE_NAME = conf['SQL_TABLE_NAMES']['MAILING_DATA_TABLE_NAME']
+SIMPLE_MESSAGE_TYPE = conf['MESSAGES_TYPE']['SIMPLE_MESSAGE']
+POLL_MESSAGE_TYPE = conf['MESSAGES_TYPE']['POLL_MESSAGE']
 
 # ============================== BOT SETTINGS ======================
 PAYMENT_TOKEN = conf['TELEGRAM']['PAYMENT_TOKEN']

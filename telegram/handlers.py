@@ -18,6 +18,7 @@ from telegram.sql_queries import get_all_users
 from telethon.tl.types import InputMediaPoll, Poll, PollAnswer, DocumentAttributeFilename, DocumentAttributeVideo
 from telethon import functions, types
 from mimetypes import guess_type
+from messages.message import *
 
 
 class WebHandler:
@@ -386,12 +387,6 @@ async def send_sac_pie(clnt, toid):
 
 async def send_to_message(clnt, toid, msg):
     try:
-        # results = await clnt.send_message(toid, file=InputMediaPoll(
-        #     poll=Poll(
-        #         id=53453159,
-        #         question="Вы хотите что бы мы сделели более глубокий анализ по акциям?",
-        #         answers=[PollAnswer('Yes', b'1'), PollAnswer('No', b'2')])))
-        # debug(f"Result:{results}")
         await clnt.send_message(toid, msg)
         return True
     except Exception as e:
@@ -408,17 +403,73 @@ async def send_broadcast_message(clnt, engine, msg):
     bufsize = 1
     sm_log_file = open(sfname, "a", buffering=bufsize)
     fm_log_file = open(ffname, "a", buffering=bufsize)
-    dt = datetime.datetime.now()
-    sm_log_file.write(f'[{dt.strftime("%H:%M:%S")}]:***************** Start send new message *****************\n')
-    fm_log_file.write(f'[{dt.strftime("%H:%M:%S")}]:***************** Start send new message *****************\n')
+    fdt = datetime.datetime.now()
+    sm_log_file.write(f'[{fdt.strftime("%H:%M:%S")}]:***************** Start send new message *****************\n')
+    fm_log_file.write(f'[{fdt.strftime("%H:%M:%S")}]:***************** Start send new message *****************\n')
+    msg_id = save_message(msg, '', fdt, SIMPLE_MESSAGE_TYPE)
+    sent_users_dict = {}
+    fail_users_dict = {}
     for user_id in users:
         try:
             await clnt.send_message(user_id, msg)
             dt = datetime.datetime.now()
             sm_log_file.write(f'[{dt.strftime("%H:%M:%S")}]:{user_id}\n')
+            sent_users_dict[user_id] = dt
         except Exception as e:
             debug(e, ERROR)
+            dt = datetime.datetime.now()
             fm_log_file.write(f'[{dt.strftime("%H:%M:%S")}]:{user_id}\n')
+            fail_users_dict[user_id] = dt
+    update_mailing_lists(msg_id, sent_users_dict, fail_users_dict, {})
     sm_log_file.close()
     fm_log_file.close()
     return True
+
+
+async def send_broadcast_poll(clnt):
+    _question = "Вы хотите что бы мы сделели более глубокий анализ по акциям?"
+    _poll_id = get_next_id()
+    _answers = [PollAnswer('Yes', b'1'), PollAnswer('No', b'2')]
+    _answersdict = {"Yes": 1, "No": 2}
+    poll = Poll(id=_poll_id,
+                question=_question,
+                answers=_answers)
+    input_nedia_poll = InputMediaPoll(poll)
+    users = await get_all_users(engine)
+    succsess_message_log = "messages_send.log"
+    fail_message_log = "messages_fail.log"
+    sfname = f'{LOGS_PATH}{succsess_message_log}'
+    ffname = f'{LOGS_PATH}{fail_message_log}'
+    bufsize = 1
+    sm_log_file = open(sfname, "a", buffering=bufsize)
+    fm_log_file = open(ffname, "a", buffering=bufsize)
+    fdt = datetime.datetime.now()
+    sm_log_file.write(f'[{fdt.strftime("%H:%M:%S")}]:***************** Start send new poll *****************\n')
+    fm_log_file.write(f'[{fdt.strftime("%H:%M:%S")}]:***************** Start send new poll *****************\n')
+    msgdict = {"Question": _question, _answersdict}
+    msg_id = save_message(msgdict, '', fdt, POLL_MESSAGE_TYPE)
+    sent_users_dict = {}
+    fail_users_dict = {}
+    for user_id in users:
+        try:
+            await clnt.send_message(user_id, file=input_nedia_poll)
+            dt = datetime.datetime.now()
+            sm_log_file.write(f'[{dt.strftime("%H:%M:%S")}]:{user_id}\n')
+            sent_users_dict[user_id] = dt
+        except Exception as e:
+            debug(e, ERROR)
+            dt = datetime.datetime.now()
+            fm_log_file.write(f'[{dt.strftime("%H:%M:%S")}]:{user_id}\n')
+            fail_users_dict[user_id] = dt
+    update_mailing_lists(msg_id, sent_users_dict, fail_users_dict, {})
+    sm_log_file.close()
+    fm_log_file.close()
+    return True
+
+
+    # results = await clnt.send_message(toid, file=InputMediaPoll(
+    #     poll=Poll(
+    #         id=53453159,
+    #         question="Вы хотите что бы мы сделели более глубокий анализ по акциям?",
+    #         answers=[PollAnswer('Yes', b'1'), PollAnswer('No', b'2')])))
+    # debug(f"Result:{results}")
