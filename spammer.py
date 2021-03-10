@@ -224,10 +224,10 @@ def send_check_signal():
 
 def run_my_scheduler():
     debug("&&&&&&&  Run scheduler &&&&&&&")
-    schedule.every(3).minutes.do(lambda: send_check_signal())  # 28800
-    while True:
-        schedule.run_pending()
-        sleep(20)
+    # schedule.every(3).minutes.do(lambda: send_check_signal())  # 28800
+    # while True:
+    #     schedule.run_pending()
+    #     sleep(20)
 
 
 def main():
