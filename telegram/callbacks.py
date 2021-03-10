@@ -80,6 +80,8 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
         message = await client.send_message(entity=entity, message='Загрузка...')
         await client.send_message(event.input_sender, 'Общая картина')
         await client.send_file(entity, img_path + 'rtsi.png')
+        await client.send_message(event.input_sender, 'Тепловая карта 1-day performance')
+        await client.send_file(entity, img_path + 'moex_map.png')
         await client.edit_message(message, 'Рынок РФ')
         await client.send_message(event.input_sender, 'Как интерпретировать графики выше? \n'
                                                       '/instruction08',
@@ -115,12 +117,11 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
     elif event.data == b'a1a5':
         await event.edit()
         message = await client.send_message(entity=entity, message='Загрузка...')
-        await client.send_message(event.input_sender, 'Общая картина 1-day performance')
+        await client.send_message(event.input_sender, 'Общая картина')
+        await client.send_file(entity, img_path + 'world.png')
+        await client.send_message(event.input_sender, 'Тепловая карта 1-day performance')
         await client.send_file(entity, img_path + 'global_treemap_1d.png')
-        time.sleep(1)
-        await client.send_message(event.input_sender, 'Общая картина YTD performance')
-        await client.send_file(entity, img_path + 'global_treemap_ytd.png')
-        await client.edit_message(message, 'Мировые рынки в картах')
+        await client.edit_message(message, 'Мировые рынки')
         await client.send_message(event.input_sender, 'Как интерпретировать тепловые карты? \n'
                                                       '/instruction04',
                                   buttons=buttons.keyboard_a1_back)
