@@ -426,22 +426,7 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
                                                       '/instruction26',
                                   buttons=buttons.keyboard_managed_strategies)
     # ============================== Инструкции =============================
-    # elif event.data == b'a5a1':
-    #     await event.edit()
-    #     message = await client.send_message(entity=entity, message='Загрузка...')
-    #     await client.edit_message(message, 'Как ... /instruction01')
-    #     await client.send_message(event.input_sender, 'Как ... /instruction01',
-    #                               buttons=buttons.keyboard_a5_back)
-    # elif event.data == b'a5a2':
-    #     await event.edit()
-    #     message = await client.send_message(entity=entity, message='Загрузка...')
-    #     await client.edit_message(message, 'Что ... /instruction02')
-    #     await client.send_message(event.input_sender, 'Что ... /instruction02',
-    #                               buttons=buttons.keyboard_a5_back)
-    # elif event.data == b'a5a-1':
-    #     await event.edit()
-    #     await client.send_message(event.input_sender, 'Инструкции')
-    #     await client.send_message(event.input_sender, 'Текст', buttons=buttons.keyboard_a5_back)
+
 
     # ============================== Образовательные программы =============================
     elif event.data == b'a6a1':
@@ -466,7 +451,6 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
         await event.edit()
         await client.send_message(event.input_sender, 'Образование', buttons=buttons.keyboard_a6)
 
-
     # ============================== Агрегатор новостей =============================
     elif event.data == b'a9a1':
         msg1 = fin_news(blogs=False)
@@ -486,7 +470,6 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
     elif event.data == b'a8a-1':
         await event.edit()
         await client.send_message(event.input_sender, 'Агрегатор новостей', buttons=buttons.keyboard_a8)
-
 
     # ============================== Основные макро данные =============================
     elif event.data == b'cm1':
