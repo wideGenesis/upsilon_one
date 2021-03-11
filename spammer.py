@@ -30,15 +30,19 @@ PYTHON_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pa
 # api_id = 2534378  # Elena Fomichova
 # api_hash = 'a27d1afab5bd054770968466f8f87018'  # Elena Fomichova
 
-api_id = 3271859  # Ekaterina Derevyanko
-api_hash = '9fd1a805b4b419cd521c30fb51728b8d'  # Ekaterina Derevyanko
+# api_id = 3271859  # Ekaterina Derevyanko
+# api_hash = '9fd1a805b4b419cd521c30fb51728b8d'  # Ekaterina Derevyanko
+
+api_id = 3271859  # Vasilij Ovsyannikov
+api_hash = '9fd1a805b4b419cd521c30fb51728b8d'  # Vasilij Ovsyannikov
 
 command_token = '9e098ea3706511eb94d2d8c497581578'
 
 WEB_LISTEN_HOST = "0.0.0.0"
 # WEB_LISTEN_PORT = 8446  # Nik Kin
 # WEB_LISTEN_PORT = 8447  # Elena Fomichova
-WEB_LISTEN_PORT = 8448  # Ekaterina Derevyanko
+#WEB_LISTEN_PORT = 8448  # Ekaterina Derevyanko
+WEB_LISTEN_PORT = 8449  # Vasilij Ovsyannikov
 app = web.Application()
 
 client = TelegramClient(session, api_id, api_hash).start()
@@ -192,38 +196,38 @@ async def schedule_send(send_interval):
                 scount += 1
                 set_wstatus(k, now_dt, engine=my_sqlalchemy_engine)
                 debug(f">>>>>>>>>>>> s c o u n t = {scount} <<<<<<<<<<<<<<<<<<<<")
-                return True
             else:
                 return False
+    return True
 
 
 def send_check_signal():
     pass
-    # now = datetime.datetime.now()
-    # if 5 <= now.hour <= 18:
-    #     debug(f"NOW: {str(now)} -- It's time to send ;-)")
-    #     with requests.Session() as sess:
-    #         url = f'http://{WEB_LISTEN_HOST}:{WEB_LISTEN_PORT}/{spammer_token}/'
-    #         data = {'action': "check_user", 'user_id': '1', 'username': ''}
-    #         headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}
-    #         request_result = None
-    #         try:
-    #             request_result = sess.post(url, data=json.dumps(data), headers=headers)
-    #         except Exception as e:
-    #             debug(e, ERROR)
-    #         if request_result.status_code == requests.codes.ok:
-    #             parsed_json = json.loads(request_result.text)
-    #             debug(parsed_json)
-    # else:
-    #     debug(f"NOT NOW {str(now)} -- No time to send ;-(")
+    now = datetime.datetime.now()
+    if 5 <= now.hour <= 18:
+        debug(f"NOW: {str(now)} -- It's time to send ;-)")
+        with requests.Session() as sess:
+            url = f'http://{WEB_LISTEN_HOST}:{WEB_LISTEN_PORT}/{spammer_token}/'
+            data = {'action': "check_user", 'user_id': '1', 'username': ''}
+            headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}
+            request_result = None
+            try:
+                request_result = sess.post(url, data=json.dumps(data), headers=headers)
+            except Exception as e:
+                debug(e, ERROR)
+            if request_result.status_code == requests.codes.ok:
+                parsed_json = json.loads(request_result.text)
+                debug(parsed_json)
+    else:
+        debug(f"NOT NOW {str(now)} -- No time to send ;-(")
 
 
 def run_my_scheduler():
     debug("&&&&&&&  Run scheduler &&&&&&&")
-    schedule.every(3).minutes.do(lambda: send_check_signal())  # 28800
-    while True:
-        schedule.run_pending()
-        sleep(20)
+    # schedule.every(3).minutes.do(lambda: send_check_signal())  # 28800
+    # while True:
+    #     schedule.run_pending()
+    #     sleep(20)
 
 
 def main():
