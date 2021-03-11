@@ -3,7 +3,7 @@ import csv
 from datetime import datetime
 from telegram import sql_queries as sql
 from telethon.tl.custom import Button
-from telegram import buttons
+from telegram import buttons, buttons
 from quotes.parsers import users_count
 from project_shared import *
 
@@ -29,21 +29,21 @@ async def start_menu(event, client, engine=None):
     message = await client.send_message(entity=entity, message='__Stand by__')
     sleep(1)
     await client.edit_message(message, '10% |=> \nInitializing Upsilon AI')
-    sleep(0.3)
+    sleep(0.1)
     await client.edit_message(message, '20% |===> \nAttempting to Lock Identity')
-    sleep(0.3)
+    sleep(0.1)
     await client.edit_message(message, '30% |=====> \nPreparing Registry ')
-    sleep(0.3)
+    sleep(0.1)
     await client.edit_message(message, '40% |=======> \nGathering Search Queries')
-    sleep(0.3)
+    sleep(0.1)
     await client.edit_message(message, '50% |=========> \nScraping All Known Financial Data Sources')
-    sleep(0.3)
+    sleep(0.1)
     await client.edit_message(message, '60% |===========> \nExtracting Resources')
-    sleep(0.3)
+    sleep(0.1)
     await client.edit_message(message, '70% |=============> \nRecompiling Semantic Core')
-    sleep(0.3)
+    sleep(0.1)
     await client.edit_message(message, '80% |===============> \nRouting Neural Infrastructure')
-    sleep(0.2)
+    sleep(0.1)
     await client.edit_message(message, '90% |=================> \nMixing Genetic Pool')
     sleep(0.1)
     await client.edit_message(message, '100%|==================> \nUpsilon at your disposal')
