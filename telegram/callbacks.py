@@ -26,6 +26,8 @@ PAYMENT_AGGREGATOR_TIMER = None
 async def callback_handler(event, client, img_path=None, yahoo_path=None, engine=None):
     sender_id = event.original_update.user_id
     entity = await client.get_input_entity(sender_id)
+    chat = await event.get_chat()
+    old_msg_id = await shared.get_old_msg_id(sender_id)
 
     # ============================== Главное меню 1 уровень=============================
     # message = await client.send_message(entity=entity, message='Загрузка...')
@@ -33,42 +35,84 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
 
     if event.data == b'a1':
         await event.edit()
-        await client.send_message(event.input_sender, 'Анализ рынков', buttons=buttons.keyboard_a1)
+        if old_msg_id is not None:
+            await client.edit_message(event.input_sender, old_msg_id, 'Анализ рынков', buttons=buttons.keyboard_a1)
+        else:
+            msg = await client.send_message(event.input_sender, 'Анализ рынков', buttons=buttons.keyboard_a1)
+            await shared.save_old_message(sender_id, msg)
 
     elif event.data == b'a2':
         await event.edit()
-        await client.send_message(event.input_sender, 'Мой портфель\n'
-                                                      'Как купить портфель? - /instruction27\n'
-                                                      'Минимальный депозит - /mindepo',
-                                  buttons=buttons.keyboard_portfolio)
+        if old_msg_id is not None:
+            await client.edit_message(event.input_sender, old_msg_id, 'Мой портфель\n'
+                                                                      'Как купить портфель? - /instruction27\n'
+                                                                      'Минимальный депозит - /mindepo',
+                                      buttons=buttons.keyboard_portfolio)
+        else:
+            msg = await client.edit_message(event.input_sender, old_msg_id, 'Мой портфель\n'
+                                                                            'Как купить портфель? - /instruction27\n'
+                                                                            'Минимальный депозит - /mindepo',
+                                            buttons=buttons.keyboard_portfolio)
+            await shared.save_old_message(sender_id, msg)
 
     elif event.data == b'a3':
         await event.edit()
-        await client.send_message(event.input_sender, 'Скринер акций', buttons=buttons.keyboard_screener)
+        if old_msg_id is not None:
+            await client.edit_message(event.input_sender, old_msg_id, 'Скринер акций', buttons=buttons.keyboard_screener)
+        else:
+            msg = await client.send_message(event.input_sender, 'Скринер акций', buttons=buttons.keyboard_screener)
+            await shared.save_old_message(sender_id, msg)
+
     elif event.data == b'a5':
         await event.edit()
-        await client.send_message(event.input_sender, ins.instructions_main, buttons=buttons.keyboard_a5)
+        msg = await client.send_message(event.input_sender, ins.instructions_main, buttons=buttons.keyboard_a5)
+        await shared.delete_old_message(client, sender_id)
+
     elif event.data == b'a8':
         await event.edit()
-        await client.send_message(event.input_sender, 'Лента новостей', buttons=buttons.keyboard_a8)
+        if old_msg_id is not None:
+            await client.edit_message(event.input_sender, old_msg_id, 'Лента новостей', buttons=buttons.keyboard_a8)
+        else:
+            msg = await client.send_message(event.input_sender, 'Лента новостей', buttons=buttons.keyboard_a8)
+            await shared.save_old_message(sender_id, msg)
+
     elif event.data == b'a20':
         await event.edit()
-        await client.send_message(event.input_sender, 'Сотрудничество', buttons=buttons.keyboard_relations)
+        if old_msg_id is not None:
+            await client.edit_message(event.input_sender, old_msg_id, 'Сотрудничество', buttons=buttons.keyboard_relations)
+        else:
+            msg = await client.send_message(event.input_sender, 'Сотрудничество', buttons=buttons.keyboard_relations)
+            await shared.save_old_message(sender_id, msg)
+
     elif event.data == b'main':
         await event.edit()
-        await client.send_message(event.input_sender, 'Главное меню', buttons=buttons.keyboard_0)
+        if old_msg_id is not None:
+            await client.edit_message(event.input_sender, old_msg_id, 'Главное меню', buttons=buttons.keyboard_0)
+        else:
+            menu_msg = await client.send_message(event.input_sender, 'Главное меню', buttons=buttons.keyboard_0)
+            await shared.delete_old_message(client, sender_id)
+            shared.save_old_message(sender_id, menu_msg)
 
     # ============================== Анализ рынков 2 уровень=============================
     elif event.data == b'a1a1':
         await event.edit()
-        await client.send_message(event.input_sender, 'Анализ США', buttons=buttons.keyboard_us_analysis)
+        if old_msg_id is not None:
+            await client.edit_message(event.input_sender, old_msg_id, 'Анализ США', buttons=buttons.keyboard_us_analysis)
+        else:
+            msg = await client.send_message(event.input_sender, 'Анализ США', buttons=buttons.keyboard_us_analysis)
+            shared.save_old_message(sender_id, msg)
 
     elif event.data == b'us5x':
         await event.edit()
-        await client.send_message(event.input_sender, 'Подробный анализ', buttons=buttons.keyboard_us_market)
+        if old_msg_id is not None:
+            await client.edit_message(event.input_sender, old_msg_id, 'Подробный анализ', buttons=buttons.keyboard_us_market)
+        else:
+            msg = await client.send_message(event.input_sender, 'Подробный анализ', buttons=buttons.keyboard_us_market)
+            shared.save_old_message(sender_id, msg)
 
     elif event.data == b'us5z':
         await event.edit()
+        await shared.delete_old_message(client, sender_id)
         await client.send_file(entity, img_path + 'sectors.png')
         await client.send_message(event.input_sender, 'Обзор рынка США\n'
                                                       '/instruction02\n'
@@ -80,6 +124,7 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
 
     elif event.data == b'a1a2':
         await event.edit()
+        await shared.delete_old_message(client, sender_id)
         await client.send_file(entity, img_path + 'crypto.png')
         await client.send_message(event.input_sender, 'Обзор BTCUSD и ETHUSD\n'
                                                       '/instruction07')
@@ -89,6 +134,7 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
                                   buttons=buttons.keyboard_a1_back)
     elif event.data == b'a1a3':
         await event.edit()
+        await shared.delete_old_message(client, sender_id)
         await client.send_file(entity, img_path + 'rtsi.png')
         await client.send_message(event.input_sender, 'Обзор рынка РФ\n'
                                                       '/instruction08')
@@ -98,6 +144,7 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
                                   buttons=buttons.keyboard_a1_back)
     elif event.data == b'a1a5':
         await event.edit()
+        await shared.delete_old_message(client, sender_id)
         await client.send_file(entity, img_path + 'world.png')
         await client.send_message(event.input_sender, 'Обзор мировых рынков\n'
                                                       '/instruction04')
@@ -137,14 +184,20 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
 
     elif event.data == b'a1a6':
         await event.edit()
-        await client.send_message(event.input_sender, 'Основные макро индикаторы', buttons=buttons.keyboard_core_macro)
+        if old_msg_id is not None:
+            await client.edit_message(event.input_sender, old_msg_id, 'Основные макро индикаторы', buttons=buttons.keyboard_core_macro)
+        else:
+            msg = await client.send_message(event.input_sender, 'Основные макро индикаторы', buttons=buttons.keyboard_core_macro)
+            shared.save_old_message(sender_id, msg)
     elif event.data == b'a1a-1':
         await event.edit()
-        await client.send_message(event.input_sender, 'Анализ рынков', buttons=buttons.keyboard_a1)
+        msg = await client.send_message(event.input_sender, 'Анализ рынков', buttons=buttons.keyboard_a1)
+        shared.save_old_message(sender_id, msg)
 
     # ============================== Анализ рынков уровень 3 =============================
     elif event.data == b'us1':
         await event.edit()
+        await shared.delete_old_message(client, sender_id)
         msg = nyse_nasdaq_stat()
         message = await client.send_message(entity=entity, message='Загрузка...')
         await client.send_message(entity=entity, message=msg)
@@ -163,6 +216,7 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
     #                               buttons=buttons.keyboard_us_market_back)
     elif event.data == b'us6':
         await event.edit()
+        await shared.delete_old_message(client, sender_id)
         message = await client.send_message(entity=entity, message='Загрузка...')
         filename2 = os.path.join(img_path, 'sma50.csv')
         with open(filename2, newline='') as f2:
@@ -212,6 +266,7 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
     #                               buttons=buttons.keyboard_us_market_back)
     elif event.data == b'us5':
         await event.edit()
+        await shared.delete_old_message(client, sender_id)
         message = await client.send_message(entity=entity, message='Загрузка...')
         filename6 = os.path.join(img_path, 'vix_cont.csv')
         with open(filename6, newline='') as f6:
@@ -226,6 +281,7 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
 
     elif event.data == b'us7':
         await event.edit()
+        await shared.delete_old_message(client, sender_id)
         message = await client.send_message(entity=entity, message='Загрузка...')
         await client.edit_message(message, 'Ключевые статистики акций компании')
         await client.send_message(entity=entity, message=ins.instruction21)
@@ -248,6 +304,7 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
     #                               buttons=buttons.keyboard_a2_back)
     elif event.data == b'a2a3':
         await event.edit()
+        await shared.delete_old_message(client, sender_id)
         message = await client.send_message(entity=entity, message='Загрузка...')
         await client.edit_message(message, '"Парковочный" портфель без риска')
         await client.send_message(event.input_sender, 'Текущая структура портфеля')
@@ -261,9 +318,11 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
         await client.send_file(entity, STATS_PATH + 'parking2.png')
         await client.send_message(event.input_sender, 'Кому и когда покупать парковочный портфель? \n'
                                                       '/instruction14 \n End of Day График - /chart_parking',
-                                  buttons=buttons.keyboard_a2_back)
+                                  buttons=buttons.keyboard_a3_back)
+
     elif event.data == b'a2a4':
         await event.edit()
+        await shared.delete_old_message(client, sender_id)
         message = await client.send_message(entity=entity, message='Загрузка...')
         await client.edit_message(message, 'Всепогодный портфель')
         await client.send_message(event.input_sender, 'Текущая структура портфеля')
@@ -277,9 +336,11 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
         await client.send_file(entity, STATS_PATH + 'allweather2.png')
         await client.send_message(event.input_sender, 'Кому и когда покупать всепогодный портфель? \n'
                                                       '/instruction15 \n End of Day График - /chart_allweather',
-                                  buttons=buttons.keyboard_a2_back)
+                                  buttons=buttons.keyboard_a3_back)
+
     elif event.data == b'a2a5':
         await event.edit()
+        await shared.delete_old_message(client, sender_id)
         message = await client.send_message(entity=entity, message='Загрузка...')
         await client.edit_message(message, 'Сбалансированный портфель')
         await client.send_message(event.input_sender, 'Текущая структура портфеля')
@@ -293,10 +354,11 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
         await client.send_file(entity, STATS_PATH + 'balanced2.png')
         await client.send_message(event.input_sender, 'Кому и когда покупать сбалансированный портфель? \n'
                                                       '/instruction16 \n End of Day График - /chart_balanced',
-                                  buttons=buttons.keyboard_a2_back)
+                                  buttons=buttons.keyboard_a3_back)
 
     elif event.data == b'a2a6':
         await event.edit()
+        await shared.delete_old_message(client, sender_id)
         message = await client.send_message(entity=entity, message='Загрузка...')
         await client.edit_message(message, 'Агрессивный портфель')
         await client.send_message(event.input_sender, 'Текущая структура портфеля')
@@ -310,9 +372,10 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
         await client.send_file(entity, STATS_PATH + 'aggressive2.png')
         await client.send_message(event.input_sender, 'Кому и когда покупать агрессивный портфель? \n'
                                                       '/instruction17 \n End of Day График - /chart_aggressive',
-                                  buttons=buttons.keyboard_a2_back)
+                                  buttons=buttons.keyboard_a3_back)
     elif event.data == b'a2a7':
         await event.edit()
+        await shared.delete_old_message(client, sender_id)
         message = await client.send_message(entity=entity, message='Загрузка...')
         await client.edit_message(message, 'Плечевой портфель')
         await client.send_message(event.input_sender, 'Текущая структура портфеля')
@@ -326,10 +389,11 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
         await client.send_file(entity, STATS_PATH + 'leveraged2.png')
         await client.send_message(event.input_sender, 'Кому и когда покупать плечевой портфель? \n'
                                                       '/instruction18 \n End of Day График - /chart_leveraged',
-                                  buttons=buttons.keyboard_a2_back)
+                                  buttons=buttons.keyboard_a3_back)
 
     elif event.data == b'a2a9':
         await event.edit()
+        await shared.delete_old_message(client, sender_id)
         message = await client.send_message(entity=entity, message='Загрузка...')
         await client.edit_message(message, 'Elastic Strategy - портфель только из акций')
         await client.send_message(event.input_sender, 'Текущая структура портфеля')
@@ -343,10 +407,11 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
         await client.send_file(entity, STATS_PATH + 'elastic2.png')
         await client.send_message(event.input_sender, 'Кому и когда покупать Elastic портфель? \n'
                                                       '/instruction23 \n End of Day График - /chart_elastic',
-                                  buttons=buttons.keyboard_a2_back)
+                                  buttons=buttons.keyboard_a3_back)
 
     elif event.data == b'a2a10':
         await event.edit()
+        await shared.delete_old_message(client, sender_id)
         message = await client.send_message(entity=entity, message='Загрузка...')
         await client.edit_message(message, 'Yolo Strategy - портфель только из акций, торгуемых на spbexchange. '
                                            'Доступен для клиентов Сбер, Тинькофф, Альфа-банк, ВТБ')
@@ -357,11 +422,15 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
 
         await client.send_message(event.input_sender, 'Кому и когда покупать Yolo портфель? \n'
                                                       '/instruction24 \n End of Day График - /chart_yolo',
-                                  buttons=buttons.keyboard_a2_back)
+                                  buttons=buttons.keyboard_a3_back)
 
     elif event.data == b'mp3':
         await event.edit()
-        await client.send_message(event.input_sender, 'Исторические тесты', buttons=buttons.keyboard_a2)
+        if old_msg_id is not None:
+            await client.edit_message(event.input_sender, old_msg_id, 'Исторические тесты', buttons=buttons.keyboard_a2)
+        else:
+            msg = await client.send_message(event.input_sender, 'Исторические тесты', buttons=buttons.keyboard_a2)
+            shared.save_old_message(sender_id, msg)
 
     # ============================== Управление =============================
     elif event.data == b'a4a1':
@@ -379,18 +448,23 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
 
     elif event.data == b'rel1':
         await event.edit()
+        await shared.delete_old_message(client, sender_id)
         message = await client.send_message(entity=entity, message='Загрузка...')
         await client.edit_message(message, 'Предложения и реклама')
         await client.send_message(event.input_sender, ins.managers_form,
                                   buttons=buttons.keyboard_relations_back)
+
     elif event.data == b'rel2':
         await event.edit()
+        await shared.delete_old_message(client, sender_id)
         message = await client.send_message(entity=entity, message='Загрузка...')
         await client.edit_message(message, 'Регистрация управляющего')
         await client.send_message(event.input_sender, ins.managers_form,
                                   buttons=buttons.keyboard_relations_back)
+
     elif event.data == b'rel3':
         await event.edit()
+        await shared.delete_old_message(client, sender_id)
         message = await client.send_message(entity=entity, message='Загрузка...')
         await client.edit_message(message, 'Сообщить об ошибке')
         await client.send_message(event.input_sender, ins.managers_form,
@@ -453,14 +527,22 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
 
     # ============================== Агрегатор новостей =============================
     elif event.data == b'a9a1':
+        if old_msg_id is not None:
+            await client.edit_message(entity, old_msg_id, 'Последние новости')
+            shared.pop_old_msg_id(sender_id)
+        else:
+            await client.send_message(entity, 'Последние новости')
         msg1 = fin_news(blogs=False)
-        message = await client.send_message(entity=entity, message='Последние новости')
-        await client.send_message(entity=entity, message=msg1, buttons=buttons.keyboard_a8_back)
+        await client.send_message(entity, msg1, buttons=buttons.keyboard_a8_back)
 
     elif event.data == b'a9a2':
+        if old_msg_id is not None:
+            await client.edit_message(entity, old_msg_id, 'Последние статьи в блогах')
+            shared.pop_old_msg_id(sender_id)
+        else:
+            await client.send_message(entity, 'Последние статьи в блогах')
         msg2 = fin_news(blogs=True)
-        message = await client.send_message(entity=entity, message='Последние статьи в блогах')
-        await client.send_message(entity=entity, message=msg2, buttons=buttons.keyboard_a8_back)
+        await client.send_message(entity, msg2, buttons=buttons.keyboard_a8_back)
 
     elif event.data == b'a9a3':
         msg3 = fin_news(blogs=True)
@@ -469,51 +551,90 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
 
     elif event.data == b'a8a-1':
         await event.edit()
-        await client.send_message(event.input_sender, 'Агрегатор новостей', buttons=buttons.keyboard_a8)
+        msg = await client.send_message(event.input_sender, 'Агрегатор новостей', buttons=buttons.keyboard_a8)
+        shared.save_old_message(sender_id, msg)
 
     # ============================== Основные макро данные =============================
     elif event.data == b'cm1':
         await event.edit()
+        await shared.delete_old_message(client, sender_id)
         await client.send_message(entity=entity, message='Прогноз процентной ставки в США')
         await client.send_file(entity, IMAGES_OUT_PATH + 'Interest Rate.png')
         await client.send_message(event.input_sender, 'Процентная ставка \n /instruction10',
                                   buttons=buttons.keyboard_core_macro_back)
     elif event.data == b'cm2':
         await event.edit()
+        await shared.delete_old_message(client, sender_id)
         await client.send_message(entity=entity, message='Прогноз уровня инфляции в США')
         await client.send_file(entity, IMAGES_OUT_PATH + 'Inflation Rate.png')
         await client.send_message(event.input_sender, 'Уровень инфляции \n /instruction11',
                                   buttons=buttons.keyboard_core_macro_back)
     elif event.data == b'cm3':
         await event.edit()
+        await shared.delete_old_message(client, sender_id)
         await client.send_message(entity=entity, message='Прогноз уровня безработицы в США')
         await client.send_file(entity, IMAGES_OUT_PATH + 'Unemployment Rate.png')
         await client.send_message(event.input_sender, 'Уровень безработицы \n /instruction13',
                                   buttons=buttons.keyboard_core_macro_back)
     elif event.data == b'cm4':
         await event.edit()
+        await shared.delete_old_message(client, sender_id)
         await client.send_message(entity=entity, message='Прогноз индекса PMI в США')
         await client.send_file(entity, IMAGES_OUT_PATH + 'Composite PMI.png')
         await client.send_message(event.input_sender, 'Композитный индекс менеджеров по закупкам \n /instruction12',
                                   buttons=buttons.keyboard_core_macro_back)
     elif event.data == b'cm-1':
         await event.edit()
-        await client.send_message(event.input_sender, 'Назад', buttons=buttons.keyboard_core_macro)
+        msg = await client.send_message(event.input_sender, 'Основные макро индикаторы', buttons=buttons.keyboard_core_macro)
+        await shared.save_old_message(sender_id, msg)
+
     elif event.data == b'cm-2':
         await event.edit()
-        await client.send_message(event.input_sender, 'Назад', buttons=buttons.keyboard_a1)
+        if old_msg_id is not None:
+            await client.edit_message(event.input_sender, old_msg_id, 'Анализ США', buttons=buttons.keyboard_a1)
+        else:
+            msg = await client.send_message(event.input_sender, 'Анализ США', buttons=buttons.keyboard_a1)
+            await shared.save_old_message(sender_id, msg)
+
     elif event.data == b'cm-3':
         await event.edit()
-        await client.send_message(event.input_sender, 'Назад', buttons=buttons.keyboard_us_market)
+        if old_msg_id is not None:
+            await client.edit_message(event.input_sender, old_msg_id, 'Подробный анализ', buttons=buttons.keyboard_us_market)
+        else:
+            msg = await client.send_message(event.input_sender, 'Подробный анализ', buttons=buttons.keyboard_us_market)
+            await shared.save_old_message(sender_id, msg)
+
     elif event.data == b'cm-4':
         await event.edit()
-        await client.send_message(event.input_sender, 'Назад', buttons=buttons.keyboard_us_analysis)
+        if old_msg_id is not None:
+            await client.edit_message(event.input_sender, old_msg_id, 'Анализ США', buttons=buttons.keyboard_us_analysis)
+        else:
+            msg = await client.send_message(event.input_sender, 'Анализ США', buttons=buttons.keyboard_us_analysis)
+            await shared.save_old_message(sender_id, msg)
+
     elif event.data == b'cm-5':
         await event.edit()
-        await client.send_message(event.input_sender, 'Назад', buttons=buttons.keyboard_portfolio)
+        if old_msg_id is not None:
+            await client.edit_message(event.input_sender, old_msg_id, 'Мой портфель\n'
+                                                                      'Как купить портфель? - /instruction27\n'
+                                                                      'Минимальный депозит - /mindepo',
+                                      buttons=buttons.keyboard_portfolio)
+        else:
+            msg = await client.send_message(event.input_sender, 'Мой портфель\n'
+                                                                'Как купить портфель? - /instruction27\n'
+                                                                'Минимальный депозит - /mindepo',
+                                            buttons=buttons.keyboard_portfolio)
+            await shared.save_old_message(sender_id, msg)
+
+    elif event.data == b'cm-51':
+        await event.edit()
+        msg = await client.send_message(event.input_sender, 'Исторические тесты', buttons=buttons.keyboard_a2)
+        await shared.save_old_message(sender_id, msg)
+
     elif event.data == b'cm-6':
         await event.edit()
-        await client.send_message(event.input_sender, 'Назад', buttons=buttons.keyboard_relations)
+        msg = await client.send_message(event.input_sender, 'Сотрудничество', buttons=buttons.keyboard_relations)
+        await shared.save_old_message(sender_id, msg)
 
     elif event.data == b'z2':
         await event.edit()

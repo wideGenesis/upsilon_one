@@ -1,8 +1,12 @@
 import datetime
 import sys
 from typing import Any
+from telethon import utils
+from project_shared import *
+from telethon import functions, types
 
 ORDER_MAP = {}
+OLD_MESSAGE_MAP = {}
 
 
 def datetime2int(dt):
@@ -11,6 +15,27 @@ def datetime2int(dt):
 
 def int2datetime(dt_int):
     return datetime.strptime(str(dt_int), "%Y%m%d%H%M%S")
+
+
+def save_old_message(user_id, msg):
+    msg_id = utils.get_message_id(msg)
+    OLD_MESSAGE_MAP[user_id] = msg_id
+
+
+async def delete_old_message(client, user_id):
+    old_msg_id = OLD_MESSAGE_MAP.get(user_id, None)
+    if old_msg_id is not None:
+        await client.delete_messages(user_id, old_msg_id)
+        OLD_MESSAGE_MAP.pop(user_id)
+
+
+def pop_old_msg_id(user_id):
+    OLD_MESSAGE_MAP.pop(user_id)
+
+
+async def get_old_msg_id(user_id):
+    old_msg_id = OLD_MESSAGE_MAP.get(user_id, None)
+    return old_msg_id
 
 
 class Subscribe(object):

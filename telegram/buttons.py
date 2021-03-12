@@ -86,6 +86,12 @@ keyboard_a2_back = [
     ]
 ]
 
+keyboard_a3_back = [
+    [
+        Button.inline('\U0001F519  ' + 'Назад', b'cm-51')
+    ]
+]
+
 keyboard_a5 = [
     # [
     #     Button.inline('\U0001F50D   ' + 'Как ... /instruction01', b'a5a1')

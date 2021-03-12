@@ -6,6 +6,7 @@ from telethon.tl.custom import Button
 from telegram import buttons, buttons
 from quotes.parsers import users_count
 from project_shared import *
+from telegram import shared
 
 
 async def start_menu(event, client, engine=None):
@@ -18,6 +19,9 @@ async def start_menu(event, client, engine=None):
         await sql.db_save_referral(inc, referral[1], engine)
     sender_id = event.original_update.message.peer_id.user_id
     entity = await client.get_input_entity(sender_id)
+    old_msg_id = await shared.get_old_msg_id(sender_id)
+    if old_msg_id is not None:
+        shared.pop_old_msg_id(sender_id)
     # TODO Если бот будет двуязычным, то нужно будет сделать возможность выбора языка и сохранение его в базу
     # lang = await client.get_entity(PeerUser(sender_id))
     # await db_save_lang(str(lang.lang_code), sender_id, connection)
@@ -60,8 +64,16 @@ async def start_menu(event, client, engine=None):
 
 
 async def tools_menu(event, client):
-    await client.send_message(event.input_sender, 'Главное меню', buttons=buttons.keyboard_0)
-    await client.send_message(event.input_sender, '\n', buttons=buttons.keyboard_start)
+    sender_id = event.original_update.message.sender_id
+    await client.delete_messages(sender_id, event.message.id)
+    chat = await event.get_chat()
+    old_msg_id = await shared.get_old_msg_id(sender_id)
+    if old_msg_id is not None:
+        menu_msg = await client.edit_message(event.input_sender, old_msg_id, 'Главное меню', buttons=buttons.keyboard_0)
+    else:
+        menu_msg = await client.send_message(event.input_sender, 'Главное меню', buttons=buttons.keyboard_0)
+        shared.save_old_message(sender_id, menu_msg)
+        await client.send_message(event.input_sender, '\n', buttons=buttons.keyboard_start)
 
 
 async def profile_menu(event, client, engine=None):
