@@ -1,9 +1,16 @@
 from telethon.tl.custom import Button
 from project_shared import *
+from random import choice
+
+
+lol = ['Подача напитков из улиток', 'Кот Да Винчи', 'Гос реестр порно', 'Орден Финансового Лосся', 'Шопот крыш',
+       'Отделение пластики мозга', 'Моргаем диафрагмой', 'Мастерская Парики Трампа', 'Бар Финансовое воздержание']
 
 keyboard_start = [
-        [Button.text('Главное меню', resize=True), Button.text('Профиль', resize=True)]
+        [Button.text('Меню', resize=True), Button.text('Профиль', resize=True)],
+    [Button.text(f'{choice(lol)}', resize=True)]
     ]
+
 
 keyboard_0 = [
     [
