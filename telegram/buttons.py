@@ -2,12 +2,61 @@ from telethon.tl.custom import Button
 from project_shared import *
 from random import choice
 
+
 lol = ['Подача напитков из улиток', 'Кот Да Винчи', 'Гос реестр порно', 'Орден Финансового Лосся', 'Шопот крыш',
        'Отделение пластики мозга', 'Моргаем диафрагмой', 'Мастерская Парики Трампа', 'Бар Финансовое воздержание']
 
 keyboard_start = [
-    [Button.text('Меню', resize=True), Button.text('Профиль', resize=True)],
+        [Button.text('Меню', resize=True), Button.text('Профиль', resize=True)],
     [Button.text(f'{choice(lol)}', resize=True)]
+    ]
+
+keyboard_forw2 = [
+    [
+        Button.inline('\U000027A1  ' + 'Далее', b'forw2')
+    ]
+]
+
+keyboard_forw3 = [
+    [
+        Button.inline('\U000027A1  ' + 'Далее', b'forw3')
+    ]
+]
+
+keyboard_forw4 = [
+    [
+        Button.inline('\U000027A1  ' + 'Далее', b'forw4')
+    ]
+]
+
+keyboard_forw5 = [
+    [
+        Button.inline('\U000027A1  ' + 'Далее', b'forw5')
+    ]
+]
+
+keyboard_forw6 = [
+    [
+        Button.inline('\U000027A1  ' + 'Далее', b'forw6')
+    ]
+]
+
+keyboard_forw7 = [
+    [
+        Button.inline('\U000027A1  ' + 'Далее', b'forw7')
+    ]
+]
+
+keyboard_forw8 = [
+    [
+        Button.inline('\U000027A1  ' + 'Далее', b'forw8')
+    ]
+]
+
+keyboard_forw9 = [
+    [
+        Button.inline('\U0001F3AF  ' + 'Подобрать инвестиционое решение', b'forw9')
+    ]
 ]
 
 keyboard_0 = [
@@ -283,6 +332,7 @@ keyboard_screener_back = [
     ]
 ]
 
+
 keyboard_relations = [
     [
         Button.inline('\U0001F4EC  ' + 'Предложения и реклама', b'rel1')
@@ -303,6 +353,7 @@ keyboard_relations_back = [
         Button.inline('\U0001F519  ' + 'Назад', b'cm-6')
     ]
 ]
+
 
 # ============================== Кнопки подписок =============================
 keyboard_core_subscriptions = [
