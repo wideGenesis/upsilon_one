@@ -7,7 +7,9 @@ from telegram import buttons, buttons
 from quotes.parsers import users_count
 from project_shared import *
 from telegram import shared
+from telegram import instructions as ins
 
+pics = f'{PROJECT_HOME_DIR}/html/'
 
 async def start_menu(event, client, engine=None):
     referral = str(event.original_update.message.message).split(' ')
@@ -25,32 +27,24 @@ async def start_menu(event, client, engine=None):
     # TODO Если бот будет двуязычным, то нужно будет сделать возможность выбора языка и сохранение его в базу
     # lang = await client.get_entity(PeerUser(sender_id))
     # await db_save_lang(str(lang.lang_code), sender_id, connection)
-    # keyboard_start = [
-    #     [Button.text('Главное меню', resize=True), Button.text('Профиль', resize=True)]
-    #     # [Button.text('Помощь', resize=True), Button.text('Donate', resize=True)]
-    # ]
 
-    message = await client.send_message(entity=entity, message='__Stand by__')
-    sleep(1)
-    await client.edit_message(message, '10% |=> \nInitializing Upsilon AI')
-    await client.edit_message(message, '20% |===> \nAttempting to Lock Identity')
-    await client.edit_message(message, '30% |=====> \nPreparing Registry ')
-    await client.edit_message(message, '40% |=======> \nGathering Search Queries')
-    await client.edit_message(message, '50% |=========> \nScraping All Known Financial Data Sources')
-    await client.edit_message(message, '60% |===========> \nExtracting Resources')
-    await client.edit_message(message, '70% |=============> \nRecompiling Semantic Core')
-    await client.edit_message(message, '80% |===============> \nRouting Neural Infrastructure')
-    await client.edit_message(message, '90% |=================> \nMixing Genetic Pool')
-    await client.edit_message(message, '100%|==================> \nUpsilon at your disposal')
-    await client.delete_messages(entity, message)
-    # await client.send_file(entity, 'telegram/fish_swarm.gif')
-    await client.send_message(entity, 'Приветствую вас! Я Ипсилон — самый продвинутый ИИ '
-                                      'для трейдинга и управления инвестициями. \n \n'
-                                      'Обо мне - /about \n'
-                                      'Цели - /goals \n'
-                                      'Мои навыки - /skills \n \n'
-                                      'Важно! Если по какой-то причине у вас пропали кнопки Главного меню, '
-                                      'то вы можете напечатать Меню для вызова кнопок.', buttons=buttons.keyboard_start)
+    await client.send_message(entity, ins.hello_1, file=f'{PROJECT_HOME_DIR}/html/hello_1.jpg')
+    await client.send_message(entity, ins.hello_2, file=f'{PROJECT_HOME_DIR}/html/hello_2.jpg')
+    await client.send_message(entity, ins.hello_3, file=f'{PROJECT_HOME_DIR}/html/hello_3.jpg')
+    await client.send_message(entity, ins.hello_4, file=f'{PROJECT_HOME_DIR}/html/hello_4.jpg')
+    await client.send_message(entity, ins.hello_5, file=f'{PROJECT_HOME_DIR}/html/hello_5.jpg')
+    await client.send_message(entity, ins.hello_6, file=f'{PROJECT_HOME_DIR}/html/hello_6.jpg')
+    await client.send_message(entity, ins.hello_7, file=f'{PROJECT_HOME_DIR}/html/hello_7.jpg')
+    await client.send_message(entity, ins.hello_8, file=f'{PROJECT_HOME_DIR}/html/hello_8.jpg',
+                              buttons=buttons.keyboard_start)
+
+    # await client.send_message(entity, 'Приветствую вас! Я Ипсилон — самый продвинутый ИИ '
+    #                                   'для трейдинга и управления инвестициями. \n \n'
+    #                                   'Обо мне - /about \n'
+    #                                   'Цели - /goals \n'
+    #                                   'Мои навыки - /skills \n \n'
+    #                                   'Важно! Если по какой-то причине у вас пропали кнопки Главного меню, '
+    #                                   'то вы можете напечатать Меню для вызова кнопок.', buttons=buttons.keyboard_start)
 
 
 async def tools_menu(event, client):
