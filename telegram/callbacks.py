@@ -105,9 +105,11 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
     elif event.data == b'us5x':
         await event.edit()
         if old_msg_id is not None:
-            await client.edit_message(event.input_sender, old_msg_id, 'Подробный анализ', buttons=buttons.keyboard_us_market)
+            await client.edit_message(event.input_sender, old_msg_id, 'Подробный анализ',
+                                      buttons=buttons.keyboard_us_market)
         else:
-            msg = await client.send_message(event.input_sender, 'Подробный анализ', buttons=buttons.keyboard_us_market)
+            msg = await client.send_message(event.input_sender, 'Подробный анализ',
+                                            buttons=buttons.keyboard_us_market)
             shared.save_old_message(sender_id, msg)
 
     elif event.data == b'us5z':
