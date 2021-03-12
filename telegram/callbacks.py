@@ -7,7 +7,7 @@ import uuid
 from datetime import timedelta, datetime
 from telethon import utils
 
-from telegram import buttons, buttons
+from telegram import buttons
 from telegram import sql_queries as sql
 from telegram import menu
 from telegram import shared
@@ -470,9 +470,9 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
         await client.send_message(event.input_sender, ins.managers_form,
                                   buttons=buttons.keyboard_relations_back)
 
-    elif event.data == b'a4a-0':
-        await event.edit()
-        await client.send_message(event.input_sender, 'Регистрация управляющего', buttons=buttons.keyboard_a4)
+    # elif event.data == b'a4a-0':
+    #     await event.edit()
+    #     await client.send_message(event.input_sender, 'Регистрация управляющего', buttons=buttons.keyboard_a4)
 
     elif event.data == b'sac1':
         await event.edit()
@@ -499,8 +499,35 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
         await client.send_message(event.input_sender, 'О доверительном управлении \n'
                                                       '/instruction26',
                                   buttons=buttons.keyboard_managed_strategies)
-    # ============================== Инструкции =============================
-
+    # ============================== Презентация =============================
+    elif event.data == b'forw2':
+        await event.edit()
+        await client.send_message(entity, ins.hello_2, file=f'{PROJECT_HOME_DIR}/html/hello_2.jpg',
+                                  buttons=buttons.keyboard_forw3)
+    elif event.data == b'forw3':
+        await event.edit()
+        await client.send_message(entity, ins.hello_3, file=f'{PROJECT_HOME_DIR}/html/hello_3.jpg',
+                                  buttons=buttons.keyboard_forw4)
+    elif event.data == b'forw4':
+        await event.edit()
+        await client.send_message(entity, ins.hello_4, file=f'{PROJECT_HOME_DIR}/html/hello_4.jpg',
+                                  buttons=buttons.keyboard_forw5)
+    elif event.data == b'forw5':
+        await event.edit()
+        await client.send_message(entity, ins.hello_5, file=f'{PROJECT_HOME_DIR}/html/hello_5.jpg',
+                                  buttons=buttons.keyboard_forw6)
+    elif event.data == b'forw6':
+        await event.edit()
+        await client.send_message(entity, ins.hello_6, file=f'{PROJECT_HOME_DIR}/html/hello_6.jpg',
+                                  buttons=buttons.keyboard_forw7)
+    elif event.data == b'forw7':
+        await event.edit()
+        await client.send_message(entity, ins.hello_7, file=f'{PROJECT_HOME_DIR}/html/hello_7.jpg',
+                                  buttons=buttons.keyboard_forw8)
+    elif event.data == b'forw8':
+        await event.edit()
+        await client.send_message(entity, ins.hello_8, file=f'{PROJECT_HOME_DIR}/html/hello_8.jpg',
+                                  buttons=buttons.keyboard_forw9)
 
     # ============================== Образовательные программы =============================
     elif event.data == b'a6a1':

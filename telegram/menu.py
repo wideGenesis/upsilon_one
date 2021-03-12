@@ -27,16 +27,11 @@ async def start_menu(event, client, engine=None):
     # TODO Если бот будет двуязычным, то нужно будет сделать возможность выбора языка и сохранение его в базу
     # lang = await client.get_entity(PeerUser(sender_id))
     # await db_save_lang(str(lang.lang_code), sender_id, connection)
-
-    await client.send_message(entity, ins.hello_1, file=f'{PROJECT_HOME_DIR}/html/hello_1.jpg')
-    await client.send_message(entity, ins.hello_2, file=f'{PROJECT_HOME_DIR}/html/hello_2.jpg')
-    await client.send_message(entity, ins.hello_3, file=f'{PROJECT_HOME_DIR}/html/hello_3.jpg')
-    await client.send_message(entity, ins.hello_4, file=f'{PROJECT_HOME_DIR}/html/hello_4.jpg')
-    await client.send_message(entity, ins.hello_5, file=f'{PROJECT_HOME_DIR}/html/hello_5.jpg')
-    await client.send_message(entity, ins.hello_6, file=f'{PROJECT_HOME_DIR}/html/hello_6.jpg')
-    await client.send_message(entity, ins.hello_7, file=f'{PROJECT_HOME_DIR}/html/hello_7.jpg')
-    await client.send_message(entity, ins.hello_8, file=f'{PROJECT_HOME_DIR}/html/hello_8.jpg',
-                              buttons=buttons.keyboard_start)
+    message = await client.send_message(entity=entity, message='__Initializing Upsilon AI__',
+                                        buttons=buttons.keyboard_start)
+    sleep(1)
+    await client.send_message(entity, ins.hello_1, file=f'{PROJECT_HOME_DIR}/html/hello_1.jpg',
+                              buttons=buttons.keyboard_forw2)
 
     # await client.send_message(entity, 'Приветствую вас! Я Ипсилон — самый продвинутый ИИ '
     #                                   'для трейдинга и управления инвестициями. \n \n'
