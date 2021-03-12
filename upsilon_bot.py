@@ -100,10 +100,13 @@ async def callback(event):
                                      engine=engine)
 
 
-# @client.on(events.Raw)
-# async def handler(update):
-#     # Print all incoming updates
-#     debug(update.stringify())
+@client.on(events.Raw)
+async def handler(update):
+    if not update.message.poll:
+        return
+    else:
+        await callbacks.update_poll(update, client, engine=engine)
+    debug(update.stringify())
 
 
 # ============================== Instructions ===============================

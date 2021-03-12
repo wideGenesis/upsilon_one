@@ -46,12 +46,12 @@ class MainWin(QDialog):
         self.actionComboBox.currentIndexChanged.connect(self._action_combobox_changed)
         self.actionDetailComboBox.currentIndexChanged.connect(self._actiondetail_combobox_changed)
 
-        self.chanelLineEdit.textChanged.connect(self._chanelTextChanged)
-        self.userIDLineEdit.textChanged.connect(self._userIdTextChanged)
-        self.messageTextEdit.textChanged.connect(self._messageTextChanged)
+        # self.chanelLineEdit.textChanged.connect(self._chanelTextChanged)
+        # self.userIDLineEdit.textChanged.connect(self._userIdTextChanged)
+        # self.messageTextEdit.textChanged.connect(self._messageTextChanged)
 
         self.sendCMADPushButton.clicked.connect(self._sendCMDButtonClicked)
-
+        self.sendCMADPushButton.setEnabled(True)
         self.chanelLabel.hide()
         self.chanelLineEdit.hide()
 
@@ -170,30 +170,31 @@ class MainWin(QDialog):
             self.actionDetailLabel.show()
             self.actionDetailComboBox.show()
 
-
-    def _chanelTextChanged(self, txt):
-        action_text = self.actionComboBox.itemText(self.actionComboBox.currentIndex())
-        if len(txt) != 0 and (action_text == "join_to" or action_text == "leave_channel"):
-            self.sendCMADPushButton.setEnabled(True)
-        else:
-            self.sendCMADPushButton.setEnabled(False)
-
-    def _userIdTextChanged(self, txt):
-        action_text = self.actionComboBox.itemText(self.actionComboBox.currentIndex())
-        message_text = self.messageTextEdit.toPlainText()
-        if len(txt) != 0 and len(message_text) != 0 and action_text == "send_to":
-            self.sendCMADPushButton.setEnabled(True)
-        else:
-            self.sendCMADPushButton.setEnabled(False)
-
-    def _messageTextChanged(self):
-        action_text = self.actionComboBox.itemText(self.actionComboBox.currentIndex())
-        userid_text = self.userIDLineEdit.text()
-        message_text = self.messageTextEdit.toPlainText()
-        if len(message_text) != 0 and len(userid_text) != 0 and action_text == "send_to":
-            self.sendCMADPushButton.setEnabled(True)
-        else:
-            self.sendCMADPushButton.setEnabled(False)
+    # def _chanelTextChanged(self, txt):
+    #     action_text = self.actionComboBox.itemText(self.actionComboBox.currentIndex())
+    #     if len(txt) != 0 and (action_text == "join_to" or action_text == "leave_channel"):
+    #         self.sendCMADPushButton.setEnabled(True)
+    #     else:
+    #         self.sendCMADPushButton.setEnabled(False)
+    #
+    # def _userIdTextChanged(self, txt):
+    #     action_text = self.actionComboBox.itemText(self.actionComboBox.currentIndex())
+    #     message_text = self.messageTextEdit.toPlainText()
+    #     if len(txt) != 0 and len(message_text) != 0 and action_text == "send_to":
+    #         self.sendCMADPushButton.setEnabled(True)
+    #     else:
+    #         self.sendCMADPushButton.setEnabled(False)
+    #
+    # def _messageTextChanged(self):
+    #     action_text = self.actionComboBox.itemText(self.actionComboBox.currentIndex())
+    #     actiondetail_text = self.actionDetailComboBox.itemText(self.actionDetailComboBox.currentIndex())
+    #     userid_text = self.userIDLineEdit.text()
+    #     message_text = self.messageTextEdit.toPlainText()
+    #     if (len(message_text) != 0 and  action_text == "send_to" and ( actiondetail_text == "broadcast_message" or
+    #                                                                   len(userid_text) != 0 :
+    #         self.sendCMADPushButton.setEnabled(True)
+    #     else:
+    #         self.sendCMADPushButton.setEnabled(False)
 
     def _sendCMDButtonClicked(self):
         print("send_command")

@@ -1,5 +1,5 @@
 from datetime import timedelta, datetime
-from sql_queries import *
+from messages.sql_queries import *
 
 
 def save_message(msg, fname, sentdatetime, msgtype, parentid=None):
@@ -18,5 +18,10 @@ def get_next_id():
 
 
 def update_mailing_lists(msg_id, sentusrdict, failusrdict, pollresult, parent_id=None):
+    if not is_table_exist(MAILING_DATA_TABLE_NAME):
+        create_mailing_data_table()
     update_mailing_data(msg_id, sentusrdict, failusrdict, pollresult, parent_id)
 
+
+def get_mailing_lists(msg_id):
+    get_mailing_data(msg_id)
