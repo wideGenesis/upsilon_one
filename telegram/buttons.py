@@ -16,36 +16,43 @@ keyboard_forw2 = [
         Button.inline('\U000027A1  ' + 'Далее', b'forw2')
     ]
 ]
+
 keyboard_forw3 = [
     [
         Button.inline('\U000027A1  ' + 'Далее', b'forw3')
     ]
 ]
+
 keyboard_forw4 = [
     [
         Button.inline('\U000027A1  ' + 'Далее', b'forw4')
     ]
 ]
+
 keyboard_forw5 = [
     [
         Button.inline('\U000027A1  ' + 'Далее', b'forw5')
     ]
 ]
+
 keyboard_forw6 = [
     [
         Button.inline('\U000027A1  ' + 'Далее', b'forw6')
     ]
 ]
+
 keyboard_forw7 = [
     [
         Button.inline('\U000027A1  ' + 'Далее', b'forw7')
     ]
 ]
+
 keyboard_forw8 = [
     [
         Button.inline('\U000027A1  ' + 'Далее', b'forw8')
     ]
 ]
+
 keyboard_forw9 = [
     [
         Button.inline('\U0001F3AF  ' + 'Подобрать инвестиционое решение', b'forw9')
