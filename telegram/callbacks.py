@@ -920,3 +920,6 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
             dt_int = shared.datetime2int(dt)
             await sql.insert_into_payment_message(order_id, sender_id, msg_id, dt_int, engine)
 
+
+def update_poll(update, client, engine=engine):
+    pass

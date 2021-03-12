@@ -2,15 +2,13 @@ from telethon.tl.custom import Button
 from project_shared import *
 from random import choice
 
-
 lol = ['Подача напитков из улиток', 'Кот Да Винчи', 'Гос реестр порно', 'Орден Финансового Лосся', 'Шопот крыш',
        'Отделение пластики мозга', 'Моргаем диафрагмой', 'Мастерская Парики Трампа', 'Бар Финансовое воздержание']
 
 keyboard_start = [
-        [Button.text('Меню', resize=True), Button.text('Профиль', resize=True)],
+    [Button.text('Меню', resize=True), Button.text('Профиль', resize=True)],
     [Button.text(f'{choice(lol)}', resize=True)]
-    ]
-
+]
 
 keyboard_0 = [
     [
@@ -285,7 +283,6 @@ keyboard_screener_back = [
     ]
 ]
 
-
 keyboard_relations = [
     [
         Button.inline('\U0001F4EC  ' + 'Предложения и реклама', b'rel1')
@@ -306,7 +303,6 @@ keyboard_relations_back = [
         Button.inline('\U0001F519  ' + 'Назад', b'cm-6')
     ]
 ]
-
 
 # ============================== Кнопки подписок =============================
 keyboard_core_subscriptions = [

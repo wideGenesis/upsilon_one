@@ -81,9 +81,11 @@ def save_message_to_db(msg_id, body, fname, sent_dt, msgtype, parent_id, table_n
         with engine.connect() as connection:
             transaction = connection.begin()
             try:
+                p_id = f'\'{parent_id}\'' if parent_id is not None else 'NULL'
                 insert_query = f'INSERT INTO {table_name} (msg_id, body, fname, sent_dt, msgtype, parent_id) ' \
                                f'VALUES (\'{msg_id}\', ' \
-                               f'\'{body}\',\'{fname}\',\'{sent_dt}\',\'{msgtype}\',\'{parent_id}\')'
+                               f'\'{body}\',\'{fname}\',\'{sent_dt}\',\'{msgtype}\',' \
+                               f'{p_id})'
                 connection.execute(insert_query)
                 transaction.commit()
             except Exception as e:
@@ -167,7 +169,7 @@ def get_max_msg_id(table_name=MSG_TABLE_NAME, engine=engine):
             try:
                 sel_query = f'SELECT max(msg_id) FROM  {table_name} '
                 result = connection.execute(sel_query)
-                max_id = result.fetchone()
+                max_id = result.fetchone()[0] if result.fetchone()[0] is not None else 50
             except Exception as e:
                 debug(e, ERROR)
                 return max_id
