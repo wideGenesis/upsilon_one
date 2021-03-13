@@ -59,6 +59,8 @@ SQL_TABLE_NAMES:
   PORTFOLIO_BARS_TABLE_NAME: 'portfolio_bars'
   MSG_TABLE_NAME: 'bot_messages'
   MAILING_DATA_TABLE_NAME: 'bot_mailing_data'
+  USER_PROFILER_DATA_TABLE_NAME: 'user_profiler_data'
+  USER_PROFILER_MAP_TABLE_NAME: 'user_profiler_map'
 
 DIALOGFLOW:
   PROJECT_ID: 'common-bot-1'

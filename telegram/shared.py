@@ -17,12 +17,14 @@ def int2datetime(dt_int):
     return datetime.strptime(str(dt_int), "%Y%m%d%H%M%S")
 
 
-def save_old_message(user_id, msg):
+async def save_old_message(user_id, msg):
     msg_id = utils.get_message_id(msg)
+    global OLD_MESSAGE_MAP
     OLD_MESSAGE_MAP[user_id] = msg_id
 
 
 async def delete_old_message(client, user_id):
+    global OLD_MESSAGE_MAP
     old_msg_id = OLD_MESSAGE_MAP.get(user_id, None)
     if old_msg_id is not None:
         await client.delete_messages(user_id, old_msg_id)
@@ -30,6 +32,7 @@ async def delete_old_message(client, user_id):
 
 
 def pop_old_msg_id(user_id):
+    global OLD_MESSAGE_MAP
     OLD_MESSAGE_MAP.pop(user_id)
 
 

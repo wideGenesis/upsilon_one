@@ -16,6 +16,8 @@ from project_shared import *
 from telegram import instructions as ins
 from quotes.stock_quotes_news import fin_news
 from quotes.parsers import nyse_nasdaq_stat
+from messages.message import *
+from telethon.tl.types import InputMediaPoll, Poll, PollAnswer, DocumentAttributeFilename, DocumentAttributeVideo
 
 PAYMENT_AGGREGATOR = None
 PAYMENT_AGGREGATOR_TIMER = None
@@ -91,7 +93,7 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
         else:
             menu_msg = await client.send_message(event.input_sender, 'Главное меню', buttons=buttons.keyboard_0)
             await shared.delete_old_message(client, sender_id)
-            shared.save_old_message(sender_id, menu_msg)
+            await shared.save_old_message(sender_id, menu_msg)
 
     # ============================== Анализ рынков 2 уровень=============================
     elif event.data == b'a1a1':
@@ -100,7 +102,7 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
             await client.edit_message(event.input_sender, old_msg_id, 'Анализ США', buttons=buttons.keyboard_us_analysis)
         else:
             msg = await client.send_message(event.input_sender, 'Анализ США', buttons=buttons.keyboard_us_analysis)
-            shared.save_old_message(sender_id, msg)
+            await shared.save_old_message(sender_id, msg)
 
     elif event.data == b'us5x':
         await event.edit()
@@ -110,7 +112,7 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
         else:
             msg = await client.send_message(event.input_sender, 'Подробный анализ',
                                             buttons=buttons.keyboard_us_market)
-            shared.save_old_message(sender_id, msg)
+            await shared.save_old_message(sender_id, msg)
 
     elif event.data == b'us5z':
         await event.edit()
@@ -190,11 +192,11 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
             await client.edit_message(event.input_sender, old_msg_id, 'Основные макро индикаторы', buttons=buttons.keyboard_core_macro)
         else:
             msg = await client.send_message(event.input_sender, 'Основные макро индикаторы', buttons=buttons.keyboard_core_macro)
-            shared.save_old_message(sender_id, msg)
+            await shared.save_old_message(sender_id, msg)
     elif event.data == b'a1a-1':
         await event.edit()
         msg = await client.send_message(event.input_sender, 'Анализ рынков', buttons=buttons.keyboard_a1)
-        shared.save_old_message(sender_id, msg)
+        await shared.save_old_message(sender_id, msg)
 
     # ============================== Анализ рынков уровень 3 =============================
     elif event.data == b'us1':
@@ -432,7 +434,7 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
             await client.edit_message(event.input_sender, old_msg_id, 'Исторические тесты', buttons=buttons.keyboard_a2)
         else:
             msg = await client.send_message(event.input_sender, 'Исторические тесты', buttons=buttons.keyboard_a2)
-            shared.save_old_message(sender_id, msg)
+            await shared.save_old_message(sender_id, msg)
 
     # ============================== Управление =============================
     elif event.data == b'a4a1':
@@ -537,6 +539,10 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
         await client.send_message(entity, ins.hello_8, file=f'{PROJECT_HOME_DIR}/html/hello_8.jpg',
                                   buttons=buttons.keyboard_forw9)
 
+    elif event.data == b'forw9':
+        await event.edit()
+        await send_next_profiler_question(client, sender_id, 0)
+
     # ============================== Образовательные программы =============================
     elif event.data == b'a6a1':
         await event.edit()
@@ -587,7 +593,7 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
     elif event.data == b'a8a-1':
         await event.edit()
         msg = await client.send_message(event.input_sender, 'Агрегатор новостей', buttons=buttons.keyboard_a8)
-        shared.save_old_message(sender_id, msg)
+        await shared.save_old_message(sender_id, msg)
 
     # ============================== Основные макро данные =============================
     elif event.data == b'cm1':
@@ -955,3 +961,131 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
             dt_int = shared.datetime2int(dt)
             await sql.insert_into_payment_message(order_id, sender_id, msg_id, dt_int, engine)
 
+
+async def send_next_profiler_question(client, user_id, curr_num):
+    _poll_id = None
+    _question = None
+    _answers = None
+    _poll_id = get_next_id()
+    old_msg_id = await shared.get_old_msg_id(user_id)
+    if curr_num == 0:
+        _question = "Ваша цель:"
+        _answers = [PollAnswer("Общее благосостояние", b'1'),
+                    PollAnswer("Большие покупки - дом, машина", b'2'),
+                    PollAnswer("Учеба детей, свадьба", b'3'),
+                    PollAnswer("Пенсия", b'4'),
+                    PollAnswer("Пассивный доход", b'5')]
+    if curr_num == 1:
+        _question = "Что из перечисленного описывает вашу ситуацию:"
+        _answers = [PollAnswer('Я резидент СНГ, мой брокер из СНГ', b'1'),
+                    PollAnswer('Я резидент СНГ, мой брокер из ЕС', b'2'),
+                    PollAnswer('Я резидент СНГ, мой брокер из США', b'3'),
+                    PollAnswer('Я резидент ЕС, мой брокер из США', b'4'),
+                    PollAnswer('Я резидент ЕС, мой брокер из ЕС', b'5'),
+                    PollAnswer('Я резидент США, мой брокер из США', b'6'),
+                    PollAnswer('У меня нет брокерского счета и я резидент СНГ', b'7')]
+    if curr_num == 2:
+        _question = "Если у вас есть брокерский счет, можете ли вы покупать ETF-фонды"
+        _answers = [PollAnswer('Да', b'1'),
+                    PollAnswer('Нет', b'2'),
+                    PollAnswer('Незнаю', b'3')]
+    if curr_num == 3:
+        _question = "Нуждаетесь ли вы в средствах выделенных для инвестиций?"
+        _answers = [PollAnswer('Да,эти средства могут понадобиться', b'1'),
+                    PollAnswer('Нет, это свободные средства', b'2')]
+    if curr_num == 4:
+        _question = "Планируете ли Вы выводить деньги с брокерского счета?"
+        _answers = [PollAnswer('Да, регулярно', b'1'),
+                    PollAnswer('Иногда, по случаю', b'2'),
+                    PollAnswer('Нет', b'3')]
+    if curr_num == 5:
+        _question = "Будете ли Вы делать дополнительные вложения?"
+        _answers = [PollAnswer('Да, регулярно', b'1'),
+                    PollAnswer('Иногда, по случаю', b'2'),
+                    PollAnswer('Дополнительных вложений не планирую', b'3')]
+    if curr_num == 6:
+        _question = "Срок вложений"
+        _answers = [PollAnswer('Меньше года', b'1'),
+                    PollAnswer('1-3 года', b'2'),
+                    PollAnswer('3-5 лет', b'3'),
+                    PollAnswer('5-10 лет', b'4'),
+                    PollAnswer('Более 10 лет', b'5')]
+    if curr_num == 7:
+        _question = "Как часто Вы будете заниматься портфелем?"
+        _answers = [PollAnswer('Ежедневно', b'1'),
+                    PollAnswer('Ежемесячно', b'2'),
+                    PollAnswer('Когда нужно', b'3'),
+                    PollAnswer('По случаю', b'4')]
+    if curr_num == 8:
+        _question = "Какую доходность ожидаете?"
+        _answers = [PollAnswer('Выше уровня инфляции', b'1'),
+                    PollAnswer('10%', b'2'),
+                    PollAnswer('10-15%', b'3'),
+                    PollAnswer('15-20%', b'4'),
+                    PollAnswer('Более 20%', b'5')]
+    if curr_num == 9:
+        _question = "Потеря какой части вашего вклада будет катастрофической?"
+        _answers = [PollAnswer('От -5% до -10%', b'1'),
+                    PollAnswer('От -10% до -20%', b'2'),
+                    PollAnswer('От -20% до -35%', b'3'),
+                    PollAnswer('От -35% до -50%', b'4'),
+                    PollAnswer('До -75', b'5')]
+    if curr_num == 10:
+        _question = "Убыток в 20% от размера вашего вклада это:"
+        _answers = [PollAnswer('Ничего страшного', b'1'),
+                    PollAnswer('Терпимо', b'2'),
+                    PollAnswer('Не приемлемо', b'3')]
+    if curr_num == 11:
+        _question = "Ваши действия во время просадки на рынке в 15%:"
+        _answers = [PollAnswer('Не знаю', b'1'),
+                    PollAnswer('Ничего не сделаю', b'2'),
+                    PollAnswer('Продам все', b'3'),
+                    PollAnswer('Продам часть', b'4'),
+                    PollAnswer('Продам убыточные', b'5'),
+                    PollAnswer('Продам прибыльные', b'6'),
+                    PollAnswer('Докуплю', b'7'),
+                    PollAnswer('Что-то продам и что-то докуплю', b'8')]
+    if curr_num == 12:
+        _question = "Вы предпочти бы акции:"
+        _answers = [PollAnswer('С доходностью в 20% годовых, но ранее эти акции падали на -50%', b'1'),
+                    PollAnswer('С доходностью в 15% годовых, но ранее эти акции падали на -20%', b'2'),
+                    PollAnswer('С доходностью в 150% годовых, но ранее эти акции падали на -70%', b'3'),
+                    PollAnswer('С доходностью в 10% годовых, но ранее эти акции падали на -10%', b'4')]
+    if curr_num == 13:
+        _question = "Вы предпочитаете:"
+        _answers = [PollAnswer('Гарантированные 50% от вашей суммы через 3 года', b'1'),
+                    PollAnswer('35% - 80% через  5лет, но без гарантий, но не менее 35%', b'2')]
+    poll = Poll(id=_poll_id,
+                question=_question,
+                answers=_answers)
+    input_media_poll = InputMediaPoll(poll)
+    poll_msg = None
+    if old_msg_id is not None:
+        await shared.delete_old_message(client, user_id)
+        poll_msg = await client.send_message(user_id, file=input_media_poll)
+        await shared.save_old_message(user_id, poll_msg)
+        pass
+    else:
+        poll_msg = await client.send_message(user_id, file=input_media_poll)
+    real_poll_id = poll_msg.media.poll.id
+    update_user_profiler_map(user_id, real_poll_id, curr_num+1)
+    if curr_num == 0:
+        await shared.save_old_message(user_id, poll_msg)
+
+
+async def update_poll(update, client):
+    poll_id = update.poll_id
+    user_id, qnumber = get_userid_by_pollid(poll_id)
+    if user_id is not None:
+        if qnumber < 13:
+            await send_next_profiler_question(client, user_id, qnumber)
+        else:
+            old_msg_id = await shared.get_old_msg_id(user_id)
+            if old_msg_id is not None:
+                await shared.delete_old_message(client, user_id)
+                main_menu_msg = await client.send_message(user_id, 'Главное меню', buttons=buttons.keyboard_0)
+                await shared.save_old_message(user_id, main_menu_msg)
+            else:
+                menu_msg = await client.send_message(user_id, 'Главное меню', buttons=buttons.keyboard_0)
+                await shared.delete_old_message(client, user_id)
+                await shared.save_old_message(user_id, menu_msg)

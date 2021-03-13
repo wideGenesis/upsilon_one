@@ -433,14 +433,17 @@ async def send_broadcast_message(clnt, engine, msg):
 
 
 async def send_broadcast_poll(clnt):
-    _question = "###1 Вы хотите что бы поллы нормально  ложились в базу? :-)))"
+    _question = "###3 Тест  полла с выбором из 4х вариантов? :-)))"
     _poll_id = get_next_id()
-    _answers = [PollAnswer('Yes', b'1'), PollAnswer('No', b'2')]
-    _answersdict = {"Yes": 1, "No": 2}
+    _answers = [PollAnswer('Answer1', b'1'),
+                PollAnswer('Answer2', b'2'),
+                PollAnswer('Answer3', b'3'),
+                PollAnswer('Answer4', b'4')]
+    _answersdict = {"Answer1": 1, "Answer2": 2, "Answer3": 3, "Answer4": 4}
     poll = Poll(id=_poll_id,
                 question=_question,
                 answers=_answers)
-    input_nedia_poll = InputMediaPoll(poll)
+    input_media_poll = InputMediaPoll(poll)
     users = await get_all_users(engine)
     succsess_message_log = "messages_send.log"
     fail_message_log = "messages_fail.log"
@@ -458,15 +461,17 @@ async def send_broadcast_poll(clnt):
     fail_users_dict = {}
     for user_id in users:
         try:
-            await clnt.send_message(user_id, file=input_nedia_poll)
+            pll = await clnt.send_message(user_id, file=input_media_poll)
+            real_poll_id = pll.media.poll.id
+            debug(f'user_id:{user_id}  poll_id:{real_poll_id}', WARNING)
             dt = datetime.datetime.now()
             sm_log_file.write(f'[{dt.strftime("%H:%M:%S")}]:{user_id}\n')
-            sent_users_dict[user_id] = dt
+            sent_users_dict[user_id] = dt.strftime("%Y-%m-%d %H:%M:%S")
         except Exception as e:
             debug(e, ERROR)
             dt = datetime.datetime.now()
             fm_log_file.write(f'[{dt.strftime("%H:%M:%S")}]:{user_id}\n')
-            fail_users_dict[user_id] = dt
+            fail_users_dict[user_id] = dt.strftime("%Y-%m-%d %H:%M:%S")
     update_mailing_lists(msg_id, sent_users_dict, fail_users_dict, {})
     sm_log_file.close()
     fm_log_file.close()

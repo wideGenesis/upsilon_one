@@ -102,11 +102,11 @@ async def callback(event):
 
 @client.on(events.Raw)
 async def handler(update):
-    if not update.message.poll:
-        return
-    else:
+    try:
+        poll = update.poll
         await callbacks.update_poll(update, client)
-    debug(update.stringify())
+    except:
+        return
 
 
 # ============================== Instructions ===============================

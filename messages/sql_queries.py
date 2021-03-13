@@ -83,7 +83,7 @@ def save_message_to_db(msg_id, body, fname, sent_dt, msgtype, parent_id, table_n
             try:
                 sbody = ""
                 if msgtype == POLL_MESSAGE_TYPE:
-                    sbody = json.dumps(body)
+                    sbody = json.dumps(body, ensure_ascii=False, encoding='utf8')
                 else:
                     sbody = body
                 insert_query = f'INSERT INTO {table_name} (msg_id, body, fname, sent_dt, msgtype, parent_id) ' \
@@ -153,15 +153,20 @@ def update_mailing_data(msg_id, sentusrdict, failusrdict, pollresult, parent_id,
             if len(pollresult) > 0:
                 presult.update(pollresult) # TODO переделать - надо просто инкрементить результаты, а не заменять их
             try:
-                json_sentusr = json.dumps(susrdict)
-                json_failusr = json.dumps(fusrdict)
-                json_pollresult = json.dumps(presult)
+                json_sentusr = ''
+                if len(susrdict) > 0:
+                    json_sentusr = json.dumps(susrdict)
+                json_failusr = ''
+                if len(fusrdict) > 0:
+                    json_failusr = json.dumps(fusrdict)
+                json_pollresult = ''
+                if len(presult) > 0:
+                    json_pollresult = json.dumps(presult)
                 update_query = f'UPDATE {table_name} ' \
-                               f'SET sent_usrlist=\'{json_sentusr}\' ' \
-                               f'fail_usrlist=\'{json_failusr}\' ' \
+                               f'SET sent_usrlist=\'{json_sentusr}\', ' \
+                               f'fail_usrlist=\'{json_failusr}\', ' \
                                f'poll_result=\'{json_pollresult}\'' \
-                               f'VALUES (\'{msg_id}\', ' \
-                               f'\'{json_sentusr}\',\'{json_failusr}\',\'{json_pollresult}\')'
+                               f'WHERE msg_id=\'{msg_id}\''
                 connection.execute(update_query)
                 transaction.commit()
             except Exception as e:
@@ -183,3 +188,102 @@ def get_max_msg_id(table_name=MSG_TABLE_NAME, engine=engine):
                 return max_id
         return max_id
 
+
+# ================================= П р о ф а й л е р =================================
+def create_user_profiler_data_table(table_name=USER_PROFILER_DATA_TABLE_NAME, engine=engine):
+    with engine.connect() as connection:
+        if not is_table_exist(table_name):
+            transaction = connection.begin()
+            try:
+                create_query = f'CREATE TABLE {table_name} ' \
+                               f'(usr_id BIGINT NOT NULL, ' \
+                               f'answers_list TEXT, ' \
+                               f'final_score INT NOT_NULL, ' \
+                               f'PRIMARY KEY(usr_id)' \
+                               f')'
+                connection.execute(create_query)
+            except Exception as e:
+                debug(e, ERROR)
+                transaction.rollback()
+            transaction.commit()
+
+
+def create_user_profiler_map_table(table_name=USER_PROFILER_MAP_TABLE_NAME, engine=engine):
+    with engine.connect() as connection:
+        if not is_table_exist(table_name):
+            transaction = connection.begin()
+            try:
+                create_query = f'CREATE TABLE {table_name} ' \
+                               f'(usr_id BIGINT NOT NULL, ' \
+                               f'send_poll_id VARCHAR(100), ' \
+                               f'qnumber INT NOT NULL, ' \
+                               f'PRIMARY KEY(usr_id)' \
+                               f')'
+                connection.execute(create_query)
+            except Exception as e:
+                debug(e, ERROR)
+                transaction.rollback()
+            transaction.commit()
+
+
+def user_profiler_data_lookup(usr_id, table_name=USER_PROFILER_DATA_TABLE_NAME, engine=engine) -> bool:
+    with engine.connect() as connection:
+        try:
+            query_string = f'SELECT * FROM {table_name} WHERE usr_id = \'{usr_id}\' LIMIT 1'
+            result = connection.execute(query_string)
+            return True if result.rowcount > 0 else False
+        except:
+            return False
+
+
+def user_profiler_map_lookup(usr_id, table_name=USER_PROFILER_MAP_TABLE_NAME, engine=engine) -> bool:
+    with engine.connect() as connection:
+        try:
+            query_string = f'SELECT * FROM {table_name} WHERE usr_id = \'{usr_id}\' LIMIT 1'
+            result = connection.execute(query_string)
+            return True if result.rowcount > 0 else False
+        except:
+            return False
+
+
+def get_userid_by_pollid(poll_id, table_name=USER_PROFILER_MAP_TABLE_NAME, engine=engine):
+    with engine.connect() as connection:
+        usr_id = None
+        qnumber = None
+        try:
+            query_string = f'SELECT usr_id, qnumber FROM {table_name} WHERE send_poll_id=\'{str(poll_id)}\''
+            result = connection.execute(query_string)
+            if result.rowcount > 0:
+                row = result.fetchone()
+                usr_id = row[0]
+                qnumber = row[1]
+        except:
+            return usr_id, qnumber
+        return usr_id, qnumber
+
+
+def update_user_profiler_map(usr_id, poll_id, qnumber, table_name=USER_PROFILER_MAP_TABLE_NAME, engine=engine):
+    with engine.connect() as connection:
+        if not is_table_exist(USER_PROFILER_MAP_TABLE_NAME):
+            create_user_profiler_map_table()
+
+        transaction = connection.begin()
+        if user_profiler_map_lookup(usr_id):
+            try:
+                del_query = f'DELETE FROM {table_name} WHERE usr_id=\'{usr_id}\''
+                connection.execute(del_query)
+            except Exception as e:
+                debug(e, ERROR)
+                transaction.rollback()
+                return
+        try:
+            insert_query = f'INSERT INTO {table_name} ' \
+                           f'(usr_id, send_poll_id, qnumber) ' \
+                           f'VALUES (\'{usr_id}\', ' \
+                           f'\'{str(poll_id)}\',\'{qnumber}\')'
+            connection.execute(insert_query)
+            transaction.commit()
+        except Exception as e:
+            debug(e, ERROR)
+            transaction.rollback()
+            return
