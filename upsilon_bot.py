@@ -88,7 +88,7 @@ async def quotes_to(event):
     await handlers.quotes_to_handler(event, client, limit=0)
 
 
-@client.on(events.NewMessage(pattern='/n'))
+@client.on(events.NewMessage(pattern='news'))
 async def news_to(event):
     await handlers.news_to_handler(event, client, limit=0)
 
