@@ -12,6 +12,7 @@ keyboard_start = [
     [Button.text('Информация', resize=True), Button.text(f'{choice(lol)}', resize=True)]
     ]
 
+# Кнопки вперед для презентации
 keyboard_forw2 = [
     [
         Button.inline('\U000027A1  ' + 'Далее', b'forw2')
@@ -66,6 +67,7 @@ keyboard_forw9 = [
     ]
 ]
 
+
 keyboard_0 = [
     [
         Button.inline('\U0001F52C   ' + 'Анализ рынков', b'a1')
@@ -78,12 +80,6 @@ keyboard_0 = [
     ],
     [
         Button.inline('\U0001F4F0   ' + 'Лента новостей', b'a8')
-    ],
-    [
-        Button.inline('\U000026D1   ' + 'Инструкции', b'a5')
-    ],
-    [
-        Button.inline('\U0001F91D   ' + 'Сотрудничество', b'a20')
     ]
 ]
 
@@ -340,27 +336,29 @@ keyboard_screener_back = [
 ]
 
 
-keyboard_relations = [
+keyboard_info = [
+    [
+        Button.inline('\U000026D1   ' + 'Инструкции', b'a5')
+    ],
+    [
+        Button.inline('\U0001F6E1   ' + 'Регистрация управляющего', b'rel1')
+    ],
     [
         Button.inline('\U0001F4EC  ' + 'Предложения и реклама', b'rel1')
     ],
     [
-        Button.inline('\U0001F6E1   ' + 'Регистрация управляющего', b'rel2')
-    ],
-    [
-        Button.inline('\U000026A0   ' + 'Сообщить об ошибке', b'rel3')
+        Button.inline('\U000026A0   ' + 'Сообщить об ошибке', b'rel1')
     ],
     [
         Button.inline('\U0001F519  ' + 'Назад', b'main')
     ]
 ]
 
-keyboard_relations_back = [
+keyboard_info_back = [
     [
-        Button.inline('\U0001F519  ' + 'Назад', b'cm-6')
+        Button.inline('\U0001F519  ' + 'Назад', b'info_back')
     ]
 ]
-
 
 # ============================== Кнопки подписок =============================
 keyboard_core_subscriptions = [
@@ -411,86 +409,20 @@ keyboard_subscription_professional = [
     ]
 ]
 
-keyboard_risk_profile = [
-    [
-        Button.inline('\U0001F3E6  ' + 'Спекулятивный рост', b'rp1')
-    ],
-    [
-        Button.inline('\U0001F3E6  ' + 'Агрессивный рост', b'rp2')
-    ],
-    [
-        Button.inline('\U0001F3E6  ' + 'Умеренный рост', b'rp3')
-    ],
-    [
-        Button.inline('\U0001F3E6  ' + 'Острожный рост', b'rp4')
-    ],
-    [
-        Button.inline('\U0001F3E6  ' + 'Сохранение капитала', b'rp5')
-    ],
-    [
-        Button.inline('\U0001F3E6  ' + 'Рост и обеспечение текущих расходов.', b'rp6')
-    ]
-]
-
-keyboard_financial_state = [
-    [
-        Button.inline('\U0001F3E6  ' + '$0 - $100,000', b'fs1')
-    ],
-    [
-        Button.inline('\U0001F3E6  ' + '$100,000 - $1,000000', b'fs2')
-    ],
-    [
-        Button.inline('\U0001F3E6  ' + '$1,000000 - $5,000000', b'fs3')
-    ],
-    [
-        Button.inline('\U0001F3E6  ' + 'более $5,000000', b'fs4')
-    ]
-]
-
-keyboard_horizon = [
-    [
-        Button.inline('\U0001F3E6  ' + '1 год', b'hr1')
-    ],
-    [
-        Button.inline('\U0001F3E6  ' + 'от 1 до 2 лет', b'hr2')
-    ],
-    [
-        Button.inline('\U0001F3E6  ' + 'от 3 до 5 лет', b'hr3')
-    ],
-    [
-        Button.inline('\U0001F3E6  ' + 'более 5 лет', b'hr4')
-    ]
-]
-
-keyboard_return = [
-    [
-        Button.inline('\U0001F3E6  ' + 'до 5%', b'ret1')
-    ],
-    [
-        Button.inline('\U0001F3E6  ' + 'до 10%', b'ret2')
-    ],
-    [
-        Button.inline('\U0001F3E6  ' + 'до 15%', b'ret3')
-    ],
-    [
-        Button.inline('\U0001F3E6  ' + 'свыше 15%', b'ret4')
-    ]
-]
-
-keyboard_managed_strategies = [
-    [
-        Button.inline('\U0001F3E6  ' + 'Парковочный портфель', b'sac1')
-    ],
-    [
-        Button.inline('\U0001F3E6  ' + 'Сбалансированный портфель', b'sac2')
-    ],
-    [
-        Button.inline('\U0001F3E6  ' + 'Агрессивный', b'sac3')
-    ],
-    [
-        Button.inline('\U0001F519  ' + 'Назад', b'sacback')
-    ]
-]
+# keyboard_managed_strategies = [
+#     [
+#         Button.inline('\U0001F3E6  ' + 'Парковочный портфель', b'sac1')
+#     ],
+#     [
+#         Button.inline('\U0001F3E6  ' + 'Сбалансированный портфель', b'sac2')
+#     ],
+#     [
+#         Button.inline('\U0001F3E6  ' + 'Агрессивный', b'sac3')
+#     ],
+#     [
+#         Button.inline('\U0001F519  ' + 'Назад', b'sacback')
+#     ]
+# ]
 
 
 def generate_payment_button(kbd_label=None, payment_link=None):

@@ -67,6 +67,10 @@ async def portfolios(event):
     await client.send_message(event.input_sender, 'Портфели', buttons=buttons.keyboard_a2)
 
 
+@client.on(events.NewMessage(pattern='Информация|инфомация|инфо|Инфо'))
+async def information(event):
+    await client.send_message(event.input_sender, 'Информация', buttons=buttons.keyboard_info)
+
 # ============================== Commands ===============================
 @client.on(events.NewMessage(pattern='/to'))  # TODO Сделать блокирующую функцию для ДФ
 async def send_to(event):

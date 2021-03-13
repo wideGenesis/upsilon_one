@@ -32,9 +32,6 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
     old_msg_id = await shared.get_old_msg_id(sender_id)
 
     # ============================== Главное меню 1 уровень=============================
-    # message = await client.send_message(entity=entity, message='Загрузка...')
-    # await client.delete_messages(event.input_sender, message)
-
     if event.data == b'a1':
         await event.edit()
         if old_msg_id is not None:
@@ -76,14 +73,6 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
             await client.edit_message(event.input_sender, old_msg_id, 'Лента новостей', buttons=buttons.keyboard_a8)
         else:
             msg = await client.send_message(event.input_sender, 'Лента новостей', buttons=buttons.keyboard_a8)
-            await shared.save_old_message(sender_id, msg)
-
-    elif event.data == b'a20':
-        await event.edit()
-        if old_msg_id is not None:
-            await client.edit_message(event.input_sender, old_msg_id, 'Сотрудничество', buttons=buttons.keyboard_relations)
-        else:
-            msg = await client.send_message(event.input_sender, 'Сотрудничество', buttons=buttons.keyboard_relations)
             await shared.save_old_message(sender_id, msg)
 
     elif event.data == b'main':
@@ -377,6 +366,7 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
         await client.send_message(event.input_sender, 'Кому и когда покупать агрессивный портфель? \n'
                                                       '/instruction17 \n End of Day График - /chart_aggressive',
                                   buttons=buttons.keyboard_a3_back)
+
     elif event.data == b'a2a7':
         await event.edit()
         await shared.delete_old_message(client, sender_id)
@@ -437,46 +427,42 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
             await shared.save_old_message(sender_id, msg)
 
     # ============================== Управление =============================
-    elif event.data == b'a4a1':
-        risk_profile = sql.risk_data_lookup(event.original_update.peer.user_id, engine)
-        if risk_profile:
-            await event.edit()
-            await client.send_message(event.input_sender, 'Доступные портфели', buttons=buttons.keyboard_managed_strategies)
-        else:
-
-            message = await client.send_message(entity=entity, message='Загрузка...')
-            await client.edit_message(message, ' Для доступа к портфелям управляющих необходимо '
-                                               'определить ваш уровень терпимости к риску')
-            await client.send_message(event.input_sender, 'Выберите наиболее подходящий вариант для вас \n \n'
-                                      + ins.instruction25, buttons=buttons.keyboard_risk_profile)
+    # elif event.data == b'a4a1':
+    #     risk_profile = sql.risk_data_lookup(event.original_update.peer.user_id, engine)
+    #     if risk_profile:
+    #         await event.edit()
+    #         await client.send_message(event.input_sender, 'Доступные портфели', buttons=buttons.keyboard_managed_strategies)
+    #     else:
+    #
+    #         message = await client.send_message(entity=entity, message='Загрузка...')
+    #         await client.edit_message(message, ' Для доступа к портфелям управляющих необходимо '
+    #                                            'определить ваш уровень терпимости к риску')
+    #         await client.send_message(event.input_sender, 'Выберите наиболее подходящий вариант для вас \n \n'
+    #                                   + ins.instruction25, buttons=buttons.keyboard_risk_profile)
 
     elif event.data == b'rel1':
         await event.edit()
         await shared.delete_old_message(client, sender_id)
         message = await client.send_message(entity=entity, message='Загрузка...')
-        await client.edit_message(message, 'Предложения и реклама')
+        await client.edit_message(message, 'Заглушка')
         await client.send_message(event.input_sender, ins.managers_form,
-                                  buttons=buttons.keyboard_relations_back)
-
-    elif event.data == b'rel2':
-        await event.edit()
-        await shared.delete_old_message(client, sender_id)
-        message = await client.send_message(entity=entity, message='Загрузка...')
-        await client.edit_message(message, 'Регистрация управляющего')
-        await client.send_message(event.input_sender, ins.managers_form,
-                                  buttons=buttons.keyboard_relations_back)
-
-    elif event.data == b'rel3':
-        await event.edit()
-        await shared.delete_old_message(client, sender_id)
-        message = await client.send_message(entity=entity, message='Загрузка...')
-        await client.edit_message(message, 'Сообщить об ошибке')
-        await client.send_message(event.input_sender, ins.managers_form,
-                                  buttons=buttons.keyboard_relations_back)
-
-    # elif event.data == b'a4a-0':
+                                  buttons=buttons.keyboard_info_back)
+    #
+    # elif event.data == b'rel2':
     #     await event.edit()
-    #     await client.send_message(event.input_sender, 'Регистрация управляющего', buttons=buttons.keyboard_a4)
+    #     await shared.delete_old_message(client, sender_id)
+    #     message = await client.send_message(entity=entity, message='Загрузка...')
+    #     await client.edit_message(message, 'Регистрация управляющего')
+    #     await client.send_message(event.input_sender, ins.managers_form,
+    #                               buttons=buttons.keyboard_relations_back)
+    #
+    # elif event.data == b'rel3':
+    #     await event.edit()
+    #     await shared.delete_old_message(client, sender_id)
+    #     message = await client.send_message(entity=entity, message='Загрузка...')
+    #     await client.edit_message(message, 'Сообщить об ошибке')
+    #     await client.send_message(event.input_sender, ins.managers_form,
+    #                               buttons=buttons.keyboard_relations_back)
 
     elif event.data == b'sac1':
         await event.edit()
@@ -486,6 +472,7 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
         await client.send_message(event.input_sender, 'О доверительном управлении \n'
                                                       '/instruction26',
                                   buttons=buttons.keyboard_managed_strategies)
+
     elif event.data == b'sac2':
         await event.edit()
         message = await client.send_message(entity=entity, message='Загрузка...')
@@ -538,33 +525,32 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
                                   buttons=buttons.keyboard_start)
         await client.send_message(entity, ins.hello_8, file=f'{PROJECT_HOME_DIR}/html/hello_8.jpg',
                                   buttons=buttons.keyboard_forw9)
-
     elif event.data == b'forw9':
         await event.edit()
         await send_next_profiler_question(client, sender_id, 0)
 
     # ============================== Образовательные программы =============================
-    elif event.data == b'a6a1':
-        await event.edit()
-        message = await client.send_message(entity=entity, message='Загрузка...')
-        await client.edit_message(message, 'Основы инвестирования')
-        await client.send_message(event.input_sender, 'Основы инвестирования /instruction20',
-                                  buttons=buttons.keyboard_a6_back)
-    elif event.data == b'a6a2':
-        await event.edit()
-        message = await client.send_message(entity=entity, message='Загрузка...')
-        await client.edit_message(message, 'Как собрать свой первый портфель')
-        await client.send_message(event.input_sender, 'Как собрать свой первый портфель /instruction21',
-                                  buttons=buttons.keyboard_a6_back)
-    elif event.data == b'a6a3':
-        await event.edit()
-        message = await client.send_message(entity=entity, message='Загрузка...')
-        await client.edit_message(message, 'Профессиональные решения')
-        await client.send_message(event.input_sender, 'Профессиональные решения /instruction22',
-                                  buttons=buttons.keyboard_a6_back)
-    elif event.data == b'a6a-1':
-        await event.edit()
-        await client.send_message(event.input_sender, 'Образование', buttons=buttons.keyboard_a6)
+    # elif event.data == b'a6a1':
+    #     await event.edit()
+    #     message = await client.send_message(entity=entity, message='Загрузка...')
+    #     await client.edit_message(message, 'Основы инвестирования')
+    #     await client.send_message(event.input_sender, 'Основы инвестирования /instruction20',
+    #                               buttons=buttons.keyboard_a6_back)
+    # elif event.data == b'a6a2':
+    #     await event.edit()
+    #     message = await client.send_message(entity=entity, message='Загрузка...')
+    #     await client.edit_message(message, 'Как собрать свой первый портфель')
+    #     await client.send_message(event.input_sender, 'Как собрать свой первый портфель /instruction21',
+    #                               buttons=buttons.keyboard_a6_back)
+    # elif event.data == b'a6a3':
+    #     await event.edit()
+    #     message = await client.send_message(entity=entity, message='Загрузка...')
+    #     await client.edit_message(message, 'Профессиональные решения')
+    #     await client.send_message(event.input_sender, 'Профессиональные решения /instruction22',
+    #                               buttons=buttons.keyboard_a6_back)
+    # elif event.data == b'a6a-1':
+    #     await event.edit()
+    #     await client.send_message(event.input_sender, 'Образование', buttons=buttons.keyboard_a6)
 
     # ============================== Агрегатор новостей =============================
     elif event.data == b'a9a1':
@@ -672,10 +658,10 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
         msg = await client.send_message(event.input_sender, 'Исторические тесты', buttons=buttons.keyboard_a2)
         await shared.save_old_message(sender_id, msg)
 
-    elif event.data == b'cm-6':
-        await event.edit()
-        msg = await client.send_message(event.input_sender, 'Сотрудничество', buttons=buttons.keyboard_relations)
-        await shared.save_old_message(sender_id, msg)
+    # elif event.data == b'cm-6':
+    #     await event.edit()
+    #     msg = await client.send_message(event.input_sender, 'Сотрудничество', buttons=buttons.keyboard_relations)
+    #     await shared.save_old_message(sender_id, msg)
 
     elif event.data == b'z2':
         await event.edit()
@@ -686,191 +672,11 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
                                   f'[https://t.me/UpsilonBot?start={sender_id}]'
                                   f'(https://t.me/UpsilonBot?start={sender_id})')
 
-        # ============================== Risk Profile =============================
-    elif event.data == b'rp1':
+    elif event.data == b'info_back':
         await event.edit()
+        msg = await client.send_message(event.input_sender, 'Информация', buttons=buttons.keyboard_info)
+        await shared.save_old_message(sender_id, msg)
 
-        user_profile = await sql.user_search(event.original_update.peer.user_id, engine)
-        update = str(event.data)
-        update = update.strip("b'")
-        await sql.db_save_risk_profile(update, user_profile[1], engine)
-        await client.send_message(event.input_sender,
-                                  message='Укажите примерную стоимость средств выделенных для инвестирования',
-                                  buttons=buttons.keyboard_financial_state)
-
-    elif event.data == b'rp2':
-        await event.edit()
-
-        user_profile = await sql.user_search(event.original_update.peer.user_id, engine)
-        update = str(event.data)
-        update = update.strip("b'")
-        await sql.db_save_risk_profile(update, user_profile[1], engine)
-        await client.send_message(event.input_sender,
-                                  message='Укажите примерную стоимость средств выделенных для инвестирования',
-                                  buttons=buttons.keyboard_financial_state)
-    elif event.data == b'rp3':
-        await event.edit()
-
-        user_profile = await sql.user_search(event.original_update.peer.user_id, engine)
-        update = str(event.data)
-        update = update.strip("b'")
-        await sql.db_save_risk_profile(update, user_profile[1], engine)
-        await client.send_message(event.input_sender,
-                                  message='Укажите примерную стоимость средств выделенных для инвестирования',
-                                  buttons=buttons.keyboard_financial_state)
-    elif event.data == b'rp4':
-        await event.edit()
-
-        user_profile = await sql.user_search(event.original_update.peer.user_id, engine)
-        update = str(event.data)
-        update = update.strip("b'")
-        await sql.db_save_risk_profile(update, user_profile[1], engine)
-        await client.send_message(event.input_sender,
-                                  message='Укажите примерную стоимость средств выделенных для инвестирования',
-                                  buttons=buttons.keyboard_financial_state)
-    elif event.data == b'rp5':
-        await event.edit()
-
-        user_profile = await sql.user_search(event.original_update.peer.user_id, engine)
-        update = str(event.data)
-        update = update.strip("b'")
-        await sql.db_save_risk_profile(update, user_profile[1], engine)
-        await client.send_message(event.input_sender,
-                                  message='Укажите примерную стоимость средств выделенных для инвестирования',
-                                  buttons=buttons.keyboard_financial_state)
-    elif event.data == b'rp6':
-        await event.edit()
-
-        user_profile = await sql.user_search(event.original_update.peer.user_id, engine)
-        update = str(event.data)
-        update = update.strip("b'")
-        await sql.db_save_risk_profile(update, user_profile[1], engine)
-        await client.send_message(event.input_sender,
-                                  message='Укажите примерную стоимость средств выделенных для инвестирования',
-                                  buttons=buttons.keyboard_financial_state)
-
-    elif event.data == b'fs1':
-        await event.edit()
-
-        user_profile = await sql.user_search(event.original_update.peer.user_id, engine)
-        update = str(event.data)
-        update = update.strip("b'")
-        await sql.db_save_risk_profile(update, user_profile[1], engine)
-        await client.send_message(event.input_sender,
-                                  message=ins.msg_fs,
-                                  buttons=buttons.keyboard_horizon)
-    elif event.data == b'fs2':
-        await event.edit()
-
-        user_profile = await sql.user_search(event.original_update.peer.user_id, engine)
-        update = str(event.data)
-        update = update.strip("b'")
-        await sql.db_save_risk_profile(update, user_profile[1], engine)
-        await client.send_message(event.input_sender,
-                                  message=ins.msg_fs,
-                                  buttons=buttons.keyboard_horizon)
-    elif event.data == b'fs3':
-        await event.edit()
-
-        user_profile = await sql.user_search(event.original_update.peer.user_id, engine)
-        update = str(event.data)
-        update = update.strip("b'")
-        await sql.db_save_risk_profile(update, user_profile[1], engine)
-        await client.send_message(event.input_sender,
-                                  message=ins.msg_fs,
-                                  buttons=buttons.keyboard_horizon)
-    elif event.data == b'fs4':
-        await event.edit()
-
-        user_profile = await sql.user_search(event.original_update.peer.user_id, engine)
-        update = str(event.data)
-        update = update.strip("b'")
-        await sql.db_save_risk_profile(update, user_profile[1], engine)
-        await client.send_message(event.input_sender,
-                                  message=ins.msg_fs,
-                                  buttons=buttons.keyboard_horizon)
-
-    elif event.data == b'hr1':
-        await event.edit()
-
-        user_profile = await sql.user_search(event.original_update.peer.user_id, engine)
-        update = str(event.data)
-        update = update.strip("b'")
-        await sql.db_save_risk_profile(update, user_profile[1], engine)
-        await client.send_message(event.input_sender,
-                                  message=ins.msg_hr,
-                                  buttons=buttons.keyboard_return)
-    elif event.data == b'hr2':
-        await event.edit()
-
-        user_profile = await sql.user_search(event.original_update.peer.user_id, engine)
-        update = str(event.data)
-        update = update.strip("b'")
-        await sql.db_save_risk_profile(update, user_profile[1], engine)
-        await client.send_message(event.input_sender,
-                                  message=ins.msg_hr,
-                                  buttons=buttons.keyboard_return)
-    elif event.data == b'hr3':
-        await event.edit()
-
-        user_profile = await sql.user_search(event.original_update.peer.user_id, engine)
-        update = str(event.data)
-        update = update.strip("b'")
-        await sql.db_save_risk_profile(update, user_profile[1], engine)
-        await client.send_message(event.input_sender,
-                                  message=ins.msg_hr,
-                                  buttons=buttons.keyboard_return)
-    elif event.data == b'hr4':
-        await event.edit()
-
-        user_profile = await sql.user_search(event.original_update.peer.user_id, engine)
-        update = str(event.data)
-        update = update.strip("b'")
-        await sql.db_save_risk_profile(update, user_profile[1], engine)
-        await client.send_message(event.input_sender,
-                                  message=ins.msg_hr,
-                                  buttons=buttons.keyboard_return)
-
-    elif event.data == b'ret1':
-        await event.edit()
-
-        await client.send_message(event.input_sender,
-                                  message=ins.msg_ret,
-                                  buttons=buttons.keyboard_a4)
-    elif event.data == b'ret2':
-        await event.edit()
-
-        user_profile = await sql.user_search(event.original_update.peer.user_id, engine)
-        update = str(event.data)
-        update = update.strip("b'")
-        await sql.db_save_risk_profile(update, user_profile[1], engine)
-        await client.send_message(event.input_sender,
-                                  message=ins.msg_ret,
-                                  buttons=buttons.keyboard_a4)
-    elif event.data == b'ret3':
-        await event.edit()
-        user_profile = await sql.user_search(event.original_update.peer.user_id, engine)
-        update = str(event.data)
-        update = update.strip("b'")
-        await sql.db_save_risk_profile(update, user_profile[1], engine)
-        await client.send_message(event.input_sender,
-                                  message=ins.msg_ret,
-                                  buttons=buttons.keyboard_a4)
-    elif event.data == b'ret4':
-        await event.edit()
-        user_profile = await sql.user_search(event.original_update.peer.user_id, engine)
-        update = str(event.data)
-        update = update.strip("b'")
-        await sql.db_save_risk_profile(update, user_profile[1], engine)
-        await client.send_message(event.input_sender,
-                                  message=ins.msg_ret,
-                                  buttons=buttons.keyboard_a4)
-
-    elif event.data == b'sacback':
-        await event.edit()
-        await client.send_message(event.input_sender,
-                                  message='Назад',
-                                  buttons=buttons.keyboard_a4)
 
     # ============================== Subscriptions =============================
     elif event.data == b'z1':
