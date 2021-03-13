@@ -228,9 +228,9 @@ class MainWin(QDialog):
                     data = {'action': raction, 'value': raction_detail, 'id': "", 'msg': rmsg}
                 elif raction_detail == 'broadcast_poll':
                     data = {'action': raction, 'value': raction_detail, 'id': "", 'msg': ""}
-            if raction == 'join_to':
+            elif raction == 'join_to':
                 data = {'action': raction, 'value': raction_detail, 'id': chanel}
-            if raction == 'leave_channel':
+            elif raction == 'leave_channel':
                 data = {'action': raction, 'value': chanel}
 
             headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}

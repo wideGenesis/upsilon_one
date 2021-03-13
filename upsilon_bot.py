@@ -105,7 +105,7 @@ async def handler(update):
     if not update.message.poll:
         return
     else:
-        await callbacks.update_poll(update, client, engine=engine)
+        await callbacks.update_poll(update, client)
     debug(update.stringify())
 
 

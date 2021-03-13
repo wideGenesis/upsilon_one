@@ -81,9 +81,14 @@ def save_message_to_db(msg_id, body, fname, sent_dt, msgtype, parent_id, table_n
         with engine.connect() as connection:
             transaction = connection.begin()
             try:
+                sbody = ""
+                if msgtype == POLL_MESSAGE_TYPE:
+                    sbody = json.dumps(body)
+                else:
+                    sbody = body
                 insert_query = f'INSERT INTO {table_name} (msg_id, body, fname, sent_dt, msgtype, parent_id) ' \
                                f'VALUES (\'{msg_id}\', ' \
-                               f'\'{body}\',\'{fname}\',\'{sent_dt}\',\'{msgtype}\',' \
+                               f'\'{sbody}\',\'{fname}\',\'{sent_dt}\',\'{msgtype}\',' \
                                f'\'{parent_id}\')'
                 connection.execute(insert_query)
                 transaction.commit()
