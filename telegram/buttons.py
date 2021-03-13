@@ -3,12 +3,13 @@ from project_shared import *
 from random import choice
 
 
-lol = ['Подача напитков из улиток', 'Кот Да Винчи', 'Гос реестр порно', 'Орден Финансового Лосся', 'Шопот крыш',
-       'Отделение пластики мозга', 'Моргаем диафрагмой', 'Мастерская Парики Трампа', 'Бар Финансовое воздержание']
+lol = ['Подача напитков из улиток', 'Мыло \"Кот Да Винчи\"', 'Гос реестр порно', 'Орден Финансового Лосся',
+       'Шопот крыш', 'Отделение пластики мозга', 'Моргаем диафрагмой', 'Мастерская \"Парики Трампа\"',
+       'Бар \"Финансовое воздержание\"']
 
 keyboard_start = [
         [Button.text('Меню', resize=True), Button.text('Профиль', resize=True)],
-    [Button.text(f'{choice(lol)}', resize=True)]
+    [Button.text('Информация', resize=True), Button.text(f'{choice(lol)}', resize=True)]
     ]
 
 keyboard_forw2 = [
@@ -44,6 +45,12 @@ keyboard_forw6 = [
 keyboard_forw7 = [
     [
         Button.inline('\U000027A1  ' + 'Далее', b'forw7')
+    ]
+]
+
+keyboard_forw7a = [
+    [
+        Button.inline('\U000027A1  ' + 'Далее', b'forw7a')
     ]
 ]
 
