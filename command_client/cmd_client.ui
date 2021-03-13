@@ -161,6 +161,11 @@
        </item>
        <item>
         <property name="text">
+         <string>broadcast_poll</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
          <string>sac_pies</string>
         </property>
        </item>

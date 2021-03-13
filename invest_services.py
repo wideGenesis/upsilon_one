@@ -13,10 +13,17 @@ from charter.charter import *
 import undetected_chromedriver as uc
 from quotes.historical_universe import *
 from quotes.stock_quotes_news import StockStat
+from messages.message import *
 
 
 # ============================== Main  =============================
 def main():
+
+    sentusrdict, failusrdict, pollresult = get_mailing_lists(53)
+    debug(f'sentusrdict:{sentusrdict}')
+    debug(f'failusrdict:{failusrdict}')
+    debug(f'pollresult:{pollresult}')
+    exit()
 
     img_out_path = PROJECT_HOME_DIR + '/' + IMAGES_OUT_PATH
     get_tw_charts(driver=chrome_init(), img_out_path_=img_out_path)

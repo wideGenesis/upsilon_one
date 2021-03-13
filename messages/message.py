@@ -2,7 +2,7 @@ from datetime import timedelta, datetime
 from messages.sql_queries import *
 
 
-def save_message(msg, fname, sentdatetime, msgtype, parentid=None):
+def save_message(msg, fname, sentdatetime, msgtype, parentid=-1):
     if not is_table_exist(MSG_TABLE_NAME):
         create_message_table()
     next_id = get_max_msg_id() + 1
@@ -17,11 +17,11 @@ def get_next_id():
     return next_id
 
 
-def update_mailing_lists(msg_id, sentusrdict, failusrdict, pollresult, parent_id=None):
+def update_mailing_lists(msg_id, sentusrdict, failusrdict, pollresult, parent_id=-1):
     if not is_table_exist(MAILING_DATA_TABLE_NAME):
         create_mailing_data_table()
     update_mailing_data(msg_id, sentusrdict, failusrdict, pollresult, parent_id)
 
 
 def get_mailing_lists(msg_id):
-    get_mailing_data(msg_id)
+    return get_mailing_data(msg_id)

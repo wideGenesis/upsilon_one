@@ -82,6 +82,7 @@ class MainWin(QDialog):
             while len(self.actionDetailComboBox) > 1:
                 self.actionDetailComboBox.removeItem(1)
             self.actionDetailComboBox.addItem("broadcast_message")
+            self.actionDetailComboBox.addItem("broadcast_poll")
             self.actionDetailComboBox.addItem("sac_pies")
 
         if indx == 1:
@@ -121,6 +122,7 @@ class MainWin(QDialog):
             while len(self.actionDetailComboBox) > 1:
                 self.actionDetailComboBox.removeItem(1)
             self.actionDetailComboBox.addItem("broadcast_message")
+            self.actionDetailComboBox.addItem("broadcast_poll")
             self.actionDetailComboBox.addItem("sac_pies")
         if action_text == "join_to":
             self.userIDLabel.hide()
@@ -158,6 +160,15 @@ class MainWin(QDialog):
             self.chanelLineEdit.hide()
             self.messageLabel.show()
             self.messageTextEdit.show()
+            self.actionDetailLabel.show()
+            self.actionDetailComboBox.show()
+        elif actiondetail_text == "broadcast_poll":
+            self.userIDLabel.hide()
+            self.userIDLineEdit.hide()
+            self.chanelLabel.hide()
+            self.chanelLineEdit.hide()
+            self.messageLabel.hide()
+            self.messageTextEdit.hide()
             self.actionDetailLabel.show()
             self.actionDetailComboBox.show()
         else:
@@ -208,16 +219,18 @@ class MainWin(QDialog):
             url = f'http://{rhost}:{rport}/{COMMAND_TOKEN}/'
             raction_detail = self.actionDetailComboBox.itemText(self.actionDetailComboBox.currentIndex())
             data = {}
-            if raction == "send_to":
-                if raction_detail == "message":
+            if raction == 'send_to':
+                if raction_detail == 'message':
                     data = {'action': raction, 'value': raction_detail, 'id': ruser_id, 'msg': rmsg}
-                if raction_detail == "sac_pies":
+                elif raction_detail == 'sac_pies':
                     data = {'action': raction, 'value': raction_detail, 'id': ruser_id, 'msg': ""}
-                if raction_detail == "broadcast_message":
+                elif raction_detail == 'broadcast_message':
                     data = {'action': raction, 'value': raction_detail, 'id': "", 'msg': rmsg}
-            if raction == "join_to":
+                elif raction_detail == 'broadcast_poll':
+                    data = {'action': raction, 'value': raction_detail, 'id': "", 'msg': ""}
+            if raction == 'join_to':
                 data = {'action': raction, 'value': raction_detail, 'id': chanel}
-            if raction == "leave_channel":
+            if raction == 'leave_channel':
                 data = {'action': raction, 'value': chanel}
 
             headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}

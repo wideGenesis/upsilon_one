@@ -81,11 +81,10 @@ def save_message_to_db(msg_id, body, fname, sent_dt, msgtype, parent_id, table_n
         with engine.connect() as connection:
             transaction = connection.begin()
             try:
-                p_id = f'\'{parent_id}\'' if parent_id is not None else 'NULL'
                 insert_query = f'INSERT INTO {table_name} (msg_id, body, fname, sent_dt, msgtype, parent_id) ' \
                                f'VALUES (\'{msg_id}\', ' \
                                f'\'{body}\',\'{fname}\',\'{sent_dt}\',\'{msgtype}\',' \
-                               f'{p_id})'
+                               f'\'{parent_id}\')'
                 connection.execute(insert_query)
                 transaction.commit()
             except Exception as e:
@@ -104,9 +103,12 @@ def get_mailing_data(msg_id, table_name=MAILING_DATA_TABLE_NAME, engine=engine):
                             f'WHERE msg_id=\'{msg_id}\''
                 result = connection.execute(sel_query)
                 sent_usrlist, fail_usrlist, poll_result = result.fetchone()
-                sentusrdict = json.load(sent_usrlist)
-                failusrdict = json.load(fail_usrlist)
-                pollresult = json.load(poll_result)
+                if sent_usrlist != '' and sent_usrlist is not None:
+                    sentusrdict = json.loads(sent_usrlist)
+                if fail_usrlist != '' and fail_usrlist is not None:
+                    failusrdict = json.loads(fail_usrlist)
+                if poll_result != '' and poll_result is not None:
+                    pollresult = json.loads(poll_result)
             except Exception as e:
                 debug(e, ERROR)
                 return sentusrdict, failusrdict, pollresult
@@ -169,7 +171,8 @@ def get_max_msg_id(table_name=MSG_TABLE_NAME, engine=engine):
             try:
                 sel_query = f'SELECT max(msg_id) FROM  {table_name} '
                 result = connection.execute(sel_query)
-                max_id = result.fetchone()[0] if result.fetchone()[0] is not None else 50
+                bd_max_id =result.fetchone()[0]
+                max_id = bd_max_id if bd_max_id is not None else 50
             except Exception as e:
                 debug(e, ERROR)
                 return max_id
