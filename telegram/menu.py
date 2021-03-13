@@ -27,9 +27,6 @@ async def start_menu(event, client, engine=None):
     # TODO Если бот будет двуязычным, то нужно будет сделать возможность выбора языка и сохранение его в базу
     # lang = await client.get_entity(PeerUser(sender_id))
     # await db_save_lang(str(lang.lang_code), sender_id, connection)
-    message = await client.send_message(entity=entity, message='__Initializing Upsilon AI__',
-                                        buttons=buttons.keyboard_start)
-    sleep(1)
     await client.send_message(entity, ins.hello_1, file=f'{PROJECT_HOME_DIR}/html/hello_1.jpg',
                               buttons=buttons.keyboard_forw2)
 

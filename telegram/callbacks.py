@@ -525,9 +525,15 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
     elif event.data == b'forw7':
         await event.edit()
         await client.send_message(entity, ins.hello_7, file=f'{PROJECT_HOME_DIR}/html/hello_7.jpg',
+                                  buttons=buttons.keyboard_forw7a)
+    elif event.data == b'forw7a':
+        await event.edit()
+        await client.send_message(entity, ins.hello_7a,
                                   buttons=buttons.keyboard_forw8)
     elif event.data == b'forw8':
         await event.edit()
+        await client.send_message(entity=entity, message='__Какой путь инвестиций правильный для тебя?__',
+                                  buttons=buttons.keyboard_start)
         await client.send_message(entity, ins.hello_8, file=f'{PROJECT_HOME_DIR}/html/hello_8.jpg',
                                   buttons=buttons.keyboard_forw9)
 
