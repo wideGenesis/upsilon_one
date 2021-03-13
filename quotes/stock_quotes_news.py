@@ -223,35 +223,6 @@ class StockStat:
             msg += ' '.join(n) + '\n' + '\n'
         return msg
 
-    # def company_rank_v2(self):
-    #     msg1 = ''
-    #     try:
-    #         rank = get_ranking_data(self.stock)
-    #     except Exception as e11:
-    #         msg1 = 'Аналитика для данного тикера недоступна. '
-    #         return msg1
-    #
-    #     next_earning_date = None
-    #     for k, v in rank.items():
-    #         if k == "next_earning_date":
-    #             next_earning_date = v
-    #         elif k == 'data':
-    #             msg1 = 'Данные временно недоступны, попробуйте выполнить запрос через минуту. '
-    #         else:
-    #             msg1 += '\n' + ins.ranking[k][v]
-    #     return msg1
-
-    def stock_news(self):
-        try:
-            news = finviz.get_news(self.stock)
-        except Exception as e10:
-            msg = 'Описание для ETF недоступно'
-            return msg
-        msg = ''
-        for n in news[0:15]:
-            msg += ' '.join(n) + '\n' + '\n'
-        return msg
-
 
 def fin_news(blogs=False, rows=20):
     fnews = News()
