@@ -37,14 +37,6 @@ async def start_menu(event, client, engine=None):
     await client.send_message(entity, ins.hello_1, file=f'{PROJECT_HOME_DIR}/html/hello_1.jpg',
                               buttons=buttons.keyboard_forw2)
 
-    # await client.send_message(entity, 'Приветствую вас! Я Ипсилон — самый продвинутый ИИ '
-    #                                   'для трейдинга и управления инвестициями. \n \n'
-    #                                   'Обо мне - /about \n'
-    #                                   'Цели - /goals \n'
-    #                                   'Мои навыки - /skills \n \n'
-    #                                   'Важно! Если по какой-то причине у вас пропали кнопки Главного меню, '
-    #                                   'то вы можете напечатать Меню для вызова кнопок.', buttons=buttons.keyboard_start)
-
 
 async def tools_menu(event, client):
     sender_id = event.original_update.message.sender_id
@@ -72,11 +64,11 @@ async def tools_menu(event, client):
 
 
 async def profile_menu(event, client, engine=None):
-    keyboard_z1 = [
+    keyboard_profile = [
         # [Button.inline('\U0001F305	  ' + 'Мои цели', b'z10')],
         # [Button.inline('\U0001F516	  ' + 'Подписки', b'z1')],
         [Button.inline('\U0001F91D	  ' + 'Пригласить друга', b'z2')],
-        [Button.inline('\U0001F6A5	  ' + 'Сбросить профиль риска', b'risk_reset')],
+        [Button.inline('\U0000267B	  ' + 'Сбросить профиль риска', b'risk_reset')],
         [Button.inline('\U0001F519    ' + 'В главное меню', b'main')]
     ]
 
@@ -105,7 +97,7 @@ async def profile_menu(event, client, engine=None):
     #                           f'Подписка действительна до: __' + expired_date + '__' + '\n' +
     #                           f'Приглашено: __{user_profile[9]}__' + '\n' +
     #                           f'Уровень подписки: __{user_profile[10]}__' + '\n' +
-    #                           f'Пользователей бота __{int(users_count())}__', buttons=keyboard_z1)
+    #                           f'Пользователей бота __{int(users_count())}__', buttons=keyboard_profile)
     count = int
     # filename = os.path.join(RESULTS_PATH, 'users.csv')
     filename = f'{PROJECT_HOME_DIR}/{RESULTS_PATH}users.csv'
@@ -128,7 +120,7 @@ async def profile_menu(event, client, engine=None):
                                                  f'Подписка действительна до: __' + expired_date + '__' + '\n' +
                                                  f'Приглашено: __{user_profile[9]}__' + '\n' +
                                                  f'Уровень подписки: __{user_profile[10]}__' + '\n' +
-                                                 f'Пользователей бота: __{count}__', buttons=keyboard_z1)
+                                                 f'Пользователей бота: __{count}__', buttons=keyboard_profile)
             await shared.save_old_message(sender_id.user_id, menu_msg)
             shared.set_old_msg_poll(sender_id.user_id, False)
         else:
@@ -141,7 +133,7 @@ async def profile_menu(event, client, engine=None):
                                       f'Подписка действительна до: __' + expired_date + '__' + '\n' +
                                       f'Приглашено: __{user_profile[9]}__' + '\n' +
                                       f'Уровень подписки: __{user_profile[10]}__' + '\n' +
-                                      f'Пользователей бота: __{count}__', buttons=keyboard_z1)
+                                      f'Пользователей бота: __{count}__', buttons=keyboard_profile)
     else:
         menu_msg = await client.send_message(event.input_sender,
                                              f'\U0001F464 : {user_profile[3]}' + '\n' +
@@ -152,7 +144,7 @@ async def profile_menu(event, client, engine=None):
                                              f'Подписка действительна до: __' + expired_date + '__' + '\n' +
                                              f'Приглашено: __{user_profile[9]}__' + '\n' +
                                              f'Уровень подписки: __{user_profile[10]}__' + '\n' +
-                                             f'Пользователей бота: __{count}__', buttons=keyboard_z1)
+                                             f'Пользователей бота: __{count}__', buttons=keyboard_profile)
         await shared.save_old_message(sender_id.user_id, menu_msg)
 
 

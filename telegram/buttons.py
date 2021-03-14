@@ -360,12 +360,13 @@ keyboard_info_back = [
 
 keyboard_reset = [
     [
-        Button.inline('\U000026A0   ' + 'Подтвердить', b'reset_yes')
+        Button.inline('\U00002049   ' + 'Подтвердить', b'reset_yes')
     ],
     [
         Button.inline('\U0001F519   ' + 'Отмена', b'reset_no')
     ]
 ]
+
 
 # ============================== Кнопки подписок =============================
 keyboard_core_subscriptions = [

@@ -678,6 +678,20 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
         msg = await client.send_message(event.input_sender, 'Информация', buttons=buttons.keyboard_info)
         await shared.save_old_message(sender_id, msg)
 
+    elif event.data == b'risk_reset':
+        await event.edit()
+        msg = await client.send_message(event.input_sender, 'Сброс профиля риска', buttons=buttons.keyboard_reset)
+        await shared.save_old_message(sender_id, msg)
+
+    elif event.data == b'reset_yes':
+        await event.edit()
+        msg = await menu.profile_menu(event, client, engine=engine)
+        await shared.save_old_message(sender_id, msg)
+
+    elif event.data == b'reset_no':
+        await event.edit()
+        msg = await menu.profile_menu(event, client, engine=engine)
+        await shared.save_old_message(sender_id, msg)
 
     # ============================== Subscriptions =============================
     elif event.data == b'z1':
