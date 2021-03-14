@@ -56,7 +56,8 @@ async def tools_menu(event, client):
 
     old_msg_id = await shared.get_old_msg_id(sender_id)
     if old_msg_id is not None:
-        if shared.is_old_msg_poll(sender_id):
+        is_poll = await shared.is_old_msg_poll(sender_id)
+        if is_poll:
             await shared.delete_old_message(client, sender_id)
             menu_msg = await client.send_message(event.input_sender, 'Главное меню', buttons=buttons.keyboard_0)
             await shared.save_old_message(sender_id, menu_msg)
@@ -114,8 +115,8 @@ async def profile_menu(event, client, engine=None):
     final_profile_score = get_final_score(sender_id.user_id)
     old_msg_id = await shared.get_old_msg_id(sender_id.user_id)
     if old_msg_id is not None:
-        await event.edit()
-        if shared.is_old_msg_poll(sender_id.user_id):
+        is_poll = await shared.is_old_msg_poll(sender_id.user_id)
+        if is_poll:
             await shared.delete_old_message(client, sender_id.user_id)
             menu_msg = await client.send_message(event.input_sender,
                                                  f'\U0001F464 : {user_profile[3]}' + '\n' +
@@ -166,9 +167,10 @@ async def information_menu(event, client, engine=engine):
         reset_user_profiler_data(sender_id)
 
     old_msg_id = await shared.get_old_msg_id(sender_id)
-    await event.edit()
+    # await event.edit()
     if old_msg_id is not None:
-        if shared.is_old_msg_poll(sender_id):
+        is_poll = await shared.is_old_msg_poll(sender_id)
+        if is_poll:
             await shared.delete_old_message(client, sender_id)
             menu_msg = await client.send_message(event.input_sender, 'Информация', buttons=buttons.keyboard_info)
             await shared.save_old_message(sender_id, menu_msg)

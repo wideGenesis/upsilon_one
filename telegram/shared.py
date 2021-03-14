@@ -63,14 +63,16 @@ def get_prifiler_score(qnumber, answer_number):
     return ANSWERS_MAP[qnumber][answer_number]
 
 
-def is_old_msg_poll(user_id):
+async def is_old_msg_poll(user_id):
     global IS_OLD_MSG_POLL_MAP
-    return IS_OLD_MSG_POLL_MAP.get(user_id, False)
+    is_poll = IS_OLD_MSG_POLL_MAP.get(user_id, False)
+    return is_poll
 
 
 def set_old_msg_poll(user_id, val):
     global IS_OLD_MSG_POLL_MAP
     IS_OLD_MSG_POLL_MAP[user_id] = val
+
 
 class Subscribe(object):
     def __init__(self, name="", level="Free", cost=0.0, describe="", duration=30.0, img_path=""):
