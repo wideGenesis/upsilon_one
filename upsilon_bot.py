@@ -23,6 +23,7 @@ from telegram import buttons
 from project_shared import *
 from tcp_client_server.libserver import *
 import concurrent.futures
+from messages.message import *
 
 # ============================== Environment Setup ======================
 PYTHON_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir))
@@ -58,18 +59,22 @@ async def profile(event):
 
 @client.on(events.NewMessage(pattern='Помощь|инструкции|Инструкции|помощь|help|Help|/help'))
 async def helper(event):
-    # await menu.helper_menu(event, client)
-    await client.send_message(event.input_sender, ins.instructions_main, buttons=buttons.keyboard_a5)
+    await menu.information_menu(event, client, engine=engine)
 
 
 @client.on(events.NewMessage(pattern='портфель|портфели|Портфель|Портфели|portfolio|portfolios'))
 async def portfolios(event):
+    # Если клиент не до конца прошел профалинг - сбрасываем результат прохождения
+    sender_id = event.input_sender.user_id
+    if not is_user_profile_done(sender_id):
+        reset_user_profiler_data(sender_id)
     await client.send_message(event.input_sender, 'Портфели', buttons=buttons.keyboard_a2)
 
 
 @client.on(events.NewMessage(pattern='Информация|инфомация|инфо|Инфо'))
 async def information(event):
-    await client.send_message(event.input_sender, 'Информация', buttons=buttons.keyboard_info)
+    await menu.information_menu(event, client, engine=engine)
+
 
 # ============================== Commands ===============================
 @client.on(events.NewMessage(pattern='/to'))  # TODO Сделать блокирующую функцию для ДФ

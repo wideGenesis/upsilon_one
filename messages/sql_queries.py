@@ -197,8 +197,7 @@ def create_user_profiler_data_table(table_name=USER_PROFILER_DATA_TABLE_NAME, en
             try:
                 create_query = f'CREATE TABLE {table_name} ' \
                                f'(usr_id BIGINT NOT NULL, ' \
-                               f'answers_list TEXT, ' \
-                               f'final_score INT NOT_NULL, ' \
+                               f'final_score INT NOT NULL, ' \
                                f'PRIMARY KEY(usr_id)' \
                                f')'
                 connection.execute(create_query)
@@ -287,3 +286,101 @@ def update_user_profiler_map(usr_id, poll_id, qnumber, table_name=USER_PROFILER_
             debug(e, ERROR)
             transaction.rollback()
             return
+
+
+def increment_final_score(user_id, answer_res, table_name=USER_PROFILER_DATA_TABLE_NAME, engine=engine):
+    with engine.connect() as connection:
+        if not is_table_exist(USER_PROFILER_DATA_TABLE_NAME):
+            create_user_profiler_data_table()
+
+        transaction = connection.begin()
+        if not user_profiler_data_lookup(user_id):
+            try:
+                insert_query = f'INSERT INTO {table_name} ' \
+                               f'(usr_id, final_score) ' \
+                               f'VALUES (\'{user_id}\', ' \
+                               f'\'{answer_res}\')'
+                connection.execute(insert_query)
+                transaction.commit()
+            except Exception as e:
+                debug(e, ERROR)
+                transaction.rollback()
+                return
+        else:
+            current_final_score = None
+            try:
+                query_string = f'SELECT final_score FROM {table_name} WHERE usr_id=\'{user_id}\''
+                result = connection.execute(query_string)
+                if result.rowcount > 0:
+                    current_final_score = result.fetchone()[0]
+                update_query = f'UPDATE {table_name} ' \
+                               f'SET final_score=\'{current_final_score+answer_res}\' WHERE usr_id=\'{user_id}\''
+                connection.execute(update_query)
+                transaction.commit()
+            except Exception as e:
+                debug(e, ERROR)
+                transaction.rollback()
+                return
+
+
+def get_final_score(user_id, table_name=USER_PROFILER_DATA_TABLE_NAME, engine=engine):
+    with engine.connect() as connection:
+        if not is_table_exist(USER_PROFILER_DATA_TABLE_NAME):
+            create_user_profiler_data_table()
+        if not user_profiler_data_lookup(user_id):
+            return f'Необходимо пройти опрос!'
+        else:
+            try:
+                query_string = f'SELECT final_score FROM {table_name} WHERE usr_id=\'{user_id}\''
+                result = connection.execute(query_string)
+                if result.rowcount > 0:
+                    current_final_score = result.fetchone()[0]
+                    return current_final_score
+            except Exception as e:
+                debug(e, ERROR)
+                return f'Необходимо пройти опрос!'
+
+
+def reset_user_profiler_data(user_id, table_name=USER_PROFILER_DATA_TABLE_NAME, engine=engine):
+    with engine.connect() as connection:
+        if not is_table_exist(USER_PROFILER_DATA_TABLE_NAME):
+            create_user_profiler_data_table()
+        if not user_profiler_data_lookup(user_id):
+            return
+        else:
+            try:
+                del_query = f'DELETE FROM {table_name} WHERE usr_id=\'{user_id}\''
+                connection.execute(del_query)
+                del_query1 = f'DELETE FROM {USER_PROFILER_MAP_TABLE_NAME} WHERE usr_id=\'{user_id}\''
+                connection.execute(del_query1)
+            except Exception as e:
+                debug(e, ERROR)
+
+
+def is_user_profile_done(user_id, engine=engine):
+    profile_data_tn = USER_PROFILER_DATA_TABLE_NAME
+    profile_map_tn = USER_PROFILER_MAP_TABLE_NAME
+    if not is_table_exist(USER_PROFILER_DATA_TABLE_NAME):
+        create_user_profiler_data_table()
+        return False
+    if not is_table_exist(USER_PROFILER_MAP_TABLE_NAME):
+        create_user_profiler_map_table()
+        return False
+    if not user_profiler_data_lookup(user_id):
+        return False
+    if not user_profiler_map_lookup(user_id):
+        return False
+    with engine.connect() as connection:
+        try:
+            query_string = f'SELECT qnumber FROM {profile_map_tn} WHERE usr_id=\'{user_id}\''
+            result = connection.execute(query_string)
+            if result.rowcount > 0:
+                current_qnumber = result.fetchone()[0]
+                if current_qnumber == USER_PROFILER_QUESTION_AMOUNT:
+                    return True
+                else:
+                    return False
+        except Exception as e:
+            debug(e, ERROR)
+            return False
+

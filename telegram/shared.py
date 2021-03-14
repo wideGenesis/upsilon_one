@@ -7,6 +7,23 @@ from telethon import functions, types
 
 ORDER_MAP = {}
 OLD_MESSAGE_MAP = {}
+ANSWERS_MAP = [{b'1': 1, b'2': 0, b'3': -1, b'4': -1, b'5': 0},
+               {b'1': 0, b'2': 0, b'3': 0, b'4': 0, b'5': 0, b'6': 0, b'7': 0},
+               {b'1': 0, b'2': 0, b'3': 0},
+               {b'1': -1, b'2': 1},
+               {b'1': -1, b'2': 0, b'3': 1},
+               {b'1': 2, b'2': 1, b'3': 0},
+               {b'1': -2, b'2': -1, b'3': 0, b'4': 1, b'5': 2},
+               {b'1': -1, b'2': 1, b'3': 1, b'4': 1},
+               {b'1': -2, b'2': -1, b'3': 0, b'4': 1, b'5': 2},
+               {b'1': -2, b'2': -1, b'3': 0, b'4': 1, b'5': 2},
+               {b'1': 1, b'2': 0, b'3': -1},
+               {b'1': -1, b'2': 1, b'3': -2, b'4': -1, b'5': 0, b'6': -1, b'7': 2, b'8': 1},
+               {b'1': 1, b'2': 0, b'3': 2, b'4': -1},
+               {b'1': 0, b'2': 0, b'3': 0}
+               ]
+
+IS_OLD_MSG_POLL_MAP = {}
 
 
 def datetime2int(dt):
@@ -40,6 +57,20 @@ async def get_old_msg_id(user_id):
     old_msg_id = OLD_MESSAGE_MAP.get(user_id, None)
     return old_msg_id
 
+
+def get_prifiler_score(qnumber, answer_number):
+    global ANSWERS_MAP
+    return ANSWERS_MAP[qnumber][answer_number]
+
+
+def is_old_msg_poll(user_id):
+    global IS_OLD_MSG_POLL_MAP
+    return IS_OLD_MSG_POLL_MAP.get(user_id, False)
+
+
+def set_old_msg_poll(user_id, val):
+    global IS_OLD_MSG_POLL_MAP
+    IS_OLD_MSG_POLL_MAP[user_id] = val
 
 class Subscribe(object):
     def __init__(self, name="", level="Free", cost=0.0, describe="", duration=30.0, img_path=""):

@@ -870,23 +870,33 @@ async def send_next_profiler_question(client, user_id, curr_num):
         await shared.delete_old_message(client, user_id)
         poll_msg = await client.send_message(user_id, file=input_media_poll)
         await shared.save_old_message(user_id, poll_msg)
+        shared.set_old_msg_poll(user_id, True)
         pass
     else:
         poll_msg = await client.send_message(user_id, file=input_media_poll)
     real_poll_id = poll_msg.media.poll.id
-    update_user_profiler_map(user_id, real_poll_id, curr_num+1)
+    update_user_profiler_map(user_id, real_poll_id, curr_num)
     if curr_num == 0:
         await shared.save_old_message(user_id, poll_msg)
+        shared.set_old_msg_poll(user_id, True)
 
 
 async def update_poll(update, client):
     poll_id = update.poll_id
     user_id, qnumber = get_userid_by_pollid(poll_id)
     if user_id is not None:
+        answer_res = None
+        votes_list = update.results.results
+        for vote in votes_list:
+            if vote.voters == 1:
+                answer_res = shared.get_prifiler_score(qnumber, vote.option)
+                break
+        increment_final_score(user_id, answer_res)
         if qnumber < 13:
-            await send_next_profiler_question(client, user_id, qnumber)
+            await send_next_profiler_question(client, user_id, qnumber+1)
         else:
             old_msg_id = await shared.get_old_msg_id(user_id)
+            shared.set_old_msg_poll(user_id, False)
             if old_msg_id is not None:
                 await shared.delete_old_message(client, user_id)
                 main_menu_msg = await client.send_message(user_id, 'Главное меню', buttons=buttons.keyboard_0)

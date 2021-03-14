@@ -159,6 +159,7 @@ SERVICE_CHAT = conf['TELEGRAM']['SERVICE_CHAT']
 # logging.getLogger('scrapers').setLevel(level=logging.WARNING)
 
 RECURSION_DEPTH = 5
+USER_PROFILER_QUESTION_AMOUNT = 13
 
 WARNING = conf['DEBUG_TYPE']['WARNING']
 ERROR = conf['DEBUG_TYPE']['ERROR']
