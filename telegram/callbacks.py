@@ -660,6 +660,7 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
 
     # elif event.data == b'cm-6':
     #     await event.edit()
+
     #     msg = await client.send_message(event.input_sender, 'Сотрудничество', buttons=buttons.keyboard_relations)
     #     await shared.save_old_message(sender_id, msg)
 
