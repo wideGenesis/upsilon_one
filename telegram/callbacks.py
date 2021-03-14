@@ -501,23 +501,23 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
                                   buttons=buttons.keyboard_forw4)
     elif event.data == b'forw4':
         await event.edit()
-        await client.send_message(entity, ins.hello_4, file=f'{PROJECT_HOME_DIR}/html/hello_4.jpg',
-                                  buttons=buttons.keyboard_forw5)
-    elif event.data == b'forw5':
-        await event.edit()
-        await client.send_message(entity, ins.hello_5, file=f'{PROJECT_HOME_DIR}/html/hello_5.jpg',
-                                  buttons=buttons.keyboard_forw6)
-    elif event.data == b'forw6':
-        await event.edit()
-        await client.send_message(entity, ins.hello_6, file=f'{PROJECT_HOME_DIR}/html/hello_6.jpg',
+        await client.send_message(entity, ins.hello_4, file=f'{PROJECT_HOME_DIR}/html/hello_5.jpg',
                                   buttons=buttons.keyboard_forw7)
+    # elif event.data == b'forw5':
+    #     await event.edit()
+    #     await client.send_message(entity, ins.hello_5, file=f'{PROJECT_HOME_DIR}/html/hello_5.jpg',
+    #                               buttons=buttons.keyboard_forw6)
+    # elif event.data == b'forw6':
+    #     await event.edit()
+    #     await client.send_message(entity, ins.hello_6, file=f'{PROJECT_HOME_DIR}/html/hello_6.jpg',
+    #                               buttons=buttons.keyboard_forw7)
     elif event.data == b'forw7':
         await event.edit()
         await client.send_message(entity, ins.hello_7, file=f'{PROJECT_HOME_DIR}/html/hello_7.jpg',
                                   buttons=buttons.keyboard_forw7a)
     elif event.data == b'forw7a':
         await event.edit()
-        await client.send_message(entity, ins.hello_7a,
+        await client.send_message(entity, ins.hello_7a, file=f'{PROJECT_HOME_DIR}/html/hello_6.jpg',
                                   buttons=buttons.keyboard_forw8)
     elif event.data == b'forw8':
         await event.edit()
