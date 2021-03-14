@@ -440,29 +440,29 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
     #         await client.send_message(event.input_sender, 'Выберите наиболее подходящий вариант для вас \n \n'
     #                                   + ins.instruction25, buttons=buttons.keyboard_risk_profile)
 
-    elif event.data == b'rel1':
+    elif event.data == b'manager_registration':
         await event.edit()
         await shared.delete_old_message(client, sender_id)
         message = await client.send_message(entity=entity, message='Загрузка...')
-        await client.edit_message(message, 'Заглушка')
+        await client.edit_message(message, 'Регистрация управляющего')
         await client.send_message(event.input_sender, ins.managers_form,
                                   buttons=buttons.keyboard_info_back)
-    #
-    # elif event.data == b'rel2':
-    #     await event.edit()
-    #     await shared.delete_old_message(client, sender_id)
-    #     message = await client.send_message(entity=entity, message='Загрузка...')
-    #     await client.edit_message(message, 'Регистрация управляющего')
-    #     await client.send_message(event.input_sender, ins.managers_form,
-    #                               buttons=buttons.keyboard_relations_back)
-    #
-    # elif event.data == b'rel3':
-    #     await event.edit()
-    #     await shared.delete_old_message(client, sender_id)
-    #     message = await client.send_message(entity=entity, message='Загрузка...')
-    #     await client.edit_message(message, 'Сообщить об ошибке')
-    #     await client.send_message(event.input_sender, ins.managers_form,
-    #                               buttons=buttons.keyboard_relations_back)
+
+    elif event.data == b'advertisement':
+        await event.edit()
+        await shared.delete_old_message(client, sender_id)
+        message = await client.send_message(entity=entity, message='Загрузка...')
+        await client.edit_message(message, 'Предложения и реклама')
+        await client.send_message(event.input_sender, ins.instruction29,
+                                  buttons=buttons.keyboard_info_back)
+
+    elif event.data == b'bug_report':
+        await event.edit()
+        await shared.delete_old_message(client, sender_id)
+        message = await client.send_message(entity=entity, message='Загрузка...')
+        await client.edit_message(message, 'Сообщить об ошибке')
+        await client.send_message(event.input_sender, ins.instruction30,
+                                  buttons=buttons.keyboard_info_back)
 
     elif event.data == b'sac1':
         await event.edit()
@@ -680,7 +680,7 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
 
     elif event.data == b'risk_reset':
         await event.edit()
-        msg = await client.send_message(event.input_sender, 'Сброс профиля риска', buttons=buttons.keyboard_reset)
+        msg = await client.send_message(event.input_sender, ins.instruction25, buttons=buttons.keyboard_reset)
         await shared.save_old_message(sender_id, msg)
 
     elif event.data == b'reset_yes':

@@ -332,7 +332,10 @@ async def instructions_handler(event, client_):
         await client_.send_message(event.input_sender, ins.instruction27)
     elif pattern == 'instruction28':
         await client_.send_message(event.input_sender, ins.instruction28)
-
+    elif pattern == 'instruction29':
+        await client_.send_message(event.input_sender, ins.instruction29)
+    elif pattern == 'instruction30':
+        await client_.send_message(event.input_sender, ins.instruction30)
 
 async def portfolio_candle_chart_handler(event, client_):
     pattern = event.original_update.message.message

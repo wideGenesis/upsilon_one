@@ -339,13 +339,13 @@ keyboard_info = [
         Button.inline('\U000026D1   ' + 'Инструкции', b'a5')
     ],
     [
-        Button.inline('\U0001F6E1   ' + 'Регистрация управляющего', b'rel1')
+        Button.inline('\U0001F6E1   ' + 'Регистрация управляющего', b'manager_registration')
     ],
     [
-        Button.inline('\U0001F4EC  ' + 'Предложения и реклама', b'rel1')
+        Button.inline('\U0001F4EC  ' + 'Предложения и реклама', b'advertisement')
     ],
     [
-        Button.inline('\U000026A0   ' + 'Сообщить об ошибке', b'rel1')
+        Button.inline('\U000026A0   ' + 'Сообщить об ошибке', b'bug_report')
     ],
     [
         Button.inline('\U0001F519  ' + 'Назад', b'main')

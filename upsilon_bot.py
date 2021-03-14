@@ -154,7 +154,7 @@ async def instructions(event):
     await handlers.managers_form_handler(event, client)
 
 
-@client.on(events.NewMessage(pattern='/support'))
+@client.on(events.NewMessage(pattern='/(support|adv|bug)'))
 async def support(event):
     await handlers.support_handler(event, client)
 
