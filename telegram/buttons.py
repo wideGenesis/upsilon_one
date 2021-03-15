@@ -111,28 +111,28 @@ keyboard_a1_back = [
 
 keyboard_historical_tests = [
     [
-        Button.inline('\U0001F4BC  ' + 'Парковочный портфель', b'a2a3')
+        Button.inline('\U0001F4BC  ' + 'Парковочный портфель', b'hist_parking')
     ],
     [
-        Button.inline('\U0001F4BC  ' + 'Всепогодный портфель', b'a2a4')
+        Button.inline('\U0001F4BC  ' + 'Всепогодный портфель', b'hist_allweather')
     ],
     [
-        Button.inline('\U0001F4BC  ' + 'Сбалансированный портфель', b'a2a5')
+        Button.inline('\U0001F4BC  ' + 'Сбалансированный портфель', b'hist_balanced')
     ],
     [
-        Button.inline('\U0001F4BC  ' + 'Агрессивный портфель', b'a2a6')
+        Button.inline('\U0001F4BC  ' + 'Агрессивный портфель', b'hist_agg')
     ],
     [
-        Button.inline('\U0001F4BC  ' + 'Плечевой портфель', b'a2a7')
+        Button.inline('\U0001F4BC  ' + 'Плечевой портфель', b'hist_lev')
     ],
     [
-        Button.inline('\U0001F4BC  ' + 'Elastic портфель (только акции, без ETF)', b'a2a9')
+        Button.inline('\U0001F4BC  ' + 'Elastic портфель (только акции, без ETF)', b'hist_elastic')
     ],
     [
-        Button.inline('\U0001F4BC  ' + 'Yolo портфель (spbexchange)', b'a2a10')
+        Button.inline('\U0001F4BC  ' + 'Yolo портфель (spbexchange)', b'hist_yolo')
     ],
     [
-        Button.inline('\U0001F519  ' + 'Назад', b'cm-5')
+        Button.inline('\U0001F519  ' + 'Назад', b'hist_back')
     ]
 ]
 
@@ -300,7 +300,7 @@ keyboard_portfolio = [
         Button.inline('\U0001F9F0  ' + 'Мои стратегии', b'mp1')
     ],
     [
-        Button.inline('\U000026F3  ' + 'Исторические тесты', b'mp3')
+        Button.inline('\U000026F3  ' + 'Исторические тесты', b'historical_tests')
     ],
     [
         Button.inline('\U0001F519  ' + 'Назад', b'main')

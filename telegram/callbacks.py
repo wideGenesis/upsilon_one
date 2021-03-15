@@ -299,135 +299,128 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
     #     await client.edit_message(message, 'Оценка/аудит портфеля')
     #     await client.send_message(event.input_sender, 'Зачем проводить аудит своего портфеля? /instruction04',
     #                               buttons=buttons.keyboard_a2_back)
-    elif event.data == b'a2a3':
+    elif event.data == b'hist_parking':
         await event.edit()
         await shared.delete_old_message(client, sender_id)
         message = await client.send_message(entity=entity, message='Загрузка...')
-        await client.edit_message(message, '"Парковочный" портфель без риска')
-        await client.send_message(event.input_sender, 'Текущая структура портфеля')
-        await client.send_file(entity, CHARTER_IMAGES_PATH + 'parking_portfolio_pie.png')
-        await client.send_message(event.input_sender, 'Подробная статистика стратегии')
-        await client.send_file(entity, STATS_PATH + 'parking.pdf')
-        await client.send_message(event.input_sender, 'Симуляция доходности портфеля на 10 лет \n '
-                                                      'Как интерпретировать результаты симуляций Монте-Карло?'
-                                                      ' - /instruction19')
-        await client.send_file(entity, STATS_PATH + 'parking.png')
-        await client.send_file(entity, STATS_PATH + 'parking2.png')
-        await client.send_message(event.input_sender, 'Кому и когда покупать парковочный портфель? \n'
-                                                      '/instruction14 \n End of Day График - /chart_parking',
+        await client.edit_message(message, 'Парковочный портфель')
+
+        await client.send_message(event.input_sender, 'Подробная статистика',
+                                  file=STATS_PATH + 'parking.pdf')
+        await client.send_message(event.input_sender, 'Симуляция доходности портфеля на 10 лет',
+                                  file=STATS_PATH + 'parking.png')
+        await client.send_message(event.input_sender, 'Как интерпретировать результаты симуляций Монте-Карло?\n'
+                                                      '/instruction19',
+                                  file=STATS_PATH + 'parking2.png')
+        await client.send_message(event.input_sender, 'Кому и когда покупать парковочный портфель?\n'
+                                                      '/instruction14',
                                   buttons=buttons.keyboard_a3_back)
 
-    elif event.data == b'a2a4':
+    elif event.data == b'hist_allweather':
         await event.edit()
         await shared.delete_old_message(client, sender_id)
         message = await client.send_message(entity=entity, message='Загрузка...')
         await client.edit_message(message, 'Всепогодный портфель')
-        await client.send_message(event.input_sender, 'Текущая структура портфеля')
-        await client.send_file(entity, CHARTER_IMAGES_PATH + 'allweather_portfolio_pie.png')
-        await client.send_message(event.input_sender, 'Подробная статистика стратегии')
-        await client.send_file(entity, STATS_PATH + 'allweather.pdf')
-        await client.send_message(event.input_sender, 'Симуляция доходности портфеля на 10 лет \n '
-                                                      'Как интерпретировать результаты симуляций Монте-Карло?'
-                                                      ' - /instruction19')
-        await client.send_file(entity, STATS_PATH + 'allweather.png')
-        await client.send_file(entity, STATS_PATH + 'allweather2.png')
-        await client.send_message(event.input_sender, 'Кому и когда покупать всепогодный портфель? \n'
-                                                      '/instruction15 \n End of Day График - /chart_allweather',
+        await client.send_message(event.input_sender, 'Подробная статистика',
+                                  file=STATS_PATH + 'allweather.pdf')
+        await client.send_message(event.input_sender, 'Симуляция доходности портфеля на 10 лет',
+                                  file=STATS_PATH + 'allweather.png')
+        await client.send_message(event.input_sender, 'Как интерпретировать результаты симуляций Монте-Карло?\n'
+                                                      '/instruction19',
+                                  file=STATS_PATH + 'allweather2.png')
+        await client.send_message(event.input_sender, 'Кому и когда покупать всепогодный портфель?\n'
+                                                      '/instruction15',
                                   buttons=buttons.keyboard_a3_back)
 
-    elif event.data == b'a2a5':
+    elif event.data == b'hist_balanced':
         await event.edit()
         await shared.delete_old_message(client, sender_id)
         message = await client.send_message(entity=entity, message='Загрузка...')
         await client.edit_message(message, 'Сбалансированный портфель')
-        await client.send_message(event.input_sender, 'Текущая структура портфеля')
-        await client.send_file(entity, CHARTER_IMAGES_PATH + 'balanced_portfolio_pie.png')
-        await client.send_message(event.input_sender, 'Подробная статистика стратегии')
-        await client.send_file(entity, STATS_PATH + 'balanced.pdf')
-        await client.send_message(event.input_sender, 'Симуляция доходности портфеля на 10 лет \n '
-                                                      'Как интерпретировать результаты симуляций Монте-Карло?'
-                                                      ' - /instruction19')
-        await client.send_file(entity, STATS_PATH + 'balanced.png')
-        await client.send_file(entity, STATS_PATH + 'balanced2.png')
-        await client.send_message(event.input_sender, 'Кому и когда покупать сбалансированный портфель? \n'
-                                                      '/instruction16 \n End of Day График - /chart_balanced',
+        await client.send_message(event.input_sender, 'Подробная статистика',
+                                  file=STATS_PATH + 'balanced.pdf')
+        await client.send_message(event.input_sender, 'Симуляция доходности портфеля на 10 лет',
+                                  file=STATS_PATH + 'balanced.png')
+        await client.send_message(event.input_sender, 'Как интерпретировать результаты симуляций Монте-Карло?\n'
+                                                      '/instruction19',
+                                  file=STATS_PATH + 'balanced2.png')
+        await client.send_message(event.input_sender, 'Кому и когда покупать сбалансированный портфель?\n'
+                                                      '/instruction16',
                                   buttons=buttons.keyboard_a3_back)
 
-    elif event.data == b'a2a6':
+    elif event.data == b'hist_agg':
         await event.edit()
         await shared.delete_old_message(client, sender_id)
         message = await client.send_message(entity=entity, message='Загрузка...')
         await client.edit_message(message, 'Агрессивный портфель')
-        await client.send_message(event.input_sender, 'Текущая структура портфеля')
-        await client.send_file(entity, CHARTER_IMAGES_PATH + 'aggressive_portfolio_pie.png')
-        await client.send_message(event.input_sender, 'Подробная статистика стратегии')
-        await client.send_file(entity, STATS_PATH + 'aggressive.pdf')
-        await client.send_message(event.input_sender, 'Симуляция доходности портфеля на 10 лет \n '
-                                                      'Как интерпретировать результаты симуляций Монте-Карло?'
-                                                      ' - /instruction19')
-        await client.send_file(entity, STATS_PATH + 'aggressive.png')
-        await client.send_file(entity, STATS_PATH + 'aggressive2.png')
-        await client.send_message(event.input_sender, 'Кому и когда покупать агрессивный портфель? \n'
-                                                      '/instruction17 \n End of Day График - /chart_aggressive',
+        await client.send_message(event.input_sender, 'Подробная статистика',
+                                  file=STATS_PATH + 'aggressive.pdf')
+        await client.send_message(event.input_sender, 'Симуляция доходности портфеля на 10 лет',
+                                  file=STATS_PATH + 'aggressive.png')
+        await client.send_message(event.input_sender, 'Как интерпретировать результаты симуляций Монте-Карло?\n'
+                                                      '/instruction19',
+                                  file=STATS_PATH + 'aggressive2.png')
+        await client.send_message(event.input_sender, 'Кому и когда покупать агрессивный портфель?\n'
+                                                      '/instruction17',
                                   buttons=buttons.keyboard_a3_back)
 
-    elif event.data == b'a2a7':
+    elif event.data == b'hist_lev':
         await event.edit()
         await shared.delete_old_message(client, sender_id)
         message = await client.send_message(entity=entity, message='Загрузка...')
         await client.edit_message(message, 'Плечевой портфель')
-        await client.send_message(event.input_sender, 'Текущая структура портфеля')
-        await client.send_file(entity, CHARTER_IMAGES_PATH + 'leveraged_portfolio_pie.png')
-        await client.send_message(event.input_sender, 'Подробная статистика стратегии')
-        await client.send_file(entity, STATS_PATH + 'leveraged.pdf')
-        await client.send_message(event.input_sender, 'Симуляция доходности портфеля на 10 лет \n '
-                                                      'Как интерпретировать результаты симуляций Монте-Карло?'
-                                                      ' - /instruction19')
-        await client.send_file(entity, STATS_PATH + 'leveraged.png')
-        await client.send_file(entity, STATS_PATH + 'leveraged2.png')
-        await client.send_message(event.input_sender, 'Кому и когда покупать плечевой портфель? \n'
-                                                      '/instruction18 \n End of Day График - /chart_leveraged',
+        await client.send_message(event.input_sender, 'Подробная статистика',
+                                  file=STATS_PATH + 'leveraged.pdf')
+        await client.send_message(event.input_sender, 'Симуляция доходности портфеля на 10 лет',
+                                  file=STATS_PATH + 'leveraged.png')
+        await client.send_message(event.input_sender, 'Как интерпретировать результаты симуляций Монте-Карло?\n'
+                                                      '/instruction19',
+                                  file=STATS_PATH + 'leveraged2.png')
+        await client.send_message(event.input_sender, 'Кому и когда покупать плечевой портфель?\n'
+                                                      '/instruction18',
                                   buttons=buttons.keyboard_a3_back)
 
-    elif event.data == b'a2a9':
+    elif event.data == b'hist_elastic':
         await event.edit()
         await shared.delete_old_message(client, sender_id)
         message = await client.send_message(entity=entity, message='Загрузка...')
-        await client.edit_message(message, 'Elastic Strategy - портфель только из акций')
-        await client.send_message(event.input_sender, 'Текущая структура портфеля')
-        await client.send_file(entity, CHARTER_IMAGES_PATH + 'elastic_portfolio_pie.png')
-        await client.send_message(event.input_sender, 'Подробная статистика стратегии')
-        await client.send_file(entity, STATS_PATH + 'elastic.pdf')
-        await client.send_message(event.input_sender, 'Симуляция доходности портфеля на 10 лет \n '
-                                                      'Как интерпретировать результаты симуляций Монте-Карло?'
-                                                      ' - /instruction19')
-        await client.send_file(entity, STATS_PATH + 'elastic.png')
-        await client.send_file(entity, STATS_PATH + 'elastic2.png')
-        await client.send_message(event.input_sender, 'Кому и когда покупать Elastic портфель? \n'
-                                                      '/instruction23 \n End of Day График - /chart_elastic',
+        await client.edit_message(message, 'Elastic - портфель только из акций')
+        await client.send_message(event.input_sender, 'Подробная статистика',
+                                  file=STATS_PATH + 'elastic.pdf')
+        await client.send_message(event.input_sender, 'Симуляция доходности портфеля на 10 лет',
+                                  file=STATS_PATH + 'elastic.png')
+        await client.send_message(event.input_sender, 'Как интерпретировать результаты симуляций Монте-Карло?\n'
+                                                      '/instruction19',
+                                  file=STATS_PATH + 'elastic2.png')
+        await client.send_message(event.input_sender, 'Кому и когда покупать Elastic портфель?\n'
+                                                      '/instruction23',
                                   buttons=buttons.keyboard_a3_back)
 
-    elif event.data == b'a2a10':
+    elif event.data == b'hist_yolo':
         await event.edit()
         await shared.delete_old_message(client, sender_id)
         message = await client.send_message(entity=entity, message='Загрузка...')
-        await client.edit_message(message, 'Yolo Strategy - портфель только из акций, торгуемых на spbexchange. '
+        await client.edit_message(message, 'Yolo - портфель только из акций, торгуемых на spbexchange. '
                                            'Доступен для клиентов Сбер, Тинькофф, Альфа-банк, ВТБ')
-        await client.send_message(event.input_sender, 'Текущая структура портфеля')
-        await client.send_file(entity, CHARTER_IMAGES_PATH + 'yolo_portfolio_pie.png')
-        await client.send_message(event.input_sender, 'Подробная статистика стратегии')
-        await client.send_file(entity, STATS_PATH + 'yolo.pdf')
-
-        await client.send_message(event.input_sender, 'Кому и когда покупать Yolo портфель? \n'
-                                                      '/instruction24 \n End of Day График - /chart_yolo',
+        await client.send_message(event.input_sender, 'Подробная статистика',
+                                  file=STATS_PATH + 'yolo.pdf')
+        await client.send_message(event.input_sender, 'Симуляция доходности портфеля на 10 лет',
+                                  file=STATS_PATH + 'yolo.png')
+        await client.send_message(event.input_sender, 'Как интерпретировать результаты симуляций Монте-Карло?\n'
+                                                      '/instruction19',
+                                  file=STATS_PATH + 'yolo2.png')
+        await client.send_message(event.input_sender, 'Кому и когда покупать Yolo портфель?\n'
+                                                      '/instruction24',
                                   buttons=buttons.keyboard_a3_back)
 
-    elif event.data == b'mp3':
+    elif event.data == b'historical_tests':
         await event.edit()
         if old_msg_id is not None:
-            await client.edit_message(event.input_sender, old_msg_id, 'Исторические тесты', buttons=buttons.keyboard_historical_tests)
+            await client.edit_message(event.input_sender, old_msg_id, 'Исторические тесты',
+                                      buttons=buttons.keyboard_historical_tests)
         else:
-            msg = await client.send_message(event.input_sender, 'Исторические тесты', buttons=buttons.keyboard_historical_tests)
+            msg = await client.send_message(event.input_sender, 'Исторические тесты',
+                                            buttons=buttons.keyboard_historical_tests)
             await shared.save_old_message(sender_id, msg)
 
     # ============================== Управление =============================
@@ -479,7 +472,7 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
     # elif event.data == b'sac1':
     #     await event.edit()
     #     message = await client.send_message(entity=entity, message='Загрузка...')
-    #     await client.edit_message(message, 'Подробная статистика стратегии')
+    #     await client.edit_message(message, 'Подробная статистика')
     #     await client.send_file(entity, STATS_PATH + 'sac_parking.pdf')
     #     await client.send_message(event.input_sender, 'О доверительном управлении \n'
     #                                                   '/instruction26',
@@ -488,7 +481,7 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
     # elif event.data == b'sac2':
     #     await event.edit()
     #     message = await client.send_message(entity=entity, message='Загрузка...')
-    #     await client.edit_message(message, 'Подробная статистика стратегии')
+    #     await client.edit_message(message, 'Подробная статистика')
     #     await client.send_file(entity, STATS_PATH + 'sac_balanced.pdf')
     #     await client.send_message(event.input_sender, 'О доверительном управлении \n'
     #                                                   '/instruction26',
@@ -497,7 +490,7 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
     # elif event.data == b'sac3':
     #     await event.edit()
     #     message = await client.send_message(entity=entity, message='Загрузка...')
-    #     await client.edit_message(message, 'Подробная статистика стратегии')
+    #     await client.edit_message(message, 'Подробная статистика')
     #     await client.send_file(entity, STATS_PATH + 'sac_growth.pdf')
     #     await client.send_message(event.input_sender, 'О доверительном управлении \n'
     #                                                   '/instruction26',
@@ -654,7 +647,7 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
             msg = await client.send_message(event.input_sender, 'Анализ США', buttons=buttons.keyboard_us_analysis)
             await shared.save_old_message(sender_id, msg)
 
-    elif event.data == b'cm-5':
+    elif event.data == b'hist_back':
         await event.edit()
         if old_msg_id is not None:
             await client.edit_message(event.input_sender, old_msg_id, 'Мой портфель\n'
@@ -955,3 +948,8 @@ async def update_poll(update, client):
                 menu_msg = await client.send_message(user_id, 'Главное меню', buttons=buttons.keyboard_0)
                 await shared.delete_old_message(client, user_id)
                 await shared.save_old_message(user_id, menu_msg)
+
+
+        # await client.send_message(event.input_sender, 'Текущая структура портфеля')
+        # await client.send_file(entity, CHARTER_IMAGES_PATH + 'parking_portfolio_pie.png')
+        # await client.send_file(entity, CHARTER_IMAGES_PATH + 'balanced_portfolio_pie.png')
