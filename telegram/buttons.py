@@ -72,7 +72,7 @@ keyboard_0 = [
         Button.inline('\U0001F52C   ' + 'Анализ рынков', b'a1')
     ],
     [
-        Button.inline('\U0001F4BC   ' + 'Мой портфель', b'a2')
+        Button.inline('\U0001F4BC   ' + 'Мой портфель', b'my_portfolio')
     ],
     [
         Button.inline('\U0001F9EC   ' + 'Скринер акций', b'a3')
@@ -297,7 +297,7 @@ keyboard_portfolio = [
         Button.inline('\U0001F4B0  ' + 'Мой портфель', b'mp1')
     ],
     [
-        Button.inline('\U0001F9F0  ' + 'Мои стратегии', b'mp1')
+        Button.inline('\U0001F9F0  ' + 'Мои стратегии', b'my_strategies')
     ],
     [
         Button.inline('\U000026F3  ' + 'Исторические тесты', b'historical_tests')
@@ -367,6 +367,12 @@ keyboard_reset = [
     ],
     [
         Button.inline('\U0001F519   ' + 'Отмена', b'reset_no')
+    ]
+]
+
+keyboard_restart_poll = [
+    [
+        Button.inline('\U0001F6A9   ' + 'Определеить свой профиль риска', b'risk_profile_restart')
     ]
 ]
 
