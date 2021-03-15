@@ -384,7 +384,7 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
         await event.edit()
         await shared.delete_old_message(client, sender_id)
         message = await client.send_message(entity=entity, message='Загрузка...')
-        await client.edit_message(message, 'Elastic Strategy - портфель только из акций')
+        await client.edit_message(message, 'Elastic - портфель только из акций')
         await client.send_message(event.input_sender, 'Подробная статистика',
                                   file=STATS_PATH + 'elastic.pdf')
         await client.send_message(event.input_sender, 'Симуляция доходности портфеля на 10 лет',
@@ -400,7 +400,7 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
         await event.edit()
         await shared.delete_old_message(client, sender_id)
         message = await client.send_message(entity=entity, message='Загрузка...')
-        await client.edit_message(message, 'Yolo Strategy - портфель только из акций, торгуемых на spbexchange. '
+        await client.edit_message(message, 'Yolo - портфель только из акций, торгуемых на spbexchange. '
                                            'Доступен для клиентов Сбер, Тинькофф, Альфа-банк, ВТБ')
         await client.send_message(event.input_sender, 'Подробная статистика',
                                   file=STATS_PATH + 'yolo.pdf')
