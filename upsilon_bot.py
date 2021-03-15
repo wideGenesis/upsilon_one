@@ -64,10 +64,6 @@ async def helper(event):
 
 @client.on(events.NewMessage(pattern='портфель|портфели|Портфель|Портфели|portfolio|portfolios'))
 async def portfolios(event):
-    # Если клиент не до конца прошел профалинг - сбрасываем результат прохождения
-    sender_id = event.input_sender.user_id
-    if not is_user_profile_done(sender_id):
-        reset_user_profiler_data(sender_id)
     await client.send_message(event.input_sender, 'Портфели', buttons=buttons.keyboard_a2)
 
 

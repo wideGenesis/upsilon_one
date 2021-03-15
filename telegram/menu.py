@@ -29,13 +29,13 @@ async def start_menu(event, client, engine=None):
 
     # Если клиент не до конца прошел профалинг - сбрасываем результат прохождения
     if not is_user_profile_done(sender_id):
+        # TODO  узнать а вообще дошел ли юзер до профайла, если доходил, то не надо показывать презу,
+        #  а сразу стартовать с профайла. Если не дошел до профайла даже, то презу показать надо
         reset_user_profiler_data(sender_id)
-
-    # TODO Если бот будет двуязычным, то нужно будет сделать возможность выбора языка и сохранение его в базу
-    # lang = await client.get_entity(PeerUser(sender_id))
-    # await db_save_lang(str(lang.lang_code), sender_id, connection)
-    await client.send_message(entity, ins.hello_1, file=f'{PROJECT_HOME_DIR}/html/hello_1.jpg',
-                              buttons=buttons.keyboard_forw2)
+        await client.send_message(entity, ins.hello_1, file=f'{PROJECT_HOME_DIR}/html/hello_1.jpg',
+                                  buttons=buttons.keyboard_forw2)
+    else:
+        await tools_menu(event, client)
 
 
 async def tools_menu(event, client):
@@ -73,7 +73,9 @@ async def profile_menu(event, client, engine=None):
     ]
 
     sender_id = event.input_sender
-    await client.delete_messages(sender_id.user_id, event.message.id)
+    m_id = getattr(event, "message", None)
+    if m_id is not None:
+        await client.delete_messages(sender_id.user_id, event.message.id)
 
     # Если клиент не до конца прошел профалинг - сбрасываем результат прохождения
     if not is_user_profile_done(sender_id.user_id):
@@ -105,7 +107,24 @@ async def profile_menu(event, client, engine=None):
         data = csv.reader(f, delimiter=',')
         for row in data:
             count = str(row).strip("['']")
+    profile_score_str = ""
     final_profile_score = get_final_score(sender_id.user_id)
+    if isinstance(final_profile_score, int):
+        if final_profile_score <= -9:
+            profile_score_str = "Полное отвержение риска"
+        elif -9 < final_profile_score <= -4:
+            profile_score_str = "Сильное отвержение риска"
+        elif -4 < final_profile_score <= 1:
+            profile_score_str = "Умеренное принятие риска"
+        elif 1 < final_profile_score < 6:
+            profile_score_str = "Разумное принятие риска"
+        elif 6 <= final_profile_score < 10:
+            profile_score_str = "Уверенное принятие риска"
+        elif final_profile_score >= 10:
+            profile_score_str = "Полное принятие риска"
+    else:
+        profile_score_str = final_profile_score
+
     old_msg_id = await shared.get_old_msg_id(sender_id.user_id)
     if old_msg_id is not None:
         is_poll = await shared.is_old_msg_poll(sender_id.user_id)
@@ -115,7 +134,7 @@ async def profile_menu(event, client, engine=None):
                                                  f'\U0001F464 : {user_profile[3]}' + '\n' +
                                                  f'Имя: {user_profile[5]}' + '\n' +
                                                  '\n' +
-                                                 f'Результат риск профайла: __{final_profile_score}__' + '\n' +
+                                                 f'Результат риск профайла: __{profile_score_str}__' + '\n' +
                                                  f'Баланс: __{user_profile[8]}__' + '\n' +
                                                  f'Подписка действительна до: __' + expired_date + '__' + '\n' +
                                                  f'Приглашено: __{user_profile[9]}__' + '\n' +
@@ -128,7 +147,7 @@ async def profile_menu(event, client, engine=None):
                                       f'\U0001F464 : {user_profile[3]}' + '\n' +
                                       f'Имя: {user_profile[5]}' + '\n' +
                                       '\n' +
-                                      f'Результат риск профайла: __{final_profile_score}__' + '\n' +
+                                      f'Результат риск профайла: __{profile_score_str}__' + '\n' +
                                       f'Баланс: __{user_profile[8]}__' + '\n' +
                                       f'Подписка действительна до: __' + expired_date + '__' + '\n' +
                                       f'Приглашено: __{user_profile[9]}__' + '\n' +
@@ -139,7 +158,7 @@ async def profile_menu(event, client, engine=None):
                                              f'\U0001F464 : {user_profile[3]}' + '\n' +
                                              f'Имя: {user_profile[5]}' + '\n' +
                                              '\n' +
-                                             f'Результат риск профайла: __{final_profile_score}__' + '\n' +
+                                             f'Результат риск профайла: __{profile_score_str}__' + '\n' +
                                              f'Баланс: __{user_profile[8]}__' + '\n' +
                                              f'Подписка действительна до: __' + expired_date + '__' + '\n' +
                                              f'Приглашено: __{user_profile[9]}__' + '\n' +

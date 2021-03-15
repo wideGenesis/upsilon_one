@@ -441,4 +441,11 @@ def generate_payment_button(kbd_label=None, payment_link=None):
     ]
     return keyboard_subscr_start_inst
 
+
+keyboard_friend_back = [
+    [
+        Button.inline('\U0001F519  ' + 'Назад', b'fiendback')
+    ]
+]
+
 # TODO поменять иконки кнопок
