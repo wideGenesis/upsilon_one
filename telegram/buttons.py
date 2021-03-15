@@ -109,7 +109,7 @@ keyboard_a1_back = [
     ]
 ]
 
-keyboard_a2 = [
+keyboard_historical_tests = [
     [
         Button.inline('\U0001F4BC  ' + 'Парковочный портфель', b'a2a3')
     ],

@@ -425,9 +425,9 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
     elif event.data == b'mp3':
         await event.edit()
         if old_msg_id is not None:
-            await client.edit_message(event.input_sender, old_msg_id, 'Исторические тесты', buttons=buttons.keyboard_a2)
+            await client.edit_message(event.input_sender, old_msg_id, 'Исторические тесты', buttons=buttons.keyboard_historical_tests)
         else:
-            msg = await client.send_message(event.input_sender, 'Исторические тесты', buttons=buttons.keyboard_a2)
+            msg = await client.send_message(event.input_sender, 'Исторические тесты', buttons=buttons.keyboard_historical_tests)
             await shared.save_old_message(sender_id, msg)
 
     # ============================== Управление =============================
@@ -670,7 +670,7 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
 
     elif event.data == b'cm-51':
         await event.edit()
-        msg = await client.send_message(event.input_sender, 'Исторические тесты', buttons=buttons.keyboard_a2)
+        msg = await client.send_message(event.input_sender, 'Исторические тесты', buttons=buttons.keyboard_historical_tests)
         await shared.save_old_message(sender_id, msg)
 
     # elif event.data == b'cm-6':

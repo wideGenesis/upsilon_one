@@ -343,31 +343,31 @@ async def portfolio_candle_chart_handler(event, client_):
     if pattern == 'parking':
         await client_.send_message(event.input_sender, 'Чарт обновляется ежедневно в 11:00 (МСК)')
         await client_.send_file(event.input_sender, CHARTER_IMAGES_PATH + 'parking_port_chart_over_TLT.png',
-                                buttons=buttons.keyboard_a2)
+                                buttons=buttons.keyboard_historical_tests)
     elif pattern == 'allweather':
         await client_.send_message(event.input_sender, 'Чарт обновляется ежедневно в 11:00 (МСК)')
         await client_.send_file(event.input_sender, CHARTER_IMAGES_PATH + 'allweather_port_chart_over_SPY.png',
-                                buttons=buttons.keyboard_a2)
+                                buttons=buttons.keyboard_historical_tests)
     elif pattern == 'balanced':
         await client_.send_message(event.input_sender, 'Чарт обновляется ежедневно в 11:00 (МСК)')
         await client_.send_file(event.input_sender, CHARTER_IMAGES_PATH + 'balanced_port_chart_over_QQQ.png',
-                                buttons=buttons.keyboard_a2)
+                                buttons=buttons.keyboard_historical_tests)
     elif pattern == 'aggressive':
         await client_.send_message(event.input_sender, 'Чарт обновляется ежедневно в 11:00 (МСК)')
         await client_.send_file(event.input_sender, CHARTER_IMAGES_PATH + 'aggressive_port_chart_over_QQQ.png',
-                                buttons=buttons.keyboard_a2)
+                                buttons=buttons.keyboard_historical_tests)
     elif pattern == 'leveraged':
         await client_.send_message(event.input_sender, 'Чарт обновляется ежедневно в 11:00 (МСК)')
         await client_.send_file(event.input_sender, CHARTER_IMAGES_PATH + 'leveraged_port_chart_over_QQQ.png',
-                                buttons=buttons.keyboard_a2)
+                                buttons=buttons.keyboard_historical_tests)
     elif pattern == 'elastic':
         await client_.send_message(event.input_sender, 'Чарт обновляется ежедневно в 11:00 (МСК)')
         await client_.send_file(event.input_sender, CHARTER_IMAGES_PATH + 'elastic_port_chart_over_QQQ.png',
-                                buttons=buttons.keyboard_a2)
+                                buttons=buttons.keyboard_historical_tests)
     elif pattern == 'yolo':
         await client_.send_message(event.input_sender, 'Чарт обновляется ежедневно в 11:00 (МСК)')
         await client_.send_file(event.input_sender, CHARTER_IMAGES_PATH + 'yolo_port_chart_over_SPY.png',
-                                buttons=buttons.keyboard_a2)
+                                buttons=buttons.keyboard_historical_tests)
 
 
 async def managers_form_handler(event, client_):
