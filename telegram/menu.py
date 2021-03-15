@@ -9,6 +9,8 @@ from project_shared import *
 from telegram import shared
 from telegram import instructions as ins
 from messages.message import *
+from telegram import callbacks
+
 
 pics = f'{PROJECT_HOME_DIR}/html/'
 
@@ -27,13 +29,18 @@ async def start_menu(event, client, engine=None):
     if old_msg_id is not None:
         shared.pop_old_msg_id(sender_id)
 
-    # Если клиент не до конца прошел профалинг - сбрасываем результат прохождения
+    # Если клиент не до конца прошел профалинг - сбрасываем результат прохождения,
+    # сразу стартовать с профайла
     if not is_user_profile_done(sender_id):
-        # TODO  узнать а вообще дошел ли юзер до профайла, если доходил, то не надо показывать презу,
-        #  а сразу стартовать с профайла. Если не дошел до профайла даже, то презу показать надо
-        reset_user_profiler_data(sender_id)
-        await client.send_message(entity, ins.hello_1, file=f'{PROJECT_HOME_DIR}/html/hello_1.jpg',
-                                  buttons=buttons.keyboard_forw2)
+        # а вообще дошел ли юзер до профайла, если доходил, то не надо показывать презу
+        if not user_profiler_map_lookup(sender_id):
+            reset_user_profiler_data(sender_id)
+            await client.send_message(entity, ins.hello_1, file=f'{PROJECT_HOME_DIR}/html/hello_1.jpg',
+                                      buttons=buttons.keyboard_forw2)
+        else:
+            #  Если не дошел до профайла даже, то презу показать надо
+            await client.send_message(event.input_sender, 'Профиль')
+            await callbacks.send_next_profiler_question(client, sender_id, 0)
     else:
         # Если юзер уже прошел профайлинг, то ему не надо показывать презу и опрос - сразу главное меню
         await tools_menu(event, client)
