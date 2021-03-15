@@ -35,6 +35,7 @@ async def start_menu(event, client, engine=None):
         await client.send_message(entity, ins.hello_1, file=f'{PROJECT_HOME_DIR}/html/hello_1.jpg',
                                   buttons=buttons.keyboard_forw2)
     else:
+        # Если юзер уже прошел профайлинг, то ему не надо показывать презу и опрос - сразу главное меню
         await tools_menu(event, client)
 
 
