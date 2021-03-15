@@ -457,4 +457,63 @@ keyboard_friend_back = [
     ]
 ]
 
-# TODO поменять иконки кнопок
+# ============= Кнопки для меню мои стратегии =============
+risk_profile1 = [
+    [
+        Button.inline('\U0001F4BC  ' + 'Парковочный портфель', b'strategy_parking')
+    ]
+]
+
+risk_profile2 = [
+    [
+        Button.inline('\U0001F4BC  ' + 'Парковочный портфель', b'strategy_parking')
+    ],
+    [
+        Button.inline('\U0001F4BC  ' + 'Всепогодный портфель', b'strategy_allweather')
+    ]
+]
+
+risk_profile3 = [
+    [
+        Button.inline('\U0001F4BC  ' + 'Всепогодный портфель', b'strategy_allweather')
+    ],
+    [
+        Button.inline('\U0001F4BC  ' + 'Сбалансированный портфель', b'strategy_balanced')
+    ]
+]
+
+risk_profile4 = [
+    [
+        Button.inline('\U0001F4BC  ' + 'Сбалансированный портфель', b'strategy_balanced')
+    ]
+]
+
+risk_profile5 = [
+    [
+        Button.inline('\U0001F4BC  ' + 'Сбалансированный портфель', b'strategy_balanced')
+    ],
+    [
+        Button.inline('\U0001F4BC  ' + 'Агрессивный портфель', b'strategy_aggressive')
+    ],
+    [
+        Button.inline('\U0001F4BC  ' + 'Yolo портфель', b'strategy_yolo')
+    ],
+    [
+        Button.inline('\U0001F4BC  ' + 'Elastic портфель', b'strategy_elastic')
+    ]
+]
+
+risk_profile6 = [
+    [
+        Button.inline('\U0001F4BC  ' + 'Агрессивный портфель', b'strategy_aggressive')
+    ],
+    [
+        Button.inline('\U0001F4BC  ' + 'Плечевой портфель', b'strategy_leveraged')
+    ],
+    [
+        Button.inline('\U0001F4BC  ' + 'Yolo портфель', b'strategy_yolo')
+    ],
+    [
+        Button.inline('\U0001F4BC  ' + 'Elastic портфель', b'strategy_elastic')
+    ]
+]

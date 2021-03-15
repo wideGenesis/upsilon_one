@@ -68,7 +68,7 @@ async def tools_menu(event, client):
     else:
         menu_msg = await client.send_message(event.input_sender, 'Главное меню', buttons=buttons.keyboard_0)
         await shared.save_old_message(sender_id, menu_msg)
-        await client.send_message(event.input_sender, '_%_', buttons=buttons.keyboard_start)
+    await client.send_message(event.input_sender, '_%_', buttons=buttons.keyboard_start)
 
 
 async def profile_menu(event, client, engine=None):
