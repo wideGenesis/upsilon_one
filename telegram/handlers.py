@@ -312,6 +312,8 @@ async def instructions_handler(event, client_):
         await client_.send_message(event.input_sender, ins.instruction19)
     elif pattern == 'mindepo':
         await client_.send_message(event.input_sender, ins.mindepo)
+    elif pattern == 'brokers':
+        await client_.send_message(event.input_sender, ins.brokers)
     elif pattern == 'managers_form':
         await client_.send_message(event.input_sender, ins.managers_form)
     elif pattern == 'instruction20':
