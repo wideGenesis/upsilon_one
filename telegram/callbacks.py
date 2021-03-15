@@ -305,7 +305,7 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
         message = await client.send_message(entity=entity, message='Загрузка...')
         await client.edit_message(message, 'Парковочный портфель')
 
-        await client.send_message(event.input_sender, 'Подробная статистика стратегии',
+        await client.send_message(event.input_sender, 'Подробная статистика',
                                   file=STATS_PATH + 'parking.pdf')
         await client.send_message(event.input_sender, 'Симуляция доходности портфеля на 10 лет',
                                   file=STATS_PATH + 'parking.png')
@@ -321,7 +321,7 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
         await shared.delete_old_message(client, sender_id)
         message = await client.send_message(entity=entity, message='Загрузка...')
         await client.edit_message(message, 'Всепогодный портфель')
-        await client.send_message(event.input_sender, 'Подробная статистика стратегии',
+        await client.send_message(event.input_sender, 'Подробная статистика',
                                   file=STATS_PATH + 'allweather.pdf')
         await client.send_message(event.input_sender, 'Симуляция доходности портфеля на 10 лет',
                                   file=STATS_PATH + 'allweather.png')
@@ -337,7 +337,7 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
         await shared.delete_old_message(client, sender_id)
         message = await client.send_message(entity=entity, message='Загрузка...')
         await client.edit_message(message, 'Сбалансированный портфель')
-        await client.send_message(event.input_sender, 'Подробная статистика стратегии',
+        await client.send_message(event.input_sender, 'Подробная статистика',
                                   file=STATS_PATH + 'balanced.pdf')
         await client.send_message(event.input_sender, 'Симуляция доходности портфеля на 10 лет',
                                   file=STATS_PATH + 'balanced.png')
@@ -353,7 +353,7 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
         await shared.delete_old_message(client, sender_id)
         message = await client.send_message(entity=entity, message='Загрузка...')
         await client.edit_message(message, 'Агрессивный портфель')
-        await client.send_message(event.input_sender, 'Подробная статистика стратегии',
+        await client.send_message(event.input_sender, 'Подробная статистика',
                                   file=STATS_PATH + 'aggressive.pdf')
         await client.send_message(event.input_sender, 'Симуляция доходности портфеля на 10 лет',
                                   file=STATS_PATH + 'aggressive.png')
@@ -369,7 +369,7 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
         await shared.delete_old_message(client, sender_id)
         message = await client.send_message(entity=entity, message='Загрузка...')
         await client.edit_message(message, 'Плечевой портфель')
-        await client.send_message(event.input_sender, 'Подробная статистика стратегии',
+        await client.send_message(event.input_sender, 'Подробная статистика',
                                   file=STATS_PATH + 'leveraged.pdf')
         await client.send_message(event.input_sender, 'Симуляция доходности портфеля на 10 лет',
                                   file=STATS_PATH + 'leveraged.png')
@@ -385,7 +385,7 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
         await shared.delete_old_message(client, sender_id)
         message = await client.send_message(entity=entity, message='Загрузка...')
         await client.edit_message(message, 'Elastic Strategy - портфель только из акций')
-        await client.send_message(event.input_sender, 'Подробная статистика стратегии',
+        await client.send_message(event.input_sender, 'Подробная статистика',
                                   file=STATS_PATH + 'elastic.pdf')
         await client.send_message(event.input_sender, 'Симуляция доходности портфеля на 10 лет',
                                   file=STATS_PATH + 'elastic.png')
@@ -402,7 +402,7 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
         message = await client.send_message(entity=entity, message='Загрузка...')
         await client.edit_message(message, 'Yolo Strategy - портфель только из акций, торгуемых на spbexchange. '
                                            'Доступен для клиентов Сбер, Тинькофф, Альфа-банк, ВТБ')
-        await client.send_message(event.input_sender, 'Подробная статистика стратегии',
+        await client.send_message(event.input_sender, 'Подробная статистика',
                                   file=STATS_PATH + 'yolo.pdf')
         await client.send_message(event.input_sender, 'Симуляция доходности портфеля на 10 лет',
                                   file=STATS_PATH + 'yolo.png')
@@ -472,7 +472,7 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
     # elif event.data == b'sac1':
     #     await event.edit()
     #     message = await client.send_message(entity=entity, message='Загрузка...')
-    #     await client.edit_message(message, 'Подробная статистика стратегии')
+    #     await client.edit_message(message, 'Подробная статистика')
     #     await client.send_file(entity, STATS_PATH + 'sac_parking.pdf')
     #     await client.send_message(event.input_sender, 'О доверительном управлении \n'
     #                                                   '/instruction26',
@@ -481,7 +481,7 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
     # elif event.data == b'sac2':
     #     await event.edit()
     #     message = await client.send_message(entity=entity, message='Загрузка...')
-    #     await client.edit_message(message, 'Подробная статистика стратегии')
+    #     await client.edit_message(message, 'Подробная статистика')
     #     await client.send_file(entity, STATS_PATH + 'sac_balanced.pdf')
     #     await client.send_message(event.input_sender, 'О доверительном управлении \n'
     #                                                   '/instruction26',
@@ -490,7 +490,7 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
     # elif event.data == b'sac3':
     #     await event.edit()
     #     message = await client.send_message(entity=entity, message='Загрузка...')
-    #     await client.edit_message(message, 'Подробная статистика стратегии')
+    #     await client.edit_message(message, 'Подробная статистика')
     #     await client.send_file(entity, STATS_PATH + 'sac_growth.pdf')
     #     await client.send_message(event.input_sender, 'О доверительном управлении \n'
     #                                                   '/instruction26',
