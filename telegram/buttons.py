@@ -111,7 +111,7 @@ keyboard_a1_back = [
 
 keyboard_historical_tests = [
     [
-        Button.inline('\U0001F4BC  ' + 'Парковочный портфель', b'a2a3')
+        Button.inline('\U0001F4BC  ' + 'Парковочный портфель', b'hist_parking')
     ],
     [
         Button.inline('\U0001F4BC  ' + 'Всепогодный портфель', b'a2a4')

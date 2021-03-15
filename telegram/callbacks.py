@@ -299,22 +299,21 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
     #     await client.edit_message(message, 'Оценка/аудит портфеля')
     #     await client.send_message(event.input_sender, 'Зачем проводить аудит своего портфеля? /instruction04',
     #                               buttons=buttons.keyboard_a2_back)
-    elif event.data == b'a2a3':
+    elif event.data == b'hist_parking':
         await event.edit()
         await shared.delete_old_message(client, sender_id)
         message = await client.send_message(entity=entity, message='Загрузка...')
-        await client.edit_message(message, '"Парковочный" портфель без риска')
-        await client.send_message(event.input_sender, 'Текущая структура портфеля')
-        await client.send_file(entity, CHARTER_IMAGES_PATH + 'parking_portfolio_pie.png')
-        await client.send_message(event.input_sender, 'Подробная статистика стратегии')
-        await client.send_file(entity, STATS_PATH + 'parking.pdf')
-        await client.send_message(event.input_sender, 'Симуляция доходности портфеля на 10 лет \n '
-                                                      'Как интерпретировать результаты симуляций Монте-Карло?'
-                                                      ' - /instruction19')
-        await client.send_file(entity, STATS_PATH + 'parking.png')
-        await client.send_file(entity, STATS_PATH + 'parking2.png')
-        await client.send_message(event.input_sender, 'Кому и когда покупать парковочный портфель? \n'
-                                                      '/instruction14 \n End of Day График - /chart_parking',
+        await client.edit_message(message, 'Парковочный портфель')
+
+        await client.send_message(event.input_sender, 'Подробная статистика стратегии',
+                                  file=STATS_PATH + 'parking.pdf')
+        await client.send_message(event.input_sender, 'Симуляция доходности портфеля на 10 лет',
+                                  file=STATS_PATH + 'parking.png')
+        await client.send_message(event.input_sender, 'Как интерпретировать результаты симуляций Монте-Карло?\n'
+                                                      '/instruction19',
+                                  file=STATS_PATH + 'parking2.png')
+        await client.send_message(event.input_sender, 'Кому и когда покупать парковочный портфель?\n'
+                                                      '/instruction14',
                                   buttons=buttons.keyboard_a3_back)
 
     elif event.data == b'a2a4':
@@ -955,3 +954,7 @@ async def update_poll(update, client):
                 menu_msg = await client.send_message(user_id, 'Главное меню', buttons=buttons.keyboard_0)
                 await shared.delete_old_message(client, user_id)
                 await shared.save_old_message(user_id, menu_msg)
+
+
+        # await client.send_message(event.input_sender, 'Текущая структура портфеля')
+        # await client.send_file(entity, CHARTER_IMAGES_PATH + 'parking_portfolio_pie.png')
