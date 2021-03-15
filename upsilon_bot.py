@@ -135,7 +135,7 @@ async def future(event):
     await handlers.future_handler(event, client)
 
 
-@client.on(events.NewMessage(pattern='^/(instruction[0-9][0-9]|mindepo|brokers)$'))
+@client.on(events.NewMessage(pattern='^/(instruction[0-9][0-9]|mindepo)$'))
 async def instructions(event):
     await handlers.instructions_handler(event, client)
 
