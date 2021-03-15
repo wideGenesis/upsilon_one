@@ -40,7 +40,7 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
             msg = await client.send_message(event.input_sender, 'Анализ рынков', buttons=buttons.keyboard_a1)
             await shared.save_old_message(sender_id, msg)
 
-    elif event.data == b'a2':
+    elif event.data == b'my_portfolio':
         await event.edit()
         if old_msg_id is not None:
             await client.edit_message(event.input_sender, old_msg_id, 'Мой портфель\n'
@@ -468,6 +468,17 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
         await client.edit_message(message, 'Сравнение брокеров')
         await client.send_message(event.input_sender, ins.brokers,
                                   buttons=buttons.keyboard_info_back)
+    elif event.data == b'risk_profile_restart':
+        await event.edit()
+        await shared.delete_old_message(client, sender_id)
+        message = await client.send_message(entity=entity, message='Загрузка...')
+        await client.edit_message(message, 'Определеить свой профиль риска', buttons=buttons.keyboard_restart_poll)
+
+    elif event.data == b'my_strategies':
+        await event.edit()
+        await shared.delete_old_message(client, sender_id)
+        message = await client.send_message(entity=entity, message='Загрузка...')
+        await client.edit_message(message, 'Определеить свой профиль риска', buttons=buttons.keyboard_restart_poll)
 
     # elif event.data == b'sac1':
     #     await event.edit()
