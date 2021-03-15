@@ -468,32 +468,40 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
         await client.send_message(event.input_sender, ins.instruction30,
                                   buttons=buttons.keyboard_info_back)
 
-    elif event.data == b'sac1':
+    elif event.data == b'brokers_compare':
         await event.edit()
+        await shared.delete_old_message(client, sender_id)
         message = await client.send_message(entity=entity, message='Загрузка...')
-        await client.edit_message(message, 'Подробная статистика стратегии')
-        await client.send_file(entity, STATS_PATH + 'sac_parking.pdf')
-        await client.send_message(event.input_sender, 'О доверительном управлении \n'
-                                                      '/instruction26',
-                                  buttons=buttons.keyboard_managed_strategies)
+        await client.edit_message(message, 'Сравнение брокеров')
+        await client.send_message(event.input_sender, ins.brokers,
+                                  buttons=buttons.keyboard_info_back)
 
-    elif event.data == b'sac2':
-        await event.edit()
-        message = await client.send_message(entity=entity, message='Загрузка...')
-        await client.edit_message(message, 'Подробная статистика стратегии')
-        await client.send_file(entity, STATS_PATH + 'sac_balanced.pdf')
-        await client.send_message(event.input_sender, 'О доверительном управлении \n'
-                                                      '/instruction26',
-                                  buttons=buttons.keyboard_managed_strategies)
-
-    elif event.data == b'sac3':
-        await event.edit()
-        message = await client.send_message(entity=entity, message='Загрузка...')
-        await client.edit_message(message, 'Подробная статистика стратегии')
-        await client.send_file(entity, STATS_PATH + 'sac_growth.pdf')
-        await client.send_message(event.input_sender, 'О доверительном управлении \n'
-                                                      '/instruction26',
-                                  buttons=buttons.keyboard_managed_strategies)
+    # elif event.data == b'sac1':
+    #     await event.edit()
+    #     message = await client.send_message(entity=entity, message='Загрузка...')
+    #     await client.edit_message(message, 'Подробная статистика стратегии')
+    #     await client.send_file(entity, STATS_PATH + 'sac_parking.pdf')
+    #     await client.send_message(event.input_sender, 'О доверительном управлении \n'
+    #                                                   '/instruction26',
+    #                               buttons=buttons.keyboard_managed_strategies)
+    #
+    # elif event.data == b'sac2':
+    #     await event.edit()
+    #     message = await client.send_message(entity=entity, message='Загрузка...')
+    #     await client.edit_message(message, 'Подробная статистика стратегии')
+    #     await client.send_file(entity, STATS_PATH + 'sac_balanced.pdf')
+    #     await client.send_message(event.input_sender, 'О доверительном управлении \n'
+    #                                                   '/instruction26',
+    #                               buttons=buttons.keyboard_managed_strategies)
+    #
+    # elif event.data == b'sac3':
+    #     await event.edit()
+    #     message = await client.send_message(entity=entity, message='Загрузка...')
+    #     await client.edit_message(message, 'Подробная статистика стратегии')
+    #     await client.send_file(entity, STATS_PATH + 'sac_growth.pdf')
+    #     await client.send_message(event.input_sender, 'О доверительном управлении \n'
+    #                                                   '/instruction26',
+    #                               buttons=buttons.keyboard_managed_strategies)
     # ============================== Презентация =============================
     elif event.data == b'forw2':
         await event.edit()

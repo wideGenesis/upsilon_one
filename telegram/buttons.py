@@ -336,6 +336,9 @@ keyboard_screener_back = [
 
 keyboard_info = [
     [
+        Button.inline('\U00002696   ' + 'Сравнение брокеров', b'brokers_compare')
+    ],
+    [
         Button.inline('\U000026D1   ' + 'Инструкции', b'a5')
     ],
     [
