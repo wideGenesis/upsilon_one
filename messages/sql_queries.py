@@ -351,8 +351,8 @@ def reset_user_profiler_data(user_id, table_name=USER_PROFILER_DATA_TABLE_NAME, 
             try:
                 del_query = f'DELETE FROM {table_name} WHERE usr_id=\'{user_id}\''
                 connection.execute(del_query)
-                del_query1 = f'DELETE FROM {USER_PROFILER_MAP_TABLE_NAME} WHERE usr_id=\'{user_id}\''
-                connection.execute(del_query1)
+                # del_query1 = f'DELETE FROM {USER_PROFILER_MAP_TABLE_NAME} WHERE usr_id=\'{user_id}\''
+                # connection.execute(del_query1)
             except Exception as e:
                 debug(e, ERROR)
 
