@@ -47,9 +47,14 @@ async def start(event):
     await menu.start_menu(event, client, engine=engine)
 
 
-@client.on(events.NewMessage(pattern='Главное меню|menu|Menu|Меню|меню'))
+@client.on(events.NewMessage(pattern='Главное меню'))
 async def tools(event):
     await menu.tools_menu(event, client)
+
+
+@client.on(events.NewMessage(pattern='menu|Menu|Меню|меню'))
+async def tools(event):
+    await menu.meta_menu(event, client)
 
 
 @client.on(events.NewMessage(pattern='Профиль|профиль|Profile|profile'))

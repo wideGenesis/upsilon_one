@@ -51,7 +51,7 @@ async def meta_menu(event, client):
     old_msg_id = await shared.get_old_msg_id(sender_id)
     if old_msg_id is not None:
         shared.pop_old_msg_id(sender_id)
-    # await client.send_message(event.input_sender, '.', buttons=buttons.keyboard_start)
+    await client.send_message(event.input_sender, '.', buttons=buttons.keyboard_start)
 
 
 async def tools_menu(event, client):

@@ -7,8 +7,8 @@ lol = ['Подача напитков из улиток', 'Мыло \"Кот Д�
        'Бар \"Финансовое воздержание\"']
 
 keyboard_start = [
-    [Button.text('Меню', resize=True), Button.text('Профиль', resize=True)],
-    [Button.text('Информация', resize=True), Button.text(f'{choice(lol)}', resize=True)]
+    [Button.text('Главное меню', resize=True), Button.text('Профиль', resize=True)],
+    [Button.text('Информация', resize=True)]
 ]
 
 # Кнопки вперед для презентации
