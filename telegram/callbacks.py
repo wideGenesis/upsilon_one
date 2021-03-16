@@ -1030,40 +1030,40 @@ async def my_strategies_dynamic_menu(event, client, sender_id, old_msg_id):
             final_profile_score = get_final_score(sender_id)
             if final_profile_score <= -9:
                 await client.edit_message(event.input_sender, old_msg_id,
-                                          'Ваш портфель', buttons=buttons.risk_profile1)
+                                          'Твой портфель', buttons=buttons.risk_profile1)
             elif -9 < final_profile_score <= -4:
                 await client.edit_message(event.input_sender, old_msg_id,
-                                          'Ваши портфели', buttons=buttons.risk_profile2)
+                                          'Твои портфели', buttons=buttons.risk_profile2)
             elif -4 < final_profile_score <= 1:
                 await client.edit_message(event.input_sender, old_msg_id,
-                                          'Ваши портфели', buttons=buttons.risk_profile3)
+                                          'Твои портфели', buttons=buttons.risk_profile3)
             elif 1 < final_profile_score < 6:
                 await client.edit_message(event.input_sender, old_msg_id,
-                                          'Ваш портфель', buttons=buttons.risk_profile4)
+                                          'Твой портфель', buttons=buttons.risk_profile4)
             elif 6 <= final_profile_score < 10:
                 await client.edit_message(event.input_sender, old_msg_id,
-                                          'Ваши портфели', buttons=buttons.risk_profile5)
+                                          'Твои портфели', buttons=buttons.risk_profile5)
             elif final_profile_score >= 10:
                 await client.edit_message(event.input_sender, old_msg_id,
-                                          'Ваши портфели', buttons=buttons.risk_profile6)
+                                          'Твои портфели', buttons=buttons.risk_profile6)
     else:
         final_profile_score = get_final_score(sender_id)
         if final_profile_score <= -9:
             msg = await client.send_message(event.input_sender,
-                                            'Ваш портфель', buttons=buttons.risk_profile1)
+                                            'Твой портфель', buttons=buttons.risk_profile1)
         elif -9 < final_profile_score <= -4:
             msg = await client.send_message(event.input_sender,
-                                            'Ваши портфели', buttons=buttons.risk_profile2)
+                                            'Твои портфели', buttons=buttons.risk_profile2)
         elif -4 < final_profile_score <= 1:
             msg = await client.send_message(event.input_sender,
-                                            'Ваши портфели', buttons=buttons.risk_profile3)
+                                            'Твои портфели', buttons=buttons.risk_profile3)
         elif 1 < final_profile_score < 6:
             msg = await client.send_message(event.input_sender,
-                                            'Ваш портфель', buttons=buttons.risk_profile4)
+                                            'Твой портфель', buttons=buttons.risk_profile4)
         elif 6 <= final_profile_score < 10:
             msg = await client.send_message(event.input_sender,
-                                            'Ваши портфели', buttons=buttons.risk_profile5)
+                                            'Твои портфели', buttons=buttons.risk_profile5)
         elif final_profile_score >= 10:
             msg = await client.send_message(event.input_sender,
-                                            'Ваши портфели', buttons=buttons.risk_profile6)
+                                            'Твои портфели', buttons=buttons.risk_profile6)
         await shared.save_old_message(sender_id, msg)

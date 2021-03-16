@@ -2,9 +2,9 @@ from telethon.tl.custom import Button
 from project_shared import *
 from random import choice
 
-lol = ['Подача напитков из улиток', 'Мыло \"Кот Да Винчи\"', 'Гос реестр порно', 'Орден Финансового Лосся',
-       'Шопот крыш', 'Отделение пластики мозга', 'Моргаем диафрагмой', 'Мастерская \"Парики Трампа\"',
-       'Бар \"Финансовое воздержание\"']
+# lol = ['Подача напитков из улиток', 'Мыло \"Кот Да Винчи\"', 'Гос реестр порно', 'Орден Финансового Лосся',
+#        'Шопот крыш', 'Отделение пластики мозга', 'Моргаем диафрагмой', 'Мастерская \"Парики Трампа\"',
+#        'Бар \"Финансовое воздержание\"']
 
 keyboard_start = [
     [Button.text('\U0001F4C1 Главное меню', resize=True)],
@@ -110,25 +110,25 @@ keyboard_a1_back = [
 
 keyboard_historical_tests = [
     [
-        Button.inline('\U0001F4BC  ' + 'Парковочный портфель', b'hist_parking')
+        Button.inline('\U0001F4BC  ' + 'Парковочный', b'hist_parking')
     ],
     [
-        Button.inline('\U0001F4BC  ' + 'Всепогодный портфель', b'hist_allweather')
+        Button.inline('\U0001F4BC  ' + 'Всепогодный', b'hist_allweather')
     ],
     [
-        Button.inline('\U0001F4BC  ' + 'Сбалансированный портфель', b'hist_balanced')
+        Button.inline('\U0001F4BC  ' + 'Сбалансированный', b'hist_balanced')
     ],
     [
-        Button.inline('\U0001F4BC  ' + 'Агрессивный портфель', b'hist_agg')
+        Button.inline('\U0001F4BC  ' + 'Агрессивный', b'hist_agg')
     ],
     [
-        Button.inline('\U0001F4BC  ' + 'Плечевой портфель', b'hist_lev')
+        Button.inline('\U0001F4BC  ' + 'Плечевой', b'hist_lev')
     ],
     [
-        Button.inline('\U0001F4BC  ' + 'Elastic портфель (только акции, без ETF)', b'hist_elastic')
+        Button.inline('\U0001F4BC  ' + 'Elastic (только акции, без ETF)', b'hist_elastic')
     ],
     [
-        Button.inline('\U0001F4BC  ' + 'Yolo портфель (spbexchange)', b'hist_yolo')
+        Button.inline('\U0001F4BC  ' + 'Yolo (spbexchange)', b'hist_yolo')
     ],
     [
         Button.inline('\U0001F519  ' + 'Назад', b'hist_back')
@@ -227,16 +227,16 @@ keyboard_a8_back = [
 
 keyboard_core_macro = [
     [
-        Button.inline('\U0001F3E6  ' + 'Interest Rates', b'cm1')
+        Button.inline('\U0001F3E6  ' + 'Процентная ставка', b'cm1')
     ],
     [
-        Button.inline('\U0001F321   ' + 'Inflation Rates', b'cm2')
+        Button.inline('\U0001F321   ' + 'Уровень инфляции', b'cm2')
     ],
     [
-        Button.inline('\U0001F525   ' + 'Unemployment Rates', b'cm3')
+        Button.inline('\U0001F525   ' + 'Уровень безработицы', b'cm3')
     ],
     [
-        Button.inline('\U0001F3E2   ' + 'Composite PMI', b'cm4')
+        Button.inline('\U0001F3E2   ' + 'Индекс деловой активности', b'cm4')
     ],
     [
         Button.inline('\U0001F519   ' + 'Назад', b'cm-3')
@@ -459,61 +459,61 @@ keyboard_friend_back = [
 # ============= Кнопки для меню мои стратегии =============
 risk_profile1 = [
     [
-        Button.inline('\U0001F4BC  ' + 'Парковочный портфель', b'strategy_parking')
+        Button.inline('\U0001F4BC  ' + 'Парковочный', b'strategy_parking')
     ]
 ]
 
 risk_profile2 = [
     [
-        Button.inline('\U0001F4BC  ' + 'Парковочный портфель', b'strategy_parking')
+        Button.inline('\U0001F4BC  ' + 'Парковочный', b'strategy_parking')
     ],
     [
-        Button.inline('\U0001F4BC  ' + 'Всепогодный портфель', b'strategy_allweather')
+        Button.inline('\U0001F4BC  ' + 'Всепогодный', b'strategy_allweather')
     ]
 ]
 
 risk_profile3 = [
     [
-        Button.inline('\U0001F4BC  ' + 'Всепогодный портфель', b'strategy_allweather')
+        Button.inline('\U0001F4BC  ' + 'Всепогодный', b'strategy_allweather')
     ],
     [
-        Button.inline('\U0001F4BC  ' + 'Сбалансированный портфель', b'strategy_balanced')
+        Button.inline('\U0001F4BC  ' + 'Сбалансированный', b'strategy_balanced')
     ]
 ]
 
 risk_profile4 = [
     [
-        Button.inline('\U0001F4BC  ' + 'Сбалансированный портфель', b'strategy_balanced')
+        Button.inline('\U0001F4BC  ' + 'Сбалансированный', b'strategy_balanced')
     ]
 ]
 
 risk_profile5 = [
     [
-        Button.inline('\U0001F4BC  ' + 'Сбалансированный портфель', b'strategy_balanced')
+        Button.inline('\U0001F4BC  ' + 'Сбалансированный', b'strategy_balanced')
     ],
     [
-        Button.inline('\U0001F4BC  ' + 'Агрессивный портфель', b'strategy_aggressive')
+        Button.inline('\U0001F4BC  ' + 'Агрессивный', b'strategy_aggressive')
     ],
     [
-        Button.inline('\U0001F4BC  ' + 'Yolo портфель', b'strategy_yolo')
+        Button.inline('\U0001F4BC  ' + 'Yolo', b'strategy_yolo')
     ],
     [
-        Button.inline('\U0001F4BC  ' + 'Elastic портфель', b'strategy_elastic')
+        Button.inline('\U0001F4BC  ' + 'Elastic', b'strategy_elastic')
     ]
 ]
 
 risk_profile6 = [
     [
-        Button.inline('\U0001F4BC  ' + 'Агрессивный портфель', b'strategy_aggressive')
+        Button.inline('\U0001F4BC  ' + 'Агрессивный', b'strategy_aggressive')
     ],
     [
-        Button.inline('\U0001F4BC  ' + 'Плечевой портфель', b'strategy_leveraged')
+        Button.inline('\U0001F4BC  ' + 'Плечевой', b'strategy_leveraged')
     ],
     [
-        Button.inline('\U0001F4BC  ' + 'Yolo портфель', b'strategy_yolo')
+        Button.inline('\U0001F4BC  ' + 'Yolo', b'strategy_yolo')
     ],
     [
-        Button.inline('\U0001F4BC  ' + 'Elastic портфель', b'strategy_elastic')
+        Button.inline('\U0001F4BC  ' + 'Elastic', b'strategy_elastic')
     ]
 ]
 
