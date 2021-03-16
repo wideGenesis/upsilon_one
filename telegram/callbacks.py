@@ -476,32 +476,7 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
 
     elif event.data == b'my_strategies':
         await event.edit()
-        # await shared.delete_old_message(client, sender_id)
-        # Если клиент не до конца прошел профалинг
-        # - показываем кнопку определить свой профиль
-        if not is_user_profile_done(sender_id):
-            await client.edit_message(event.input_sender, old_msg_id,
-                                      'Определеить свой профиль риска', buttons=buttons.keyboard_restart_poll)
-        else:
-            final_profile_score = get_final_score(sender_id)
-            if final_profile_score <= -9:
-                await client.edit_message(event.input_sender, old_msg_id,
-                                          'Ваш портфель', buttons=buttons.risk_profile1)
-            elif -9 < final_profile_score <= -4:
-                await client.edit_message(event.input_sender, old_msg_id,
-                                          'Ваши портфели', buttons=buttons.risk_profile2)
-            elif -4 < final_profile_score <= 1:
-                await client.edit_message(event.input_sender, old_msg_id,
-                                          'Ваши портфели', buttons=buttons.risk_profile3)
-            elif 1 < final_profile_score < 6:
-                await client.edit_message(event.input_sender, old_msg_id,
-                                          'Ваш портфель', buttons=buttons.risk_profile4)
-            elif 6 <= final_profile_score < 10:
-                await client.edit_message(event.input_sender, old_msg_id,
-                                          'Ваши портфели', buttons=buttons.risk_profile5)
-            elif final_profile_score >= 10:
-                await client.edit_message(event.input_sender, old_msg_id,
-                                          'Ваши портфели', buttons=buttons.risk_profile6)
+        await my_strategies_dynamic_menu(event, client, sender_id, old_msg_id)
 
     elif event.data == b'strategy_parking':
         await event.edit()
@@ -509,7 +484,7 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
         fname = f'{CHARTER_IMAGES_PATH}parking_port_chart_over_TLT.png'
         await client.send_message(event.input_sender, 'Чарт обновляется ежедневно в 11:00 (МСК)',
                                   file=fname,
-                                  buttons=buttons.keyboard_historical_tests)
+                                  buttons=buttons.my_strategies_back)
 
     elif event.data == b'strategy_allweather':
         await event.edit()
@@ -517,7 +492,7 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
         fname = f'{CHARTER_IMAGES_PATH}allweather_port_chart_over_SPY.png'
         await client.send_message(event.input_sender, 'Чарт обновляется ежедневно в 11:00 (МСК)',
                                   file=fname,
-                                  buttons=buttons.keyboard_historical_tests)
+                                  buttons=buttons.my_strategies_back)
 
     elif event.data == b'strategy_balanced':
         await event.edit()
@@ -525,7 +500,7 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
         fname = f'{CHARTER_IMAGES_PATH}balanced_port_chart_over_QQQ.png'
         await client.send_message(event.input_sender, 'Чарт обновляется ежедневно в 11:00 (МСК)',
                                   file=fname,
-                                  buttons=buttons.keyboard_historical_tests)
+                                  buttons=buttons.my_strategies_back)
 
     elif event.data == b'strategy_aggressive':
         await event.edit()
@@ -533,7 +508,7 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
         fname = f'{CHARTER_IMAGES_PATH}aggressive_port_chart_over_QQQ.png'
         await client.send_message(event.input_sender, 'Чарт обновляется ежедневно в 11:00 (МСК)',
                                   file=fname,
-                                  buttons=buttons.keyboard_historical_tests)
+                                  buttons=buttons.my_strategies_back)
 
     elif event.data == b'strategy_leveraged':
         await event.edit()
@@ -541,7 +516,7 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
         fname = f'{CHARTER_IMAGES_PATH}leveraged_port_chart_over_QQQ.png'
         await client.send_message(event.input_sender, 'Чарт обновляется ежедневно в 11:00 (МСК)',
                                   file=fname,
-                                  buttons=buttons.keyboard_historical_tests)
+                                  buttons=buttons.my_strategies_back)
 
     elif event.data == b'strategy_yolo':
         await event.edit()
@@ -549,7 +524,7 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
         fname = f'{CHARTER_IMAGES_PATH}elastic_port_chart_over_QQQ.png'
         await client.send_message(event.input_sender, 'Чарт обновляется ежедневно в 11:00 (МСК)',
                                   file=fname,
-                                  buttons=buttons.keyboard_historical_tests)
+                                  buttons=buttons.my_strategies_back)
 
     elif event.data == b'strategy_elastic':
         await event.edit()
@@ -557,8 +532,11 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
         fname = f'{CHARTER_IMAGES_PATH}yolo_port_chart_over_SPY.png'
         await client.send_message(event.input_sender, 'Чарт обновляется ежедневно в 11:00 (МСК)',
                                   file=fname,
-                                  buttons=buttons.keyboard_historical_tests)
+                                  buttons=buttons.my_strategies_back)
 
+    elif event.data == b'strategies_back':
+        await event.edit()
+        await my_strategies_dynamic_menu(event, client, sender_id, old_msg_id)
 
     # elif event.data == b'sac1':
     #     await event.edit()
@@ -1041,6 +1019,51 @@ async def update_poll(update, client):
                 await shared.save_old_message(user_id, menu_msg)
 
 
-        # await client.send_message(event.input_sender, 'Текущая структура портфеля')
-        # await client.send_file(entity, CHARTER_IMAGES_PATH + 'parking_portfolio_pie.png')
-        # await client.send_file(entity, CHARTER_IMAGES_PATH + 'balanced_portfolio_pie.png')
+async def my_strategies_dynamic_menu(event, client, sender_id, old_msg_id):
+    # Если клиент не до конца прошел профалинг
+    # - показываем кнопку определить свой профиль
+    if old_msg_id is not None:
+        if not is_user_profile_done(sender_id):
+            await client.edit_message(event.input_sender, old_msg_id,
+                                      'Определеить свой профиль риска', buttons=buttons.keyboard_restart_poll)
+        else:
+            final_profile_score = get_final_score(sender_id)
+            if final_profile_score <= -9:
+                await client.edit_message(event.input_sender, old_msg_id,
+                                          'Ваш портфель', buttons=buttons.risk_profile1)
+            elif -9 < final_profile_score <= -4:
+                await client.edit_message(event.input_sender, old_msg_id,
+                                          'Ваши портфели', buttons=buttons.risk_profile2)
+            elif -4 < final_profile_score <= 1:
+                await client.edit_message(event.input_sender, old_msg_id,
+                                          'Ваши портфели', buttons=buttons.risk_profile3)
+            elif 1 < final_profile_score < 6:
+                await client.edit_message(event.input_sender, old_msg_id,
+                                          'Ваш портфель', buttons=buttons.risk_profile4)
+            elif 6 <= final_profile_score < 10:
+                await client.edit_message(event.input_sender, old_msg_id,
+                                          'Ваши портфели', buttons=buttons.risk_profile5)
+            elif final_profile_score >= 10:
+                await client.edit_message(event.input_sender, old_msg_id,
+                                          'Ваши портфели', buttons=buttons.risk_profile6)
+    else:
+        final_profile_score = get_final_score(sender_id)
+        if final_profile_score <= -9:
+            msg = await client.send_message(event.input_sender,
+                                            'Ваш портфель', buttons=buttons.risk_profile1)
+        elif -9 < final_profile_score <= -4:
+            msg = await client.send_message(event.input_sender,
+                                            'Ваши портфели', buttons=buttons.risk_profile2)
+        elif -4 < final_profile_score <= 1:
+            msg = await client.send_message(event.input_sender,
+                                            'Ваши портфели', buttons=buttons.risk_profile3)
+        elif 1 < final_profile_score < 6:
+            msg = await client.send_message(event.input_sender,
+                                            'Ваш портфель', buttons=buttons.risk_profile4)
+        elif 6 <= final_profile_score < 10:
+            msg = await client.send_message(event.input_sender,
+                                            'Ваши портфели', buttons=buttons.risk_profile5)
+        elif final_profile_score >= 10:
+            msg = await client.send_message(event.input_sender,
+                                            'Ваши портфели', buttons=buttons.risk_profile6)
+        await shared.save_old_message(sender_id, msg)

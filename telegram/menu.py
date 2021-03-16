@@ -46,6 +46,14 @@ async def start_menu(event, client, engine=None):
         await tools_menu(event, client)
 
 
+async def metaMenu(event, client):
+    sender_id = event.original_update.message.sender_id
+    old_msg_id = await shared.get_old_msg_id(sender_id)
+    if old_msg_id is not None:
+        shared.pop_old_msg_id(sender_id)
+    # await client.send_message(event.input_sender, '.', buttons=buttons.keyboard_start)
+
+
 async def tools_menu(event, client):
     sender_id = event.original_update.message.sender_id
     await client.delete_messages(sender_id, event.message.id)
@@ -68,7 +76,6 @@ async def tools_menu(event, client):
     else:
         menu_msg = await client.send_message(event.input_sender, 'Главное меню', buttons=buttons.keyboard_0)
         await shared.save_old_message(sender_id, menu_msg)
-    await client.send_message(event.input_sender, '_%_', buttons=buttons.keyboard_start)
 
 
 async def profile_menu(event, client, engine=None):

@@ -2,15 +2,14 @@ from telethon.tl.custom import Button
 from project_shared import *
 from random import choice
 
-
 lol = ['Подача напитков из улиток', 'Мыло \"Кот Да Винчи\"', 'Гос реестр порно', 'Орден Финансового Лосся',
        'Шопот крыш', 'Отделение пластики мозга', 'Моргаем диафрагмой', 'Мастерская \"Парики Трампа\"',
        'Бар \"Финансовое воздержание\"']
 
 keyboard_start = [
-        [Button.text('Меню', resize=True), Button.text('Профиль', resize=True)],
+    [Button.text('Меню', resize=True), Button.text('Профиль', resize=True)],
     [Button.text('Информация', resize=True), Button.text(f'{choice(lol)}', resize=True)]
-    ]
+]
 
 # Кнопки вперед для презентации
 keyboard_forw2 = [
@@ -376,7 +375,6 @@ keyboard_restart_poll = [
     ]
 ]
 
-
 # ============================== Кнопки подписок =============================
 keyboard_core_subscriptions = [
     [
@@ -425,6 +423,7 @@ keyboard_subscription_professional = [
         Button.inline('\U0001F3E6  ' + '$40', b'kss4')
     ]
 ]
+
 
 # keyboard_managed_strategies = [
 #     [
@@ -515,5 +514,11 @@ risk_profile6 = [
     ],
     [
         Button.inline('\U0001F4BC  ' + 'Elastic портфель', b'strategy_elastic')
+    ]
+]
+
+my_strategies_back = [
+    [
+        Button.inline('\U0001F519  ' + 'Назад', b'strategies_back')
     ]
 ]
