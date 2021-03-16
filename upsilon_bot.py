@@ -47,17 +47,17 @@ async def start(event):
     await menu.start_menu(event, client, engine=engine)
 
 
-@client.on(events.NewMessage(pattern='Главное меню'))
+@client.on(events.NewMessage(pattern='Главное меню|\U0001F4C1 Главное меню|📁 Главное меню'))
 async def tools(event):
     await menu.tools_menu(event, client)
 
 
 @client.on(events.NewMessage(pattern='menu|Menu|Меню|меню'))
-async def tools(event):
+async def meta_tools(event):
     await menu.meta_menu(event, client)
 
 
-@client.on(events.NewMessage(pattern='Профиль|профиль|Profile|profile'))
+@client.on(events.NewMessage(pattern='Профиль|профиль|Profile|profile|👤 Профиль|\U0001F464 Профиль'))
 async def profile(event):
     await menu.profile_menu(event, client, engine=engine)
 
@@ -72,7 +72,7 @@ async def portfolios(event):
     await client.send_message(event.input_sender, 'Портфели', buttons=buttons.keyboard_historical_tests)
 
 
-@client.on(events.NewMessage(pattern='Информация|инфомация|инфо|Инфо'))
+@client.on(events.NewMessage(pattern='Информация|инфомация|инфо|Инфо|🛎 Информация|\U0001F6CE Информация'))
 async def information(event):
     await menu.information_menu(event, client, engine=engine)
 
