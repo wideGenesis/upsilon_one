@@ -745,7 +745,7 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
         await event.edit()
         if old_msg_id is not None:
             await client.edit_message(event.input_sender, old_msg_id,
-                                      'Вы можете попросить друга запустить бота и получить бесплатную'
+                                      'Ты можешь попросить друга запустить бота и получить бесплатную'
                                       ' подписку. '
                                       'Проще всего это сделать через групповые чаты' + '\n' +
                                       f'[https://t.me/UpsilonBot?start={sender_id}]'
@@ -753,7 +753,7 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
                                       buttons=buttons.keyboard_friend_back)
         else:
             msg = await client.send_message(event.input_sender,
-                                            'Вы можете попросить друга запустить бота и получить бесплатную'
+                                            'Ты можешь попросить друга запустить бота и получить бесплатную'
                                             ' подписку. '
                                             'Проще всего это сделать через групповые чаты' + '\n' +
                                             f'[https://t.me/UpsilonBot?start={sender_id}]'
@@ -887,14 +887,14 @@ async def send_next_profiler_question(client, user_id, curr_num):
     _poll_id = get_next_id()
     old_msg_id = await shared.get_old_msg_id(user_id)
     if curr_num == 0:
-        _question = "Ваша цель:"
+        _question = "Твоя цель:"
         _answers = [PollAnswer("Общее благосостояние", b'1'),
                     PollAnswer("Большие покупки - дом, машина", b'2'),
                     PollAnswer("Учеба детей, свадьба", b'3'),
                     PollAnswer("Пенсия", b'4'),
                     PollAnswer("Пассивный доход", b'5')]
     if curr_num == 1:
-        _question = "Что из перечисленного описывает вашу ситуацию:"
+        _question = "Что из перечисленного описывает твою ситуацию:"
         _answers = [PollAnswer('Я резидент СНГ, мой брокер из СНГ', b'1'),
                     PollAnswer('Я резидент СНГ, мой брокер из ЕС', b'2'),
                     PollAnswer('Я резидент СНГ, мой брокер из США', b'3'),
@@ -903,58 +903,58 @@ async def send_next_profiler_question(client, user_id, curr_num):
                     PollAnswer('Я резидент США, мой брокер из США', b'6'),
                     PollAnswer('У меня нет брокерского счета и я резидент СНГ', b'7')]
     if curr_num == 2:
-        _question = "Если у вас есть брокерский счет, можете ли вы покупать ETF-фонды"
+        _question = "Если у тебя есть брокерский счет, можешь ли ты покупать Американские ETF-фонды?"
         _answers = [PollAnswer('Да', b'1'),
                     PollAnswer('Нет', b'2'),
                     PollAnswer('Незнаю', b'3')]
     if curr_num == 3:
-        _question = "Нуждаетесь ли вы в средствах выделенных для инвестиций?"
+        _question = "Ты хочешь инвестировать свободные средства или они могут в скоре понадобиться?"
         _answers = [PollAnswer('Да,эти средства могут понадобиться', b'1'),
                     PollAnswer('Нет, это свободные средства', b'2')]
     if curr_num == 4:
-        _question = "Планируете ли Вы выводить деньги с брокерского счета?"
+        _question = "Планируешь ли ты выводить деньги с брокерского счета?"
         _answers = [PollAnswer('Да, регулярно', b'1'),
                     PollAnswer('Иногда, по случаю', b'2'),
                     PollAnswer('Нет', b'3')]
     if curr_num == 5:
-        _question = "Будете ли Вы делать дополнительные вложения?"
+        _question = "Будешь ли ты делать дополнительные вложения?"
         _answers = [PollAnswer('Да, регулярно', b'1'),
                     PollAnswer('Иногда, по случаю', b'2'),
                     PollAnswer('Дополнительных вложений не планирую', b'3')]
     if curr_num == 6:
-        _question = "Срок вложений"
+        _question = "Срок вложений:"
         _answers = [PollAnswer('Меньше года', b'1'),
                     PollAnswer('1-3 года', b'2'),
                     PollAnswer('3-5 лет', b'3'),
                     PollAnswer('5-10 лет', b'4'),
                     PollAnswer('Более 10 лет', b'5')]
     if curr_num == 7:
-        _question = "Как часто Вы будете заниматься портфелем?"
+        _question = "Как часто ты будешь заниматься портфелем?"
         _answers = [PollAnswer('Ежедневно', b'1'),
                     PollAnswer('Ежемесячно', b'2'),
                     PollAnswer('Когда нужно', b'3'),
                     PollAnswer('По случаю', b'4')]
     if curr_num == 8:
-        _question = "Какую доходность ожидаете?"
+        _question = "Какую доходность ожидаешь?"
         _answers = [PollAnswer('Выше уровня инфляции', b'1'),
                     PollAnswer('10%', b'2'),
                     PollAnswer('10-15%', b'3'),
                     PollAnswer('15-20%', b'4'),
                     PollAnswer('Более 20%', b'5')]
     if curr_num == 9:
-        _question = "Потеря какой части вашего вклада будет катастрофической?"
+        _question = "Потеря какой части твоего вклада будет катастрофической?"
         _answers = [PollAnswer('От -5% до -10%', b'1'),
                     PollAnswer('От -10% до -20%', b'2'),
                     PollAnswer('От -20% до -35%', b'3'),
                     PollAnswer('От -35% до -50%', b'4'),
                     PollAnswer('До -75', b'5')]
     if curr_num == 10:
-        _question = "Убыток в 20% от размера вашего вклада это:"
+        _question = "Убыток в 20% от размера твоего вклада это:"
         _answers = [PollAnswer('Ничего страшного', b'1'),
                     PollAnswer('Терпимо', b'2'),
                     PollAnswer('Не приемлемо', b'3')]
     if curr_num == 11:
-        _question = "Ваши действия во время просадки на рынке в 15%:"
+        _question = "Твои действия во время просадки на рынке в 15%:"
         _answers = [PollAnswer('Не знаю', b'1'),
                     PollAnswer('Ничего не сделаю', b'2'),
                     PollAnswer('Продам все', b'3'),
@@ -964,13 +964,13 @@ async def send_next_profiler_question(client, user_id, curr_num):
                     PollAnswer('Докуплю', b'7'),
                     PollAnswer('Что-то продам и что-то докуплю', b'8')]
     if curr_num == 12:
-        _question = "Вы предпочти бы акции:"
+        _question = "Ты предпочел бы акции:"
         _answers = [PollAnswer('С доходностью в 20% годовых, но ранее эти акции падали на -50%', b'1'),
                     PollAnswer('С доходностью в 15% годовых, но ранее эти акции падали на -20%', b'2'),
                     PollAnswer('С доходностью в 150% годовых, но ранее эти акции падали на -70%', b'3'),
                     PollAnswer('С доходностью в 10% годовых, но ранее эти акции падали на -10%', b'4')]
     if curr_num == 13:
-        _question = "Вы предпочитаете:"
+        _question = "Ты предпочитаешь:"
         _answers = [PollAnswer('Гарантированные 50% от вашей суммы через 3 года', b'1'),
                     PollAnswer('35% - 80% через  5лет, но без гарантий, но не менее 35%', b'2')]
     poll = Poll(id=_poll_id,
