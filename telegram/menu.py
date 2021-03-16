@@ -46,7 +46,7 @@ async def start_menu(event, client, engine=None):
         await tools_menu(event, client)
 
 
-async def metaMenu(event, client):
+async def meta_menu(event, client):
     sender_id = event.original_update.message.sender_id
     old_msg_id = await shared.get_old_msg_id(sender_id)
     if old_msg_id is not None:
