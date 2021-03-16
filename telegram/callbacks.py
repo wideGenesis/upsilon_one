@@ -993,7 +993,7 @@ async def send_next_profiler_question(client, user_id, curr_num):
         shared.set_old_msg_poll(user_id, True)
 
 
-async def update_poll(update, client):
+async def polls_handler(update, client):
     poll_id = update.poll_id
     user_id, qnumber = get_userid_by_pollid(poll_id)
     if user_id is not None:
