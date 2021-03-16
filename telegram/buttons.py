@@ -338,7 +338,7 @@ keyboard_info = [
         Button.inline('\U00002696   ' + 'Сравнение брокеров', b'brokers_compare')
     ],
     [
-        Button.inline('\U000026D1   ' + 'Инструкции', b'a5')
+        Button.inline('\U000026D1   ' + 'Инструкции', b'instructions')
     ],
     [
         Button.inline('\U0001F6E1   ' + 'Регистрация управляющего', b'manager_registration')
