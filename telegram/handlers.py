@@ -247,10 +247,6 @@ async def news_to_handler(event, client_, limit=20):
     await client_.send_message(event.input_sender, msg)
 
 
-async def about_handler(event, client_):
-    await client_.send_message(event.input_sender, ins.about)
-
-
 async def goals_handler(event, client_):
     await flow_cheker(client_, event)
     await client_.send_message(event.input_sender, ins.goals)
@@ -259,10 +255,6 @@ async def goals_handler(event, client_):
 async def skills_handler(event, client_):
     await flow_cheker(client_, event)
     await client_.send_message(event.input_sender, ins.skills)
-
-
-async def future_handler(event, client_):
-    await client_.send_message(event.input_sender, ins.future)
 
 
 async def support_handler(event, client_):

@@ -120,11 +120,6 @@ async def handler(update):
 
 
 # ============================== Instructions ===============================
-@client.on(events.NewMessage(pattern='/about'))
-async def about(event):
-    await handlers.about_handler(event, client)
-
-
 @client.on(events.NewMessage(pattern='/goals'))
 async def goals(event):
     await handlers.goals_handler(event, client)
@@ -133,11 +128,6 @@ async def goals(event):
 @client.on(events.NewMessage(pattern='/skills'))
 async def skills(event):
     await handlers.skills_handler(event, client)
-
-
-@client.on(events.NewMessage(pattern='/future'))
-async def future(event):
-    await handlers.future_handler(event, client)
 
 
 @client.on(events.NewMessage(pattern='^/(instruction[0-9][0-9]|mindepo)$'))
