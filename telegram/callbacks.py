@@ -868,7 +868,7 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
             paymsg = await client.send_message(event.input_sender,
                                                'Для оплаты тарифа ' \
                                                + shared.SUBSCRIBES[shared.TARIFF_START_ID].get_name() \
-                                               + 'нажмите кнопку Оплатить\n'
+                                               + 'нажми кнопку Оплатить\n'
                                                  '(Инструкция по оплате [тут](https://telegra.ph/Rrrtt-10-13)! )',
                                                link_preview=True,
                                                buttons=kbd_payment_button)
@@ -1025,7 +1025,7 @@ async def my_strategies_dynamic_menu(event, client, sender_id, old_msg_id):
     if old_msg_id is not None:
         if not is_user_profile_done(sender_id):
             await client.edit_message(event.input_sender, old_msg_id,
-                                      'Определеить свой профиль риска', buttons=buttons.keyboard_restart_poll)
+                                      'Определить свой профиль риска', buttons=buttons.keyboard_restart_poll)
         else:
             final_profile_score = get_final_score(sender_id)
             if final_profile_score <= -9:
@@ -1047,6 +1047,7 @@ async def my_strategies_dynamic_menu(event, client, sender_id, old_msg_id):
                 await client.edit_message(event.input_sender, old_msg_id,
                                           'Твои портфели', buttons=buttons.risk_profile6)
     else:
+        msg = None
         final_profile_score = get_final_score(sender_id)
         if final_profile_score <= -9:
             msg = await client.send_message(event.input_sender,
