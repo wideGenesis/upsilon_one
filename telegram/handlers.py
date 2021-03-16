@@ -183,6 +183,7 @@ async def dialog_flow_handler(event, client_):
         except ValueError as e:
             sender_id = await event.get_input_sender()
         if ins.pattern.search(event.text) is None:
+            await flow_cheker(client_, event)
             user_message = event.text
             project_id = 'common-bot-1'
             try:
@@ -198,6 +199,7 @@ async def dialog_flow_handler(event, client_):
 
 
 async def quotes_to_handler(event, client_, limit=20):
+    await flow_cheker(client_, event)
     parse = str(event.text)
     parse = re.split('/q |#|@|\$', parse)
     # print(parse)
@@ -232,6 +234,7 @@ async def quotes_to_handler(event, client_, limit=20):
 
 
 async def news_to_handler(event, client_, limit=20):
+    await flow_cheker(client_, event)
     parse = str(event.text).split(' ')
     stock = parse[1]
     ss = StockStat(stock=stock)
@@ -249,10 +252,12 @@ async def about_handler(event, client_):
 
 
 async def goals_handler(event, client_):
+    await flow_cheker(client_, event)
     await client_.send_message(event.input_sender, ins.goals)
 
 
 async def skills_handler(event, client_):
+    await flow_cheker(client_, event)
     await client_.send_message(event.input_sender, ins.skills)
 
 
@@ -261,13 +266,13 @@ async def future_handler(event, client_):
 
 
 async def support_handler(event, client_):
-    # await client_.send_message(-1001262211476, str(event.input_sender) +
-    #                            '  \n' + str(event.text))
+    await flow_cheker(client_, event)
     await client_.forward_messages(-1001262211476, event.message)
     await client_.send_message(event.input_sender, 'Сообщение успешно отправлено. Спасибо!')
 
 
 async def instructions_handler(event, client_):
+    await flow_cheker(client_, event)
     pattern = event.original_update.message.message
     pattern = str(pattern).strip('/')
     if pattern == 'instruction00':
@@ -339,6 +344,7 @@ async def instructions_handler(event, client_):
 
 
 async def portfolio_candle_chart_handler(event, client_):
+    await flow_cheker(client_, event)
     pattern = event.original_update.message.message
     pattern = str(pattern).strip('/').split('_')[1]
     if pattern == 'parking':
@@ -372,7 +378,7 @@ async def portfolio_candle_chart_handler(event, client_):
 
 
 async def managers_form_handler(event, client_):
-    # msg_text = event.message.text
+    await flow_cheker(client_, event)
     sender_id = await event.get_input_sender()
     user_message = event.text
     await client_.send_message(sender_id, 'Запрос на регистрацию принят')
@@ -482,9 +488,18 @@ async def send_broadcast_poll(clnt):
     return True
 
 
-    # results = await clnt.send_message(toid, file=InputMediaPoll(
-    #     poll=Poll(
-    #         id=53453159,
-    #         question="Вы хотите что бы мы сделели более глубокий анализ по акциям?",
-    #         answers=[PollAnswer('Yes', b'1'), PollAnswer('No', b'2')])))
-    # debug(f"Result:{results}")
+async def flow_cheker(client, event):
+    # 1. Если недопрошли  опрос - сбросить
+    # 2. Если было какое-то запомненное сообщение на редактирование - сбросить и удалить сообщение
+    sender_id = event.input_sender.user_id
+    if not is_user_profile_done(sender_id):
+        reset_user_profiler_data(sender_id)
+    await shared.delete_old_message(client, sender_id)
+    shared.pop_old_msg_poll(sender_id)
+
+
+async def portfolios_cmd(client, event):
+    sender_id = event.input_sender.user_id
+    await flow_cheker(client, event)
+    msg = await client.send_message(event.input_sender, 'Портфели', buttons=buttons.keyboard_historical_tests)
+    await shared.save_old_message(sender_id, msg)

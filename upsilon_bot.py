@@ -25,6 +25,7 @@ from tcp_client_server.libserver import *
 import concurrent.futures
 from messages.message import *
 
+
 # ============================== Environment Setup ======================
 PYTHON_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir))
 sys.path.append(PYTHON_PATH)
@@ -67,17 +68,17 @@ async def helper(event):
     await menu.information_menu(event, client, engine=engine)
 
 
-@client.on(events.NewMessage(pattern='портфель|портфели|Портфель|Портфели|portfolio|portfolios'))
-async def portfolios(event):
-    await client.send_message(event.input_sender, 'Портфели', buttons=buttons.keyboard_historical_tests)
-
-
 @client.on(events.NewMessage(pattern='Информация|инфомация|инфо|Инфо|🛎 Информация|\U0001F6CE Информация'))
 async def information(event):
     await menu.information_menu(event, client, engine=engine)
 
 
 # ============================== Commands ===============================
+@client.on(events.NewMessage(pattern='портфель|портфели|Портфель|Портфели|portfolio|portfolios'))
+async def portfolios(event):
+    await handlers.portfolios_cmd(client, event)
+
+
 @client.on(events.NewMessage(pattern='/to'))  # TODO Сделать блокирующую функцию для ДФ
 async def send_to(event):
     await handlers.send_to_handler(event, client, owner=OWNER)

@@ -124,7 +124,8 @@ async def delete_old_message(client, user_id):
 
 def pop_old_msg_id(user_id):
     global OLD_MESSAGE_MAP
-    OLD_MESSAGE_MAP.pop(user_id)
+    if user_id in OLD_MESSAGE_MAP:
+        OLD_MESSAGE_MAP.pop(user_id)
 
 
 async def get_old_msg_id(user_id):
@@ -146,6 +147,12 @@ async def is_old_msg_poll(user_id):
 def set_old_msg_poll(user_id, val):
     global IS_OLD_MSG_POLL_MAP
     IS_OLD_MSG_POLL_MAP[user_id] = val
+
+
+def pop_old_msg_poll(user_id):
+    global IS_OLD_MSG_POLL_MAP
+    if user_id in IS_OLD_MSG_POLL_MAP:
+        IS_OLD_MSG_POLL_MAP.pop(user_id)
 
 
 class Subscribe(object):
