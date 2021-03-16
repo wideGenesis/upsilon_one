@@ -63,9 +63,9 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
             msg = await client.send_message(event.input_sender, 'Скринер акций', buttons=buttons.keyboard_screener)
             await shared.save_old_message(sender_id, msg)
 
-    elif event.data == b'a5':
+    elif event.data == b'instructions':
         await event.edit()
-        msg = await client.send_message(event.input_sender, ins.instructions_main, buttons=buttons.keyboard_a5)
+        msg = await client.send_message(event.input_sender, ins.instructions_main, buttons=buttons.keyboard_info_back)
         await shared.delete_old_message(client, sender_id)
 
     elif event.data == b'a8':
