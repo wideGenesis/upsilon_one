@@ -137,7 +137,7 @@ keyboard_historical_tests = [
         Button.inline('\U0001F4BC  ' + 'All Seasons M', b'hist_allseasons_m')
     ],
     [
-        Button.inline('\U0001F4BC  ' + 'All Seasons M', b'hist_allseasons_l')
+        Button.inline('\U0001F4BC  ' + 'All Seasons L', b'hist_allseasons_l')
     ],
     [
         Button.inline('\U0001F519  ' + 'Назад', b'hist_back')

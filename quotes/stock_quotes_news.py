@@ -77,10 +77,6 @@ class StockStat:
                   + f'| {self.benchmark} ' + str(parse['Benchmark']['Sharpe']) + '\n' + '\n' + \
                   "```Volatility (ann.) % ```" + '\n' + f'{self.stock} ' + str(parse[self.stock]['Volatility (ann.) ']) \
                   + f'| {self.benchmark} ' + str(parse['Benchmark']['Volatility (ann.) ']) + '\n' + '\n' + \
-                  "```Expected Monthly % ```" + '\n' + f'{self.stock} ' + str(parse[self.stock]['Expected Monthly %']) \
-                  + f'| {self.benchmark} ' + str(parse['Benchmark']['Expected Monthly %']) + '\n' + '\n' + \
-                  "```Expected Yearly % ```" + '\n' + f'{self.stock} ' + str(parse[self.stock]['Expected Yearly %']) \
-                  + f'| {self.benchmark} ' + str(parse['Benchmark']['Expected Yearly %']) + '\n' + '\n' + \
                   "```Kelly Criterion % ```" + '\n' + f'{self.stock} ' + str(parse[self.stock]['Kelly Criterion ']) \
                   + f'| {self.benchmark} ' + str(parse['Benchmark']['Kelly Criterion ']) + '\n' + '\n' + \
                   "```Daily Value-at-Risk ```" + '\n' + f'{self.stock} ' + str(parse[self.stock]['Daily Value-at-Risk ']) \
@@ -96,6 +92,11 @@ class StockStat:
 
             return msg
 
+
+# "```Expected Monthly % ```" + '\n' + f'{self.stock} ' + str(parse[self.stock]['Expected Monthly %']) \
+# + f'| {self.benchmark} ' + str(parse['Benchmark']['Expected Monthly %']) + '\n' + '\n' + \
+# "```Expected Yearly % ```" + '\n' + f'{self.stock} ' + str(parse[self.stock]['Expected Yearly %']) \
+# + f'| {self.benchmark} ' + str(parse['Benchmark']['Expected Yearly %']) + '\n' + '\n' + \
     # def stock_description(self):
     #     try:
     #         price = finviz.get_stock(self.stock)
@@ -166,24 +167,6 @@ class StockStat:
         else:
             earnings_earningsDate = description['earnings_earningsDate']
             earn = ' - '.join(map(str, earnings_earningsDate))
-
-        # msg1 = '__Тикер:__ ' + str(description['ticker']) + '\n' + \
-        #     '__Компания:__ ' + str(description['longName']) + '\n' + \
-        #     '__Сектор:__ ' + str(description['sector']) + '\n' + \
-        #     '__Индустрия:__ ' + str(description['industry']) + '\n' + \
-        #     '__Страна:__ ' + str(description['country']) + '\n \n' + \
-        #     '__Капитализация:__ ' + str(mc) + ' Млрд' + '\n' + \
-        #     '__Бета:__ ' + str(beta) + '\n' + \
-        #     '__Объём:__ ' + str(vol) + ' Млн' + '\n' + \
-        #     '__Средний объём (3m):__ ' + str(avol) + ' Млн' + '\n' + \
-        #     '__P/E:__ ' + str(pe) + '\n' + \
-        #     '__Forward P/E:__ ' + str(fpe) + '\n' + \
-        #     '__Тип:__ ' + str(description['quoteType']) + '\n' + \
-        #     '__Цена:__ ' + str(description['regularMarketPrice']) + '\n' + \
-        #     '__Состояние рынка:__ ' + str(description['marketState']) + '\n \n' + \
-        #     '__exDividend Date:__ ' + str(exDividendDate) + '\n' + \
-        #     '__Dividend Date:__ ' + str(dividendDate) + '\n' + \
-        #     '__Earnings Date:__ ' + str(earn) + '\n'
 
         msg1 = f"__Тикер:__ {str(description['ticker'])}\n" \
                f"__Компания:__ {str(description['longName'])}\n" \

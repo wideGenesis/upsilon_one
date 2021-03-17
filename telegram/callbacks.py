@@ -417,33 +417,39 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
         await event.edit()
         await shared.delete_old_message(client, sender_id)
         message = await client.send_message(entity=entity, message='Загрузка...')
-        await client.edit_message(message, 'All Seasons S - пассивный портфель бла-бла-бла. ')
+        await client.edit_message(message, 'All Seasons S')
         await client.send_message(event.input_sender, 'Статистика портфеля',
                                   file=STATS_PATH + 'all_season_s.png')
-        await client.send_message(event.input_sender, 'Кому и когда покупать All Seasons S портфель?\n'
-                                                      '/instruction24',
+        await client.send_message(event.input_sender, ins.all_season_s + '\n\n'
+                                                                         'Кому и когда покупать All Seasons '
+                                                                         'S портфель?\n'
+                                                                         '/instruction31',
                                   buttons=buttons.keyboard_a3_back)
 
     elif event.data == b'hist_allseasons_m':
         await event.edit()
         await shared.delete_old_message(client, sender_id)
         message = await client.send_message(entity=entity, message='Загрузка...')
-        await client.edit_message(message, 'All Seasons M - пассивный портфель бла-бла-бла. ')
+        await client.edit_message(message, 'All Seasons M')
         await client.send_message(event.input_sender, 'Статистика портфеля',
                                   file=STATS_PATH + 'all_season_m.png')
-        await client.send_message(event.input_sender, 'Кому и когда покупать All Seasons M портфель?\n'
-                                                      '/instruction24',
+        await client.send_message(event.input_sender, ins.all_season_s + '\n\n'
+                                                                         'Кому и когда покупать All Seasons '
+                                                                         'M портфель?\n'
+                                                                         '/instruction32',
                                   buttons=buttons.keyboard_a3_back)
 
     elif event.data == b'hist_allseasons_l':
         await event.edit()
         await shared.delete_old_message(client, sender_id)
         message = await client.send_message(entity=entity, message='Загрузка...')
-        await client.edit_message(message, 'All Seasons L - пассивный портфель бла-бла-бла. ')
+        await client.edit_message(message, 'All Seasons L')
         await client.send_message(event.input_sender, 'Статистика портфеля',
                                   file=STATS_PATH + 'all_season_l.png')
-        await client.send_message(event.input_sender, 'Кому и когда покупать All Seasons L портфель?\n'
-                                                      '/instruction24',
+        await client.send_message(event.input_sender, ins.all_season_s + '\n\n'
+                                                                         'Кому и когда покупать All Seasons '
+                                                                         'L портфель?\n'
+                                                                         '/instruction33',
                                   buttons=buttons.keyboard_a3_back)
 
 
