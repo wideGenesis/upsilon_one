@@ -292,9 +292,9 @@ keyboard_us_analysis_back = [
 ]
 
 keyboard_portfolio = [
-    [
-        Button.inline('\U0001F4B0  ' + 'Мой портфель', b'mp1')
-    ],
+    # [
+    #     Button.inline('\U0001F4B0  ' + 'Мой портфель', b'mp1')
+    # ],
     [
         Button.inline('\U0001F9F0  ' + 'Мои стратегии', b'my_strategies')
     ],
@@ -308,19 +308,19 @@ keyboard_portfolio = [
 
 keyboard_portfolio_back = [
     [
-        Button.inline('\U0001F519  ' + 'Назад', b'cm-5')
+        Button.inline('\U0001F519  ' + 'Назад', b'portfolio_back')
     ]
 ]
 
 keyboard_screener = [
     [
-        Button.inline('\U0001F4B9  ' + 'Финансовый анализ', b'sc1')
+        Button.inline('\U0001F4B9  ' + 'Финансовый анализ', b'financial_analysis')
     ],
+    # [
+    #     Button.inline('\U0001F3C6  ' + 'Скринер лучших акций', b'sc1')
+    # ],
     [
-        Button.inline('\U0001F3C6  ' + 'Скринер лучших акций', b'sc1')
-    ],
-    [
-        Button.inline('\U0001F9E8  ' + 'Новости по компаниям', b'sc3')
+        Button.inline('\U0001F9E8  ' + 'Новости по компаниям', b'ticker_news')
     ],
     [
         Button.inline('\U0001F519  ' + 'Назад', b'main')
@@ -329,7 +329,7 @@ keyboard_screener = [
 
 keyboard_screener_back = [
     [
-        Button.inline('\U0001F519  ' + 'Назад', b'cm-4')
+        Button.inline('\U0001F519  ' + 'Назад', b'screener_back')
     ]
 ]
 
@@ -452,7 +452,7 @@ def generate_payment_button(kbd_label=None, payment_link=None):
 
 keyboard_friend_back = [
     [
-        Button.inline('\U0001F519  ' + 'Назад', b'fiendback')
+        Button.inline('\U0001F519  ' + 'Назад', b'friend_back')
     ]
 ]
 
@@ -460,6 +460,9 @@ keyboard_friend_back = [
 risk_profile1 = [
     [
         Button.inline('\U0001F4BC  ' + 'Парковочный', b'strategy_parking')
+    ],
+    [
+        Button.inline('\U0001F519  ' + 'Назад', b'portfolio_back')
     ]
 ]
 
@@ -469,6 +472,9 @@ risk_profile2 = [
     ],
     [
         Button.inline('\U0001F4BC  ' + 'Всепогодный', b'strategy_allweather')
+    ],
+    [
+        Button.inline('\U0001F519  ' + 'Назад', b'portfolio_back')
     ]
 ]
 
@@ -478,12 +484,18 @@ risk_profile3 = [
     ],
     [
         Button.inline('\U0001F4BC  ' + 'Сбалансированный', b'strategy_balanced')
+    ],
+    [
+        Button.inline('\U0001F519  ' + 'Назад', b'portfolio_back')
     ]
 ]
 
 risk_profile4 = [
     [
         Button.inline('\U0001F4BC  ' + 'Сбалансированный', b'strategy_balanced')
+    ],
+    [
+        Button.inline('\U0001F519  ' + 'Назад', b'portfolio_back')
     ]
 ]
 
@@ -499,6 +511,9 @@ risk_profile5 = [
     ],
     [
         Button.inline('\U0001F4BC  ' + 'Elastic', b'strategy_elastic')
+    ],
+    [
+        Button.inline('\U0001F519  ' + 'Назад', b'portfolio_back')
     ]
 ]
 
@@ -514,6 +529,9 @@ risk_profile6 = [
     ],
     [
         Button.inline('\U0001F4BC  ' + 'Elastic', b'strategy_elastic')
+    ],
+    [
+        Button.inline('\U0001F519  ' + 'Назад', b'portfolio_back')
     ]
 ]
 
