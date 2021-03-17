@@ -594,7 +594,10 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
         await shared.delete_old_message(client, sender_id)
         pie_fname = f'{CHARTER_IMAGES_PATH}all_seasons_s_pie.png'
         await client.send_file(entity, pie_fname)
-        await client.send_message(event.input_sender, 'Здесь описание пассивного портфеля ',
+        await client.send_message(event.input_sender, ins.passive_investments + '\n\n'
+                                                                                'Кому и когда покупать All Seasons '
+                                                                                'S портфель?\n'
+                                                                                '/instruction31',
                                   buttons=buttons.my_strategies_back)
 
     elif event.data == b'strategy_allseasons_m':
@@ -602,7 +605,10 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
         await shared.delete_old_message(client, sender_id)
         pie_fname = f'{CHARTER_IMAGES_PATH}all_seasons_m_pie.png'
         await client.send_file(entity, pie_fname)
-        await client.send_message(event.input_sender, 'Здесь описание пассивного портфеля ',
+        await client.send_message(event.input_sender, ins.passive_investments + '\n\n'
+                                                                                'Кому и когда покупать All Seasons '
+                                                                                'M портфель?\n'
+                                                                                '/instruction32',
                                   buttons=buttons.my_strategies_back)
 
     elif event.data == b'strategy_allseasons_l':
@@ -610,7 +616,10 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
         await shared.delete_old_message(client, sender_id)
         pie_fname = f'{CHARTER_IMAGES_PATH}all_seasons_l_pie.png'
         await client.send_file(entity, pie_fname)
-        await client.send_message(event.input_sender, 'Здесь описание пассивного портфеля ',
+        await client.send_message(event.input_sender, ins.passive_investments + '\n\n'
+                                                                                'Кому и когда покупать All Seasons '
+                                                                                'L портфель?\n'
+                                                                                '/instruction33',
                                   buttons=buttons.my_strategies_back)
 
     elif event.data == b'strategies_back':
