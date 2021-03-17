@@ -757,6 +757,15 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
 
     #     msg = await client.send_message(event.input_sender, 'Сотрудничество', buttons=buttons.keyboard_relations)
     #     await shared.save_old_message(sender_id, msg)
+    elif event.data == b'portfolio_back':
+        await event.edit()
+        if old_msg_id is not None:
+            await client.edit_message(event.input_sender, old_msg_id, 'Твои портфели',
+                                      buttons=buttons.keyboard_portfolio)
+        else:
+            msg = await client.edit_message(event.input_sender, old_msg_id, 'Твои портфели',
+                                            buttons=buttons.keyboard_portfolio)
+            await shared.save_old_message(sender_id, msg)
 
     elif event.data == b'z2':
         await event.edit()
