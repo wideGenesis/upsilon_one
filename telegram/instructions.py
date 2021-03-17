@@ -996,3 +996,46 @@ ranking = {
             None: '\n'
         },
 }
+
+all_season_s = 'All Season S vs SPY' \
+               '__CAGR__	11.19% vs 9.39%' \
+               '__Sharpe__	1.16 vs 0.6' \
+               '__Sortino__	2 vs 0.89' \
+               '__Max Drawdown__	-17.67% vs -50.80%' \
+               'Volatility__	8.75% vs 15.45%' \
+               '__Skew__	-0.51 vs -0.63' \
+               '__Kurtosis__	1.78 vs 1.47' \
+               '__cVaR__	-4.79% vs -10.04%' \
+               '__Best Year__	28.16% vs 32.31%' \
+               '__Worst Year__	-8.14% vs -36.81%' \
+               '__Beta__	0.42 vs -' \
+               '__Alpha__	6.72% vs -'
+
+all_season_m = 'All Season M vs SPY' \
+               '__CAGR__	11.19% vs 9.39%' \
+               '__Sharpe__	1.16 vs 0.6' \
+               '__Sortino__	2 vs 0.89' \
+               '__Max Drawdown__	-17.67% vs -50.80%' \
+               'Volatility__	8.75% vs 15.45%' \
+               '__Skew__	-0.51 vs -0.63' \
+               '__Kurtosis__	1.78 vs 1.47' \
+               '__cVaR__	-4.79% vs -10.04%' \
+               '__Best Year__	28.16% vs 32.31%' \
+               '__Worst Year__	-8.14% vs -36.81%' \
+               '__Beta__	0.42 vs -' \
+               '__Alpha__	6.72% vs -'
+
+all_season_l = 'All Season L vs SPY' \
+               '__CAGR__	11.19% vs 9.39%' \
+               '__Sharpe__	1.16 vs 0.6' \
+               '__Sortino__	2 vs 0.89' \
+               '__Max Drawdown__	-17.67% vs -50.80%' \
+               'Volatility__	8.75% vs 15.45%' \
+               '__Skew__	-0.51 vs -0.63' \
+               '__Kurtosis__	1.78 vs 1.47' \
+               '__cVaR__	-4.79% vs -10.04%' \
+               '__Best Year__	28.16% vs 32.31%' \
+               '__Worst Year__	-8.14% vs -36.81%' \
+               '__Beta__	0.42 vs -' \
+               '__Alpha__	6.72% vs -'
+
