@@ -413,6 +413,40 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
                                                       '/instruction24',
                                   buttons=buttons.keyboard_a3_back)
 
+    elif event.data == b'hist_allseasons_s':
+        await event.edit()
+        await shared.delete_old_message(client, sender_id)
+        message = await client.send_message(entity=entity, message='Загрузка...')
+        await client.edit_message(message, 'All Seasons S - пассивный портфель бла-бла-бла. ')
+        await client.send_message(event.input_sender, 'Статистика портфеля',
+                                  file=STATS_PATH + 'all_season_s.png')
+        await client.send_message(event.input_sender, 'Кому и когда покупать All Seasons S портфель?\n'
+                                                      '/instruction24',
+                                  buttons=buttons.keyboard_a3_back)
+
+    elif event.data == b'hist_allseasons_m':
+        await event.edit()
+        await shared.delete_old_message(client, sender_id)
+        message = await client.send_message(entity=entity, message='Загрузка...')
+        await client.edit_message(message, 'All Seasons M - пассивный портфель бла-бла-бла. ')
+        await client.send_message(event.input_sender, 'Статистика портфеля',
+                                  file=STATS_PATH + 'all_season_m.png')
+        await client.send_message(event.input_sender, 'Кому и когда покупать All Seasons M портфель?\n'
+                                                      '/instruction24',
+                                  buttons=buttons.keyboard_a3_back)
+
+    elif event.data == b'hist_allseasons_l':
+        await event.edit()
+        await shared.delete_old_message(client, sender_id)
+        message = await client.send_message(entity=entity, message='Загрузка...')
+        await client.edit_message(message, 'All Seasons L - пассивный портфель бла-бла-бла. ')
+        await client.send_message(event.input_sender, 'Статистика портфеля',
+                                  file=STATS_PATH + 'all_season_l.png')
+        await client.send_message(event.input_sender, 'Кому и когда покупать All Seasons L портфель?\n'
+                                                      '/instruction24',
+                                  buttons=buttons.keyboard_a3_back)
+
+
     elif event.data == b'historical_tests':
         await event.edit()
         if old_msg_id is not None:
@@ -482,57 +516,95 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
     elif event.data == b'strategy_parking':
         await event.edit()
         await shared.delete_old_message(client, sender_id)
-        fname = f'{CHARTER_IMAGES_PATH}parking_port_chart_over_TLT.png'
+        chart_fname = f'{CHARTER_IMAGES_PATH}parking_port_chart_over_TLT.png'
+        pie_fname = f'{CHARTER_IMAGES_PATH}parking_portfolio_pie.png'
+        await client.send_file(entity, pie_fname)
         await client.send_message(event.input_sender, 'Чарт обновляется ежедневно в 11:00 (МСК)',
-                                  file=fname,
+                                  file=chart_fname,
                                   buttons=buttons.my_strategies_back)
 
     elif event.data == b'strategy_allweather':
         await event.edit()
         await shared.delete_old_message(client, sender_id)
-        fname = f'{CHARTER_IMAGES_PATH}allweather_port_chart_over_SPY.png'
+        chart_fname = f'{CHARTER_IMAGES_PATH}allweather_port_chart_over_SPY.png'
+        pie_fname = f'{CHARTER_IMAGES_PATH}allweather_portfolio_pie.png'
+        await client.send_file(entity, pie_fname)
         await client.send_message(event.input_sender, 'Чарт обновляется ежедневно в 11:00 (МСК)',
-                                  file=fname,
+                                  file=chart_fname,
                                   buttons=buttons.my_strategies_back)
 
     elif event.data == b'strategy_balanced':
         await event.edit()
         await shared.delete_old_message(client, sender_id)
-        fname = f'{CHARTER_IMAGES_PATH}balanced_port_chart_over_QQQ.png'
+        chart_fname = f'{CHARTER_IMAGES_PATH}balanced_port_chart_over_QQQ.png'
+        pie_fname = f'{CHARTER_IMAGES_PATH}balanced_portfolio_pie.png'
+        await client.send_file(entity, pie_fname)
         await client.send_message(event.input_sender, 'Чарт обновляется ежедневно в 11:00 (МСК)',
-                                  file=fname,
+                                  file=chart_fname,
                                   buttons=buttons.my_strategies_back)
 
     elif event.data == b'strategy_aggressive':
         await event.edit()
         await shared.delete_old_message(client, sender_id)
-        fname = f'{CHARTER_IMAGES_PATH}aggressive_port_chart_over_QQQ.png'
+        chart_fname = f'{CHARTER_IMAGES_PATH}aggressive_port_chart_over_QQQ.png'
+        pie_fname = f'{CHARTER_IMAGES_PATH}aggressive_portfolio_pie.png'
+        await client.send_file(entity, pie_fname)
         await client.send_message(event.input_sender, 'Чарт обновляется ежедневно в 11:00 (МСК)',
-                                  file=fname,
+                                  file=chart_fname,
                                   buttons=buttons.my_strategies_back)
 
     elif event.data == b'strategy_leveraged':
         await event.edit()
         await shared.delete_old_message(client, sender_id)
-        fname = f'{CHARTER_IMAGES_PATH}leveraged_port_chart_over_QQQ.png'
+        chart_fname = f'{CHARTER_IMAGES_PATH}leveraged_port_chart_over_QQQ.png'
+        pie_fname = f'{CHARTER_IMAGES_PATH}leveraged_portfolio_pie.png'
+        await client.send_file(entity, pie_fname)
         await client.send_message(event.input_sender, 'Чарт обновляется ежедневно в 11:00 (МСК)',
-                                  file=fname,
+                                  file=chart_fname,
                                   buttons=buttons.my_strategies_back)
 
     elif event.data == b'strategy_yolo':
         await event.edit()
         await shared.delete_old_message(client, sender_id)
-        fname = f'{CHARTER_IMAGES_PATH}elastic_port_chart_over_QQQ.png'
+        chart_fname = f'{CHARTER_IMAGES_PATH}elastic_port_chart_over_QQQ.png'
+        pie_fname = f'{CHARTER_IMAGES_PATH}leveraged_portfolio_pie.png'
+        await client.send_file(entity, pie_fname)
         await client.send_message(event.input_sender, 'Чарт обновляется ежедневно в 11:00 (МСК)',
-                                  file=fname,
+                                  file=chart_fname,
                                   buttons=buttons.my_strategies_back)
 
     elif event.data == b'strategy_elastic':
         await event.edit()
         await shared.delete_old_message(client, sender_id)
-        fname = f'{CHARTER_IMAGES_PATH}yolo_port_chart_over_SPY.png'
+        chart_fname = f'{CHARTER_IMAGES_PATH}yolo_port_chart_over_SPY.png'
+        pie_fname = f'{CHARTER_IMAGES_PATH}leveraged_portfolio_pie.png'
+        await client.send_file(entity, pie_fname)
         await client.send_message(event.input_sender, 'Чарт обновляется ежедневно в 11:00 (МСК)',
-                                  file=fname,
+                                  file=chart_fname,
+                                  buttons=buttons.my_strategies_back)
+
+    elif event.data == b'strategy_allseasons_s':
+        await event.edit()
+        await shared.delete_old_message(client, sender_id)
+        pie_fname = f'{CHARTER_IMAGES_PATH}all_seasons_s_pie.png'
+        await client.send_file(entity, pie_fname)
+        await client.send_message(event.input_sender, 'Здесь описание пассивного портфеля ',
+                                  buttons=buttons.my_strategies_back)
+
+    elif event.data == b'strategy_allseasons_m':
+        await event.edit()
+        await shared.delete_old_message(client, sender_id)
+        pie_fname = f'{CHARTER_IMAGES_PATH}all_seasons_m_pie.png'
+        await client.send_file(entity, pie_fname)
+        await client.send_message(event.input_sender, 'Здесь описание пассивного портфеля ',
+                                  buttons=buttons.my_strategies_back)
+
+    elif event.data == b'strategy_allseasons_l':
+        await event.edit()
+        await shared.delete_old_message(client, sender_id)
+        pie_fname = f'{CHARTER_IMAGES_PATH}all_seasons_l_pie.png'
+        await client.send_file(entity, pie_fname)
+        await client.send_message(event.input_sender, 'Здесь описание пассивного портфеля ',
                                   buttons=buttons.my_strategies_back)
 
     elif event.data == b'strategies_back':

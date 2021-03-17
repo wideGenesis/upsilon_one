@@ -19,6 +19,11 @@ from messages.message import *
 
 # ============================== Main  =============================
 def main():
+    before = f'C:\\Projects\\ups_one\\results\\strategy_stats\\all_season_s.png'
+    after = f'C:\\Projects\\ups_one\\results\\strategy_stats\\all_season_s1.png'
+    add_watermark(before, after, 80)
+    exit()
+
     pdf = get_portfolio_returns_df("aggressive")
     debug(f'DF:{pdf}')
     exit()

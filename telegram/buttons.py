@@ -131,6 +131,15 @@ keyboard_historical_tests = [
         Button.inline('\U0001F4BC  ' + 'Yolo (spbexchange)', b'hist_yolo')
     ],
     [
+        Button.inline('\U0001F4BC  ' + 'All Seasons S', b'hist_allseasons_s')
+    ],
+    [
+        Button.inline('\U0001F4BC  ' + 'All Seasons M', b'hist_allseasons_m')
+    ],
+    [
+        Button.inline('\U0001F4BC  ' + 'All Seasons M', b'hist_allseasons_l')
+    ],
+    [
         Button.inline('\U0001F519  ' + 'Назад', b'hist_back')
     ]
 ]
@@ -462,6 +471,9 @@ risk_profile1 = [
         Button.inline('\U0001F4BC  ' + 'Парковочный', b'strategy_parking')
     ],
     [
+        Button.inline('\U0001F4BC  ' + 'Пвссивный', b'strategy_allseasons_s')
+    ],
+    [
         Button.inline('\U0001F519  ' + 'Назад', b'portfolio_back')
     ]
 ]
@@ -472,6 +484,9 @@ risk_profile2 = [
     ],
     [
         Button.inline('\U0001F4BC  ' + 'Всепогодный', b'strategy_allweather')
+    ],
+    [
+        Button.inline('\U0001F4BC  ' + 'Пвссивный', b'strategy_allseasons_m')
     ],
     [
         Button.inline('\U0001F519  ' + 'Назад', b'portfolio_back')
@@ -486,6 +501,9 @@ risk_profile3 = [
         Button.inline('\U0001F4BC  ' + 'Сбалансированный', b'strategy_balanced')
     ],
     [
+        Button.inline('\U0001F4BC  ' + 'Пвссивный', b'strategy_allseasons_m')
+    ],
+    [
         Button.inline('\U0001F519  ' + 'Назад', b'portfolio_back')
     ]
 ]
@@ -493,6 +511,9 @@ risk_profile3 = [
 risk_profile4 = [
     [
         Button.inline('\U0001F4BC  ' + 'Сбалансированный', b'strategy_balanced')
+    ],
+    [
+        Button.inline('\U0001F4BC  ' + 'Пвссивный', b'strategy_allseasons_l')
     ],
     [
         Button.inline('\U0001F519  ' + 'Назад', b'portfolio_back')
