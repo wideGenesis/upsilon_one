@@ -468,6 +468,7 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
         await client.edit_message(message, 'Сравнение брокеров')
         await client.send_message(event.input_sender, ins.brokers,
                                   buttons=buttons.keyboard_info_back)
+
     elif event.data == b'risk_profile_restart':
         await event.edit()
         reset_user_profiler_data(sender_id)
@@ -645,15 +646,22 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
         msg2 = fin_news(blogs=True)
         await client.send_message(entity, msg2, buttons=buttons.keyboard_a8_back)
 
-    elif event.data == b'a9a3':
-        msg3 = fin_news(blogs=True)
-        message = await client.send_message(entity=entity, message='Последние новости компании')
-        await client.send_message(entity=entity, message=ins.instruction20, buttons=buttons.keyboard_a8_back)
-
     elif event.data == b'a8a-1':
         await event.edit()
         msg = await client.send_message(event.input_sender, 'Агрегатор новостей', buttons=buttons.keyboard_a8)
         await shared.save_old_message(sender_id, msg)
+
+    elif event.data == b'financial_analysis':
+        await event.edit()
+        await shared.delete_old_message(client, sender_id)
+        await client.send_message(event.input_sender, message=ins.instruction21,
+                                  buttons=buttons.keyboard_screener_back)
+
+    elif event.data == b'ticker_news':
+        await event.edit()
+        await shared.delete_old_message(client, sender_id)
+        await client.send_message(event.input_sender, message=ins.instruction20,
+                                  buttons=buttons.keyboard_screener_back)
 
     # ============================== Основные макро данные =============================
     elif event.data == b'cm1':
@@ -716,6 +724,15 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
             msg = await client.send_message(event.input_sender, 'Анализ США', buttons=buttons.keyboard_us_analysis)
             await shared.save_old_message(sender_id, msg)
 
+    elif event.data == b'screener_back':
+        await event.edit()
+        if old_msg_id is not None:
+            await client.edit_message(event.input_sender, old_msg_id, 'Скринер акций',
+                                      buttons=buttons.keyboard_screener)
+        else:
+            msg = await client.send_message(event.input_sender, 'Скринер акций', buttons=buttons.keyboard_screener)
+            await shared.save_old_message(sender_id, msg)
+
     elif event.data == b'hist_back':
         await event.edit()
         if old_msg_id is not None:
@@ -761,7 +778,7 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
                                             buttons=buttons.keyboard_friend_back)
             await shared.save_old_message(sender_id, msg)
 
-    elif event.data == b'fiendback':
+    elif event.data == b'friend_back':
         await event.edit()
         # await client.send_message(event.input_sender, 'Профиль')
         await menu.profile_menu(event, client, engine=engine)

@@ -292,9 +292,9 @@ keyboard_us_analysis_back = [
 ]
 
 keyboard_portfolio = [
-    [
-        Button.inline('\U0001F4B0  ' + 'Мой портфель', b'mp1')
-    ],
+    # [
+    #     Button.inline('\U0001F4B0  ' + 'Мой портфель', b'mp1')
+    # ],
     [
         Button.inline('\U0001F9F0  ' + 'Мои стратегии', b'my_strategies')
     ],
@@ -314,13 +314,13 @@ keyboard_portfolio_back = [
 
 keyboard_screener = [
     [
-        Button.inline('\U0001F4B9  ' + 'Финансовый анализ', b'sc1')
+        Button.inline('\U0001F4B9  ' + 'Финансовый анализ', b'financial_analysis')
     ],
+    # [
+    #     Button.inline('\U0001F3C6  ' + 'Скринер лучших акций', b'sc1')
+    # ],
     [
-        Button.inline('\U0001F3C6  ' + 'Скринер лучших акций', b'sc1')
-    ],
-    [
-        Button.inline('\U0001F9E8  ' + 'Новости по компаниям', b'sc3')
+        Button.inline('\U0001F9E8  ' + 'Новости по компаниям', b'ticker_news')
     ],
     [
         Button.inline('\U0001F519  ' + 'Назад', b'main')
@@ -329,7 +329,7 @@ keyboard_screener = [
 
 keyboard_screener_back = [
     [
-        Button.inline('\U0001F519  ' + 'Назад', b'cm-4')
+        Button.inline('\U0001F519  ' + 'Назад', b'screener_back')
     ]
 ]
 
@@ -452,7 +452,7 @@ def generate_payment_button(kbd_label=None, payment_link=None):
 
 keyboard_friend_back = [
     [
-        Button.inline('\U0001F519  ' + 'Назад', b'fiendback')
+        Button.inline('\U0001F519  ' + 'Назад', b'friend_back')
     ]
 ]
 
