@@ -10,6 +10,7 @@ from quotes.portfolios.portfolios_save import *
 import schedule
 from time import sleep
 from charter.charter import *
+from charter.finance2 import *
 import undetected_chromedriver as uc
 from quotes.historical_universe import *
 from quotes.stock_quotes_news import StockStat
@@ -18,6 +19,34 @@ from messages.message import *
 
 # ============================== Main  =============================
 def main():
+    pdf = get_portfolio_returns_df("aggressive")
+    debug(f'DF:{pdf}')
+    exit()
+    pdata = {"XLY": 2.5,
+             "XLV": 2.5,
+             "IEF": 10.0,
+             "DBC": 7.5,
+             "TLT": 30,
+             "GLD": 7.5,
+             "QQQ": 40.0}
+    manual_create_portfolio_donut(portfolio_data=pdata, title="All Seasons S", filename="all_seasons_s_pie")
+    pdata1 = {"SPY": 5.0,
+             "XLY": 10.0,
+             "XLV": 10.0,
+             "IEF": 7.5,
+             "DBC": 2.5,
+             "TLT": 20.0,
+             "GLD": 5.0,
+             "QQQ": 40.0}
+    manual_create_portfolio_donut(portfolio_data=pdata1, title="All Seasons M", filename="all_seasons_m_pie")
+    pdata2 = {"SPY": 5.0,
+             "XLY": 10.0,
+             "XLV": 10.0,
+             "IEF": 5.0,
+             "TLT": 20.0,
+             "QQQ": 50.0}
+    manual_create_portfolio_donut(portfolio_data=pdata2, title="All Seasons L", filename="all_seasons_l_pie")
+    exit()
 
     sentusrdict, failusrdict, pollresult = get_mailing_lists(53)
     debug(f'sentusrdict:{sentusrdict}')

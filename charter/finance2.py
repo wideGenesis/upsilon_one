@@ -289,6 +289,42 @@ def create_portfolio_donut(portfolio_data=None, title="", filename="pie"):
     pie_chart.makeChart(f'{CHARTER_IMAGES_PATH}{filename}.png')
 
 
+def manual_create_portfolio_donut(portfolio_data=None, title="", filename="pie"):
+    data = [round((i * 100), 2) for i in portfolio_data.values()]
+    # debug(data)
+    labels = portfolio_data.keys()
+    # debug(labels)
+
+    pie_chart = PieChart(P_IMAGE_WIDTH, P_IMAGE_HEIGHT, P_BACKGROUND_COLOR)
+
+    title = pie_chart.addTitle(title, "timesbi.ttf", 18, P_TITLE_FONT_COLOR)
+    title.setMargin2(0, 0, 8, 8)
+    pie_chart.addLine(10, title.getHeight() - 2, pie_chart.getWidth() - 11, title.getHeight(), P_TITLE_FONT_COLOR, 2)
+    pie_chart.setDonutSize(160, 200, 110, 0)
+    pie_chart.setStartAngle(85)
+    # pie_chart.setTransparentColor(20)
+    pie_chart.setData(data, labels)
+    # pie_chart.setSectorStyle(RingShading)
+    pie_chart.setColors(transparentPalette)
+    pie_chart.setBackground(P_OUTER_BACKGROUND_COLOR)
+    pie_chart.setLabelLayout(SideLayout, 16)
+    pie_chart.setLabelFormat("<*font=arialbd.ttf,size=13,color=%s*>{={sector}+1}" % 0xffffff)
+    pie_chart.setLabelStyle("arialbd.ttf", 10).setBackground(Transparent, P_AXIS_FONT_COLOR)
+    pie_chart.setLineColor(Transparent, P_AXIS_FONT_COLOR)
+    legend_box = pie_chart.addLegend(330, 185, 1, "arialbi.ttf", 10)
+    legend_box.setAlignment(Left)
+    legend_box.setBackground(Transparent, P_AXIS_FONT_COLOR)
+    legend_box.setFontColor(P_AXIS_FONT_COLOR)
+    legend_box.setRoundedCorners()
+    legend_box.setMargin(16)
+    legend_box.setKeySpacing(0, 5)
+    legend_box.setText(
+        "<*block,valign=top*>{={sector}+1}.<*advanceTo=22*><*block,width=120*>{label}<*/*>"
+        "<*block,width=40,halign=right*>{percent}<*/*>%")
+
+    pie_chart.makeChart(f'{CHARTER_IMAGES_PATH}{filename}.png')
+
+
 def color_2_int(red, green, blue, alpha):
     return ((255 - alpha) << 24) + (red << 16) + (green << 8) + blue
 
