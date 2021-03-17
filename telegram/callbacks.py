@@ -999,7 +999,7 @@ async def send_next_profiler_question(client, user_id, curr_num):
                     PollAnswer('С доходностью в 10% годовых, но ранее эти акции падали на -10%', b'4')]
     if curr_num == 13:
         _question = "Ты предпочитаешь:"
-        _answers = [PollAnswer('Гарантированные 50% от вашей суммы через 3 года', b'1'),
+        _answers = [PollAnswer('Гарантированные 50% от твоей суммы через 3 года', b'1'),
                     PollAnswer('35% - 80% через  5лет, но без гарантий, но не менее 35%', b'2')]
     poll = Poll(id=_poll_id,
                 question=_question,
