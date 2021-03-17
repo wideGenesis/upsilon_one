@@ -760,7 +760,9 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
     elif event.data == b'portfolio_back':
         await event.edit()
         if old_msg_id is not None:
-            await client.edit_message(event.input_sender, old_msg_id, 'Твои портфели',
+            await client.edit_message(event.input_sender, old_msg_id, 'Мой портфель\n'
+                                                                      'Как купить портфель? - /instruction27\n'
+                                                                      'Минимальный депозит - /mindepo',
                                       buttons=buttons.keyboard_portfolio)
         else:
             msg = await client.edit_message(event.input_sender, old_msg_id, 'Твои портфели',
