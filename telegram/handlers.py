@@ -190,7 +190,7 @@ async def dialog_flow_handler(event, client_):
             try:
                 dialogflow_answer = ai.detect_intent_texts(project_id, sender_id.user_id, user_message, 'ru-RU')
                 await client_.send_message(sender_id, dialogflow_answer)
-                await client_.send_message(-1001262211476, str(sender_id.user_id) + str(sender_id.user_id) +
+                await client_.send_message(-1001262211476, str(sender_id.user_id) +
                                            '  \n' + str(event.text) +
                                            '  \n' + dialogflow_answer)
                 # TODO Внимание! изменить айди чата при деплое
