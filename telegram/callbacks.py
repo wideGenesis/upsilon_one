@@ -307,11 +307,11 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
 
         await client.send_message(event.input_sender, 'Подробная статистика',
                                   file=STATS_PATH + 'parking.pdf')
-        await client.send_message(event.input_sender, 'Симуляция доходности портфеля на 10 лет',
-                                  file=STATS_PATH + 'parking.png')
-        await client.send_message(event.input_sender, 'Как интерпретировать результаты симуляций Монте-Карло?\n'
-                                                      '/instruction19',
-                                  file=STATS_PATH + 'parking2.png')
+        # await client.send_message(event.input_sender, 'Симуляция доходности портфеля на 10 лет',
+        #                           file=STATS_PATH + 'parking.png')
+        # await client.send_message(event.input_sender, 'Как интерпретировать результаты симуляций Монте-Карло?\n'
+        #                                               '/instruction19',
+        #                           file=STATS_PATH + 'parking2.png')
         await client.send_message(event.input_sender, 'Кому и когда покупать парковочный портфель?\n'
                                                       '/instruction14',
                                   buttons=buttons.keyboard_a3_back)
@@ -323,11 +323,11 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
         await client.edit_message(message, 'Всепогодный портфель')
         await client.send_message(event.input_sender, 'Подробная статистика',
                                   file=STATS_PATH + 'allweather.pdf')
-        await client.send_message(event.input_sender, 'Симуляция доходности портфеля на 10 лет',
-                                  file=STATS_PATH + 'allweather.png')
-        await client.send_message(event.input_sender, 'Как интерпретировать результаты симуляций Монте-Карло?\n'
-                                                      '/instruction19',
-                                  file=STATS_PATH + 'allweather2.png')
+        # await client.send_message(event.input_sender, 'Симуляция доходности портфеля на 10 лет',
+        #                           file=STATS_PATH + 'allweather.png')
+        # await client.send_message(event.input_sender, 'Как интерпретировать результаты симуляций Монте-Карло?\n'
+        #                                               '/instruction19',
+        #                           file=STATS_PATH + 'allweather2.png')
         await client.send_message(event.input_sender, 'Кому и когда покупать всепогодный портфель?\n'
                                                       '/instruction15',
                                   buttons=buttons.keyboard_a3_back)
@@ -339,11 +339,11 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
         await client.edit_message(message, 'Сбалансированный портфель')
         await client.send_message(event.input_sender, 'Подробная статистика',
                                   file=STATS_PATH + 'balanced.pdf')
-        await client.send_message(event.input_sender, 'Симуляция доходности портфеля на 10 лет',
-                                  file=STATS_PATH + 'balanced.png')
-        await client.send_message(event.input_sender, 'Как интерпретировать результаты симуляций Монте-Карло?\n'
-                                                      '/instruction19',
-                                  file=STATS_PATH + 'balanced2.png')
+        # await client.send_message(event.input_sender, 'Симуляция доходности портфеля на 10 лет',
+        #                           file=STATS_PATH + 'balanced.png')
+        # await client.send_message(event.input_sender, 'Как интерпретировать результаты симуляций Монте-Карло?\n'
+        #                                               '/instruction19',
+        #                           file=STATS_PATH + 'balanced2.png')
         await client.send_message(event.input_sender, 'Кому и когда покупать сбалансированный портфель?\n'
                                                       '/instruction16',
                                   buttons=buttons.keyboard_a3_back)
@@ -355,11 +355,11 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
         await client.edit_message(message, 'Агрессивный портфель')
         await client.send_message(event.input_sender, 'Подробная статистика',
                                   file=STATS_PATH + 'aggressive.pdf')
-        await client.send_message(event.input_sender, 'Симуляция доходности портфеля на 10 лет',
-                                  file=STATS_PATH + 'aggressive.png')
-        await client.send_message(event.input_sender, 'Как интерпретировать результаты симуляций Монте-Карло?\n'
-                                                      '/instruction19',
-                                  file=STATS_PATH + 'aggressive2.png')
+        # await client.send_message(event.input_sender, 'Симуляция доходности портфеля на 10 лет',
+        #                           file=STATS_PATH + 'aggressive.png')
+        # await client.send_message(event.input_sender, 'Как интерпретировать результаты симуляций Монте-Карло?\n'
+        #                                               '/instruction19',
+        #                           file=STATS_PATH + 'aggressive2.png')
         await client.send_message(event.input_sender, 'Кому и когда покупать агрессивный портфель?\n'
                                                       '/instruction17',
                                   buttons=buttons.keyboard_a3_back)
@@ -371,11 +371,11 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
         await client.edit_message(message, 'Плечевой портфель')
         await client.send_message(event.input_sender, 'Подробная статистика',
                                   file=STATS_PATH + 'leveraged.pdf')
-        await client.send_message(event.input_sender, 'Симуляция доходности портфеля на 10 лет',
-                                  file=STATS_PATH + 'leveraged.png')
-        await client.send_message(event.input_sender, 'Как интерпретировать результаты симуляций Монте-Карло?\n'
-                                                      '/instruction19',
-                                  file=STATS_PATH + 'leveraged2.png')
+        # await client.send_message(event.input_sender, 'Симуляция доходности портфеля на 10 лет',
+        #                           file=STATS_PATH + 'leveraged.png')
+        # await client.send_message(event.input_sender, 'Как интерпретировать результаты симуляций Монте-Карло?\n'
+        #                                               '/instruction19',
+        #                           file=STATS_PATH + 'leveraged2.png')
         await client.send_message(event.input_sender, 'Кому и когда покупать плечевой портфель?\n'
                                                       '/instruction18',
                                   buttons=buttons.keyboard_a3_back)
@@ -387,11 +387,11 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
         await client.edit_message(message, 'Elastic - портфель только из акций')
         await client.send_message(event.input_sender, 'Подробная статистика',
                                   file=STATS_PATH + 'elastic.pdf')
-        await client.send_message(event.input_sender, 'Симуляция доходности портфеля на 10 лет',
-                                  file=STATS_PATH + 'elastic.png')
-        await client.send_message(event.input_sender, 'Как интерпретировать результаты симуляций Монте-Карло?\n'
-                                                      '/instruction19',
-                                  file=STATS_PATH + 'elastic2.png')
+        # await client.send_message(event.input_sender, 'Симуляция доходности портфеля на 10 лет',
+        #                           file=STATS_PATH + 'elastic.png')
+        # await client.send_message(event.input_sender, 'Как интерпретировать результаты симуляций Монте-Карло?\n'
+        #                                               '/instruction19',
+        #                           file=STATS_PATH + 'elastic2.png')
         await client.send_message(event.input_sender, 'Кому и когда покупать Elastic портфель?\n'
                                                       '/instruction23',
                                   buttons=buttons.keyboard_a3_back)
@@ -404,11 +404,11 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
                                            'Доступен для клиентов Сбер, Тинькофф, Альфа-банк, ВТБ')
         await client.send_message(event.input_sender, 'Подробная статистика',
                                   file=STATS_PATH + 'yolo.pdf')
-        await client.send_message(event.input_sender, 'Симуляция доходности портфеля на 10 лет',
-                                  file=STATS_PATH + 'yolo.png')
-        await client.send_message(event.input_sender, 'Как интерпретировать результаты симуляций Монте-Карло?\n'
-                                                      '/instruction19',
-                                  file=STATS_PATH + 'yolo2.png')
+        # await client.send_message(event.input_sender, 'Симуляция доходности портфеля на 10 лет',
+        #                           file=STATS_PATH + 'yolo.png')
+        # await client.send_message(event.input_sender, 'Как интерпретировать результаты симуляций Монте-Карло?\n'
+        #                                               '/instruction19',
+        #                           file=STATS_PATH + 'yolo2.png')
         await client.send_message(event.input_sender, 'Кому и когда покупать Yolo портфель?\n'
                                                       '/instruction24',
                                   buttons=buttons.keyboard_a3_back)
@@ -420,7 +420,7 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
         await client.edit_message(message, 'All Seasons S')
         await client.send_message(event.input_sender, 'Статистика портфеля',
                                   file=STATS_PATH + 'all_season_s.png')
-        await client.send_message(event.input_sender, ins.all_season_s + '\n\n'
+        await client.send_message(event.input_sender, ins.all_seasons_s + '\n\n'
                                                                          'Кому и когда покупать All Seasons '
                                                                          'S портфель?\n'
                                                                          '/instruction31',
@@ -433,7 +433,7 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
         await client.edit_message(message, 'All Seasons M')
         await client.send_message(event.input_sender, 'Статистика портфеля',
                                   file=STATS_PATH + 'all_season_m.png')
-        await client.send_message(event.input_sender, ins.all_season_s + '\n\n'
+        await client.send_message(event.input_sender, ins.all_seasons_m + '\n\n'
                                                                          'Кому и когда покупать All Seasons '
                                                                          'M портфель?\n'
                                                                          '/instruction32',
@@ -446,7 +446,7 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
         await client.edit_message(message, 'All Seasons L')
         await client.send_message(event.input_sender, 'Статистика портфеля',
                                   file=STATS_PATH + 'all_season_l.png')
-        await client.send_message(event.input_sender, ins.all_season_s + '\n\n'
+        await client.send_message(event.input_sender, ins.all_seasons_l + '\n\n'
                                                                          'Кому и когда покупать All Seasons '
                                                                          'L портфель?\n'
                                                                          '/instruction33',
