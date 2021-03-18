@@ -1,7 +1,5 @@
 from project_shared import *
-from quotes.parsers_env import chrome_init, agents
-from quotes.parsers import advance_decline, get_finviz_treemaps,\
-    get_coins360_treemaps, get_economics, get_sma50, get_tw_charts, vix_curve, vix_cont, qt_curve, spx_yield
+
 from quotes.get_universe import *
 from quotes.quote_loader import *
 from quotes.portfolios.portfolios_calc import *
@@ -787,20 +785,20 @@ if __name__ == '__main__':
     # main()
     mp.set_start_method('spawn')
     q = mp.Queue()
-    # p1 = mp.Process(target=portfolio_tester, args=(100000, 'parking', 3, 12, datetime.date(2020, 7, 1),))
-    # p1.start()
-    # p2 = mp.Process(target=portfolio_tester, args=(100000, 'allweather', 3, 12, datetime.date(2020, 7, 1),))
-    # p2.start()
-    # p3 = mp.Process(target=portfolio_tester, args=(100000, 'balanced', 3, 12, datetime.date(2020, 7, 1),))
-    # p3.start()
-    # p4 = mp.Process(target=portfolio_tester, args=(100000, 'aggressive', 3, 12, datetime.date(2020, 7, 1),))
-    # p4.start()
-    # p5 = mp.Process(target=portfolio_tester, args=(100000, 'leveraged', 3, 12,  datetime.date(2020, 7, 1),))
-    # p5.start()
+    p1 = mp.Process(target=portfolio_tester, args=(100000, 'parking', 3, 12, datetime.date(2008, 3, 1),))
+    p1.start()
+    p2 = mp.Process(target=portfolio_tester, args=(100000, 'allweather', 3, 12, datetime.date(2008, 3, 1),))
+    p2.start()
+    p3 = mp.Process(target=portfolio_tester, args=(100000, 'balanced', 3, 12, datetime.date(2008, 3, 1),))
+    p3.start()
+    p4 = mp.Process(target=portfolio_tester, args=(100000, 'aggressive', 3, 12, datetime.date(2008, 3, 1),))
+    p4.start()
+    p5 = mp.Process(target=portfolio_tester, args=(100000, 'leveraged', 3, 12,  datetime.date(2016, 1, 1),))
+    p5.start()
     # p6 = mp.Process(target=portfolio_tester, args=(100000, 'test_adm', 3, 12,  datetime.date(2010, 3, 1),))
     # p6.start()
-    p7 = mp.Process(target=portfolio_tester, args=(100000, 'elastic', 3, 12,  datetime.date(2008, 1, 1),))
-    p7.start()
+    # p7 = mp.Process(target=portfolio_tester, args=(100000, 'elastic', 3, 12,  datetime.date(2008, 1, 1),))
+    # p7.start()
     # p8 = mp.Process(target=portfolio_tester, args=(100000, 'yolo', 3, 12,  datetime.date(2020, 1, 1),))
     # p8.start()
 
@@ -811,13 +809,13 @@ if __name__ == '__main__':
     # p11 = mp.Process(target=portfolio_tester, args=(100000, 'sac_growth', 3, 12,  datetime.date(2020, 5, 1),))
     # p11.start()
 
-    # p1.join()
-    # p2.join()
-    # p3.join()
-    # p4.join()
-    # p5.join()
+    p1.join()
+    p2.join()
+    p3.join()
+    p4.join()
+    p5.join()
     # p6.join()
-    p7.join()
+    # p7.join()
     # p8.join()
     # p9.join()
     # p10.join()
