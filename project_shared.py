@@ -262,7 +262,8 @@ def add_watermark(before, after, font_size=16, wtermark_color=(217, 217, 217, 20
     txt_img = Image.new("RGBA", image.size, (255, 255, 255, 0))
     draw = ImageDraw.Draw(txt_img)
     font = ImageFont.truetype("arialbd.ttf", font_size)
-    text = "(c) @UpsilonBot"
+    # text = "(c) @UpsilonBot"
+    text = "@UpsilonBot"
     font_width, font_height = font.getsize(text)
     x = image.width/2 - font_width/2
     y = image.height/2 - font_height/2

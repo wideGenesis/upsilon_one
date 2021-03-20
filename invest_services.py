@@ -15,7 +15,7 @@ import undetected_chromedriver as uc
 from quotes.historical_universe import *
 from quotes.stock_quotes_news import StockStat
 # from messages.message import *
-from quantstats.quantstats_backtest import *
+# from quantstats.quantstats_backtest import *
 
 
 # ============================== Main  =============================
@@ -30,13 +30,13 @@ def main():
     #                             end_date=end_date,
     #                             chart_path=LOGS_PATH)
     # exit()
-    create_pdf()
-    exit()
-    #
-    # before = f'C:\\Projects\\ups_one\\results\\strategy_stats\\all_season_s.png'
-    # after = f'C:\\Projects\\ups_one\\results\\strategy_stats\\all_season_s1.png'
-    # add_watermark(before, after, 80)
+    # create_pdf()
     # exit()
+    #
+    before = f'C:\\Projects\\ups_one\\yolo.png'
+    after = f'C:\\Projects\\ups_one\\results\\strategy_stats\\yolo3.png'
+    add_watermark(before, after, 64, wtermark_color=(217, 217, 217, 40))
+    exit()
     #
     # pdf = get_portfolio_returns_df("aggressive")
     # debug(f'DF:{pdf}')
