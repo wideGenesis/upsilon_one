@@ -214,6 +214,10 @@ async def quotes_to_handler(event, client_, limit=20):
     # print(parse)
     stock = parse[1]
     stock = stock.upper()
+    await client_.send_message(event.input_sender, message='\U0001F4CD \U000026A0 \n__Выбирая отдельные акции '
+                                                           'следует придерживаться стретегии, учитывать возможные '
+                                                           'риски и последствия, а также придерживаться разумной '
+                                                           'диверсификации и аллокации__')
     message1 = await client_.send_message(event.input_sender, message='Получаю описание, ожидайте...')
     message2 = await client_.send_message(event.input_sender, message='Рассчитываю ключевые статистики, ожидайте...')
     message3 = await client_.send_message(event.input_sender, message='Строю скоринг, ожидайте...')

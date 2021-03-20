@@ -95,15 +95,27 @@ EXCLUDE_USERS: [
 
 
 ETF_FOR_SCRAPE: {
-                  'QQQ': 20,
-                  'IWY': 20,
-                  'FDN': 20,
-                  'QCLN': 20,
-                  'ARKW': 15,
-                  'ARKK': 15,
-                  'ARKF': 15,
-                  'ARKG': 15
+                  'QQQ': 30,
+                  'IWY': 30,
+                  'SPY': 30,
+                  'FDN': 10,
+                  'QCLN': 5,
+                  'ARKW': 5,
+                  'ARKK': 5,
+                  'ARKF': 5,
+                  'ARKG': 5
 }
+
+#ETF_FOR_SCRAPE: {
+#                  'QQQ': 20,
+#                  'IWY': 20,
+#                  'FDN': 20,
+#                  'QCLN': 20,
+#                  'ARKW': 15,
+#                  'ARKK': 15,
+#                  'ARKF': 15,
+#                  'ARKG': 15
+#}
 
 ETFs: [
     'QQQ',
