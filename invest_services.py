@@ -20,18 +20,18 @@ from quantstats.quantstats_backtest import *
 
 # ============================== Main  =============================
 def main():
-    end_date = date.today()
-    td = timedelta(365)
-    start_date = end_date - td
-    create_candle_portfolio_img(port_id='aggressive',
-                                compare_ticker='QQQ',
-                                # chart_type='Line',
-                                start_date=start_date,
-                                end_date=end_date,
-                                chart_path=LOGS_PATH)
-    exit()
-    # create_pdf()
+    # end_date = date.today()
+    # td = timedelta(365)
+    # start_date = end_date - td
+    # create_candle_portfolio_img(port_id='aggressive',
+    #                             compare_ticker='QQQ',
+    #                             # chart_type='Line',
+    #                             start_date=start_date,
+    #                             end_date=end_date,
+    #                             chart_path=LOGS_PATH)
     # exit()
+    create_pdf()
+    exit()
     #
     # before = f'C:\\Projects\\ups_one\\results\\strategy_stats\\all_season_s.png'
     # after = f'C:\\Projects\\ups_one\\results\\strategy_stats\\all_season_s1.png'

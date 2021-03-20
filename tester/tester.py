@@ -71,7 +71,7 @@ def portfolio_tester(init_cap=10000, port_id='parking', allocator_data_interval=
 
         # ======================================== P A R K I N G ========================================
         portfolio_args['port_id'] = 'parking'
-        portfolio_args['etf_only'] = False
+        portfolio_args['etf_only'] = True
         portfolio_args['stocks_only'] = False
         portfolio_args['cor_perc'] = 0.9
         portfolio_args['sat_perc'] = 0.1
@@ -132,7 +132,7 @@ def portfolio_tester(init_cap=10000, port_id='parking', allocator_data_interval=
 
         # ======================================== A L L W E A T H E R ========================================
         portfolio_args['port_id'] = 'allweather'
-        portfolio_args['etf_only'] = False
+        portfolio_args['etf_only'] = True
         portfolio_args['stocks_only'] = False
         portfolio_args['cor_perc'] = 0.8
         portfolio_args['sat_perc'] = 0.2
@@ -193,7 +193,7 @@ def portfolio_tester(init_cap=10000, port_id='parking', allocator_data_interval=
 
         # ======================================== B A L A N C E D ========================================
         portfolio_args['port_id'] = 'balanced'
-        portfolio_args['etf_only'] = False
+        portfolio_args['etf_only'] = True
         portfolio_args['stocks_only'] = False
         portfolio_args['cor_perc'] = 0.7
         portfolio_args['sat_perc'] = 0.3
@@ -254,7 +254,7 @@ def portfolio_tester(init_cap=10000, port_id='parking', allocator_data_interval=
 
         # ======================================== A G G R E S S I V E ========================================
         portfolio_args['port_id'] = 'aggressive'
-        portfolio_args['etf_only'] = False
+        portfolio_args['etf_only'] = True
         portfolio_args['stocks_only'] = False
         portfolio_args['cor_perc'] = 0.7
         portfolio_args['sat_perc'] = 0.3
@@ -316,7 +316,7 @@ def portfolio_tester(init_cap=10000, port_id='parking', allocator_data_interval=
         # ======================================== L E V E R A G E D ========================================
         portfolio_args['port_id'] = 'leveraged'
         portfolio_args['is_aliased'] = False
-        portfolio_args['etf_only'] = False
+        portfolio_args['etf_only'] = True
         portfolio_args['stocks_only'] = False
         portfolio_args['cor_perc'] = 0.65
         portfolio_args['sat_perc'] = 0.35
@@ -787,22 +787,22 @@ if __name__ == '__main__':
     # main()
     mp.set_start_method('spawn')
     q = mp.Queue()
-    p1 = mp.Process(target=portfolio_tester, args=(100000, 'parking', 3, 12, datetime.date(2008, 3, 1),))
-    p1.start()
-    p2 = mp.Process(target=portfolio_tester, args=(100000, 'allweather', 3, 12, datetime.date(2008, 3, 1),))
-    p2.start()
-    p3 = mp.Process(target=portfolio_tester, args=(100000, 'balanced', 3, 12, datetime.date(2008, 3, 1),))
-    p3.start()
-    p4 = mp.Process(target=portfolio_tester, args=(100000, 'aggressive', 3, 12, datetime.date(2008, 3, 1),))
-    p4.start()
-    p5 = mp.Process(target=portfolio_tester, args=(100000, 'leveraged', 3, 12,  datetime.date(2016, 1, 1),))
-    p5.start()
+    # p1 = mp.Process(target=portfolio_tester, args=(100000, 'parking', 3, 12, datetime.date(2008, 3, 1),))
+    # p1.start()
+    # p2 = mp.Process(target=portfolio_tester, args=(100000, 'allweather', 3, 12, datetime.date(2008, 3, 1),))
+    # p2.start()
+    # p3 = mp.Process(target=portfolio_tester, args=(100000, 'balanced', 3, 12, datetime.date(2008, 3, 1),))
+    # p3.start()
+    # p4 = mp.Process(target=portfolio_tester, args=(100000, 'aggressive', 3, 12, datetime.date(2008, 3, 1),))
+    # p4.start()
+    # p5 = mp.Process(target=portfolio_tester, args=(100000, 'leveraged', 3, 12,  datetime.date(2016, 1, 1),))
+    # p5.start()
     # p6 = mp.Process(target=portfolio_tester, args=(100000, 'test_adm', 3, 12,  datetime.date(2010, 3, 1),))
     # p6.start()
-    # p7 = mp.Process(target=portfolio_tester, args=(100000, 'elastic', 3, 12,  datetime.date(2008, 1, 1),))
-    # p7.start()
-    # p8 = mp.Process(target=portfolio_tester, args=(100000, 'yolo', 3, 12,  datetime.date(2020, 1, 1),))
-    # p8.start()
+    p7 = mp.Process(target=portfolio_tester, args=(100000, 'elastic', 3, 12,  datetime.date(2008, 1, 1),))
+    p7.start()
+    p8 = mp.Process(target=portfolio_tester, args=(100000, 'yolo', 3, 12,  datetime.date(2020, 1, 1),))
+    p8.start()
 
     # p9 = mp.Process(target=portfolio_tester, args=(100000, 'sac_parking', 3, 12,  datetime.date(2008, 1, 1),))
     # p9.start()
@@ -811,14 +811,14 @@ if __name__ == '__main__':
     # p11 = mp.Process(target=portfolio_tester, args=(100000, 'sac_growth', 3, 12,  datetime.date(2020, 5, 1),))
     # p11.start()
 
-    p1.join()
-    p2.join()
-    p3.join()
-    p4.join()
-    p5.join()
+    # p1.join()
+    # p2.join()
+    # p3.join()
+    # p4.join()
+    # p5.join()
     # p6.join()
-    # p7.join()
-    # p8.join()
+    p7.join()
+    p8.join()
     # p9.join()
     # p10.join()
     # p11.join()

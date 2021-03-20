@@ -3,7 +3,10 @@ import csv
 import base64
 import rsa
 import random
-import datetime
+import time
+import uuid
+from fastnumbers import *
+
 from datetime import timedelta, datetime
 from aiohttp import web
 from telegram import sql_queries as sql
@@ -19,6 +22,11 @@ from telethon.tl.types import InputMediaPoll, Poll, PollAnswer, DocumentAttribut
 from telethon import functions, types
 from mimetypes import guess_type
 from messages.message import *
+from payments.payagregator import PaymentAgregator
+from telethon import utils
+
+PAYMENT_AGGREGATOR = None
+PAYMENT_AGGREGATOR_TIMER = None
 
 
 class WebHandler:
@@ -246,6 +254,63 @@ async def news_to_handler(event, client_, limit=20):
         msg = 'Новости недоступны'
     await client_.send_message(event.input_sender, f'Последние новости с упоминанием {stock}')
     await client_.send_message(event.input_sender, msg)
+
+
+async def dobate_handler(event, client_):
+    await flow_cheker(client_, event)
+    sender_id = event.message.sender_id
+    parse = str(event.text)
+    parse = re.split('donate', parse)
+    debug(parse)
+    summ = fast_float(parse[1], default=None)
+    if summ is None or summ <= 0.0:
+        await client_.send_message(event.input_sender, f'Введи сумму')
+        return
+
+    global PAYMENT_AGGREGATOR
+    if PAYMENT_AGGREGATOR is None:
+        PAYMENT_AGGREGATOR = PaymentAgregator()
+        PAYMENT_AGGREGATOR.creator('Free Kassa')
+    aggregator_status = None
+    global PAYMENT_AGGREGATOR_TIMER
+    if PAYMENT_AGGREGATOR_TIMER is not None:
+        delta = time.time() - PAYMENT_AGGREGATOR_TIMER
+        if delta >= 10:
+            aggregator_status = PAYMENT_AGGREGATOR.get_status()
+        else:
+            time.sleep(10 - delta)
+            aggregator_status = PAYMENT_AGGREGATOR.get_status()
+    else:
+        PAYMENT_AGGREGATOR_TIMER = time.time()
+        aggregator_status = PAYMENT_AGGREGATOR.get_status()
+    debug(aggregator_status)
+    if aggregator_status == 'error':
+        debug(f"Error description: {PAYMENT_AGGREGATOR.get_last_error()}")
+        await client_.send_message(event.input_sender, 'Упс. Что-то пошло не так.',
+                                   buttons=buttons.keyboard_subscription_start)
+        await event.edit()
+    else:
+        debug(f"user_id={str(sender_id)}")
+        order_id = str(uuid.uuid4()).replace('-', '')
+        debug(f"OrderId:{order_id}")
+        summa = str(summ)
+        kbd_label = f'Оплатить ( ${str(summ)} )'
+        debug(f"Summa: {str(summ)}")
+        payment_link = PAYMENT_AGGREGATOR.get_payment_link(order_id, summa)
+        debug(f'payment_link={payment_link}')
+        kbd_payment_button = buttons.generate_payment_button(kbd_label, payment_link)
+
+        paymsg = await client_.send_message(event.input_sender,
+                                            f'Для оплаты нажми кнопку Оплатить\n '
+                                            f'(Инструкция по оплате [тут](https://telegra.ph/Rrrtt-10-13)! )',
+                                            link_preview=True,
+                                            buttons=kbd_payment_button)
+        await event.edit()
+        msg_id = utils.get_message_id(paymsg)
+        shared.ORDER_MAP[order_id] = (sender_id, msg_id)
+        dt = datetime.datetime.now()
+        dt_int = shared.datetime2int(dt)
+        await sql.insert_into_payment_message(order_id, sender_id, msg_id, dt_int, engine)
 
 
 async def goals_handler(event, client_):

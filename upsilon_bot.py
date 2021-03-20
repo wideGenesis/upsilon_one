@@ -104,6 +104,11 @@ async def news_to(event):
     await handlers.news_to_handler(event, client, limit=0)
 
 
+@client.on(events.NewMessage(pattern='donate'))
+async def news_to(event):
+    await handlers.dobate_handler(event, client)
+
+
 # ============================== Callbacks =======================
 @client.on(events.CallbackQuery)
 async def callback(event):
