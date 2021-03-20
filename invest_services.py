@@ -14,60 +14,74 @@ from charter.finance2 import *
 import undetected_chromedriver as uc
 from quotes.historical_universe import *
 from quotes.stock_quotes_news import StockStat
-from messages.message import *
+# from messages.message import *
+from quantstats.quantstats_backtest import *
 
 
 # ============================== Main  =============================
 def main():
-    before = f'C:\\Projects\\ups_one\\results\\strategy_stats\\all_season_s.png'
-    after = f'C:\\Projects\\ups_one\\results\\strategy_stats\\all_season_s1.png'
-    add_watermark(before, after, 80)
+    end_date = date.today()
+    td = timedelta(365)
+    start_date = end_date - td
+    create_candle_portfolio_img(port_id='aggressive',
+                                compare_ticker='QQQ',
+                                # chart_type='Line',
+                                start_date=start_date,
+                                end_date=end_date,
+                                chart_path=LOGS_PATH)
     exit()
-
-    pdf = get_portfolio_returns_df("aggressive")
-    debug(f'DF:{pdf}')
-    exit()
-    pdata = {"XLY": 2.5,
-             "XLV": 2.5,
-             "IEF": 10.0,
-             "DBC": 7.5,
-             "TLT": 30,
-             "GLD": 7.5,
-             "QQQ": 40.0}
-    manual_create_portfolio_donut(portfolio_data=pdata, title="All Seasons S", filename="all_seasons_s_pie")
-    pdata1 = {"SPY": 5.0,
-             "XLY": 10.0,
-             "XLV": 10.0,
-             "IEF": 7.5,
-             "DBC": 2.5,
-             "TLT": 20.0,
-             "GLD": 5.0,
-             "QQQ": 40.0}
-    manual_create_portfolio_donut(portfolio_data=pdata1, title="All Seasons M", filename="all_seasons_m_pie")
-    pdata2 = {"SPY": 5.0,
-             "XLY": 10.0,
-             "XLV": 10.0,
-             "IEF": 5.0,
-             "TLT": 20.0,
-             "QQQ": 50.0}
-    manual_create_portfolio_donut(portfolio_data=pdata2, title="All Seasons L", filename="all_seasons_l_pie")
-    exit()
-
-    sentusrdict, failusrdict, pollresult = get_mailing_lists(53)
-    debug(f'sentusrdict:{sentusrdict}')
-    debug(f'failusrdict:{failusrdict}')
-    debug(f'pollresult:{pollresult}')
-    exit()
-
-    img_out_path = PROJECT_HOME_DIR + '/' + IMAGES_OUT_PATH
-    get_tw_charts(driver=chrome_init(), img_out_path_=img_out_path)
-    get_moex(driver=chrome_init(), img_out_path_=img_out_path)
-
-    exit()
+    # create_pdf()
+    # exit()
+    #
+    # before = f'C:\\Projects\\ups_one\\results\\strategy_stats\\all_season_s.png'
+    # after = f'C:\\Projects\\ups_one\\results\\strategy_stats\\all_season_s1.png'
+    # add_watermark(before, after, 80)
+    # exit()
+    #
+    # pdf = get_portfolio_returns_df("aggressive")
+    # debug(f'DF:{pdf}')
+    # exit()
+    # pdata = {"XLY": 2.5,
+    #          "XLV": 2.5,
+    #          "IEF": 10.0,
+    #          "DBC": 7.5,
+    #          "TLT": 30,
+    #          "GLD": 7.5,
+    #          "QQQ": 40.0}
+    # manual_create_portfolio_donut(portfolio_data=pdata, title="All Seasons S", filename="all_seasons_s_pie")
+    # pdata1 = {"SPY": 5.0,
+    #          "XLY": 10.0,
+    #          "XLV": 10.0,
+    #          "IEF": 7.5,
+    #          "DBC": 2.5,
+    #          "TLT": 20.0,
+    #          "GLD": 5.0,
+    #          "QQQ": 40.0}
+    # manual_create_portfolio_donut(portfolio_data=pdata1, title="All Seasons M", filename="all_seasons_m_pie")
+    # pdata2 = {"SPY": 5.0,
+    #          "XLY": 10.0,
+    #          "XLV": 10.0,
+    #          "IEF": 5.0,
+    #          "TLT": 20.0,
+    #          "QQQ": 50.0}
+    # manual_create_portfolio_donut(portfolio_data=pdata2, title="All Seasons L", filename="all_seasons_l_pie")
+    # exit()
+    #
+    # sentusrdict, failusrdict, pollresult = get_mailing_lists(53)
+    # debug(f'sentusrdict:{sentusrdict}')
+    # debug(f'failusrdict:{failusrdict}')
+    # debug(f'pollresult:{pollresult}')
+    # exit()
+    #
+    # img_out_path = PROJECT_HOME_DIR + '/' + IMAGES_OUT_PATH
+    # get_tw_charts(driver=chrome_init(), img_out_path_=img_out_path)
+    # get_moex(driver=chrome_init(), img_out_path_=img_out_path)
+    #
+    # exit()
     # x = get_ranking_data2("GILD")
     # y = x[1]
     # print('%%%%%%%%', y)
-    exit(0)
+    # exit(0)
     # print(x)
     # ss = StockStat(stock='AMGN')
     # out = ss.company_rank_v2()

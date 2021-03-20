@@ -22,14 +22,14 @@ def create_chart(ticker, data, compare_ticker=None, compare_data=None, chart_typ
     for quote in data:
         dt = date.fromisoformat(str(quote[0]))
         time_stamps.append(chartTime(dt.year, dt.month, dt.day))
-        open_data.append(float(quote[1]))
-        high_data.append(float(quote[2]))
-        low_data.append(float(quote[3]))
-        close_data.append(float(quote[4]))
+        open_data.append(float(quote[1])/100)
+        high_data.append(float(quote[2])/100)
+        low_data.append(float(quote[3])/100)
+        close_data.append(float(quote[4])/100)
 
     compare_close_data = []
     for cquote in compare_data:
-        compare_close_data.append(float(cquote[4]))
+        compare_close_data.append(float(cquote[4])*100)
 
     i = 0
     td = timedelta(1)
@@ -67,7 +67,7 @@ def create_chart(ticker, data, compare_ticker=None, compare_data=None, chart_typ
 
     main_chart = m.addMainChart(IMAGE_HEIGHT)
 
-    m.setPercentageAxis()
+    # m.setPercentageAxis()
     # main_chart.setClipping(True)
     main_chart.setBackground(OUTER_BACKGROUND_COLOR)
 

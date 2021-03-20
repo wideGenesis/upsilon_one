@@ -1,7 +1,7 @@
 from project_shared import *
 from quotes.parsers_env import chrome_init, agents
 from quotes.parsers import advance_decline, get_finviz_treemaps,\
-    get_coins360_treemaps, get_economics, get_sma50, get_tw_charts, vix_curve, vix_cont, qt_curve, spx_yield
+    get_coins360_treemaps, get_economics_v2, get_sma50, get_tw_charts, vix_curve, vix_cont, qt_curve, spx_yield
 from quotes.get_universe import *
 from quotes.quote_loader import *
 from quotes.portfolios.portfolios_calc import *
