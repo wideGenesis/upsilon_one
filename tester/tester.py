@@ -282,7 +282,7 @@ def portfolio_tester(init_cap=10000, port_id='parking', allocator_data_interval=
         portfolio_args['sat_selector_start_date'] = selector_start_date
         portfolio_args['sat_selector_end_date'] = selector_end_date
         portfolio_args['sat_etf_list'] = None
-        portfolio_args['sat_cap_filter'] = 5000000000
+        portfolio_args['sat_cap_filter'] = 8000000000
         portfolio_args['sat_assets_to_hold'] = 7
 
         portfolio_args['sat_cov_method'] = 'de2'
@@ -318,8 +318,8 @@ def portfolio_tester(init_cap=10000, port_id='parking', allocator_data_interval=
         portfolio_args['is_aliased'] = False
         portfolio_args['etf_only'] = True
         portfolio_args['stocks_only'] = False
-        portfolio_args['cor_perc'] = 0.65
-        portfolio_args['sat_perc'] = 0.35
+        portfolio_args['cor_perc'] = 0.7
+        portfolio_args['sat_perc'] = 0.3
         # ********************* Leveraged cor *********************
         portfolio_args['cor_alloctor_start_date'] = alloctor_start_date
         portfolio_args['cor_allocator_end_date'] = allocator_end_date
@@ -344,7 +344,7 @@ def portfolio_tester(init_cap=10000, port_id='parking', allocator_data_interval=
         portfolio_args['sat_selector_start_date'] = selector_start_date
         portfolio_args['sat_selector_end_date'] = selector_end_date
         portfolio_args['sat_etf_list'] = None
-        portfolio_args['sat_cap_filter'] = 20000000000
+        portfolio_args['sat_cap_filter'] = 80000000000
         portfolio_args['sat_assets_to_hold'] = 9
 
         portfolio_args['sat_cov_method'] = 'de2'
