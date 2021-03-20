@@ -306,9 +306,9 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
         await client.edit_message(message, 'Парковочный портфель')
 
         await client.send_message(event.input_sender, 'Подробная статистика',
-                                  file=STATS_PATH + 'parking.pdf')
-        # await client.send_message(event.input_sender, 'Симуляция доходности портфеля на 10 лет',
-        #                           file=STATS_PATH + 'parking.png')
+                                  file='http://watchlister.ru/upsilon_files/parking.pdf')
+        await client.send_message(event.input_sender, 'Доходность с 2008 года',
+                                  file=STATS_PATH + 'parking3.png')
         # await client.send_message(event.input_sender, 'Как интерпретировать результаты симуляций Монте-Карло?\n'
         #                                               '/instruction19',
         #                           file=STATS_PATH + 'parking2.png')
@@ -322,9 +322,9 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
         message = await client.send_message(entity=entity, message='Загрузка...')
         await client.edit_message(message, 'Всепогодный портфель')
         await client.send_message(event.input_sender, 'Подробная статистика',
-                                  file=STATS_PATH + 'allweather.pdf')
-        # await client.send_message(event.input_sender, 'Симуляция доходности портфеля на 10 лет',
-        #                           file=STATS_PATH + 'allweather.png')
+                                  file='http://watchlister.ru/upsilon_files/allweather.pdf')
+        await client.send_message(event.input_sender, 'Доходность с 2008 года',
+                                  file=STATS_PATH + 'allweather3.png')
         # await client.send_message(event.input_sender, 'Как интерпретировать результаты симуляций Монте-Карло?\n'
         #                                               '/instruction19',
         #                           file=STATS_PATH + 'allweather2.png')
@@ -338,9 +338,9 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
         message = await client.send_message(entity=entity, message='Загрузка...')
         await client.edit_message(message, 'Сбалансированный портфель')
         await client.send_message(event.input_sender, 'Подробная статистика',
-                                  file=STATS_PATH + 'balanced.pdf')
-        # await client.send_message(event.input_sender, 'Симуляция доходности портфеля на 10 лет',
-        #                           file=STATS_PATH + 'balanced.png')
+                                  file='http://watchlister.ru/upsilon_files/balanced.pdf')
+        await client.send_message(event.input_sender, 'Доходность с 2008 года',
+                                  file=STATS_PATH + 'balanced3.png')
         # await client.send_message(event.input_sender, 'Как интерпретировать результаты симуляций Монте-Карло?\n'
         #                                               '/instruction19',
         #                           file=STATS_PATH + 'balanced2.png')
@@ -354,9 +354,9 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
         message = await client.send_message(entity=entity, message='Загрузка...')
         await client.edit_message(message, 'Агрессивный портфель')
         await client.send_message(event.input_sender, 'Подробная статистика',
-                                  file=STATS_PATH + 'aggressive.pdf')
-        # await client.send_message(event.input_sender, 'Симуляция доходности портфеля на 10 лет',
-        #                           file=STATS_PATH + 'aggressive.png')
+                                  file='http://watchlister.ru/upsilon_files/aggressive.pdf')
+        await client.send_message(event.input_sender, 'Доходность с 2016 года',
+                                  file=STATS_PATH + 'aggressive3.png')
         # await client.send_message(event.input_sender, 'Как интерпретировать результаты симуляций Монте-Карло?\n'
         #                                               '/instruction19',
         #                           file=STATS_PATH + 'aggressive2.png')
@@ -370,9 +370,9 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
         message = await client.send_message(entity=entity, message='Загрузка...')
         await client.edit_message(message, 'Плечевой портфель')
         await client.send_message(event.input_sender, 'Подробная статистика',
-                                  file=STATS_PATH + 'leveraged.pdf')
-        # await client.send_message(event.input_sender, 'Симуляция доходности портфеля на 10 лет',
-        #                           file=STATS_PATH + 'leveraged.png')
+                                  file='http://watchlister.ru/upsilon_files/leveraged.pdf')
+        await client.send_message(event.input_sender, 'Доходность с 2016 года',
+                                  file=STATS_PATH + 'leveraged3.png')
         # await client.send_message(event.input_sender, 'Как интерпретировать результаты симуляций Монте-Карло?\n'
         #                                               '/instruction19',
         #                           file=STATS_PATH + 'leveraged2.png')
@@ -386,9 +386,9 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
         message = await client.send_message(entity=entity, message='Загрузка...')
         await client.edit_message(message, 'Elastic - портфель только из акций')
         await client.send_message(event.input_sender, 'Подробная статистика',
-                                  file=STATS_PATH + 'elastic.pdf')
-        # await client.send_message(event.input_sender, 'Симуляция доходности портфеля на 10 лет',
-        #                           file=STATS_PATH + 'elastic.png')
+                                  file='http://watchlister.ru/upsilon_files/elastic.pdf')
+        await client.send_message(event.input_sender, 'Доходность с 2008 года',
+                                  file=STATS_PATH + 'elastic3.png')
         # await client.send_message(event.input_sender, 'Как интерпретировать результаты симуляций Монте-Карло?\n'
         #                                               '/instruction19',
         #                           file=STATS_PATH + 'elastic2.png')
@@ -403,9 +403,9 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
         await client.edit_message(message, 'Yolo - портфель только из акций, торгуемых на spbexchange. '
                                            'Доступен для клиентов Сбер, Тинькофф, Альфа-банк, ВТБ')
         await client.send_message(event.input_sender, 'Подробная статистика',
-                                  file=STATS_PATH + 'yolo.pdf')
-        # await client.send_message(event.input_sender, 'Симуляция доходности портфеля на 10 лет',
-        #                           file=STATS_PATH + 'yolo.png')
+                                  file='http://watchlister.ru/upsilon_files/yolo.pdf')
+        await client.send_message(event.input_sender, 'Доходность с 2020 года',
+                                  file=STATS_PATH + 'yolo3.png')
         # await client.send_message(event.input_sender, 'Как интерпретировать результаты симуляций Монте-Карло?\n'
         #                                               '/instruction19',
         #                           file=STATS_PATH + 'yolo2.png')
