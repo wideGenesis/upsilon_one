@@ -112,7 +112,7 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
         await client.send_message(event.input_sender, 'Обзор рынка США\n'
                                                       '/instruction02')
         await client.send_file(entity, img_path + 'treemap_1d.png')
-        await client.send_message(event.input_sender, 'Тепловая карта акций США\n'
+        await client.send_message(event.input_sender, 'Тепловая карта рынка США\n'
                                                       '/instruction04',
                                   buttons=buttons.keyboard_us_analysis_back)
 
