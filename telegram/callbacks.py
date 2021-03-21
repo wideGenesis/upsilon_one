@@ -571,8 +571,8 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
     elif event.data == b'strategy_yolo':
         await event.edit()
         await shared.delete_old_message(client, sender_id)
-        chart_fname = f'{CHARTER_IMAGES_PATH}elastic_port_chart_over_QQQ.png'
-        pie_fname = f'{CHARTER_IMAGES_PATH}leveraged_portfolio_pie.png'
+        chart_fname = f'{CHARTER_IMAGES_PATH}yolo_port_chart_over_SPY.png'
+        pie_fname = f'{CHARTER_IMAGES_PATH}yolo_portfolio_pie.png'
         await client.send_file(entity, pie_fname)
         await client.send_message(event.input_sender, 'Чарт обновляется ежедневно в 11:00 (МСК)',
                                   file=chart_fname,
@@ -581,8 +581,8 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
     elif event.data == b'strategy_elastic':
         await event.edit()
         await shared.delete_old_message(client, sender_id)
-        chart_fname = f'{CHARTER_IMAGES_PATH}yolo_port_chart_over_SPY.png'
-        pie_fname = f'{CHARTER_IMAGES_PATH}leveraged_portfolio_pie.png'
+        chart_fname = f'{CHARTER_IMAGES_PATH}elastic_port_chart_over_QQQ.png'
+        pie_fname = f'{CHARTER_IMAGES_PATH}elastic_portfolio_pie.png'
         await client.send_file(entity, pie_fname)
         await client.send_message(event.input_sender, 'Чарт обновляется ежедневно в 11:00 (МСК)',
                                   file=chart_fname,
