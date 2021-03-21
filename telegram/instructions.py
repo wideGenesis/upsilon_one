@@ -51,7 +51,7 @@ pattern = re.compile(r'^(\/start\b|'
                      r'\/instruction33\b|'
                      r'\/mindepo\b|'
                      r'\/managers_form\b|'
-                     r'donate )', re.IGNORECASE)
+                     r'\/donate )', re.IGNORECASE)
 # r'\/chart_parking\b|'
 # r'\/chart_allweather\b|'
 # r'\/chart_balanced\b|'

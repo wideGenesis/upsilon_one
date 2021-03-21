@@ -134,5 +134,32 @@ async def get_all_users(engine=None):
     return users
 
 
+def create_donate_data_table(engine=None):
+    with engine.connect() as connection:
+        if not is_table_exist(DONATE_DATA_TABLE_NAME):
+            transaction = connection.begin()
+            try:
+                create_query = f'CREATE TABLE {DONATE_DATA_TABLE_NAME} ' \
+                               f'(dateTime DATETIME NOT NULL, ' \
+                               f'user_id  BIGINT NOT NULL, ' \
+                               f'sum DOUBLE NOT NULL, ' \
+                               f'PRIMARY KEY(dateTime, user_id)' \
+                               f')'
+                connection.execute(create_query)
+            except Exception as e:
+                debug(e, ERROR)
+                transaction.rollback()
+            transaction.commit()
 
 
+def save_donate_data(sender_id, summa):
+    with engine.connect() as connection:
+        transaction = connection.begin()
+        try:
+            now = datetime.datetime.now()
+            connection.execute("INSERT INTO donate_data(dateTime, user_id, sum) "
+                               "VALUES( %s, %s, %s, %s )", [now, sender_id, summa])
+        except Exception as e:
+            debug(e, ERROR)
+            transaction.rollback()
+        transaction.commit()
