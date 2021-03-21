@@ -150,7 +150,7 @@ async def profile_menu(event, client, engine=None):
                                                  f'Имя: {user_profile[5]}' + '\n' +
                                                  '\n' +
                                                  f'Результат риск профайла: __{profile_score_str}__' + '\n' +
-                                                 f'Баланс: __{user_profile[8]}__' + '\n' +
+                                                 # f'Баланс: __{user_profile[8]}__' + '\n' +
                                                  f'Подписка действительна до: __' + expired_date + '__' + '\n' +
                                                  f'Приглашено: __{user_profile[9]}__' + '\n' +
                                                  f'Уровень подписки: __{user_profile[10]}__' + '\n' +
@@ -163,7 +163,7 @@ async def profile_menu(event, client, engine=None):
                                       f'Имя: {user_profile[5]}' + '\n' +
                                       '\n' +
                                       f'Результат риск профайла: __{profile_score_str}__' + '\n' +
-                                      f'Баланс: __{user_profile[8]}__' + '\n' +
+                                      # f'Баланс: __{user_profile[8]}__' + '\n' +
                                       f'Подписка действительна до: __' + expired_date + '__' + '\n' +
                                       f'Приглашено: __{user_profile[9]}__' + '\n' +
                                       f'Уровень подписки: __{user_profile[10]}__' + '\n' +
@@ -174,7 +174,7 @@ async def profile_menu(event, client, engine=None):
                                              f'Имя: {user_profile[5]}' + '\n' +
                                              '\n' +
                                              f'Результат риск профайла: __{profile_score_str}__' + '\n' +
-                                             f'Баланс: __{user_profile[8]}__' + '\n' +
+                                             # f'Баланс: __{user_profile[8]}__' + '\n' +
                                              f'Подписка действительна до: __' + expired_date + '__' + '\n' +
                                              f'Приглашено: __{user_profile[9]}__' + '\n' +
                                              f'Уровень подписки: __{user_profile[10]}__' + '\n' +
