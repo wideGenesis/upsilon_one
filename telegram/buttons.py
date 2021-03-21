@@ -92,7 +92,7 @@ keyboard_a1 = [
         Button.inline('\U0001F43B  ' + 'Рынок РФ', b'a1a3')
     ],
     [
-        Button.inline('🇺🇳' + 'Мировые рынки', b'a1a5')
+        Button.inline('🇺🇳' + 'Мировые рынки', b'world_markets')
     ],
     # [
     #     Button.inline('\U0001F30D  ' + 'Market Valuation', b'a1a13')
