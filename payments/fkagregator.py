@@ -445,15 +445,15 @@ class FreeKassaApi:
 
 class FreeKassaAgregator():
     fk_client = FreeKassaApi(
-        first_secret='34e9swhg',
-        second_secret='mo3fb7am',
-        merchant_id='235242',
-        wallet_id='F104947193')
+        # first_secret='34e9swhg',
+        # second_secret='mo3fb7am',
+        # merchant_id='235242',
+        # wallet_id='F104947193')
         # !!!!!!!!!!!!!!!!! Ниже боевые данные !!!!!!!!!!!!!!!!!
-        # first_secret='8azichvn',
-        # second_secret='gakvxpf8',
-        # merchant_id='287546',
-        # wallet_id='F110592247')
+        first_secret='8azichvn',
+        second_secret='gakvxpf8',
+        merchant_id='287546',
+        wallet_id='F110592247')
     last_error = ""
 
     def get_status(self):

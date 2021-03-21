@@ -4,7 +4,8 @@ import datetime
 from project_shared import *
 from quotes.sql_queries import *
 
-TOKEN = 't.TuzfyQk5bMfqGQdKuOPUDo9QPuRuUJEjQuc6uKEqrYBfHAK1X_8gIHgpWf_ZlohqTjzPb8IYGrgpGrJjz66eQw'
+# TOKEN = 't.TuzfyQk5bMfqGQdKuOPUDo9QPuRuUJEjQuc6uKEqrYBfHAK1X_8gIHgpWf_ZlohqTjzPb8IYGrgpGrJjz66eQw' #Defoer
+TOKEN = 't.tdqoEUCjxP3r5GOiZrbtzsF39M2TBkIJoyjb72tcLH9RUsx14wJ6HvIa9JRIX0dOvJyFMCk3JsJnRHxKji7rFg' #Defoer
 
 
 def get_and_save_tinkoff_universe():
