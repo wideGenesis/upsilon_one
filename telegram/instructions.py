@@ -51,14 +51,14 @@ pattern = re.compile(r'^(\/start\b|'
                      r'\/instruction33\b|'
                      r'\/mindepo\b|'
                      r'\/managers_form\b|'
-                     r'\/chart_parking\b|'
-                     r'\/chart_allweather\b|'
-                     r'\/chart_balanced\b|'
-                     r'\/chart_aggressive\b|'
-                     r'\/chart_leveraged\b|'
-                     r'\/chart_elastic\b|'
-                     r'\/chart_yolo\b|'
                      r'donate )', re.IGNORECASE)
+# r'\/chart_parking\b|'
+# r'\/chart_allweather\b|'
+# r'\/chart_balanced\b|'
+# r'\/chart_aggressive\b|'
+# r'\/chart_leveraged\b|'
+# r'\/chart_elastic\b|'
+# r'\/chart_yolo\b|'
 
 
 hello_1 = '__Я Ипсилон__ – твой личный финансовый менеджер!'
@@ -243,15 +243,18 @@ instructions_main = '__Инструкции__ \n \n' \
                     'Процентная ставка - /instruction10 \n' \
                     'Уровень инфляции - /instruction11 \n' \
                     'Композитный индекс менеджеров по закупкам - /instruction12 \n' \
-                    'Уровень безработицы - /instruction13 \n \n' \
-                    'Парковочный портфель - /instruction14 End of Day График - /chart_parking \n \n' \
-                    'Всепогодный портфель - /instruction15 End of Day График - /chart_allweather \n \n' \
-                    'Сбалансированный портфель - /instruction16 End of Day График - /chart_balanced \n \n' \
-                    'Агрессивный портфель - /instruction17 End of Day График - /chart_aggressive \n \n' \
-                    'Плечевой портфель - /instruction18 End of Day График - /chart_leveraged \n \n' \
-                    'Elastic портфель - /instruction23 End of Day График - /chart_elastic \n \n' \
-                    'Yolo портфель - /instruction23 End of Day График - /chart_yolo \n \n' \
-                    'Минимальный депозит - /mindepo \n \n' \
+                    'Уровень безработицы - /instruction13\n \n' \
+                    'Парковочный портфель - /instruction14\n \n' \
+                    'Всепогодный портфель - /instruction15\n \n' \
+                    'Сбалансированный портфель - /instruction16\n \n' \
+                    'Агрессивный портфель - /instruction17\n \n' \
+                    'Плечевой портфель - /instruction18\n \n' \
+                    'Elastic портфель - /instruction23\n \n' \
+                    'Yolo портфель - /instruction23\n \n' \
+                    'All Seasons S - /instruction31\n \n' \
+                    'All Seasons M - /instruction32\n \n' \
+                    'All Seasons L - /instruction33\n \n' \
+                    'Минимальный депозит - /mindepo\n \n' \
                     'Последние новости об интересующей вас компании - /instruction20 \n \n' \
                     'Ключевые статистические показатели об интересующей вас компании - /instruction21 ' \
                     ' /instruction22 \n \n'
