@@ -339,77 +339,77 @@ async def instructions_handler(event, client_):
     pattern = event.original_update.message.message
     pattern = str(pattern).strip('/')
     if pattern == 'instruction00':
-        await client_.send_message(event.input_sender, ins.instruction00)
+        await client_.send_message(event.input_sender, ins.instruction00, buttons=buttons.keyboard_0_back)
     elif pattern == 'instruction01':
-        await client_.send_message(event.input_sender, ins.instruction01)
+        await client_.send_message(event.input_sender, ins.instruction01, buttons=buttons.keyboard_0_back)
     elif pattern == 'instruction02':
-        await client_.send_message(event.input_sender, ins.instruction02)
+        await client_.send_message(event.input_sender, ins.instruction02, buttons=buttons.keyboard_0_back)
     elif pattern == 'instruction03':
-        await client_.send_message(event.input_sender, ins.instruction03)
+        await client_.send_message(event.input_sender, ins.instruction03, buttons=buttons.keyboard_0_back)
     elif pattern == 'instruction04':
-        await client_.send_message(event.input_sender, ins.instruction04)
+        await client_.send_message(event.input_sender, ins.instruction04, buttons=buttons.keyboard_0_back)
     elif pattern == 'instruction05':
-        await client_.send_message(event.input_sender, ins.instruction05)
+        await client_.send_message(event.input_sender, ins.instruction05, buttons=buttons.keyboard_0_back)
     elif pattern == 'instruction06':
-        await client_.send_message(event.input_sender, ins.instruction06)
+        await client_.send_message(event.input_sender, ins.instruction06, buttons=buttons.keyboard_0_back)
     elif pattern == 'instruction07':
-        await client_.send_message(event.input_sender, ins.instruction07)
+        await client_.send_message(event.input_sender, ins.instruction07, buttons=buttons.keyboard_0_back)
     elif pattern == 'instruction08':
-        await client_.send_message(event.input_sender, ins.instruction08)
+        await client_.send_message(event.input_sender, ins.instruction08, buttons=buttons.keyboard_0_back)
     elif pattern == 'instruction09':
-        await client_.send_message(event.input_sender, ins.instruction09)
+        await client_.send_message(event.input_sender, ins.instruction09, buttons=buttons.keyboard_0_back)
     elif pattern == 'instruction10':
-        await client_.send_message(event.input_sender, ins.instruction10)
+        await client_.send_message(event.input_sender, ins.instruction10, buttons=buttons.keyboard_0_back)
     elif pattern == 'instruction11':
-        await client_.send_message(event.input_sender, ins.instruction11)
+        await client_.send_message(event.input_sender, ins.instruction11, buttons=buttons.keyboard_0_back)
     elif pattern == 'instruction12':
-        await client_.send_message(event.input_sender, ins.instruction12)
+        await client_.send_message(event.input_sender, ins.instruction12, buttons=buttons.keyboard_0_back)
     elif pattern == 'instruction13':
-        await client_.send_message(event.input_sender, ins.instruction13)
+        await client_.send_message(event.input_sender, ins.instruction13, buttons=buttons.keyboard_0_back)
     elif pattern == 'instruction14':
-        await client_.send_message(event.input_sender, ins.instruction14)
+        await client_.send_message(event.input_sender, ins.instruction14, buttons=buttons.keyboard_0_back)
     elif pattern == 'instruction15':
-        await client_.send_message(event.input_sender, ins.instruction15)
+        await client_.send_message(event.input_sender, ins.instruction15, buttons=buttons.keyboard_0_back)
     elif pattern == 'instruction16':
-        await client_.send_message(event.input_sender, ins.instruction16)
+        await client_.send_message(event.input_sender, ins.instruction16, buttons=buttons.keyboard_0_back)
     elif pattern == 'instruction17':
-        await client_.send_message(event.input_sender, ins.instruction17)
+        await client_.send_message(event.input_sender, ins.instruction17, buttons=buttons.keyboard_0_back)
     elif pattern == 'instruction18':
-        await client_.send_message(event.input_sender, ins.instruction18)
+        await client_.send_message(event.input_sender, ins.instruction18, buttons=buttons.keyboard_0_back)
     elif pattern == 'instruction19':
-        await client_.send_message(event.input_sender, ins.instruction19)
+        await client_.send_message(event.input_sender, ins.instruction19, buttons=buttons.keyboard_0_back)
     elif pattern == 'mindepo':
-        await client_.send_message(event.input_sender, ins.mindepo)
+        await client_.send_message(event.input_sender, ins.mindepo, buttons=buttons.keyboard_0_back)
     elif pattern == 'managers_form':
-        await client_.send_message(event.input_sender, ins.managers_form)
+        await client_.send_message(event.input_sender, ins.managers_form, buttons=buttons.keyboard_0_back)
     elif pattern == 'instruction20':
-        await client_.send_message(event.input_sender, ins.instruction20)
+        await client_.send_message(event.input_sender, ins.instruction20, buttons=buttons.keyboard_0_back)
     elif pattern == 'instruction21':
-        await client_.send_message(event.input_sender, ins.instruction21)
+        await client_.send_message(event.input_sender, ins.instruction21, buttons=buttons.keyboard_0_back)
     elif pattern == 'instruction22':
-        await client_.send_message(event.input_sender, ins.instruction22)
+        await client_.send_message(event.input_sender, ins.instruction22, buttons=buttons.keyboard_0_back)
     elif pattern == 'instruction23':
-        await client_.send_message(event.input_sender, ins.instruction23)
+        await client_.send_message(event.input_sender, ins.instruction23, buttons=buttons.keyboard_0_back)
     elif pattern == 'instruction24':
-        await client_.send_message(event.input_sender, ins.instruction24)
+        await client_.send_message(event.input_sender, ins.instruction24, buttons=buttons.keyboard_0_back)
     elif pattern == 'instruction25':
-        await client_.send_message(event.input_sender, ins.instruction25)
+        await client_.send_message(event.input_sender, ins.instruction25, buttons=buttons.keyboard_0_back)
     elif pattern == 'instruction26':
-        await client_.send_message(event.input_sender, ins.instruction26)
+        await client_.send_message(event.input_sender, ins.instruction26, buttons=buttons.keyboard_0_back)
     elif pattern == 'instruction27':
-        await client_.send_message(event.input_sender, ins.instruction27)
+        await client_.send_message(event.input_sender, ins.instruction27, buttons=buttons.keyboard_0_back)
     elif pattern == 'instruction28':
-        await client_.send_message(event.input_sender, ins.instruction28)
+        await client_.send_message(event.input_sender, ins.instruction28, buttons=buttons.keyboard_0_back)
     elif pattern == 'instruction29':
-        await client_.send_message(event.input_sender, ins.instruction29)
+        await client_.send_message(event.input_sender, ins.instruction29, buttons=buttons.keyboard_0_back)
     elif pattern == 'instruction30':
-        await client_.send_message(event.input_sender, ins.instruction30)
+        await client_.send_message(event.input_sender, ins.instruction30, buttons=buttons.keyboard_0_back)
     elif pattern == 'instruction31':
-        await client_.send_message(event.input_sender, ins.instruction31)
+        await client_.send_message(event.input_sender, ins.instruction31, buttons=buttons.keyboard_0_back)
     elif pattern == 'instruction32':
-        await client_.send_message(event.input_sender, ins.instruction32)
+        await client_.send_message(event.input_sender, ins.instruction32, buttons=buttons.keyboard_0_back)
     elif pattern == 'instruction33':
-        await client_.send_message(event.input_sender, ins.instruction33)
+        await client_.send_message(event.input_sender, ins.instruction33, buttons=buttons.keyboard_0_back)
 
 
 async def portfolio_candle_chart_handler(event, client_):

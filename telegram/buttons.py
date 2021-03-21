@@ -81,6 +81,12 @@ keyboard_0 = [
     ]
 ]
 
+keyboard_0_back = [
+    [
+        Button.inline('\U0001F519  ' + 'Назад', b'main')
+    ]
+]
+
 keyboard_a1 = [
     [
         Button.inline('🇺🇸' + 'Рынок США', b'a1a1')
