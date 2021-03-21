@@ -31,7 +31,7 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
     chat = await event.get_chat()
     old_msg_id = await shared.get_old_msg_id(sender_id)
 
-    # ============================== Главное меню 1 уровень=============================
+    # ============================== 📁 Главное меню 1 уровень=============================
     if event.data == b'a1':
         await event.edit()
         if old_msg_id is not None:
@@ -79,9 +79,9 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
     elif event.data == b'main':
         await event.edit()
         if old_msg_id is not None:
-            await client.edit_message(event.input_sender, old_msg_id, 'Главное меню', buttons=buttons.keyboard_0)
+            await client.edit_message(event.input_sender, old_msg_id, '📁 Главное меню', buttons=buttons.keyboard_0)
         else:
-            menu_msg = await client.send_message(event.input_sender, 'Главное меню', buttons=buttons.keyboard_0)
+            menu_msg = await client.send_message(event.input_sender, '📁 Главное меню', buttons=buttons.keyboard_0)
             await shared.delete_old_message(client, sender_id)
             await shared.save_old_message(sender_id, menu_msg)
 
@@ -137,7 +137,7 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
         await client.send_message(event.input_sender, 'Тепловая карта акций РФ\n'
                                                       '/instruction04',
                                   buttons=buttons.keyboard_a1_back)
-    elif event.data == b'a1a5':
+    elif event.data == b'world_markets':
         await event.edit()
         await shared.delete_old_message(client, sender_id)
         await client.send_file(entity, img_path + 'world.png')
@@ -1126,10 +1126,10 @@ async def polls_handler(update, client):
             shared.set_old_msg_poll(user_id, False)
             if old_msg_id is not None:
                 await shared.delete_old_message(client, user_id)
-                main_menu_msg = await client.send_message(user_id, 'Главное меню', buttons=buttons.keyboard_0)
+                main_menu_msg = await client.send_message(user_id, '📁 Главное меню', buttons=buttons.keyboard_0)
                 await shared.save_old_message(user_id, main_menu_msg)
             else:
-                menu_msg = await client.send_message(user_id, 'Главное меню', buttons=buttons.keyboard_0)
+                menu_msg = await client.send_message(user_id, '📁 Главное меню', buttons=buttons.keyboard_0)
                 await shared.delete_old_message(client, user_id)
                 await shared.save_old_message(user_id, menu_msg)
 

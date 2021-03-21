@@ -39,7 +39,7 @@ async def start_menu(event, client, engine=None):
                                       buttons=buttons.keyboard_forw2)
         else:
             #  Если не дошел до профайла даже, то презу показать надо
-            await client.send_message(event.input_sender, 'Профиль')
+            await client.send_message(event.input_sender, '👤 Профиль')
             await callbacks.send_next_profiler_question(client, sender_id, 0)
     else:
         # Если юзер уже прошел профайлинг, то ему не надо показывать презу и опрос - сразу главное меню
@@ -67,14 +67,14 @@ async def tools_menu(event, client):
         is_poll = await shared.is_old_msg_poll(sender_id)
         if is_poll:
             await shared.delete_old_message(client, sender_id)
-            menu_msg = await client.send_message(event.input_sender, 'Главное меню', buttons=buttons.keyboard_0)
+            menu_msg = await client.send_message(event.input_sender, '📁 Главное меню', buttons=buttons.keyboard_0)
             await shared.save_old_message(sender_id, menu_msg)
             shared.set_old_msg_poll(sender_id, False)
         else:
-            menu_msg = await client.edit_message(event.input_sender, old_msg_id, 'Главное меню',
+            menu_msg = await client.edit_message(event.input_sender, old_msg_id, '📁 Главное меню',
                                                  buttons=buttons.keyboard_0)
     else:
-        menu_msg = await client.send_message(event.input_sender, 'Главное меню', buttons=buttons.keyboard_0)
+        menu_msg = await client.send_message(event.input_sender, '📁 Главное меню', buttons=buttons.keyboard_0)
         await shared.save_old_message(sender_id, menu_msg)
 
 
@@ -199,12 +199,12 @@ async def information_menu(event, client, engine=engine):
         is_poll = await shared.is_old_msg_poll(sender_id)
         if is_poll:
             await shared.delete_old_message(client, sender_id)
-            menu_msg = await client.send_message(event.input_sender, 'Информация', buttons=buttons.keyboard_info)
+            menu_msg = await client.send_message(event.input_sender, '🛎 Информация', buttons=buttons.keyboard_info)
             await shared.save_old_message(sender_id, menu_msg)
             shared.set_old_msg_poll(sender_id, False)
         else:
-            await client.edit_message(event.input_sender, old_msg_id, 'Информация', buttons=buttons.keyboard_info)
+            await client.edit_message(event.input_sender, old_msg_id, '🛎 Информация', buttons=buttons.keyboard_info)
     else:
-        menu_msg = await client.send_message(event.input_sender, 'Информация', buttons=buttons.keyboard_info)
+        menu_msg = await client.send_message(event.input_sender, '🛎 Информация', buttons=buttons.keyboard_info)
         await shared.save_old_message(sender_id, menu_msg)
 

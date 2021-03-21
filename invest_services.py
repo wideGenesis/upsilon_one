@@ -20,6 +20,8 @@ from quotes.stock_quotes_news import StockStat
 
 # ============================== Main  =============================
 def main():
+    get_tw_charts(driver=chrome_init())
+    exit()
     # end_date = date.today()
     # td = timedelta(365)
     # start_date = end_date - td
@@ -33,10 +35,10 @@ def main():
     # create_pdf()
     # exit()
     #
-    before = f'C:\\Projects\\ups_one\\yolo.png'
-    after = f'C:\\Projects\\ups_one\\results\\strategy_stats\\yolo3.png'
-    add_watermark(before, after, 64, wtermark_color=(217, 217, 217, 40))
-    exit()
+    # before = f'C:\\Projects\\ups_one\\yolo.png'
+    # after = f'C:\\Projects\\ups_one\\results\\strategy_stats\\yolo3.png'
+    # add_watermark(before, after, 64, wtermark_color=(217, 217, 217, 40))
+    # exit()
     #
     # pdf = get_portfolio_returns_df("aggressive")
     # debug(f'DF:{pdf}')
@@ -108,8 +110,8 @@ def main():
     # Иначе обновление данных по тикерам где данные дублируются не произойдет.
     # Функция возмет по каждому тикеру максимальную дату, которая найдется в базе
     # и будет пытаться обновить с этой даты по сегодня
-    global_universe = create_max_universe_list()
-    ohlc_data_updater(global_universe, True)
+    # global_universe = create_max_universe_list()
+    # ohlc_data_updater(global_universe, True)
 
     # 3) Обновление данных за конкретный период времени. Сделано на тот случай если вдруг,
     # по неизвестной причине в данных есть дырки, что бы можно было не перезабирать все данные,
@@ -120,11 +122,11 @@ def main():
 
 
 
-    exit()
-    # Создать текущую вселенную.
-    eod_get_and_save_holdings()
-
-    exit()
+    # exit()
+    # # Создать текущую вселенную.
+    # eod_get_and_save_holdings()
+    #
+    # exit()
 
 
     # parking_weights = parking_portfolio()
