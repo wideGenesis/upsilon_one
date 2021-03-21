@@ -989,6 +989,7 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
                                                buttons=kbd_payment_button)
             await event.edit()
             msg_id = utils.get_message_id(paymsg)
+            order_type = 'subscription'
             shared.ORDER_MAP[order_id] = (sender_id, msg_id)
             dt = datetime.now()
             dt_int = shared.datetime2int(dt)

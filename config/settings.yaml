@@ -61,6 +61,7 @@ SQL_TABLE_NAMES:
   MAILING_DATA_TABLE_NAME: 'bot_mailing_data'
   USER_PROFILER_DATA_TABLE_NAME: 'user_profiler_data'
   USER_PROFILER_MAP_TABLE_NAME: 'user_profiler_map'
+  DONATE_DATA_TABLE_NAME: 'donate_data'
 
 DIALOGFLOW:
   PROJECT_ID: 'common-bot-1'

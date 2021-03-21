@@ -58,7 +58,7 @@ pattern = re.compile(r'^(\/start\b|'
                      r'\/chart_leveraged\b|'
                      r'\/chart_elastic\b|'
                      r'\/chart_yolo\b|'
-                     r'donate )', re.IGNORECASE)
+                     r'\/donate )', re.IGNORECASE)
 
 
 hello_1 = '__Я Ипсилон__ – твой личный финансовый менеджер!'

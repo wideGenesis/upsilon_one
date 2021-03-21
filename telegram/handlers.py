@@ -61,43 +61,61 @@ class WebHandler:
             value = shared.ORDER_MAP.get(order_id)
             if value is not None:
                 debug("Send message \"payment is ok\"")
-                sender_id, message_id = value
-                # удаляем платежное сообщение в чате, чтобы клиент не нажимал на него еще
-                await self.client.delete_messages(sender_id, message_id)
-                # сообщаем клиенту об успешном платеже
-                tariff_str = ""
-                td = ""
-                subscribe_level = ""
-                if summa == "15":
-                    tariff_str = '__Тариф: ' + shared.SUBSCRIBES[shared.TARIFF_START_ID].get_name() + '__\n'
-                    td = timedelta(days=shared.SUBSCRIBES[shared.TARIFF_START_ID].get_duration())
-                    subscribe_level = shared.SUBSCRIBES[shared.TARIFF_START_ID].get_level()
-                elif summa == "25":
-                    tariff_str = '__Тариф: ' + shared.SUBSCRIBES[shared.TARIFF_BASE_ID].get_name() + '__\n'
-                    td = timedelta(days=shared.SUBSCRIBES[shared.TARIFF_BASE_ID].get_duration())
-                    subscribe_level = shared.SUBSCRIBES[shared.TARIFF_BASE_ID].get_level()
-                elif summa == "30":
-                    tariff_str = '__Тариф: ' + shared.SUBSCRIBES[shared.TARIFF_ADVANCED_ID].get_name() + '__\n'
-                    td = timedelta(days=shared.SUBSCRIBES[shared.TARIFF_ADVANCED_ID].get_duration())
-                    subscribe_level = shared.SUBSCRIBES[shared.TARIFF_ADVANCED_ID].get_level()
-                elif summa == "40":
-                    tariff_str = '__Тариф: ' + shared.SUBSCRIBES[shared.TARIFF_PROFESSIONAL_ID].get_name() + '__\n'
-                    td = timedelta(days=shared.SUBSCRIBES[shared.TARIFF_PROFESSIONAL_ID].get_duration())
-                    subscribe_level = shared.SUBSCRIBES[shared.TARIFF_PROFESSIONAL_ID].get_level()
-                await self.client.send_message(sender_id,
-                                               'Оплата прошла успешно:\n'
-                                               + tariff_str
-                                               + '__Ордер: ' + order_id + '__\n'
-                                               + '__Сумма: ' + summa + '__\n'
-                                               + '**Спасибо, что пользуетесь моими услугами!**')
-                # удаляем данные о платеже из памяти и из базы, они нам больше не нужны
-                shared.ORDER_MAP.pop(order_id)
-                await sql.delete_from_payment_message(order_id, self.engine)
+                sender_id, message_id, order_type = value
+                if order_type == 'subscription':
+                    # удаляем платежное сообщение в чате, чтобы клиент не нажимал на него еще
+                    await self.client.delete_messages(sender_id, message_id)
+                    # сообщаем клиенту об успешном платеже
+                    tariff_str = ""
+                    td = ""
+                    subscribe_level = ""
+                    if summa == "15":
+                        tariff_str = '__Тариф: ' + shared.SUBSCRIBES[shared.TARIFF_START_ID].get_name() + '__\n'
+                        td = timedelta(days=shared.SUBSCRIBES[shared.TARIFF_START_ID].get_duration())
+                        subscribe_level = shared.SUBSCRIBES[shared.TARIFF_START_ID].get_level()
+                    elif summa == "25":
+                        tariff_str = '__Тариф: ' + shared.SUBSCRIBES[shared.TARIFF_BASE_ID].get_name() + '__\n'
+                        td = timedelta(days=shared.SUBSCRIBES[shared.TARIFF_BASE_ID].get_duration())
+                        subscribe_level = shared.SUBSCRIBES[shared.TARIFF_BASE_ID].get_level()
+                    elif summa == "30":
+                        tariff_str = '__Тариф: ' + shared.SUBSCRIBES[shared.TARIFF_ADVANCED_ID].get_name() + '__\n'
+                        td = timedelta(days=shared.SUBSCRIBES[shared.TARIFF_ADVANCED_ID].get_duration())
+                        subscribe_level = shared.SUBSCRIBES[shared.TARIFF_ADVANCED_ID].get_level()
+                    elif summa == "40":
+                        tariff_str = '__Тариф: ' + shared.SUBSCRIBES[shared.TARIFF_PROFESSIONAL_ID].get_name() + '__\n'
+                        td = timedelta(days=shared.SUBSCRIBES[shared.TARIFF_PROFESSIONAL_ID].get_duration())
+                        subscribe_level = shared.SUBSCRIBES[shared.TARIFF_PROFESSIONAL_ID].get_level()
+                    await self.client.send_message(sender_id,
+                                                   'Оплата прошла успешно:\n'
+                                                   + tariff_str
+                                                   + '__Ордер: ' + order_id + '__\n'
+                                                   + '__Сумма: ' + summa + '__\n'
+                                                   + '**Спасибо, что пользуетесь моими услугами!**')
+                    # удаляем данные о платеже из памяти и из базы, они нам больше не нужны
+                    shared.ORDER_MAP.pop(order_id)
+                    await sql.delete_from_payment_message(order_id, self.engine)
 
-                # добавляем запись в базу о том  когда закончится подписка
-                expired_data = (datetime.now() + td).isoformat(timespec='minutes')
-                await sql.db_save_expired_data(expired_data, subscribe_level, sender_id, self.engine)
-                return web.Response(status=200)
+                    # добавляем запись в базу о том  когда закончится подписка
+                    expired_data = (datetime.now() + td).isoformat(timespec='minutes')
+                    await sql.db_save_expired_data(expired_data, subscribe_level, sender_id, self.engine)
+                    return web.Response(status=200)
+                elif order_type == 'donate':
+                    # удаляем платежное сообщение в чате, чтобы клиент не нажимал на него еще
+                    await self.client.delete_messages(sender_id, message_id)
+                    # сообщаем клиенту об успешном платеже
+                    await self.client.send_message(sender_id,
+                                                   'Оплата прошла успешно:\n'
+                                                   + '__Ордер: ' + order_id + '__\n'
+                                                   + '__Сумма: ' + summa + '__\n'
+                                                   + '**Спасибо, что пользуешься моими услугами!**')
+                    # удаляем данные о платеже из памяти и из базы, они нам больше не нужны
+                    shared.ORDER_MAP.pop(order_id)
+                    await sql.delete_from_payment_message(order_id, self.engine)
+                    if not is_table_exist(DONATE_DATA_TABLE_NAME):
+                        sql.create_donate_data_table(self.engine)
+                    sql.save_donate_data(sender_id, fast_float(summa))
+                    return web.Response(status=200)
+
             else:
                 debug("Global SenderID is None")
                 return web.Response(status=403)
@@ -261,11 +279,11 @@ async def news_to_handler(event, client_, limit=20):
     await client_.send_message(event.input_sender, msg)
 
 
-async def dobate_handler(event, client_):
+async def donate_handler(event, client_):
     await flow_cheker(client_, event)
     sender_id = event.message.sender_id
     parse = str(event.text)
-    parse = re.split('donate', parse)
+    parse = re.split('/donate', parse)
     debug(parse)
     summ = fast_float(parse[1], default=None)
     if summ is None or summ <= 0.0:
@@ -312,7 +330,8 @@ async def dobate_handler(event, client_):
                                             buttons=kbd_payment_button)
         await event.edit()
         msg_id = utils.get_message_id(paymsg)
-        shared.ORDER_MAP[order_id] = (sender_id, msg_id)
+        order_type = 'donate'
+        shared.ORDER_MAP[order_id] = (sender_id, msg_id, order_type)
         dt = datetime.datetime.now()
         dt_int = shared.datetime2int(dt)
         await sql.insert_into_payment_message(order_id, sender_id, msg_id, dt_int, engine)

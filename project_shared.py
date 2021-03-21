@@ -150,6 +150,8 @@ else:
 OWNER = conf['TELEGRAM']['OWNER']  # TODO Сделать пару владельцев для коммуникации
 SERVICE_CHAT = conf['TELEGRAM']['SERVICE_CHAT']
 
+DONATE_DATA_TABLE_NAME = conf['SQL_TABLE_NAMES']['DONATE_DATA_TABLE_NAME']
+
 # ============================== Logging Setup ======================
 # logging.basicConfig(
 #     filemode='w',
