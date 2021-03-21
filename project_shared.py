@@ -256,6 +256,10 @@ def add_months(sourcedate, months):
     return datetime.date(year, month, day)
 
 
+def get_last_day_of_month(year, month):
+    return calendar.monthrange(year, month)[1]
+
+
 def add_watermark(before, after, font_size=16, wtermark_color=(217, 217, 217, 20)):
     img_to_edit = before
     image = Image.open(img_to_edit).convert("RGBA")
