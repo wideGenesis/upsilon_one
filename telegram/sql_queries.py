@@ -157,8 +157,8 @@ def save_donate_data(sender_id, summa):
         transaction = connection.begin()
         try:
             now = datetime.datetime.now()
-            connection.execute("INSERT INTO donate_data(dateTime, user_id, sum) "
-                               "VALUES( %s, %s, %s, %s )", [now, sender_id, summa])
+            connection.execute(f"INSERT INTO donate_data(dateTime, user_id, sum)  "
+                               f"VALUES( \'{now}\', \'{sender_id}\', \'{summa}\')")
         except Exception as e:
             debug(e, ERROR)
             transaction.rollback()
