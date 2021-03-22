@@ -197,7 +197,6 @@ async def publish_to_handler(event, client_, owner=None):
 
 
 async def dialog_flow_handler(event, client_):
-    print(event)
     msg_text = event.message.text
     if msg_text == '' or msg_text is None:
         msg = 'Я воспринимаю только текст и ничего кроме текста.'
