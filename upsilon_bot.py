@@ -50,32 +50,38 @@ async def start(event):
 
 @client.on(events.NewMessage(pattern='Главное меню|\U0001F4C1 Главное меню|📁 Главное меню'))
 async def tools(event):
+    await acion_info(event, f'Главное меню')
     await menu.tools_menu(event, client)
 
 
 @client.on(events.NewMessage(pattern='menu|Menu|Меню|меню'))
 async def meta_tools(event):
+    await acion_info(event, f'Меню')
     await menu.meta_menu(event, client)
 
 
 @client.on(events.NewMessage(pattern='Профиль|профиль|Profile|profile|👤 Профиль|\U0001F464 Профиль'))
 async def profile(event):
+    await acion_info(event, f'Профиль')
     await menu.profile_menu(event, client, engine=engine)
 
 
 @client.on(events.NewMessage(pattern='Помощь|инструкции|Инструкции|помощь|help|Help|/help'))
 async def helper(event):
+    await acion_info(event, f'Помощь')
     await menu.information_menu(event, client, engine=engine)
 
 
 @client.on(events.NewMessage(pattern='Информация|инфомация|инфо|Инфо|🛎 Информация|\U0001F6CE Информация'))
 async def information(event):
+    await acion_info(event, f'Информация')
     await menu.information_menu(event, client, engine=engine)
 
 
 # ============================== Commands ===============================
 @client.on(events.NewMessage(pattern='портфель|портфели|Портфель|Портфели|portfolio|portfolios'))
 async def portfolios(event):
+    await acion_info(event, f'Портфель')
     await handlers.portfolios_cmd(client, event)
 
 
@@ -96,16 +102,19 @@ async def dialog_flow(event):
 
 @client.on(events.NewMessage(pattern='/q|[$#@]'))
 async def quotes_to(event):
+    await acion_info(event, f'Try get ticker data')
     await handlers.quotes_to_handler(event, client, limit=0)
 
 
 @client.on(events.NewMessage(pattern='news'))
 async def news_to(event):
+    await acion_info(event, f'news')
     await handlers.news_to_handler(event, client, limit=0)
 
 
 @client.on(events.NewMessage(pattern='/donate'))
 async def news_to(event):
+    await acion_info(event, f'donate')
     await handlers.donate_handler(event, client)
 
 
@@ -127,16 +136,19 @@ async def handler(update):
 # ============================== Instructions ===============================
 @client.on(events.NewMessage(pattern='/goals'))
 async def goals(event):
+    await acion_info(event, f'goals')
     await handlers.goals_handler(event, client)
 
 
 @client.on(events.NewMessage(pattern='/skills'))
 async def skills(event):
+    await acion_info(event, f'skills')
     await handlers.skills_handler(event, client)
 
 
 @client.on(events.NewMessage(pattern='^/(instruction[0-9][0-9]|mindepo)$'))
 async def instructions(event):
+    await acion_info(event, f'instruction')
     await handlers.instructions_handler(event, client)
 
 
@@ -147,12 +159,22 @@ async def instructions(event):
 
 @client.on(events.NewMessage(pattern='Анкета регистрации управляющего'))
 async def instructions(event):
+    await acion_info(event, f'Анкета регистрации управляющего')
     await handlers.managers_form_handler(event, client)
 
 
 @client.on(events.NewMessage(pattern='/(support|adv|bug)'))
 async def support(event):
+    await acion_info(event, f'support|adv|bug')
     await handlers.support_handler(event, client)
+
+
+async def acion_info(event, action):
+    msg = getattr(event, "message", None)
+    if msg:
+        sender = getattr(event.message, "sender", None)
+        if sender:
+            debug(f' -- {action} -- {event.message.sender.id} - {event.message.sender.username}')
 
 
 # ============================== Main  =============================

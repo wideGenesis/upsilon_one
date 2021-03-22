@@ -848,41 +848,42 @@ def get_ranking_data2(tick, ag=agents()):
         rank += interest_coverage_r
 
     debug("-------------- I N F O --------------")
-    debug(f'\n'
-          f'Ticker: ### {ticker} ###\n'
-          f'quoteType: {quoteType}\n'
-          f'longName: {longName}\n'
-          f'sector: {sector}\n'
-          f'industry: {industry}\n'
-          f'country: {country}\n'
-          f'regularMarketPrice: {regularMarketPrice}\n'
-          f'marketState: {marketState}\n'
-          f'marketCap: {marketCap}\n'
-          f'beta: {beta}\n'
-          f'volume: {volume}\n'
-          f'averageVolume: {averageVolume}\n'
-          f'trailingPE: {trailingPE}\n'
-          f'forwardPE: {forwardPE}\n'
-          f'exDividendDate: {ce_exDividendDate}\n'
-          f'dividendDate: {ce_dividendDate}\n'
-          f'earnings_earningsDate: {ce_earnings_earningsDate}\n'
-          )
-    debug("-------------- R A N K I N G --------------")
-    debug(f'\n'
-          f'et_0y_revenueEstimate_growth: {et_0y_revenueEstimate_growth_r}\n'
-          f'et_p1y_revenueEstimate: {et_p1y_revenueEstimate_growth_r}\n'
-          f'et_earningsEstimate: {et_earningsEstimate_r}\n'
-          f'et_p1q_earningsEstimate: {et_p1q_earningsEstimate_r}\n'
-          f'total_revenue: {total_revenue_r}\n'
-          f'diluted_eps: {diluted_eps_r}\n'
-          f'profitMargins: {profitMargins_r}\n'
-          f'trailingAnnualDividendYield: {trailingAnnualDividendYield_r}\n'
-          f'repurchase_of_capital_stock_avg: {repurchase_of_capital_stock_avg_r}\n'
-          f'marketCap: {marketCap_r}\n'
-          f'beta: {beta_r}\n'
-          f'currentRatio: {currentRatio_r}\n'
-          f'debtToEquity: {debtToEquity_r}\n'
-          f'interest_coverage: {interest_coverage_r}\n')
+    debug(f'Ticker: ### {ticker} ###\n')
+    # debug(f'\n'
+    #       f'Ticker: ### {ticker} ###\n'
+    #       f'quoteType: {quoteType}\n'
+    #       f'longName: {longName}\n'
+    #       f'sector: {sector}\n'
+    #       f'industry: {industry}\n'
+    #       f'country: {country}\n'
+    #       f'regularMarketPrice: {regularMarketPrice}\n'
+    #       f'marketState: {marketState}\n'
+    #       f'marketCap: {marketCap}\n'
+    #       f'beta: {beta}\n'
+    #       f'volume: {volume}\n'
+    #       f'averageVolume: {averageVolume}\n'
+    #       f'trailingPE: {trailingPE}\n'
+    #       f'forwardPE: {forwardPE}\n'
+    #       f'exDividendDate: {ce_exDividendDate}\n'
+    #       f'dividendDate: {ce_dividendDate}\n'
+    #       f'earnings_earningsDate: {ce_earnings_earningsDate}\n'
+    #       )
+    # debug("-------------- R A N K I N G --------------")
+    # debug(f'\n'
+    #       f'et_0y_revenueEstimate_growth: {et_0y_revenueEstimate_growth_r}\n'
+    #       f'et_p1y_revenueEstimate: {et_p1y_revenueEstimate_growth_r}\n'
+    #       f'et_earningsEstimate: {et_earningsEstimate_r}\n'
+    #       f'et_p1q_earningsEstimate: {et_p1q_earningsEstimate_r}\n'
+    #       f'total_revenue: {total_revenue_r}\n'
+    #       f'diluted_eps: {diluted_eps_r}\n'
+    #       f'profitMargins: {profitMargins_r}\n'
+    #       f'trailingAnnualDividendYield: {trailingAnnualDividendYield_r}\n'
+    #       f'repurchase_of_capital_stock_avg: {repurchase_of_capital_stock_avg_r}\n'
+    #       f'marketCap: {marketCap_r}\n'
+    #       f'beta: {beta_r}\n'
+    #       f'currentRatio: {currentRatio_r}\n'
+    #       f'debtToEquity: {debtToEquity_r}\n'
+    #       f'interest_coverage: {interest_coverage_r}\n')
 
     debug(f"Finaly Rank : {rank}\n", WARNING)
 
@@ -920,7 +921,7 @@ def get_ranking_data2(tick, ag=agents()):
                    'dividendDate': ce_dividendDate,
                    'earnings_earningsDate': ce_earnings_earningsDate}
 
-    debug(f"INFO DICT: {info_result} ")
+    debug(f"INFO DICT: {info_result} \n\n")
     debug(f"RESULT DICT: {rank_result} ")
     debug('%%% get_ranking_data complete')
     return info_result, rank_result
