@@ -533,6 +533,7 @@ def get_ranking_data2(tick, ag=agents()):
     err_info_result = {}
     err_rank_result = {"rank": None, "data": None}
     if ticker is None or len(ticker) == 0:
+        debug(f'Ticker is none, or len = 0 -- [{ticker}]')
         return err_info_result, err_rank_result
 
     ticker_data = None
@@ -540,10 +541,12 @@ def get_ranking_data2(tick, ag=agents()):
         ticker_data = Ticker(ticker)
     except Exception as e:
         debug(e, ERROR)
+        debug(f"Can't get ticker data -- [{ticker}]")
         return err_info_result, err_rank_result
 
     quoteType = None
     if ticker_data.quotes == 'No data found':
+        debug(f"No data found -- [{ticker}]")
         return err_info_result, err_rank_result
     else:
         quoteType = ticker_data.quotes[ticker].get('quoteType', None)
@@ -553,6 +556,7 @@ def get_ranking_data2(tick, ag=agents()):
                 quoteType == 'ECNQUOTE' or
                 quoteType == 'ETF' or
                 (quoteType == 'EQUITY' and fullExchangeName == 'Other OTC')):
+            debug(f"quoteType == {quoteType} -- [{ticker}]")
             return err_info_result, err_rank_result
 
     all_financial_data_q = ticker_data.all_financial_data('q')

@@ -215,9 +215,18 @@ async def dialog_flow_handler(event, client_):
             try:
                 dialogflow_answer = ai.detect_intent_texts(project_id, sender_id.user_id, user_message, 'ru-RU')
                 await client_.send_message(sender_id, dialogflow_answer)
-                await client_.send_message(-1001262211476, f'{sender_id.user_id} - {event.message.sender.username}\n'
-                                                           f'{event.text}\n'
-                                                           f'{dialogflow_answer}')
+                usr_data = None
+                if event.message.sender.username:
+                    usr_data = f'{event.message.sender.username}'
+                else:
+                    if event.message.sender.first_name:
+                        usr_data += f'{event.message.sender.first_name} '
+                    if event.message.sender.last_name:
+                        usr_data += f'{event.message.sender.last_name}'
+                await client_.send_message(-1001262211476,
+                                           f'{sender_id.user_id} - {usr_data}\n'
+                                           f'{event.text}\n'
+                                           f'{dialogflow_answer}')
                 # TODO Внимание! изменить айди чата при деплое
             except ValueError as e:
                 debug(e, 'Dialogflow response failure')
