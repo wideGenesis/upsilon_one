@@ -168,18 +168,18 @@ async def support(event):
 
 async def acion_info(event, action):
     msg = getattr(event, "message", None)
-    if msg:
-        sender = getattr(event.message, "sender", None)
-        if sender:
-            usr_data = None
-            if event.message.sender.username:
-                debug(f' -- {action} -- {event.message.sender.id} - {event.message.sender.username}')
-            else:
-                if event.message.sender.first_name:
-                    usr_data += f'{event.message.sender.first_name} '
-                if event.message.sender.last_name:
-                    usr_data += f'{event.message.sender.last_name}'
-                debug(f' -- {action} -- {event.message.sender.id} - ( {usr_data} )')
+    sender = getattr(event.message, "sender", None) if msg else None
+    if sender:
+        usr_data = None
+        if event.message.sender.username:
+            debug(f' -- {action} -- {event.message.sender.id} - {event.message.sender.username}')
+        else:
+            if event.message.sender.first_name:
+                usr_data += f'{event.message.sender.first_name} '
+            if event.message.sender.last_name:
+                usr_data += f'{event.message.sender.last_name}'
+            debug(f' -- {action} -- {event.message.sender.id} - ( {usr_data} )')
+
 
 # ============================== Main  =============================
 # Стартуем вебсервер для прослушки приходящих событий об успешных платежах
