@@ -78,7 +78,11 @@ keyboard_0 = [
     ],
     [
         Button.inline('\U0001F4F0   ' + 'Лента новостей', b'a8')
+    ],
+    [
+        Button.inline('\U0001F64F  ' + 'Donate', b'donate')
     ]
+
 ]
 
 keyboard_0_back = [
@@ -389,6 +393,29 @@ keyboard_restart_poll = [
         Button.inline('\U0001F6A9   ' + 'Определеить свой профиль риска', b'risk_profile_restart')
     ]
 ]
+
+# ============================== Кнопки донатов =============================
+keyboard_donate = [
+    [
+        Button.inline('\U0001F949   ' + '1$', b'donate1')
+    ],
+    [
+        Button.inline('\U0001F948   ' + '5$', b'donate5')
+    ],
+    [
+        Button.inline('\U0001F947	   ' + '10$', b'donate10')
+    ],
+    [
+        Button.inline('\U0001F3C5	   ' + '50$', b'donate50')
+    ],
+    [
+        Button.inline('\U0001F451   ' + '100$', b'donate100')
+    ],
+    [
+        Button.inline('\U0001F519  ' + 'Назад', b'main')
+    ]
+]
+
 
 # ============================== Кнопки подписок =============================
 keyboard_core_subscriptions = [

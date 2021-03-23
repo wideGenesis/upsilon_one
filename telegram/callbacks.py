@@ -76,6 +76,14 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
             msg = await client.send_message(event.input_sender, 'Лента новостей', buttons=buttons.keyboard_a8)
             await shared.save_old_message(sender_id, msg)
 
+    elif event.data == b'donate':
+        await event.edit()
+        if old_msg_id is not None:
+            await client.edit_message(event.input_sender, old_msg_id, 'Donate', buttons=buttons.keyboard_donate)
+        else:
+            msg = await client.send_message(event.input_sender, 'Donate', buttons=buttons.keyboard_donate)
+            await shared.save_old_message(sender_id, msg)
+
     elif event.data == b'main':
         await event.edit()
         if old_msg_id is not None:
