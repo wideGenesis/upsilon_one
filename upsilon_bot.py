@@ -127,10 +127,7 @@ async def callback(event):
 
 @client.on(events.Raw)
 async def handler(update):
-    try:
-        await callbacks.polls_handler(update, client)
-    except:
-        return
+    await callbacks.polls_handler(update, client)
 
 
 # ============================== Instructions ===============================

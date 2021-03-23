@@ -1117,7 +1117,9 @@ async def send_next_profiler_question(client, user_id, curr_num):
 
 
 async def polls_handler(update, client):
-    poll_id = update.poll_id
+    poll_id = getattr(update, "poll_id", None)
+    if not poll_id:
+        return
     user_id, qnumber = get_userid_by_pollid(poll_id)
     if user_id is not None:
         answer_res = None

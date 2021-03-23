@@ -269,8 +269,9 @@ async def quotes_to_handler(event, client_, limit=20):
     await client_.edit_message(message2, msg2)
     await client_.edit_message(message3, '__Оценка Ипсилона:__ ' + '\n' + msg3 + '\n \n ' +
                                '\U00002757 Как использовать скоринг? - \n /instruction28')
-    await client_.send_file(event.input_sender, img_path)
-    os.remove(img_path)
+    if os.path.exists(img_path):
+        await client_.send_file(event.input_sender, img_path)
+        os.remove(img_path)
 
 
 async def news_to_handler(event, client_, limit=20):
