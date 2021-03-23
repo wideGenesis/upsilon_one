@@ -84,6 +84,29 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
             msg = await client.send_message(event.input_sender, 'Donate', buttons=buttons.keyboard_donate)
             await shared.save_old_message(sender_id, msg)
 
+    elif event.data == b'donate1':
+        await make_donate(event, client, 1.0)
+
+    elif event.data == b'donate5':
+        await make_donate(event, client, 5.0)
+
+    elif event.data == b'donate10':
+        await make_donate(event, client, 10.0)
+
+    elif event.data == b'donate50':
+        await make_donate(event, client, 50.0)
+
+    elif event.data == b'donate100':
+        await make_donate(event, client, 100.0)
+
+    elif event.data == b'donate_back':
+        await event.edit()
+        if old_msg_id is not None:
+            await client.edit_message(event.input_sender, old_msg_id, 'Donate', buttons=buttons.keyboard_donate)
+        else:
+            msg = await client.send_message(event.input_sender, 'Donate', buttons=buttons.keyboard_donate)
+            await shared.save_old_message(sender_id, msg)
+
     elif event.data == b'main':
         await event.edit()
         if old_msg_id is not None:
@@ -951,6 +974,7 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
             delta = time.time() - PAYMENT_AGGREGATOR_TIMER
             if delta >= 10:
                 aggregator_status = PAYMENT_AGGREGATOR.get_status()
+                PAYMENT_AGGREGATOR_TIMER = time.time()
             else:
                 time.sleep(10 - delta)
                 aggregator_status = PAYMENT_AGGREGATOR.get_status()
@@ -997,7 +1021,7 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
             await event.edit()
             msg_id = utils.get_message_id(paymsg)
             order_type = 'subscription'
-            shared.ORDER_MAP[order_id] = (sender_id, msg_id)
+            shared.ORDER_MAP[order_id] = (sender_id, msg_id, order_type)
             dt = datetime.now()
             dt_int = shared.datetime2int(dt)
             await sql.insert_into_payment_message(order_id, sender_id, msg_id, dt_int, engine)
@@ -1193,3 +1217,76 @@ async def my_strategies_dynamic_menu(event, client, sender_id, old_msg_id):
             msg = await client.send_message(event.input_sender,
                                             'Твои портфели', buttons=buttons.risk_profile6)
         await shared.save_old_message(sender_id, msg)
+
+
+async def make_donate(event, client_, summ):
+    if summ is None or summ <= 0.0:
+        debug(f'Упс. Нажали донат {summ}. Но что-топошло не так')
+        return
+
+    await event.edit()
+    sender_id = event.original_update.user_id
+    old_msg_id = await shared.get_old_msg_id(sender_id)
+
+    global PAYMENT_AGGREGATOR
+    if PAYMENT_AGGREGATOR is None:
+        PAYMENT_AGGREGATOR = PaymentAgregator()
+        PAYMENT_AGGREGATOR.creator('Free Kassa')
+    aggregator_status = None
+    global PAYMENT_AGGREGATOR_TIMER
+    if PAYMENT_AGGREGATOR_TIMER is not None:
+        delta = time.time() - PAYMENT_AGGREGATOR_TIMER
+        if delta > 10:
+            aggregator_status = PAYMENT_AGGREGATOR.get_status()
+            PAYMENT_AGGREGATOR_TIMER = time.time()
+        else:
+            if old_msg_id is not None:
+                await client_.edit_message(event.input_sender, old_msg_id,
+                                           f'Много платежных запросов. Ожидаю 10 сек.. ')
+            else:
+                paymsg = await client_.edit_message(event.input_sender, old_msg_id,
+                                                    f'Много платежных запросов. Ожидаю 10 сек.. ')
+                await shared.save_old_message(sender_id, paymsg)
+            old_msg_id = await shared.get_old_msg_id(sender_id)
+            for i in range(9, 0, -1):
+                time.sleep(1)
+                await client_.edit_message(event.input_sender, old_msg_id,
+                                           f'Много платежных запросов. Ожидаю {i} сек.. ')
+            aggregator_status = PAYMENT_AGGREGATOR.get_status()
+    else:
+        PAYMENT_AGGREGATOR_TIMER = time.time()
+        aggregator_status = PAYMENT_AGGREGATOR.get_status()
+    debug(aggregator_status)
+    if aggregator_status == 'error':
+        debug(f"Error description: {PAYMENT_AGGREGATOR.get_last_error()}")
+        await client_.send_message(event.input_sender, 'Упс. Что-то пошло не так.')
+        await event.edit()
+    else:
+        order_id = str(uuid.uuid4()).replace('-', '')
+
+        debug(f"User_id={sender_id} -- OrderId:{order_id} -- Summa: {summ}")
+        payment_link = PAYMENT_AGGREGATOR.get_payment_link(order_id, str(summ))
+        debug(f'payment_link={payment_link}')
+        kbd_payment_button = buttons.generate_payment_button(f'Оплатить ( ${summ} )', payment_link)
+
+        msg_id = None
+        if old_msg_id is not None:
+            msg_id = old_msg_id
+            await client_.edit_message(event.input_sender, old_msg_id,
+                                       f'Для оплаты нажми кнопку Оплатить\n '
+                                       f'(Инструкция по оплате [тут](https://telegra.ph/Rrrtt-10-13)! )',
+                                       link_preview=True,
+                                       buttons=kbd_payment_button)
+        else:
+            paymsg = await client_.send_message(event.input_sender,
+                                                f'Для оплаты нажми кнопку Оплатить\n '
+                                                f'(Инструкция по оплате [тут](https://telegra.ph/Rrrtt-10-13)! )',
+                                                link_preview=True,
+                                                buttons=kbd_payment_button)
+            await shared.save_old_message(sender_id, paymsg)
+            msg_id = utils.get_message_id(paymsg)
+
+        order_type = 'donate'
+        shared.ORDER_MAP[order_id] = (sender_id, msg_id, order_type)
+        dt_int = shared.datetime2int(datetime.datetime.now())
+        await sql.insert_into_payment_message(order_id, sender_id, msg_id, dt_int, engine)
