@@ -1336,7 +1336,7 @@ def get_ranking_data3(tick, ag=agents()):
     if long_term_debt_ttm1 is not None and long_term_debt_ttm1 != 0:
         bg4 = (total_non_current_assets_ttm1 / long_term_debt_ttm1)
 
-    bagger_separator = (cash_dividends_paid_ttm1 is not None and cash_dividends_paid_ttm1 < 0) \
+    bagger_separator = (cash_dividends_paid_ttm1 is not None and cash_dividends_paid_ttm1 == 0) \
                        or (share_issued_ttm1 - share_issued_ttm0) > 0 \
                        and net_liquidity > 2 \
                        and bg4 > 1
