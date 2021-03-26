@@ -998,8 +998,8 @@ def get_ranking_data3(tick, ag=agents()):
 
     valuation = None
     if not isinstance(ticker_data.valuation_measures, str):
-        valuation = ticker_data.valuation_measures.loc[ticker_data.valuation_measures["periodType"] == "3M",
-                                                       ["asOfDate", "MarketCap", "EnterpriseValue"]]
+        valuation = ticker_data.valuation_measures.loc[ticker_data.valuation_measures["periodType"] == "3M"]
+
     earnings_trend_data = ticker_data.earnings_trend[ticker]
 
     debug('--- Ticker Info ---')
@@ -1176,20 +1176,26 @@ def get_ranking_data3(tick, ag=agents()):
     debug(
         f'total_non_current_assets_ttm1={total_non_current_assets_ttm1}   total_non_current_assets_ttm0={total_non_current_assets_ttm0}')
 
-    enterprise_value_ttm1 = None
-    enterprise_value_ttm0 = None
-    enterprise_value = valuation.get('EnterpriseValue', None)
-    if enterprise_value is not None:
-        enterprise_value_ttm1 = sum(enterprise_value[1:])
-        enterprise_value_ttm0 = sum(enterprise_value[:4])
-    debug(f'enterprise_value_ttm1={enterprise_value_ttm1}   enterprise_value_ttm0={enterprise_value_ttm0}')
-
     market_cap_ttm1 = None
     market_cap_ttm0 = None
     market_cap = valuation.get('MarketCap', None)
     if market_cap is not None:
         market_cap_ttm1 = sum(market_cap[1:])
         market_cap_ttm0 = sum(market_cap[:4])
+
+    enterprise_value_ttm1 = None
+    enterprise_value_ttm0 = None
+    enterprise_value = valuation.get('EnterpriseValue', None)
+    if enterprise_value is not None:
+        enterprise_value_ttm1 = sum(enterprise_value[1:])
+        enterprise_value_ttm0 = sum(enterprise_value[:4])
+    else:
+        if market_cap_ttm1 is not None:
+            enterprise_value_ttm1 = market_cap_ttm1
+        if market_cap_ttm0 is not None:
+            enterprise_value_ttm0 = market_cap_ttm0
+
+    debug(f'enterprise_value_ttm1={enterprise_value_ttm1}   enterprise_value_ttm0={enterprise_value_ttm0}')
 
     earnings_estimate_avg1 = None
     earnings_estimate_avg2 = None
