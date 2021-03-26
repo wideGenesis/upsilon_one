@@ -20,6 +20,20 @@ from quotes.stock_quotes_news import StockStat
 
 # ============================== Main  =============================
 def main():
+
+    # x, y = get_ranking_data2("DOCN")
+    # debug(x)
+    # debug(y)
+    # exit()
+
+    while True:
+        ticker = input("\n\n\nInput ticker:")
+        if ticker == "quit":
+            break
+        x = get_ranking_data3(ticker)
+        debug(x)
+    exit()
+
     get_tw_charts(driver=chrome_init())
     exit()
     # end_date = date.today()
