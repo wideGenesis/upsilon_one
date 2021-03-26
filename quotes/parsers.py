@@ -1234,7 +1234,7 @@ def get_ranking_data3(tick, ag=agents()):
         revenue_estimate_ttm2 += sum(total_revenue[3:])
     debug(f'revenue_estimate_ttm1={revenue_estimate_ttm1}   revenue_estimate_ttm2={revenue_estimate_ttm2}')
 
-    debug(f'----------- Расчетные величины -----------')
+    debug(f'\n\n----------- Расчетные величины -----------\n')
     # -------------- Далее расчеты для скоринга --------------
     # Net Operating Profit After Tax = NOPAT = EBIT*(1- (Tax Provision/Pretax Income))
     nopat_ttm_1 = ebit_ttm1 * (1 - (tax_provision_ttm1 / pretax_income_ttm1))
@@ -1245,38 +1245,38 @@ def get_ranking_data3(tick, ag=agents()):
     # Рентабельность всех активов через NOPAT ---  NOPAT/Total Assets
     profitability = nopat_ttm_1 / total_assets_ttm1
     # debug(f'profitability = nopat_ttm_1 / total_assets_ttm1')
-    debug(f'profitability={profitability} ')
+    debug(f'profitability > 0 (NOPAT/TOTAL ASSETS)={profitability} ')
 
     # Дельта рентабельности всех активов через Free Cash Flow --- D_(FCF/Total Assets)
     delta_profitability = (fcf_ttm1 / total_assets_ttm1) - (fcf_ttm0 / total_assets_ttm0)
     # debug(f'delta_profitability = (fcf_ttm1 / total_assets_ttm1) - (fcf_ttm0 / total_assets_ttm0)')
-    debug(f'delta_profitability={delta_profitability} ')
+    debug(f'delta_profitability > 0 ={delta_profitability} ')
 
     # ROIC – рентабельность инвестированного капитала --- NOPAT/Invested Capital
     roic = 0
     if invested_capital_ttm1 is not None and invested_capital_ttm1 != 0:
         roic = (nopat_ttm_1 / invested_capital_ttm1)
     # debug(f'roic = (nopat_ttm_1 / invested_capital_ttm1)')
-    debug(f'roic={roic} ')
+    debug(f'roic > 0 ={roic} ')
 
     # Дельта Shareholder’s Equity без учета трежари акций --- D_(Retained Earnings+Additional Paid On Capital)
     delta_shareholders_equity = (retained_earnings_ttm1 + additional_paid_in_capital_ttm1) - \
                                 (retained_earnings_ttm0 + additional_paid_in_capital_ttm0)
     # debug(f'delta_shareholders_equity = (retained_earnings_ttm1 + additional_paid_in_capital_ttm1) - \
     #                             (retained_earnings_ttm0 + additional_paid_in_capital_ttm0)')
-    debug(f'delta_shareholders_equity={delta_shareholders_equity} ')
+    debug(f'delta_shareholders_equity > 0 ={delta_shareholders_equity} ')
 
     # Margin --- D_(NOPAT/Total Operating Revenue)
     margin = (nopat_ttm_1 / operating_revenue_ttm1) - (nopat_ttm_0 / operating_revenue_ttm0)
     # debug(f'margin = (nopat_ttm_1 / operating_revenue_ttm1) - (nopat_ttm_0 / operating_revenue_ttm0)')
-    debug(f'margin={margin} ')
+    debug(f'margin > 0 ={margin} ')
 
     # Чистая ликвидность --- Cash and equivalents / current liabilities
     net_liquidity = 0
     if current_liabilities_ttm1 is not None and current_liabilities_ttm1 != 0:
         net_liquidity = cash_and_cash_equivalents_ttm1 / current_liabilities_ttm1
     # debug(f'net_liquidity = cash_and_cash_equivalents_ttm1 / current_liabilities_ttm1')
-    debug(f'net_liquidity={net_liquidity} ')
+    debug(f'net_liquidity > 1VG / > 2Bagger ={net_liquidity} ')
 
     # Улучшение чистой ликвидности --- D_(Cash and equivalents / current liabilities)
     minuend = 0
@@ -1291,19 +1291,19 @@ def get_ranking_data3(tick, ag=agents()):
         improving_net_liquidity = 0
     # debug(f'improving_net_liquidity = (cash_and_cash_equivalents_ttm1 / current_liabilities_ttm1) - \
     #                           (cash_and_cash_equivalents_ttm0 / current_liabilities_ttm0)')
-    debug(f'improving_net_liquidity={improving_net_liquidity} ')
+    debug(f'improving_net_liquidity > 0 ={improving_net_liquidity} ')
 
     # Уменьшение дебиторской задолженности --- D_(Receivables + Inventory)
     decrease_in_receivables = (receivables_ttm1 + inventory_ttm1) - (receivables_ttm0 + inventory_ttm0)
     # debug(f'decrease_in_receivables = (receivables_ttm1 + inventory_ttm1) - (receivables_ttm0 + inventory_ttm0)')
-    debug(f'decrease_in_receivables={decrease_in_receivables} ')
+    debug(f'decrease_in_receivables < 0 ={decrease_in_receivables} ')
 
     # Плечо – отношение необоротных активов к длинным долгам  --- Non Current Assets/Long Debt
     leverage1 = 0
     if long_term_debt_ttm1 is not None and long_term_debt_ttm1 != 0:
         leverage1 = total_non_current_assets_ttm1 / long_term_debt_ttm1
     # debug(f'leverage = total_non_current_assets_ttm1 / long_term_debt_ttm1')
-    debug(f'shoulder={leverage1} ')
+    debug(f'leverage < 1 VG / > 1 Bagger ={leverage1} ')
 
     # Плечо – Дельта отношение  ---  D_(Non Current Assets/Long Debt)
     leverage0 = 0
@@ -1311,16 +1311,16 @@ def get_ranking_data3(tick, ag=agents()):
         leverage0 = total_non_current_assets_ttm0 / long_term_debt_ttm0
     delta_leverage = leverage1 - leverage0
     # debug(f'delta_leverage = leverage - (total_non_current_assets_ttm0 / long_term_debt_ttm0)')
-    debug(f'delta_leverage={delta_leverage} ')
+    debug(f'delta_leverage > 0 ={delta_leverage} ')
 
     # Interest Coverage Оплата процентов  ---  EBIT/Interest Expenses
     interest_coverage = 0
     if interest_expense_ttm1 is not None and interest_expense_ttm1 != 0:
         interest_coverage = ebit_ttm1 / interest_expense_ttm1
     # debug(f'interest_coverage = ebit_ttm1 / interest_expense_ttm1')
-    debug(f'interest_coverage={interest_coverage} ')
+    debug(f'interest_coverage > 21 ={interest_coverage} ')
 
-    debug(f'----------- Сепараторы -----------')
+    debug(f'\n\n----------- Сепараторы -----------\n')
 
     value_separator = (enterprise_value_ttm1 / fcf_ttm1 * enterprise_value_ttm1 / total_assets_ttm1)
     if value_separator < 25:
