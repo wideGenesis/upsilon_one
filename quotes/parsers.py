@@ -1388,7 +1388,7 @@ def get_ranking_data3(tick, ag=agents()):
         debug(f'total_assets_ttm1={total_assets_ttm1}')
         value_separator = (market_cap_ttm1 / fcf_ttm1 * market_cap_ttm1 / total_assets_ttm1)
         debug(f"value_separator={value_separator}")
-    if value_separator < 25:
+    if 25 > value_separator > 0:
         # debug(f'Formula: (enterprise_value_ttm1 / fcf_ttm1 * enterprise_value_ttm1 / total_assets_ttm1)')
         rank_result["rank_type"] = "Value"
         return rank_result
