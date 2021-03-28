@@ -1394,19 +1394,18 @@ def get_ranking_data3(tick, ag=agents()):
         return rank_result
 
     bg4 = 0
-    if long_term_debt_ttm1 is not None and long_term_debt_ttm1 != 0:
-        bg4 = (total_non_current_assets_ttm1 / long_term_debt_ttm1)
+    # if long_term_debt_ttm1 is not None and long_term_debt_ttm1 != 0:
+    #     bg4 = (total_non_current_assets_ttm1 / long_term_debt_ttm1)
 
     bagger_separator = (cash_dividends_paid_ttm1 is not None and cash_dividends_paid_ttm1 == 0) \
                        or (share_issued_ttm1 - share_issued_ttm0) > 0 \
                        and net_liquidity > 2 \
-                       and bg4 > 1
+                       and leverage1 > 1
     debug(f'>>> Bagger <<<\n')
-    debug(f'cash_dividends_paid_ttm1={cash_dividends_paid_ttm1}')
-    debug(f'(share_issued_ttm1 - share_issued_ttm0)={(share_issued_ttm1 - share_issued_ttm0)}')
+    debug(f'cash_dividends_paid_ttm1 = {cash_dividends_paid_ttm1}')
+    debug(f'(share_issued_ttm1 - share_issued_ttm0) = {(share_issued_ttm1 - share_issued_ttm0)}')
     debug(f'(net_liquidity)={net_liquidity}')
-    debug(f'(total_non_current_assets_ttm1 / long_term_debt_ttm1)='
-          f'{(total_non_current_assets_ttm1 / long_term_debt_ttm1)}')
+    debug(f'(leveraged1) = {leverage1}')
     if bagger_separator:
         rank_result["rank_type"] = "Bagger"
     else:
