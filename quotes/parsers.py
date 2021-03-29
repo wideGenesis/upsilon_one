@@ -1424,11 +1424,20 @@ def get_ranking_data3(tick, ag=agents()):
         if value_separator <= 0:
             if bagger_separator >= 3:
                 is_bagger = True
-                rank_result["rank_type"] = "Bagger"
+                rank_result["rank_type"] = "Ponzi"
             else:
                 is_nontype = True
                 rank_result["rank_type"] = "NonType"
-
+        if pd.isna(value_separator):
+            if growth_separator >= 3:
+                is_growth = True
+                rank_result["rank_type"] = "Growth"
+            elif bagger_separator >= 3:
+                is_bagger = True
+                rank_result["rank_type"] = "Ponzi"
+            else:
+                is_nontype = True
+                rank_result["rank_type"] = "NonType"
     debug(f'\n\n----------- Rank -----------\n')
     rank = 0
     if is_fin:
@@ -1480,7 +1489,7 @@ def get_ranking_data3(tick, ag=agents()):
             rank += 1
         if eps_estimate_ttm2 > 0:
             rank += 1
-        debug(f'Bagger. rank = {rank}\n', WARNING)
+        debug(f'Ponzi. rank = {rank}\n', WARNING)
     elif is_growth or is_value or is_nontype:
         if profitability > 0:
             rank += 1
