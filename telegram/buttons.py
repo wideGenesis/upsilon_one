@@ -591,6 +591,42 @@ risk_profile6 = [
     ]
 ]
 
+risk_profile_owner = [
+    [
+        Button.inline('\U0001F4BC  ' + 'Парковочный', b'strategy_parking')
+    ],
+    [
+        Button.inline('\U0001F4BC  ' + 'Всепогодный', b'strategy_allweather')
+    ],
+    [
+        Button.inline('\U0001F4BC  ' + 'Сбалансированный', b'strategy_balanced')
+    ],
+    [
+        Button.inline('\U0001F4BC  ' + 'Агрессивный', b'strategy_aggressive')
+    ],
+    [
+        Button.inline('\U0001F4BC  ' + 'Плечевой', b'strategy_leveraged')
+    ],
+    [
+        Button.inline('\U0001F4BC  ' + 'Yolo', b'strategy_yolo')
+    ],
+    [
+        Button.inline('\U0001F4BC  ' + 'Elastic', b'strategy_elastic')
+    ],
+    [
+        Button.inline('\U0001F4BC  ' + 'All Seasons S', b'strategy_allseasons_s')
+    ],
+    [
+        Button.inline('\U0001F4BC  ' + 'All Seasons M', b'strategy_allseasons_m')
+    ],
+    [
+        Button.inline('\U0001F4BC  ' + 'All Seasons L', b'strategy_allseasons_l')
+    ],
+    [
+        Button.inline('\U0001F519  ' + 'Назад', b'portfolio_back')
+    ]
+]
+
 my_strategies_back = [
     [
         Button.inline('\U0001F519  ' + 'Назад', b'strategies_back')

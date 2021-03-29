@@ -1187,26 +1187,17 @@ def get_ranking_data3(tick, ag=agents()):
     debug(
         f'total_non_current_assets_ttm1={total_non_current_assets_ttm1}   total_non_current_assets_ttm0={total_non_current_assets_ttm0}')
 
-    market_cap_ttm1 = None
-    market_cap_ttm0 = None
+    market_cap = None
     market_cap = valuation.get('MarketCap', None)
     if market_cap is not None:
-        market_cap_ttm1 = sum(market_cap[1:])
-        market_cap_ttm0 = sum(market_cap[:4])
+        market_cap = market_cap[-1]
 
-    enterprise_value_ttm1 = None
-    enterprise_value_ttm0 = None
+    enterprise_value = None
     enterprise_value = valuation.get('EnterpriseValue', None)
     if enterprise_value is not None:
-        enterprise_value_ttm1 = sum(enterprise_value[1:])
-        enterprise_value_ttm0 = sum(enterprise_value[:4])
-    # else:
-    #     if market_cap_ttm1 is not None:
-    #         enterprise_value_ttm1 = market_cap_ttm1
-    #     if market_cap_ttm0 is not None:
-    #         enterprise_value_ttm0 = market_cap_ttm0
+        enterprise_value = enterprise_value[-1]
 
-    debug(f'enterprise_value_ttm1={enterprise_value_ttm1}   enterprise_value_ttm0={enterprise_value_ttm0}')
+    debug(f'enterprise_value_ttm1={enterprise_value}')
 
     earnings_estimate_avg1 = None
     earnings_estimate_avg2 = None
@@ -1376,46 +1367,67 @@ def get_ranking_data3(tick, ag=agents()):
     is_value = False
     is_bagger = False
     is_growth = False
+    is_nontype = False
     is_fin = False
     if current_liabilities is None and ebit is None:
         is_fin = True
     debug(f'\n\n----------- Сепараторы -----------\n')
-    debug(f'>>> Value <<<\n')
+    # debug(f'>>> Value <<<\n')
     value_separator = None
     if current_liabilities is not None and ebit is not None:
-        debug(f'enterprise_value_ttm1 = {enterprise_value_ttm1}')
-        debug(f'fcf_ttm1 = {fcf_ttm1}')
-        debug(f'total_assets_ttm1 = {total_assets_ttm1}')
-        value_separator = (enterprise_value_ttm1 / fcf_ttm1 * enterprise_value_ttm1 / total_assets_ttm1)
+        # debug(f'enterprise_value = {enterprise_value}')
+        # debug(f'fcf_ttm1 = {fcf_ttm1}')
+        # debug(f'total_assets_ttm1 = {total_assets_ttm1}')
+        value_separator = (enterprise_value / fcf_ttm1 * enterprise_value / total_assets_ttm1)
         debug(f"value_separator = {value_separator}")
     else:
-        debug(f'market_cap_ttm1={market_cap_ttm1}')
-        debug(f'fcf_ttm1={fcf_ttm1}')
-        debug(f'total_assets_ttm1={total_assets_ttm1}')
-        value_separator = (market_cap_ttm1 / fcf_ttm1 * market_cap_ttm1 / total_assets_ttm1)
+        # debug(f'market_cap={market_cap}')
+        # debug(f'fcf_ttm1={fcf_ttm1}')
+        # debug(f'total_assets_ttm1={total_assets_ttm1}')
+        value_separator = (market_cap / fcf_ttm1 * market_cap / total_assets_ttm1)
         debug(f"value_separator={value_separator}")
     if 25 > value_separator > 0:
-        # debug(f'Formula: (enterprise_value_ttm1 / fcf_ttm1 * enterprise_value_ttm1 / total_assets_ttm1)')
+        # debug(f'Formula: (enterprise_value / fcf_ttm1 * enterprise_value / total_assets_ttm1)')
         rank_result["rank_type"] = "Value"
         is_value = True
 
-    bagger_separator = False
+    bagger_separator = 0
+    growth_separator = 0
     if not is_value:
-        bagger_separator = (cash_dividends_paid_ttm1 is not None and cash_dividends_paid_ttm1 == 0) \
-                           or (share_issued_ttm1 - share_issued_ttm0) > 0 \
-                           and net_liquidity > 2 \
-                           and leverage1 > 1
-        debug(f'>>> Bagger <<<\n')
-        debug(f'cash_dividends_paid_ttm1 = {cash_dividends_paid_ttm1}')
-        debug(f'(share_issued_ttm1 - share_issued_ttm0) = {(share_issued_ttm1 - share_issued_ttm0)}')
-        debug(f'(net_liquidity)={net_liquidity}')
-        debug(f'(leveraged1) = {leverage1}')
-        if bagger_separator:
-            is_bagger = True
-            rank_result["rank_type"] = "Bagger"
-        else:
-            is_growth = True
-            rank_result["rank_type"] = "Growth"
+        if revenue_estimate_ttm1 > 0:
+            growth_separator += 1
+        if revenue_estimate_ttm2 > 0:
+            growth_separator += 1
+        if eps_estimate_ttm1 > 0:
+            growth_separator += 1
+        if eps_estimate_ttm2 > 0:
+            growth_separator += 1
+
+        if cash_dividends_paid_ttm1 is not None and cash_dividends_paid_ttm1 == 0:
+            bagger_separator += 1
+        if (share_issued_ttm1 - share_issued_ttm0) > 0:
+            bagger_separator += 1
+        if net_liquidity > 2:
+            bagger_separator += 1
+        if leverage1 > 1:
+            bagger_separator += 1
+
+        debug(f'growth_separator = {growth_separator}')
+        debug(f'bagger_separator = {bagger_separator}')
+        if value_separator >= 25:
+            if growth_separator >= 3:
+                is_growth = True
+                rank_result["rank_type"] = "Growth"
+            else:
+                is_nontype = True
+                rank_result["rank_type"] = "NonType"
+        if value_separator <= 0:
+            if bagger_separator >= 3:
+                is_bagger = True
+                rank_result["rank_type"] = "Bagger"
+            else:
+                is_nontype = True
+                rank_result["rank_type"] = "NonType"
 
     debug(f'\n\n----------- Rank -----------\n')
     rank = 0
@@ -1445,7 +1457,7 @@ def get_ranking_data3(tick, ag=agents()):
         if value_separator < 25:
             rank += 1
         debug(f'Fin. rank = {rank}\n', WARNING)
-    elif bagger_separator:
+    elif is_bagger:
         if delta_shareholders_equity > 0:
             rank += 1
         if net_liquidity > 2:
@@ -1469,7 +1481,7 @@ def get_ranking_data3(tick, ag=agents()):
         if eps_estimate_ttm2 > 0:
             rank += 1
         debug(f'Bagger. rank = {rank}\n', WARNING)
-    elif is_growth or is_value:
+    elif is_growth or is_value or is_nontype:
         if profitability > 0:
             rank += 1
         if delta_profitability > 0:
@@ -1506,6 +1518,8 @@ def get_ranking_data3(tick, ag=agents()):
             debug(f'Value. rank = {rank}\n', WARNING)
         elif is_growth:
             debug(f'Growth. rank = {rank}\n', WARNING)
+        elif is_nontype:
+            debug(f'NonType. rank = {rank}\n', WARNING)
     return rank_result
 
 

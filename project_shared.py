@@ -147,7 +147,9 @@ if os.path.exists(conf_dir+'local.conf'):
     UPSILON = conf['TELEGRAM']['UPSILON_LOCAL']
 else:
     UPSILON = conf['TELEGRAM']['UPSILON']
-OWNER = conf['TELEGRAM']['OWNER']  # TODO Сделать пару владельцев для коммуникации
+OWNER = conf['TELEGRAM']['OWNER']
+OWNER1 = conf['TELEGRAM']['OWNER1']
+OWNERS = conf['OWNERS']
 SERVICE_CHAT = conf['TELEGRAM']['SERVICE_CHAT']
 
 DONATE_DATA_TABLE_NAME = conf['SQL_TABLE_NAMES']['DONATE_DATA_TABLE_NAME']
