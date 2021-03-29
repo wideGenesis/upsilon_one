@@ -1373,6 +1373,12 @@ def get_ranking_data3(tick, ag=agents()):
     # debug(f'interest_coverage = ebit_ttm1 / interest_expense_ttm1')
     debug(f'interest_coverage > 21 ={interest_coverage} ')
 
+    is_value = False
+    is_bagger = False
+    is_growth = False
+    is_fin = False
+    if current_liabilities is None and ebit is None:
+        is_fin = True
     debug(f'\n\n----------- Сепараторы -----------\n')
     debug(f'>>> Value <<<\n')
     value_separator = None
@@ -1391,26 +1397,115 @@ def get_ranking_data3(tick, ag=agents()):
     if 25 > value_separator > 0:
         # debug(f'Formula: (enterprise_value_ttm1 / fcf_ttm1 * enterprise_value_ttm1 / total_assets_ttm1)')
         rank_result["rank_type"] = "Value"
-        return rank_result
+        is_value = True
 
-    bg4 = 0
-    # if long_term_debt_ttm1 is not None and long_term_debt_ttm1 != 0:
-    #     bg4 = (total_non_current_assets_ttm1 / long_term_debt_ttm1)
+    bagger_separator = False
+    if not is_value:
+        bagger_separator = (cash_dividends_paid_ttm1 is not None and cash_dividends_paid_ttm1 == 0) \
+                           or (share_issued_ttm1 - share_issued_ttm0) > 0 \
+                           and net_liquidity > 2 \
+                           and leverage1 > 1
+        debug(f'>>> Bagger <<<\n')
+        debug(f'cash_dividends_paid_ttm1 = {cash_dividends_paid_ttm1}')
+        debug(f'(share_issued_ttm1 - share_issued_ttm0) = {(share_issued_ttm1 - share_issued_ttm0)}')
+        debug(f'(net_liquidity)={net_liquidity}')
+        debug(f'(leveraged1) = {leverage1}')
+        if bagger_separator:
+            is_bagger = True
+            rank_result["rank_type"] = "Bagger"
+        else:
+            is_growth = True
+            rank_result["rank_type"] = "Growth"
 
-    bagger_separator = (cash_dividends_paid_ttm1 is not None and cash_dividends_paid_ttm1 == 0) \
-                       or (share_issued_ttm1 - share_issued_ttm0) > 0 \
-                       and net_liquidity > 2 \
-                       and leverage1 > 1
-    debug(f'>>> Bagger <<<\n')
-    debug(f'cash_dividends_paid_ttm1 = {cash_dividends_paid_ttm1}')
-    debug(f'(share_issued_ttm1 - share_issued_ttm0) = {(share_issued_ttm1 - share_issued_ttm0)}')
-    debug(f'(net_liquidity)={net_liquidity}')
-    debug(f'(leveraged1) = {leverage1}')
-    if bagger_separator:
-        rank_result["rank_type"] = "Bagger"
-    else:
-        rank_result["rank_type"] = "Growth"
-
+    debug(f'\n\n----------- Rank -----------\n')
+    rank = 0
+    if is_fin:
+        if profitability > 0:
+            rank += 1
+        if delta_profitability > 0:
+            rank += 1
+        if roic > 0:
+            rank += 1
+        if delta_shareholders_equity > 0:
+            rank += 1
+        if margin > 0:
+            rank += 1
+        if improving_net_liquidity > 0:
+            rank += 1
+        if leverage0 > 0:
+            rank += 1
+        if revenue_estimate_ttm1 > 0:
+            rank += 1
+        if revenue_estimate_ttm2 > 0:
+            rank += 1
+        if eps_estimate_ttm1 > 0:
+            rank += 1
+        if eps_estimate_ttm2 > 0:
+            rank += 1
+        if value_separator < 25:
+            rank += 1
+        debug(f'Fin. rank = {rank}\n', WARNING)
+    elif bagger_separator:
+        if delta_shareholders_equity > 0:
+            rank += 1
+        if net_liquidity > 2:
+            rank += 1
+        if improving_net_liquidity > 0:
+            rank += 1
+        if decrease_in_receivables < 0:
+            rank += 1
+        if leverage1 > 1:
+            rank += 1
+        if leverage0 > 0:
+            rank += 1
+        if interest_coverage > 21:
+            rank += 1
+        if revenue_estimate_ttm1 > 0:
+            rank += 1
+        if revenue_estimate_ttm2 > 0:
+            rank += 1
+        if eps_estimate_ttm1 > 0:
+            rank += 1
+        if eps_estimate_ttm2 > 0:
+            rank += 1
+        debug(f'Bagger. rank = {rank}\n', WARNING)
+    elif is_growth or is_value:
+        if profitability > 0:
+            rank += 1
+        if delta_profitability > 0:
+            rank += 1
+        if roic > 0:
+            rank += 1
+        if delta_shareholders_equity > 0:
+            rank += 1
+        if margin > 0:
+            rank += 1
+        if net_liquidity > 1:
+            rank += 1
+        if improving_net_liquidity > 0:
+            rank += 1
+        if decrease_in_receivables < 0:
+            rank += 1
+        if leverage1 < 1:
+            rank += 1
+        if leverage0 > 0:
+            rank += 1
+        if interest_coverage > 21:
+            rank += 1
+        if revenue_estimate_ttm1 > 0:
+            rank += 1
+        if revenue_estimate_ttm2 > 0:
+            rank += 1
+        if eps_estimate_ttm1 > 0:
+            rank += 1
+        if eps_estimate_ttm2 > 0:
+            rank += 1
+        if is_value:
+            if 25 > value_separator > 0:
+                rank += 1
+            debug(f'Value. rank = {rank}\n', WARNING)
+        elif is_growth:
+            debug(f'Growth. rank = {rank}\n', WARNING)
     return rank_result
 
 
