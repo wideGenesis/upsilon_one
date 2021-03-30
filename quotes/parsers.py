@@ -1250,21 +1250,21 @@ def get_ranking_data3(tick, ag=agents()):
     debug(f'\n\n----------- Расчетные величины -----------\n')
     # -------------- Далее расчеты для скоринга --------------
     # Net Operating Profit After Tax = NOPAT = EBIT*(1- (Tax Provision/Pretax Income))
-    nopat_ttm_1 = None
-    nopat_ttm_0 = None
+    nopat_ttm1 = None
+    nopat_ttm0 = None
     if current_liabilities is not None and ebit is not None:
-        nopat_ttm_1 = ebit_ttm1 * (1 - (tax_provision_ttm1 / pretax_income_ttm1))
-        nopat_ttm_0 = ebit_ttm0 * (1 - (tax_provision_ttm0 / pretax_income_ttm0))
-        # debug(f'nopat_ttm_1 = ebit_ttm1 * (1 - (tax_provision_ttm1 / pretax_income_ttm1))')
-        debug(f'nopat_ttm_1={nopat_ttm_1}   nopat_ttm_0={nopat_ttm_0}')
+        nopat_ttm1 = ebit_ttm1 * (1 - (tax_provision_ttm1 / pretax_income_ttm1))
+        nopat_ttm0 = ebit_ttm0 * (1 - (tax_provision_ttm0 / pretax_income_ttm0))
+        # debug(f'nopat_ttm1 = ebit_ttm1 * (1 - (tax_provision_ttm1 / pretax_income_ttm1))')
+        debug(f'nopat_ttm1={nopat_ttm1}   nopat_ttm0={nopat_ttm0}')
 
     # Рентабельность всех активов через NOPAT ---  NOPAT/Total Assets
     profitability = None
     if current_liabilities is not None and ebit is not None:
-        profitability = nopat_ttm_1 / total_assets_lq1
+        profitability = nopat_ttm1 / total_assets_lq1
     else:
         profitability = net_income_ttm1 / total_assets_lq1
-    # debug(f'profitability = nopat_ttm_1 / total_assets_ttm1')
+    # debug(f'profitability = nopat_ttm1 / total_assets_ttm1')
     debug(f'profitability > 0 (NOPAT/TOTAL ASSETS)={profitability} ')
 
     # Дельта рентабельности всех активов через Free Cash Flow --- D_(FCF/Total Assets)
@@ -1276,11 +1276,11 @@ def get_ranking_data3(tick, ag=agents()):
     roic = 0
     if current_liabilities is not None and ebit is not None:
         if invested_capital_lq is not None and invested_capital_lq != 0:
-            roic = (nopat_ttm_1 / invested_capital_lq)
+            roic = (nopat_ttm1 / invested_capital_lq)
     else:
         if invested_capital_lq is not None and invested_capital_lq != 0:
             roic = (net_income_ttm1 / invested_capital_lq)
-    # debug(f'roic = (nopat_ttm_1 / invested_capital_ttm1)')
+    # debug(f'roic = (nopat_ttm1 / invested_capital_ttm1)')
     debug(f'roic > 0 ={roic} ')
 
     # Дельта Shareholder’s Equity без учета трежари акций --- D_(Retained Earnings+Additional Paid On Capital)
@@ -1292,10 +1292,10 @@ def get_ranking_data3(tick, ag=agents()):
 
     # Margin --- D_(NOPAT/Total Operating Revenue)
     if current_liabilities is not None and ebit is not None:
-        margin = (nopat_ttm_1 / operating_revenue_ttm1) - (nopat_ttm_0 / operating_revenue_ttm0)
+        margin = (nopat_ttm1 / operating_revenue_ttm1) - (nopat_ttm0 / operating_revenue_ttm0)
     else:
         margin = (fcf_ttm1 / operating_revenue_ttm1) - (fcf_ttm0 / operating_revenue_ttm0)
-    # debug(f'margin = (nopat_ttm_1 / operating_revenue_ttm1) - (nopat_ttm_0 / operating_revenue_ttm0)')
+    # debug(f'margin = (nopat_ttm1 / operating_revenue_ttm1) - (nopat_ttm0 / operating_revenue_ttm0)')
     debug(f'margin > 0 ={margin} ')
     # Total Assets                  *
     # Invested Capital              *
@@ -1387,72 +1387,162 @@ def get_ranking_data3(tick, ag=agents()):
     if current_liabilities is None and ebit is None:
         is_fin = True
     debug(f'\n\n----------- Сепараторы -----------\n')
-    # debug(f'>>> Value <<<\n')
     value_separator = None
-    if current_liabilities is not None and ebit is not None:
-        # debug(f'enterprise_value = {enterprise_value}')
-        # debug(f'fcf_ttm1 = {fcf_ttm1}')
-        # debug(f'total_assets_ttm1 = {total_assets_ttm1}')
-        value_separator = (enterprise_value / fcf_ttm1 * enterprise_value / total_assets_lq1)
-        debug(f"value_separator = {value_separator}")
-    else:
-        # debug(f'market_cap={market_cap}')
-        # debug(f'fcf_ttm1={fcf_ttm1}')
-        # debug(f'total_assets_ttm1={total_assets_ttm1}')
-        value_separator = (market_cap / fcf_ttm1 * market_cap / total_assets_lq1)
-        debug(f"value_separator={value_separator}")
-    if 25 > value_separator > 0:
-        # debug(f'Formula: (enterprise_value / fcf_ttm1 * enterprise_value / total_assets_ttm1)')
-        rank_result["rank_type"] = "Value"
-        is_value = True
-
     bagger_separator = 0
     growth_separator = 0
-    if not is_value:
-        if revenue_estimate_ttm1 > 0:
-            growth_separator += 1
-        if revenue_estimate_ttm2 > 0:
-            growth_separator += 1
-        if eps_estimate_ttm1 > 0:
-            growth_separator += 1
-        if eps_estimate_ttm2 > 0:
-            growth_separator += 1
+    if current_liabilities is not None and ebit is not None:
+        value_separator = (enterprise_value / fcf_ttm1 * enterprise_value / total_assets_lq1)
+    else:
+        value_separator = (market_cap / fcf_ttm1 * market_cap / total_assets_lq1)
 
-        if cash_dividends_paid_ttm1 is not None and cash_dividends_paid_ttm1 == 0:
-            bagger_separator += 1
-        if (share_issued_lq1 - share_issued_lq0) > 0:
-            bagger_separator += 1
-        if net_liquidity > 2:
-            bagger_separator += 1
-        if leverage1 > 1:
-            bagger_separator += 1
+    if revenue_estimate_ttm1 > 0:
+        growth_separator += 1
+    if revenue_estimate_ttm2 > 0:
+        growth_separator += 1
+    if eps_estimate_ttm1 > 0:
+        growth_separator += 1
+    if eps_estimate_ttm2 > 0:
+        growth_separator += 1
 
-        debug(f'growth_separator = {growth_separator}')
-        debug(f'bagger_separator = {bagger_separator}')
-        if value_separator >= 25:
+    if cash_dividends_paid_ttm1 is not None and cash_dividends_paid_ttm1 == 0:
+        bagger_separator += 1
+    if (share_issued_lq1 - share_issued_lq0) > 0:
+        bagger_separator += 1
+    if net_liquidity > 2:
+        bagger_separator += 1
+    if leverage1 > 1:
+        bagger_separator += 1
+
+    debug(f"value_separator = {value_separator}")
+    debug(f'growth_separator = {growth_separator}')
+    debug(f'bagger_separator = {bagger_separator}')
+
+    if nopat_ttm1 is None and fcf_ttm1 is None:
+        debug(f'nopat_ttm1 is None and fcf_ttm1 is None!!!!', ERROR)
+        rank_result["rank_type"] = "Фтопку"
+        return rank_result
+    if (nopat_ttm1 is not None and nopat_ttm1 <= 0) or (fcf_ttm1 is not None and fcf_ttm1 <= 0):
+        if bagger_separator >= 3:
+            is_bagger = True
+            rank_result["rank_type"] = "Bagger"
+        else:
+            is_nontype = True
+            rank_result["rank_type"] = "NonType"
+
+    elif (nopat_ttm1 is not None and nopat_ttm1 > 0) and (fcf_ttm1 is not None and fcf_ttm1 > 0):
+        if 25 > value_separator > 0:
+            rank_result["rank_type"] = "Value"
+            is_value = True
+        elif value_separator >= 25:
             if growth_separator >= 3:
                 is_growth = True
                 rank_result["rank_type"] = "Growth"
             else:
                 is_nontype = True
                 rank_result["rank_type"] = "NonType"
-        if value_separator <= 0:
-            if bagger_separator >= 3:
-                is_bagger = True
-                rank_result["rank_type"] = "Ponzi"
-            else:
-                is_nontype = True
-                rank_result["rank_type"] = "NonType"
-        if pd.isna(value_separator):
+        elif pd.isna(value_separator):
             if growth_separator >= 3:
                 is_growth = True
                 rank_result["rank_type"] = "Growth"
-            elif bagger_separator >= 3:
-                is_bagger = True
-                rank_result["rank_type"] = "Ponzi"
             else:
                 is_nontype = True
                 rank_result["rank_type"] = "NonType"
+    elif (nopat_ttm1 is None or pd.isna(nopat_ttm1)) and (fcf_ttm1 is not None and fcf_ttm1 > 0):
+        debug(f'NOPAT is None', WARNING)
+        if 25 > value_separator > 0:
+            rank_result["rank_type"] = "Value"
+            is_value = True
+        elif value_separator >= 25:
+            if growth_separator >= 3:
+                is_growth = True
+                rank_result["rank_type"] = "Growth"
+            else:
+                is_nontype = True
+                rank_result["rank_type"] = "NonType"
+        elif pd.isna(value_separator):
+            if growth_separator >= 3:
+                is_growth = True
+                rank_result["rank_type"] = "Growth"
+            else:
+                is_nontype = True
+                rank_result["rank_type"] = "NonType"
+    elif (nopat_ttm1 is not None and nopat_ttm1 > 0) and (fcf_ttm1 is None or pd.isna(fcf_ttm1)):
+        debug(f'fcf_ttm1 is None', WARNING)
+        if 25 > value_separator > 0:
+            rank_result["rank_type"] = "Value"
+            is_value = True
+        elif value_separator >= 25:
+            if growth_separator >= 3:
+                is_growth = True
+                rank_result["rank_type"] = "Growth"
+            else:
+                is_nontype = True
+                rank_result["rank_type"] = "NonType"
+        elif pd.isna(value_separator):
+            if growth_separator >= 3:
+                is_growth = True
+                rank_result["rank_type"] = "Growth"
+            else:
+                is_nontype = True
+                rank_result["rank_type"] = "NonType"
+
+    # if current_liabilities is not None and ebit is not None:
+    #     value_separator = (enterprise_value / fcf_ttm1 * enterprise_value / total_assets_lq1)
+    #     debug(f"value_separator = {value_separator}")
+    # else:
+    #     value_separator = (market_cap / fcf_ttm1 * market_cap / total_assets_lq1)
+    #     debug(f"value_separator={value_separator}")
+    # if 25 > value_separator > 0:
+    #     rank_result["rank_type"] = "Value"
+    #     is_value = True
+    #
+    # bagger_separator = 0
+    # growth_separator = 0
+    # if not is_value:
+    #     if revenue_estimate_ttm1 > 0:
+    #         growth_separator += 1
+    #     if revenue_estimate_ttm2 > 0:
+    #         growth_separator += 1
+    #     if eps_estimate_ttm1 > 0:
+    #         growth_separator += 1
+    #     if eps_estimate_ttm2 > 0:
+    #         growth_separator += 1
+    #
+    #     if cash_dividends_paid_ttm1 is not None and cash_dividends_paid_ttm1 == 0:
+    #         bagger_separator += 1
+    #     if (share_issued_lq1 - share_issued_lq0) > 0:
+    #         bagger_separator += 1
+    #     if net_liquidity > 2:
+    #         bagger_separator += 1
+    #     if leverage1 > 1:
+    #         bagger_separator += 1
+    #
+    #     debug(f'growth_separator = {growth_separator}')
+    #     debug(f'bagger_separator = {bagger_separator}')
+    #     if value_separator >= 25:
+    #         if growth_separator >= 3:
+    #             is_growth = True
+    #             rank_result["rank_type"] = "Growth"
+    #         else:
+    #             is_nontype = True
+    #             rank_result["rank_type"] = "NonType"
+    #     if value_separator <= 0:
+    #         if bagger_separator >= 3:
+    #             is_bagger = True
+    #             rank_result["rank_type"] = "Ponzi"
+    #         else:
+    #             is_nontype = True
+    #             rank_result["rank_type"] = "NonType"
+    #     if pd.isna(value_separator):
+    #         if growth_separator >= 3:
+    #             is_growth = True
+    #             rank_result["rank_type"] = "Growth"
+    #         elif bagger_separator >= 3:
+    #             is_bagger = True
+    #             rank_result["rank_type"] = "Ponzi"
+    #         else:
+    #             is_nontype = True
+    #             rank_result["rank_type"] = "NonType"
     debug(f'\n\n----------- Rank -----------\n')
     rank = 0
     if is_fin:
