@@ -115,6 +115,8 @@ async def news_to(event):
 # ============================== Callbacks =======================
 @client.on(events.CallbackQuery)
 async def callback(event):
+    action = f'Press button {event.data}'
+    await acion_info(event, action)
     await callbacks.callback_handler(event, client, img_path=IMAGES_OUT_PATH, yahoo_path=YAHOO_PATH,
                                      engine=engine)
 
@@ -163,16 +165,18 @@ async def support(event):
 async def acion_info(event, action):
     msg = getattr(event, "message", None)
     sender = getattr(event.message, "sender", None) if msg else None
+    if msg is None and sender is None:
+        sender = getattr(event, "sender", None)
     if sender:
         usr_data = None
-        if event.message.sender.username:
-            debug(f' -- {action} -- {event.message.sender.id} - {event.message.sender.username}')
+        if sender.username:
+            debug(f' -- {action} -- {sender.id} - {sender.username}')
         else:
             if event.message.sender.first_name:
-                usr_data += f'{event.message.sender.first_name} '
+                usr_data += f'{sender.first_name} '
             if event.message.sender.last_name:
-                usr_data += f'{event.message.sender.last_name}'
-            debug(f' -- {action} -- {event.message.sender.id} - ( {usr_data} )')
+                usr_data += f'{sender.last_name}'
+            debug(f' -- {action} -- {sender.id} - ( {usr_data} )')
 
 
 # ============================== Main  =============================
