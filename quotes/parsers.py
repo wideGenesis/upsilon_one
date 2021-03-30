@@ -1004,6 +1004,30 @@ def get_ranking_data3(tick, ag=agents()):
 
     earnings_trend_data = ticker_data.earnings_trend[ticker]
 
+    # % % % % % % % % % % % % % % % % % % %
+    # Description  Block
+    # % % % % % % % % % % % % % % % % % % %
+
+    longName = ticker_data.price[ticker].get('longName', '')
+    sector = ticker_data.asset_profile[ticker].get('sector', '')
+    industry = ticker_data.asset_profile[ticker].get('industry', '')
+    country = ticker_data.asset_profile[ticker].get('country', '')
+    regularMarketPrice = ticker_data.price[ticker].get('regularMarketPrice', None)
+    marketState = ticker_data.price[ticker].get('marketState', '')
+    marketCap = ticker_data.price[ticker].get('marketCap', None)
+    beta = ticker_data.summary_detail[ticker].get('beta', None)
+    volume = ticker_data.summary_detail[ticker].get('volume', None)
+    averageVolume = ticker_data.summary_detail[ticker].get('averageVolume', None)
+    trailingPE = ticker_data.summary_detail[ticker].get('trailingPE', None)
+    forwardPE = ticker_data.summary_detail[ticker].get('forwardPE', None)
+    ce_exDividendDate = ticker_data.calendar_events[ticker].get('exDividendDate', None)
+    ce_dividendDate = ticker_data.calendar_events[ticker].get('dividendDate', None)
+    ce_earnings_earnings = ticker_data.calendar_events[ticker].get('earnings', None)
+    ce_earnings_earningsDate = ''
+    if ce_earnings_earnings is not None:
+        ce_earnings_earningsDate = ce_earnings_earnings.get('earningsDate', '')
+
+
     debug('--- Ticker Info ---')
     # Если OperatingRevenue отсутствует или последнее значение OperatingRevenue <= 0 то считаем что это скам
     operating_revenue_ttm1 = None
@@ -1011,7 +1035,7 @@ def get_ranking_data3(tick, ag=agents()):
     operating_revenue = financial_data_q.get('OperatingRevenue', None)
     if operating_revenue is None or operating_revenue[-1] <= 0:
         debug(f'operating_revenue={operating_revenue}')
-        rank_result = {"rank": None, "rank_type": "NonType"}
+        rank_result = {"rank": None, "rank_type": "NoData"}
         return rank_result
     else:
         operating_revenue_ttm1 = sum(operating_revenue[1:])
@@ -1067,7 +1091,7 @@ def get_ranking_data3(tick, ag=agents()):
     fcf = financial_data_q.get('FreeCashFlow', None)
     if fcf is None or fcf[-1] == 0:
         debug(f'fcf={fcf}')
-        rank_result = {"rank": None, "rank_type": "NonType"}
+        rank_result = {"rank": None, "rank_type": "NoData"}
         return rank_result
     else:
         fcf_ttm1 = sum(fcf[1:])
@@ -1166,7 +1190,7 @@ def get_ranking_data3(tick, ag=agents()):
     total_assets = financial_data_q.get('TotalAssets', None)
     if total_assets is None or total_assets[-1] == 0:
         debug(f'total_assets={total_assets}')
-        rank_result = {"rank": None, "rank_type": "NonType"}
+        rank_result = {"rank": None, "rank_type": "NoData"}
         return rank_result
     else:
         total_assets_lq1 = total_assets[-1]
@@ -1255,7 +1279,6 @@ def get_ranking_data3(tick, ag=agents()):
     if current_liabilities is not None and ebit is not None:
         nopat_ttm1 = ebit_ttm1 * (1 - (tax_provision_ttm1 / pretax_income_ttm1))
         nopat_ttm0 = ebit_ttm0 * (1 - (tax_provision_ttm0 / pretax_income_ttm0))
-        # debug(f'nopat_ttm1 = ebit_ttm1 * (1 - (tax_provision_ttm1 / pretax_income_ttm1))')
         debug(f'nopat_ttm1={nopat_ttm1}   nopat_ttm0={nopat_ttm0}')
 
     # Рентабельность всех активов через NOPAT ---  NOPAT/Total Assets
@@ -1264,12 +1287,10 @@ def get_ranking_data3(tick, ag=agents()):
         profitability = nopat_ttm1 / total_assets_lq1
     else:
         profitability = net_income_ttm1 / total_assets_lq1
-    # debug(f'profitability = nopat_ttm1 / total_assets_ttm1')
     debug(f'profitability > 0 (NOPAT/TOTAL ASSETS)={profitability} ')
 
     # Дельта рентабельности всех активов через Free Cash Flow --- D_(FCF/Total Assets)
     delta_profitability = (fcf_ttm1 / total_assets_lq1) - (fcf_ttm0 / total_assets_lq0)
-    # debug(f'delta_profitability = (fcf_ttm1 / total_assets_ttm1) - (fcf_ttm0 / total_assets_ttm0)')
     debug(f'delta_profitability > 0 ={delta_profitability} ')
 
     # ROIC – рентабельность инвестированного капитала --- NOPAT/Invested Capital
@@ -1280,14 +1301,11 @@ def get_ranking_data3(tick, ag=agents()):
     else:
         if invested_capital_lq is not None and invested_capital_lq != 0:
             roic = (net_income_ttm1 / invested_capital_lq)
-    # debug(f'roic = (nopat_ttm1 / invested_capital_ttm1)')
     debug(f'roic > 0 ={roic} ')
 
     # Дельта Shareholder’s Equity без учета трежари акций --- D_(Retained Earnings+Additional Paid On Capital)
     delta_shareholders_equity = (retained_earnings_lq1 + additional_paid_in_capital_lq1) - \
                                 (retained_earnings_lq0 + additional_paid_in_capital_lq0)
-    # debug(f'delta_shareholders_equity = (retained_earnings_ttm1 + additional_paid_in_capital_ttm1) - \
-    #                             (retained_earnings_ttm0 + additional_paid_in_capital_ttm0)')
     debug(f'delta_shareholders_equity > 0 ={delta_shareholders_equity} ')
 
     # Margin --- D_(NOPAT/Total Operating Revenue)
@@ -1295,20 +1313,7 @@ def get_ranking_data3(tick, ag=agents()):
         margin = (nopat_ttm1 / operating_revenue_ttm1) - (nopat_ttm0 / operating_revenue_ttm0)
     else:
         margin = (fcf_ttm1 / operating_revenue_ttm1) - (fcf_ttm0 / operating_revenue_ttm0)
-    # debug(f'margin = (nopat_ttm1 / operating_revenue_ttm1) - (nopat_ttm0 / operating_revenue_ttm0)')
     debug(f'margin > 0 ={margin} ')
-    # Total Assets                  *
-    # Invested Capital              *
-    # Retained Earnings             *
-    # Additional Paid On Capital    *
-    # Cash and equivalents          *
-    # Receivables                   *
-    # current liabilities           *
-    # Non Current Assets            *
-    # Issued                        *
-    # Inventory                     *
-    # Long Debt                     *
-    # TotalLiabilitiesNetMinorityInterest  *
 
     # Чистая ликвидность --- Cash and equivalents / current liabilities
     net_liquidity = 0
@@ -1317,7 +1322,6 @@ def get_ranking_data3(tick, ag=agents()):
             net_liquidity = cash_and_cash_equivalents_lq1 / current_liabilities_lq1
         else:
             net_liquidity = 0
-    # debug(f'net_liquidity = cash_and_cash_equivalents_ttm1 / current_liabilities_ttm1')
     debug(f'net_liquidity > 1VG / > 2Bagger ={net_liquidity} ')
 
     # Улучшение чистой ликвидности --- D_(Cash and equivalents / current liabilities)
@@ -1336,13 +1340,10 @@ def get_ranking_data3(tick, ag=agents()):
     improving_net_liquidity = minuend - subtrahend
     if improving_net_liquidity < 0:
         improving_net_liquidity = 0
-    # debug(f'improving_net_liquidity = (cash_and_cash_equivalents_ttm1 / current_liabilities_ttm1) - \
-    #                           (cash_and_cash_equivalents_ttm0 / current_liabilities_ttm0)')
     debug(f'improving_net_liquidity > 0 ={improving_net_liquidity} ')
 
     # Уменьшение дебиторской задолженности --- D_(Receivables + Inventory)
     decrease_in_receivables = (receivables_lq1 + inventory_lq1) - (receivables_lq0 + inventory_lq0)
-    # debug(f'decrease_in_receivables = (receivables_ttm1 + inventory_ttm1) - (receivables_ttm0 + inventory_ttm0)')
     debug(f'decrease_in_receivables < 0 ={decrease_in_receivables} ')
 
     # Плечо – отношение необоротных активов к длинным долгам  --- Non Current Assets/Long Debt
@@ -1353,7 +1354,6 @@ def get_ranking_data3(tick, ag=agents()):
     else:
         if long_term_debt_lq1 is not None and long_term_debt_lq1 != 0:
             leverage1 = total_assets_lq1 / long_term_debt_lq1
-    # debug(f'leverage = total_non_current_assets_ttm1 / long_term_debt_ttm1')
     debug(f'leverage < 1 VG / > 1 Bagger ={leverage1} ')
 
     # Плечо – Дельта отношение  ---  D_(Non Current Assets/Long Debt)
@@ -1365,7 +1365,6 @@ def get_ranking_data3(tick, ag=agents()):
         if long_term_debt_lq0 is not None and long_term_debt_lq0 != 0:
             leverage0 = total_assets_lq0 / long_term_debt_lq0
     delta_leverage = leverage1 - leverage0
-    # debug(f'delta_leverage = leverage - (total_non_current_assets_ttm0 / long_term_debt_ttm0)')
     debug(f'delta_leverage > 0 ={delta_leverage} ')
 
     # Interest Coverage Оплата процентов  ---  EBIT/Interest Expenses
@@ -1375,8 +1374,6 @@ def get_ranking_data3(tick, ag=agents()):
             interest_coverage = ebit_ttm1 / interest_expense_ttm1
         else:
             interest_coverage = 0
-
-    # debug(f'interest_coverage = ebit_ttm1 / interest_expense_ttm1')
     debug(f'interest_coverage > 21 ={interest_coverage} ')
 
     is_value = False
@@ -1419,7 +1416,7 @@ def get_ranking_data3(tick, ag=agents()):
 
     if nopat_ttm1 is None and fcf_ttm1 is None:
         debug(f'nopat_ttm1 is None and fcf_ttm1 is None!!!!', ERROR)
-        rank_result["rank_type"] = "Фтопку"
+        rank_result["rank_type"] = "NoData"
         return rank_result
     if (nopat_ttm1 is not None and nopat_ttm1 <= 0) or (fcf_ttm1 is not None and fcf_ttm1 <= 0):
         if bagger_separator >= 3:
@@ -1594,7 +1591,7 @@ def get_ranking_data3(tick, ag=agents()):
             rank += 1
         if eps_estimate_ttm2 > 0:
             rank += 1
-        debug(f'Ponzi. rank = {rank}\n', WARNING)
+        debug(f'Bagger. rank = {rank}\n', WARNING)
     elif is_growth or is_value or is_nontype:
         if profitability > 0:
             rank += 1
@@ -1634,7 +1631,42 @@ def get_ranking_data3(tick, ag=agents()):
             debug(f'Growth. rank = {rank}\n', WARNING)
         elif is_nontype:
             debug(f'NonType. rank = {rank}\n', WARNING)
-    return rank_result
+
+    rank_result["rank"] = rank
+    rank_result["nopat_ttm1"] = nopat_ttm1
+    rank_result["nopat_ttm0"] = nopat_ttm0
+    rank_result["profitability"] = profitability
+    rank_result["delta_profitability"] = delta_profitability
+    rank_result["roic"] = roic
+    rank_result["delta_shareholders_equity"] = delta_shareholders_equity
+    rank_result["margin"] = margin
+    rank_result["margin"] = net_liquidity
+    rank_result["improving_net_liquidity"] = improving_net_liquidity
+    rank_result["decrease_in_receivables"] = decrease_in_receivables
+    rank_result["leverage1"] = leverage1
+    rank_result["leverage0"] = leverage0
+    rank_result["interest_coverage"] = interest_coverage
+    rank_result["is_fin"] = is_fin
+
+    info_result = {'ticker': ticker,
+                   'quoteType': quoteType,
+                   'longName': longName,
+                   'sector': sector,
+                   'industry': industry,
+                   'country': country,
+                   'regularMarketPrice': regularMarketPrice,
+                   'marketState': marketState,
+                   'marketCap': marketCap,
+                   'beta': beta,
+                   'volume': volume,
+                   'averageVolume': averageVolume,
+                   'trailingPE': trailingPE,
+                   'forwardPE': forwardPE,
+                   'exDividendDate': ce_exDividendDate,
+                   'dividendDate': ce_dividendDate,
+                   'earnings_earningsDate': ce_earnings_earningsDate}
+
+    return info_result, rank_result
 
 
 # ============================== FINVIZ TREEMAP GET ================================
