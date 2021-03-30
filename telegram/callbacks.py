@@ -238,16 +238,6 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
         await client.send_message(event.input_sender, 'Как интерпретировать кривую волатильности? /instruction06',
                                   buttons=buttons.keyboard_us_market_back)
 
-    elif event.data == b'us7':
-        await event.edit()
-        await shared.delete_old_message(client, sender_id)
-        message = await client.send_message(entity=entity, message='Загрузка...')
-        await client.edit_message(message, 'Ключевые статистики акций компании')
-        await client.send_message(entity=entity, message=ins.instruction21)
-        await client.send_message(event.input_sender, 'Как интерпретировать ключевые статистики? \n'
-                                                      '/instruction22',
-                                  buttons=buttons.keyboard_us_market_back)
-
     elif event.data == b'hist_parking':
         await event.edit()
         await shared.delete_old_message(client, sender_id)
@@ -1244,3 +1234,12 @@ async def make_donate(event, client_, summ):
 
 #     msg = await client.send_message(event.input_sender, 'Сотрудничество', buttons=buttons.keyboard_relations)
 #     await shared.save_old_message(sender_id, msg)
+    # elif event.data == b'us7':
+    #     await event.edit()
+    #     await shared.delete_old_message(client, sender_id)
+    #     message = await client.send_message(entity=entity, message='Загрузка...')
+    #     await client.edit_message(message, 'Ключевые статистики акций компании')
+    #     await client.send_message(entity=entity, message=ins.instruction21)
+    #     await client.send_message(event.input_sender, 'Как интерпретировать ключевые статистики? \n'
+    #                                                   '/instruction22',
+    #                               buttons=buttons.keyboard_us_market_back)
