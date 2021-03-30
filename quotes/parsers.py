@@ -927,8 +927,8 @@ def get_ranking_data2(tick, ag=agents()):
                    'dividendDate': ce_dividendDate,
                    'earnings_earningsDate': ce_earnings_earningsDate}
 
-    debug(f"INFO DICT: {info_result} \n\n")
-    debug(f"RESULT DICT: {rank_result} ")
+    # debug(f"INFO DICT: {info_result} \n\n")
+    # debug(f"RESULT DICT: {rank_result} ")
     debug('%%% get_ranking_data complete')
     return info_result, rank_result
 
