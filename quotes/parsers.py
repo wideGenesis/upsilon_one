@@ -1019,23 +1019,23 @@ def get_ranking_data3(tick, ag=agents()):
     debug(f'operating_revenue_ttm1={operating_revenue_ttm1}   operating_revenue_ttm0={operating_revenue_ttm0}')
 
     # ttm_1 -- ТТМ на текущий квартал, ttm_0 -- ТТМ на предыдущий квартал
-    additional_paid_in_capital_ttm1 = 0
-    additional_paid_in_capital_ttm0 = 0
+    additional_paid_in_capital_lq1 = 0
+    additional_paid_in_capital_lq0 = 0
     additional_paid_in_capital = financial_data_q.get('AdditionalPaidInCapital', None)
     if additional_paid_in_capital is not None:
-        additional_paid_in_capital_ttm1 = sum(additional_paid_in_capital[1:])
-        additional_paid_in_capital_ttm0 = sum(additional_paid_in_capital[:4])
-    debug(
-        f'additional_paid_in_capital_ttm1={additional_paid_in_capital_ttm1}   additional_paid_in_capital_ttm0={additional_paid_in_capital_ttm0}')
+        additional_paid_in_capital_lq1 = additional_paid_in_capital[-1]
+        additional_paid_in_capital_lq0 = additional_paid_in_capital[-2]
+    debug(f'additional_paid_in_capital_lq1 = {additional_paid_in_capital_lq1}  '
+          f'additional_paid_in_capital_lq0 = {additional_paid_in_capital_lq0}')
 
-    cash_and_cash_equivalents_ttm1 = None
-    cash_and_cash_equivalents_ttm0 = None
+    cash_and_cash_equivalents_lq1 = None
+    cash_and_cash_equivalents_lq0 = None
     cash_and_cash_equivalents = financial_data_q.get('CashAndCashEquivalents', None)
     if cash_and_cash_equivalents is not None:
-        cash_and_cash_equivalents_ttm1 = sum(cash_and_cash_equivalents[1:])
-        cash_and_cash_equivalents_ttm0 = sum(cash_and_cash_equivalents[:4])
-    debug(
-        f'cash_and_cash_equivalents_ttm1={cash_and_cash_equivalents_ttm1}   cash_and_cash_equivalents_ttm0={cash_and_cash_equivalents_ttm0}')
+        cash_and_cash_equivalents_lq1 = cash_and_cash_equivalents[-1]
+        cash_and_cash_equivalents_lq0 = cash_and_cash_equivalents[-2]
+    debug(f'cash_and_cash_equivalents_lq1 = {cash_and_cash_equivalents_lq1}  '
+          f'cash_and_cash_equivalents_lq0 = {cash_and_cash_equivalents_lq0}')
 
     cash_dividends_paid_ttm1 = None
     cash_dividends_paid_ttm0 = None
@@ -1045,13 +1045,14 @@ def get_ranking_data3(tick, ag=agents()):
         cash_dividends_paid_ttm0 = sum(cash_dividends_paid[:4])
     debug(f'cash_dividends_paid_ttm1={cash_dividends_paid_ttm1}   cash_dividends_paid_ttm0={cash_dividends_paid_ttm0}')
 
-    current_liabilities_ttm1 = None
-    current_liabilities_ttm0 = None
+    current_liabilities_lq1 = None
+    current_liabilities_lq0 = None
     current_liabilities = financial_data_q.get('CurrentLiabilities', None)
     if current_liabilities is not None:
-        current_liabilities_ttm1 = sum(current_liabilities[1:])
-        current_liabilities_ttm0 = sum(current_liabilities[:4])
-    debug(f'current_liabilities_ttm1={current_liabilities_ttm1}   current_liabilities_ttm0={current_liabilities_ttm0}')
+        current_liabilities_lq1 = current_liabilities[-1]
+        current_liabilities_lq0 = current_liabilities[-2]
+    debug(f'current_liabilities_lq1 = {current_liabilities_lq1} '
+          f'current_liabilities_lq0 = {current_liabilities_lq0} ')
 
     ebit_ttm1 = None
     ebit_ttm0 = None
@@ -1081,29 +1082,29 @@ def get_ranking_data3(tick, ag=agents()):
         interest_expense_ttm0 = sum(interest_expense[:4])
     debug(f'interest_expense_ttm1={interest_expense_ttm1}   interest_expense_ttm0={interest_expense_ttm0}')
 
-    inventory_ttm1 = 0
-    inventory_ttm0 = 0
+    inventory_lq1 = 0
+    inventory_lq0 = 0
     inventory = financial_data_q.get('Inventory', None)
     if inventory is not None:
-        inventory_ttm1 = sum(inventory[1:])
-        inventory_ttm0 = sum(inventory[:4])
-    debug(f'inventory_ttm1={inventory_ttm1}   inventory_ttm0={inventory_ttm0}')
+        inventory_lq1 = inventory[-1]
+        inventory_lq0 = inventory[-2]
+    debug(f'inventory_lq1 = {inventory_lq1}  '
+          f'inventory_lq0 = {inventory_lq0}')
 
-    invested_capital_ttm1 = None
-    invested_capital_ttm0 = None
+    invested_capital_lq = None
     invested_capital = financial_data_q.get('InvestedCapital', None)
     if invested_capital is not None:
-        invested_capital_ttm1 = sum(invested_capital[1:])
-        invested_capital_ttm0 = sum(invested_capital[:4])
-    debug(f'invested_capital_ttm1={invested_capital_ttm1}   invested_capital_ttm0={invested_capital_ttm0}')
+        invested_capital_lq = invested_capital[-1]
+    debug(f'invested_capital_lq={invested_capital_lq}')
 
-    long_term_debt_ttm1 = None
-    long_term_debt_ttm0 = None
+    long_term_debt_lq1 = None
+    long_term_debt_lq0 = None
     long_term_debt = financial_data_q.get('LongTermDebtAndCapitalLeaseObligation', None)
     if long_term_debt is not None:
-        long_term_debt_ttm1 = sum(long_term_debt[1:])
-        long_term_debt_ttm0 = sum(long_term_debt[:4])
-    debug(f'long_term_debt_ttm1={long_term_debt_ttm1}   long_term_debt_ttm0={long_term_debt_ttm0}')
+        long_term_debt_lq1 = long_term_debt[-1]
+        long_term_debt_lq0 = long_term_debt[-2]
+    debug(f'long_term_debt_lq1 = {long_term_debt_lq1}  '
+          f'long_term_debt_lq0 = {long_term_debt_lq0}')
 
     net_income_ttm1 = None
     net_income_ttm0 = None
@@ -1125,29 +1126,32 @@ def get_ranking_data3(tick, ag=agents()):
         pretax_income_ttm0 = sum(pretax_income[:4])
     debug(f'pretax_income_ttm1={pretax_income_ttm1}   pretax_income_ttm0={pretax_income_ttm0}')
 
-    receivables_ttm1 = None
-    receivables_ttm0 = None
+    receivables_lq1 = None
+    receivables_lq0 = None
     receivables = financial_data_q.get('Receivables', None)
     if receivables is not None:
-        receivables_ttm1 = sum(receivables[1:])
-        receivables_ttm0 = sum(receivables[:4])
-    debug(f'receivables_ttm1={receivables_ttm1}   receivables_ttm0={receivables_ttm0}')
+        receivables_lq1 = receivables[-1]
+        receivables_lq0 = receivables[-2]
+    debug(f'receivables_lq1 = {receivables_lq1}   '
+          f'receivables_lq0 = {receivables_lq0}')
 
-    retained_earnings_ttm1 = None
-    retained_earnings_ttm0 = None
+    retained_earnings_lq1 = None
+    retained_earnings_lq0 = None
     retained_earnings = financial_data_q.get('RetainedEarnings', None)
     if retained_earnings is not None:
-        retained_earnings_ttm1 = sum(retained_earnings[1:])
-        retained_earnings_ttm0 = sum(retained_earnings[:4])
-    debug(f'retained_earnings_ttm1={retained_earnings_ttm1}   retained_earnings_ttm0={retained_earnings_ttm0}')
+        retained_earnings_lq1 = retained_earnings[-1]
+        retained_earnings_lq0 = retained_earnings[-2]
+    debug(f'retained_earnings_lq1 = {retained_earnings_lq1}  '
+          f'retained_earnings_lq0 = {retained_earnings_lq0}')
 
-    share_issued_ttm1 = None
-    share_issued_ttm0 = None
+    share_issued_lq1 = None
+    share_issued_lq0 = None
     share_issued = financial_data_q.get('ShareIssued', None)
     if share_issued is not None:
-        share_issued_ttm1 = sum(share_issued[1:])
-        share_issued_ttm0 = sum(share_issued[:4])
-    debug(f'share_issued_ttm1={share_issued_ttm1}   share_issued_ttm0={share_issued_ttm0}')
+        share_issued_lq1 = share_issued[-1]
+        share_issued_lq0 = share_issued[-2]
+    debug(f'share_issued_lq1 = {share_issued_lq1}   '
+          f'share_issued_lq0 = {share_issued_lq0}')
 
     tax_provision_ttm1 = None
     tax_provision_ttm0 = None
@@ -1157,35 +1161,36 @@ def get_ranking_data3(tick, ag=agents()):
         tax_provision_ttm0 = sum(tax_provision[:4])
     debug(f'tax_provision_ttm1={tax_provision_ttm1}   tax_provision_ttm0={tax_provision_ttm0}')
 
-    total_assets_ttm1 = None
-    total_assets_ttm0 = None
+    total_assets_lq1 = None
+    total_assets_lq0 = None
     total_assets = financial_data_q.get('TotalAssets', None)
     if total_assets is None or total_assets[-1] == 0:
         debug(f'total_assets={total_assets}')
         rank_result = {"rank": None, "rank_type": "NonType"}
         return rank_result
     else:
-        total_assets_ttm1 = sum(total_assets[1:])
-        total_assets_ttm0 = sum(total_assets[:4])
-    debug(f'total_assets_ttm1={total_assets_ttm1}   total_assets_ttm0={total_assets_ttm0}')
+        total_assets_lq1 = total_assets[-1]
+        total_assets_lq0 = total_assets[-1]
+    debug(f'total_assets_lq1 = {total_assets_lq1}   '
+          f'total_assets_lq0 = {total_assets_lq0}')
 
-    total_liabilities_ttm1 = None
-    total_liabilities_ttm0 = None
+    total_liabilities_lq1 = None
+    total_liabilities_lq0 = None
     total_liabilities = financial_data_q.get('TotalLiabilitiesNetMinorityInterest', None)
     if total_liabilities is not None:
-        total_liabilities_ttm1 = sum(total_liabilities[1:])
-        total_liabilities_ttm0 = sum(total_liabilities[:4])
-    debug(
-        f'total_liabilities_ttm1={total_liabilities_ttm1}   total_liabilities_ttm0={total_liabilities_ttm0}')
+        total_liabilities_lq1 = total_liabilities[-1]
+        total_liabilities_lq0 = total_liabilities[-2]
+    debug(f'total_liabilities_lq1 = {total_liabilities_lq1}   '
+          f'total_liabilities_lq0 = {total_liabilities_lq0}')
 
-    total_non_current_assets_ttm1 = None
-    total_non_current_assets_ttm0 = None
+    total_non_current_assets_lq1 = None
+    total_non_current_assets_lq0 = None
     total_non_current_assets = financial_data_q.get('TotalNonCurrentAssets', None)
     if total_non_current_assets is not None:
-        total_non_current_assets_ttm1 = sum(total_non_current_assets[1:])
-        total_non_current_assets_ttm0 = sum(total_non_current_assets[:4])
-    debug(
-        f'total_non_current_assets_ttm1={total_non_current_assets_ttm1}   total_non_current_assets_ttm0={total_non_current_assets_ttm0}')
+        total_non_current_assets_lq1 = total_non_current_assets[-1]
+        total_non_current_assets_lq0 = total_non_current_assets[-2]
+    debug(f'total_non_current_assets_lq1 = {total_non_current_assets_lq1}   '
+          f'total_non_current_assets_lq0 = {total_non_current_assets_lq0}')
 
     market_cap = None
     market_cap = valuation.get('MarketCap', None)
@@ -1256,31 +1261,31 @@ def get_ranking_data3(tick, ag=agents()):
     # Рентабельность всех активов через NOPAT ---  NOPAT/Total Assets
     profitability = None
     if current_liabilities is not None and ebit is not None:
-        profitability = nopat_ttm_1 / total_assets_ttm1
+        profitability = nopat_ttm_1 / total_assets_lq1
     else:
-        profitability = net_income_ttm1 / total_assets_ttm1
+        profitability = net_income_ttm1 / total_assets_lq1
     # debug(f'profitability = nopat_ttm_1 / total_assets_ttm1')
     debug(f'profitability > 0 (NOPAT/TOTAL ASSETS)={profitability} ')
 
     # Дельта рентабельности всех активов через Free Cash Flow --- D_(FCF/Total Assets)
-    delta_profitability = (fcf_ttm1 / total_assets_ttm1) - (fcf_ttm0 / total_assets_ttm0)
+    delta_profitability = (fcf_ttm1 / total_assets_lq1) - (fcf_ttm0 / total_assets_lq0)
     # debug(f'delta_profitability = (fcf_ttm1 / total_assets_ttm1) - (fcf_ttm0 / total_assets_ttm0)')
     debug(f'delta_profitability > 0 ={delta_profitability} ')
 
     # ROIC – рентабельность инвестированного капитала --- NOPAT/Invested Capital
     roic = 0
     if current_liabilities is not None and ebit is not None:
-        if invested_capital_ttm1 is not None and invested_capital_ttm1 != 0:
-            roic = (nopat_ttm_1 / invested_capital_ttm1)
+        if invested_capital_lq is not None and invested_capital_lq != 0:
+            roic = (nopat_ttm_1 / invested_capital_lq)
     else:
-        if invested_capital_ttm1 is not None and invested_capital_ttm1 != 0:
-            roic = (net_income_ttm1 / invested_capital_ttm1)
+        if invested_capital_lq is not None and invested_capital_lq != 0:
+            roic = (net_income_ttm1 / invested_capital_lq)
     # debug(f'roic = (nopat_ttm_1 / invested_capital_ttm1)')
     debug(f'roic > 0 ={roic} ')
 
     # Дельта Shareholder’s Equity без учета трежари акций --- D_(Retained Earnings+Additional Paid On Capital)
-    delta_shareholders_equity = (retained_earnings_ttm1 + additional_paid_in_capital_ttm1) - \
-                                (retained_earnings_ttm0 + additional_paid_in_capital_ttm0)
+    delta_shareholders_equity = (retained_earnings_lq1 + additional_paid_in_capital_lq1) - \
+                                (retained_earnings_lq0 + additional_paid_in_capital_lq0)
     # debug(f'delta_shareholders_equity = (retained_earnings_ttm1 + additional_paid_in_capital_ttm1) - \
     #                             (retained_earnings_ttm0 + additional_paid_in_capital_ttm0)')
     debug(f'delta_shareholders_equity > 0 ={delta_shareholders_equity} ')
@@ -1292,12 +1297,24 @@ def get_ranking_data3(tick, ag=agents()):
         margin = (fcf_ttm1 / operating_revenue_ttm1) - (fcf_ttm0 / operating_revenue_ttm0)
     # debug(f'margin = (nopat_ttm_1 / operating_revenue_ttm1) - (nopat_ttm_0 / operating_revenue_ttm0)')
     debug(f'margin > 0 ={margin} ')
+    # Total Assets                  *
+    # Invested Capital              *
+    # Retained Earnings             *
+    # Additional Paid On Capital    *
+    # Cash and equivalents          *
+    # Receivables                   *
+    # current liabilities           *
+    # Non Current Assets            *
+    # Issued                        *
+    # Inventory                     *
+    # Long Debt                     *
+    # TotalLiabilitiesNetMinorityInterest  *
 
     # Чистая ликвидность --- Cash and equivalents / current liabilities
     net_liquidity = 0
-    if current_liabilities_ttm1 is not None and current_liabilities_ttm1 != 0:
-        if cash_and_cash_equivalents_ttm1 is not None:
-            net_liquidity = cash_and_cash_equivalents_ttm1 / current_liabilities_ttm1
+    if current_liabilities_lq1 is not None and current_liabilities_lq1 != 0:
+        if cash_and_cash_equivalents_lq1 is not None:
+            net_liquidity = cash_and_cash_equivalents_lq1 / current_liabilities_lq1
         else:
             net_liquidity = 0
     # debug(f'net_liquidity = cash_and_cash_equivalents_ttm1 / current_liabilities_ttm1')
@@ -1305,18 +1322,16 @@ def get_ranking_data3(tick, ag=agents()):
 
     # Улучшение чистой ликвидности --- D_(Cash and equivalents / current liabilities)
     minuend = 0
-    if current_liabilities_ttm1 is not None and current_liabilities_ttm1 != 0:
-        if current_liabilities_ttm1 is not None and current_liabilities_ttm1 != 0:
-            minuend = (cash_and_cash_equivalents_ttm1 / current_liabilities_ttm1)
-        subtrahend = 0
-        if current_liabilities_ttm1 is not None and current_liabilities_ttm1 != 0:
-            subtrahend = (cash_and_cash_equivalents_ttm0 / current_liabilities_ttm0)
+    if current_liabilities_lq1 is not None and current_liabilities_lq1 != 0:
+        minuend = (cash_and_cash_equivalents_lq1 / current_liabilities_lq1)
     else:
-        if current_liabilities_ttm1 is not None and current_liabilities_ttm1 != 0:
-            minuend = (total_assets_ttm1 / total_liabilities_ttm1)
-        subtrahend = 0
-        if current_liabilities_ttm1 is not None and current_liabilities_ttm1 != 0:
-            subtrahend = (total_assets_ttm0 / total_liabilities_ttm0)
+        minuend = (total_assets_lq1 / total_liabilities_lq1)
+
+    subtrahend = 0
+    if current_liabilities_lq0 is not None and current_liabilities_lq0 != 0:
+        subtrahend = (cash_and_cash_equivalents_lq0 / current_liabilities_lq0)
+    else:
+        subtrahend = (total_assets_lq0 / total_liabilities_lq0)
 
     improving_net_liquidity = minuend - subtrahend
     if improving_net_liquidity < 0:
@@ -1326,29 +1341,29 @@ def get_ranking_data3(tick, ag=agents()):
     debug(f'improving_net_liquidity > 0 ={improving_net_liquidity} ')
 
     # Уменьшение дебиторской задолженности --- D_(Receivables + Inventory)
-    decrease_in_receivables = (receivables_ttm1 + inventory_ttm1) - (receivables_ttm0 + inventory_ttm0)
+    decrease_in_receivables = (receivables_lq1 + inventory_lq1) - (receivables_lq0 + inventory_lq0)
     # debug(f'decrease_in_receivables = (receivables_ttm1 + inventory_ttm1) - (receivables_ttm0 + inventory_ttm0)')
     debug(f'decrease_in_receivables < 0 ={decrease_in_receivables} ')
 
     # Плечо – отношение необоротных активов к длинным долгам  --- Non Current Assets/Long Debt
     leverage1 = 0
     if current_liabilities is not None and ebit is not None:
-        if long_term_debt_ttm1 is not None and long_term_debt_ttm1 != 0:
-            leverage1 = total_non_current_assets_ttm1 / long_term_debt_ttm1
+        if long_term_debt_lq1 is not None and long_term_debt_lq1 != 0:
+            leverage1 = total_non_current_assets_lq1 / long_term_debt_lq1
     else:
-        if long_term_debt_ttm1 is not None and long_term_debt_ttm1 != 0:
-            leverage1 = total_assets_ttm1 / long_term_debt_ttm1
+        if long_term_debt_lq1 is not None and long_term_debt_lq1 != 0:
+            leverage1 = total_assets_lq1 / long_term_debt_lq1
     # debug(f'leverage = total_non_current_assets_ttm1 / long_term_debt_ttm1')
     debug(f'leverage < 1 VG / > 1 Bagger ={leverage1} ')
 
     # Плечо – Дельта отношение  ---  D_(Non Current Assets/Long Debt)
     leverage0 = 0
     if current_liabilities is not None and ebit is not None:
-        if long_term_debt_ttm0 is not None and long_term_debt_ttm0 != 0:
-            leverage0 = total_non_current_assets_ttm0 / long_term_debt_ttm0
+        if long_term_debt_lq0 is not None and long_term_debt_lq0 != 0:
+            leverage0 = total_non_current_assets_lq0 / long_term_debt_lq0
     else:
-        if long_term_debt_ttm0 is not None and long_term_debt_ttm0 != 0:
-            leverage0 = total_assets_ttm0 / long_term_debt_ttm0
+        if long_term_debt_lq0 is not None and long_term_debt_lq0 != 0:
+            leverage0 = total_assets_lq0 / long_term_debt_lq0
     delta_leverage = leverage1 - leverage0
     # debug(f'delta_leverage = leverage - (total_non_current_assets_ttm0 / long_term_debt_ttm0)')
     debug(f'delta_leverage > 0 ={delta_leverage} ')
@@ -1378,13 +1393,13 @@ def get_ranking_data3(tick, ag=agents()):
         # debug(f'enterprise_value = {enterprise_value}')
         # debug(f'fcf_ttm1 = {fcf_ttm1}')
         # debug(f'total_assets_ttm1 = {total_assets_ttm1}')
-        value_separator = (enterprise_value / fcf_ttm1 * enterprise_value / total_assets_ttm1)
+        value_separator = (enterprise_value / fcf_ttm1 * enterprise_value / total_assets_lq1)
         debug(f"value_separator = {value_separator}")
     else:
         # debug(f'market_cap={market_cap}')
         # debug(f'fcf_ttm1={fcf_ttm1}')
         # debug(f'total_assets_ttm1={total_assets_ttm1}')
-        value_separator = (market_cap / fcf_ttm1 * market_cap / total_assets_ttm1)
+        value_separator = (market_cap / fcf_ttm1 * market_cap / total_assets_lq1)
         debug(f"value_separator={value_separator}")
     if 25 > value_separator > 0:
         # debug(f'Formula: (enterprise_value / fcf_ttm1 * enterprise_value / total_assets_ttm1)')
@@ -1405,7 +1420,7 @@ def get_ranking_data3(tick, ag=agents()):
 
         if cash_dividends_paid_ttm1 is not None and cash_dividends_paid_ttm1 == 0:
             bagger_separator += 1
-        if (share_issued_ttm1 - share_issued_ttm0) > 0:
+        if (share_issued_lq1 - share_issued_lq0) > 0:
             bagger_separator += 1
         if net_liquidity > 2:
             bagger_separator += 1
