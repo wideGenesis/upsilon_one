@@ -2,9 +2,7 @@ from telethon.tl.custom import Button
 from project_shared import *
 from random import choice
 
-# lol = ['Подача напитков из улиток', 'Мыло \"Кот Да Винчи\"', 'Гос реестр порно', 'Орден Финансового Лосся',
-#        'Шопот крыш', 'Отделение пластики мозга', 'Моргаем диафрагмой', 'Мастерская \"Парики Трампа\"',
-#        'Бар \"Финансовое воздержание\"']
+
 
 keyboard_start = [
     [Button.text('\U0001F4C1 Главное меню', resize=True)],
@@ -68,19 +66,19 @@ keyboard_forw9 = [
 
 keyboard_0 = [
     [
-        Button.inline('\U0001F52C   ' + 'Анализ рынков', b'a1')
+        Button.inline('\U0001F52C   ' + 'Анализ рынков', b'kb0_market_analysis')
     ],
     [
-        Button.inline('\U0001F4BC   ' + 'Мой портфель', b'my_portfolio')
+        Button.inline('\U0001F4BC   ' + 'Мой портфель', b'kb0_my_portfolio')
     ],
     [
-        Button.inline('\U0001F9EC   ' + 'Скринер акций', b'a3')
+        Button.inline('\U0001F9EC   ' + 'Скринер акций', b'kb0_stock_screener')
     ],
     [
-        Button.inline('\U0001F4F0   ' + 'Лента новостей', b'a8')
+        Button.inline('\U0001F4F0   ' + 'Лента новостей', b'kb0_news_feed')
     ],
     [
-        Button.inline('\U0001F64F  ' + 'Donate', b'donate')
+        Button.inline('\U0001F64F  ' + 'Donate', b'kb0_donate')
     ]
 
 ]
@@ -93,16 +91,16 @@ keyboard_0_back = [
 
 keyboard_a1 = [
     [
-        Button.inline('🇺🇸' + 'Рынок США', b'a1a1')
+        Button.inline('🇺🇸' + 'Рынок США', b'kb_a1_us_market')
     ],
     [
-        Button.inline('\U0001F510  ' + 'Рынок криптовалют', b'a1a2')
+        Button.inline('\U0001F510  ' + 'Рынок криптовалют', b'kb_a1_coin_market')
     ],
     [
-        Button.inline('\U0001F43B  ' + 'Рынок РФ', b'a1a3')
+        Button.inline('\U0001F43B  ' + 'Рынок РФ', b'kb_a1_rus_market')
     ],
     [
-        Button.inline('🇺🇳' + 'Мировые рынки', b'world_markets')
+        Button.inline('🇺🇳' + 'Мировые рынки', b'kb_a1_world_markets')
     ],
     # [
     #     Button.inline('\U0001F30D  ' + 'Market Valuation', b'a1a13')
@@ -114,7 +112,7 @@ keyboard_a1 = [
 
 keyboard_a1_back = [
     [
-        Button.inline('\U0001F519  ' + 'Назад', b'a1a-1')
+        Button.inline('\U0001F519  ' + 'Назад', b'kb_a1_back')
     ]
 ]
 
@@ -154,84 +152,19 @@ keyboard_historical_tests = [
     ]
 ]
 
-keyboard_a2_back = [
-    [
-        Button.inline('\U0001F519  ' + 'Назад', b'cm-5')
-    ]
-]
 
 keyboard_a3_back = [
     [
-        Button.inline('\U0001F519  ' + 'Назад', b'cm-51')
-    ]
-]
-
-keyboard_a5 = [
-    # [
-    #     Button.inline('\U0001F50D   ' + 'Как ... /instruction01', b'a5a1')
-    # ],
-    # [
-    #     Button.inline('\U0001F50D   ' + 'Что ... /instruction02', b'a5a2')
-    # ],
-    [
-        Button.inline('\U0001F519  ' + 'Назад', b'main')
-    ]
-]
-
-keyboard_a5_back = [
-    [
-        Button.inline('\U0001F519  ' + 'Назад', b'a5a-1')
-    ]
-]
-
-keyboard_a6 = [
-    [
-        Button.inline('\U0001F476   ' + 'Мониторинг стратегий', b'a6a1')
-    ],
-    [
-        Button.inline('\U0001F468  ' + 'Исторические тесты', b'a6a2')
-    ],
-    [
-        Button.inline('\U0001F9D4  ' + 'Трекинг личного портфеля', b'a6a3')
-    ],
-    [
-        Button.inline('\U0001F519  ' + 'Назад', b'main')
-    ]
-]
-
-keyboard_a6_back = [
-    [
-        Button.inline('\U0001F519  ' + 'Назад', b'a6a-1')
-    ]
-]
-
-keyboard_a7 = [
-    [
-        Button.inline('\U0001F5DC  ' + 'Финансовый анализ', b'a7a1')
-    ],
-    [
-        Button.inline('\U0001F46E  ' + 'Подробный анализ и скоринг', b'a7a2')
-    ],
-    [
-        Button.inline('\U0001F46E  ' + 'Сводка новостей', b'a7a3')
-    ],
-    [
-        Button.inline('\U0001F519  ' + 'Назад', b'main')
-    ]
-]
-
-keyboard_a7_back = [
-    [
-        Button.inline('\U0001F519  ' + 'Назад', b'a7a-1')
+        Button.inline('\U0001F519  ' + 'Назад', b'kb_3_up')
     ]
 ]
 
 keyboard_a8 = [
     [
-        Button.inline('\U0001F5DE  ' + 'Новости о рынках', b'a9a1')
+        Button.inline('\U0001F5DE  ' + 'Новости о рынках', b'kb_a8_market_news')
     ],
     [
-        Button.inline('\U0001F4B1   ' + 'Аналитические статьи', b'a9a2')
+        Button.inline('\U0001F4B1   ' + 'Аналитические статьи', b'kb_a8_analytical_blogs')
     ],
     [
         Button.inline('\U0001F519  ' + 'Назад', b'main')
@@ -240,73 +173,73 @@ keyboard_a8 = [
 
 keyboard_a8_back = [
     [
-        Button.inline('\U0001F519  ' + 'Назад', b'a8a-1')
+        Button.inline('\U0001F519  ' + 'Назад', b'kb_a8_back')
     ]
 ]
 
 keyboard_core_macro = [
     [
-        Button.inline('\U0001F3E6  ' + 'Процентная ставка', b'cm1')
+        Button.inline('\U0001F3E6  ' + 'Процентная ставка', b'kb_macro_rate')
     ],
     [
-        Button.inline('\U0001F321   ' + 'Уровень инфляции', b'cm2')
+        Button.inline('\U0001F321   ' + 'Уровень инфляции', b'kb_macro_inflation')
     ],
     [
-        Button.inline('\U0001F525   ' + 'Уровень безработицы', b'cm3')
+        Button.inline('\U0001F525   ' + 'Уровень безработицы', b'kb_macro_unemployment')
     ],
     [
-        Button.inline('\U0001F3E2   ' + 'Индекс деловой активности', b'cm4')
+        Button.inline('\U0001F3E2   ' + 'Индекс деловой активности', b'kb_macro_pmi')
     ],
     [
-        Button.inline('\U0001F519   ' + 'Назад', b'cm-3')
+        Button.inline('\U0001F519   ' + 'Назад', b'kb_macro_up')
     ]
 ]
 
 keyboard_core_macro_back = [
     [
-        Button.inline('\U0001F519   ' + 'Назад', b'cm-1')
+        Button.inline('\U0001F519   ' + 'Назад', b'kb_macro_back')
     ]
 ]
 
 keyboard_us_market = [
     [
-        Button.inline('\U0001F503   ' + 'Статистика роста/падения', b'us1')
+        Button.inline('\U0001F503   ' + 'Статистика роста/падения', b'kb_us_market_adl')
     ],
     [
-        Button.inline('\U00002197   ' + 'Моментум в акциях', b'us6')
+        Button.inline('\U00002197   ' + 'Моментум в акциях', b'kb_us_market_mom')
     ],
     [
-        Button.inline('\U0001F4E3	' + 'Макро индикаторы и прогнозы', b'a1a6')
+        Button.inline('\U0001F4E3	' + 'Макро индикаторы и прогнозы', b'kb_us_market_macro_forecast')
     ],
     [
-        Button.inline('\U0001F4C9   ' + 'Кривая волатильности', b'us5')
+        Button.inline('\U0001F4C9   ' + 'Кривая волатильности', b'kb_us_market_vol_curve')
     ],
     [
-        Button.inline('\U0001F519  ' + 'Назад', b'cm-4')
+        Button.inline('\U0001F519  ' + 'Назад', b'kb_us_market_up')
     ]
 ]
 
 keyboard_us_market_back = [
     [
-        Button.inline('\U0001F519  ' + 'Назад', b'cm-3')
+        Button.inline('\U0001F519  ' + 'Назад', b'kb_macro_up')
     ]
 ]
 
 keyboard_us_analysis = [
     [
-        Button.inline('\U0001F3AF  ' + 'Обзор рынка США', b'us5z')
+        Button.inline('\U0001F3AF  ' + 'Обзор рынка США', b'kb_us_analysis_overview')
     ],
     [
-        Button.inline('\U0001F9E9  ' + 'Подробный анализ', b'us5x')
+        Button.inline('\U0001F9E9  ' + 'Подробный анализ', b'kb_us_analysis_insideview')
     ],
     [
-        Button.inline('\U0001F519  ' + 'Назад', b'cm-2')
+        Button.inline('\U0001F519  ' + 'Назад', b'kb_us_analysis_up')
     ]
 ]
 
 keyboard_us_analysis_back = [
     [
-        Button.inline('\U0001F519  ' + 'Назад', b'cm-4')
+        Button.inline('\U0001F519  ' + 'Назад', b'kb_us_market_up')
     ]
 ]
 
@@ -449,37 +382,24 @@ keyboard_subscription_start = [
         Button.inline('\U0001F3E6  ' + '$15', b'kss1')
     ]
 ]
+
 keyboard_subscription_base = [
     [
         Button.inline('\U0001F3E6  ' + '$25', b'kss2')
     ]
 ]
+
 keyboard_subscription_advanced = [
     [
         Button.inline('\U0001F3E6  ' + '$30', b'kss3')
     ]
 ]
+
 keyboard_subscription_professional = [
     [
         Button.inline('\U0001F3E6  ' + '$40', b'kss4')
     ]
 ]
-
-
-# keyboard_managed_strategies = [
-#     [
-#         Button.inline('\U0001F3E6  ' + 'Парковочный портфель', b'sac1')
-#     ],
-#     [
-#         Button.inline('\U0001F3E6  ' + 'Сбалансированный портфель', b'sac2')
-#     ],
-#     [
-#         Button.inline('\U0001F3E6  ' + 'Агрессивный', b'sac3')
-#     ],
-#     [
-#         Button.inline('\U0001F519  ' + 'Назад', b'sacback')
-#     ]
-# ]
 
 
 def generate_payment_button(kbd_label=None, payment_link=None):
@@ -632,3 +552,86 @@ my_strategies_back = [
         Button.inline('\U0001F519  ' + 'Назад', b'strategies_back')
     ]
 ]
+
+
+
+# keyboard_managed_strategies = [
+#     [
+#         Button.inline('\U0001F3E6  ' + 'Парковочный портфель', b'sac1')
+#     ],
+#     [
+#         Button.inline('\U0001F3E6  ' + 'Сбалансированный портфель', b'sac2')
+#     ],
+#     [
+#         Button.inline('\U0001F3E6  ' + 'Агрессивный', b'sac3')
+#     ],
+#     [
+#         Button.inline('\U0001F519  ' + 'Назад', b'sacback')
+#     ]
+# ]
+
+# keyboard_a2_back = [
+#     [
+#         Button.inline('\U0001F519  ' + 'Назад', b'cm-5')
+#     ]
+# ]
+#
+# keyboard_a5 = [
+#     # [
+#     #     Button.inline('\U0001F50D   ' + 'Как ... /instruction01', b'a5a1')
+#     # ],
+#     # [
+#     #     Button.inline('\U0001F50D   ' + 'Что ... /instruction02', b'a5a2')
+#     # ],
+#     [
+#         Button.inline('\U0001F519  ' + 'Назад', b'main')
+#     ]
+# ]
+
+# keyboard_a5_back = [
+#     [
+#         Button.inline('\U0001F519  ' + 'Назад', b'a5a-1')
+#     ]
+# ]
+
+# keyboard_a6 = [
+#     [
+#         Button.inline('\U0001F476   ' + 'Мониторинг стратегий', b'a6a1')
+#     ],
+#     [
+#         Button.inline('\U0001F468  ' + 'Исторические тесты', b'a6a2')
+#     ],
+#     [
+#         Button.inline('\U0001F9D4  ' + 'Трекинг личного портфеля', b'a6a3')
+#     ],
+#     [
+#         Button.inline('\U0001F519  ' + 'Назад', b'main')
+#     ]
+# ]
+
+# keyboard_a6_back = [
+#     [
+#         Button.inline('\U0001F519  ' + 'Назад', b'a6a-1')
+#     ]
+# ]
+
+# keyboard_a7 = [
+#     [
+#         Button.inline('\U0001F5DC  ' + 'Финансовый анализ', b'a7a1')
+#     ],
+#     [
+#         Button.inline('\U0001F46E  ' + 'Подробный анализ и скоринг', b'a7a2')
+#     ],
+#     [
+#         Button.inline('\U0001F46E  ' + 'Сводка новостей', b'a7a3')
+#     ],
+#     [
+#         Button.inline('\U0001F519  ' + 'Назад', b'main')
+#     ]
+# ]
+
+# keyboard_a7_back = [
+#     [
+#         Button.inline('\U0001F519  ' + 'Назад', b'a7a-1')
+#     ]
+# ]

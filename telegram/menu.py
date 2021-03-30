@@ -82,7 +82,7 @@ async def profile_menu(event, client, engine=None):
     keyboard_profile = [
         # [Button.inline('\U0001F305	  ' + 'Мои цели', b'z10')],
         # [Button.inline('\U0001F516	  ' + 'Подписки', b'z1')],
-        [Button.inline('\U0001F91D	  ' + 'Пригласить друга', b'z2')],
+        [Button.inline('\U0001F91D	  ' + 'Пригласить друга', b'invite_friends')],
         [Button.inline('\U0000267B	  ' + 'Сбросить профиль риска', b'risk_reset')],
         [Button.inline('\U0001F519    ' + 'В главное меню', b'main')]
     ]
