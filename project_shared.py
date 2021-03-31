@@ -153,6 +153,7 @@ OWNERS = conf['OWNERS']
 SERVICE_CHAT = conf['TELEGRAM']['SERVICE_CHAT']
 
 DONATE_DATA_TABLE_NAME = conf['SQL_TABLE_NAMES']['DONATE_DATA_TABLE_NAME']
+LAST_ACTION_TABLE_NAME = conf['SQL_TABLE_NAMES']['LAST_ACTION_TABLE_NAME']
 
 # ============================== Logging Setup ======================
 # logging.basicConfig(
