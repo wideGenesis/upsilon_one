@@ -1483,114 +1483,204 @@ def get_ranking_data3(tick, ag=agents()):
                 is_nontype = True
                 rank_result["rank_type"] = "NonType"
 
-    # if current_liabilities is not None and ebit is not None:
-    #     value_separator = (enterprise_value / fcf_ttm1 * enterprise_value / total_assets_lq1)
-    #     debug(f"value_separator = {value_separator}")
-    # else:
-    #     value_separator = (market_cap / fcf_ttm1 * market_cap / total_assets_lq1)
-    #     debug(f"value_separator={value_separator}")
-    # if 25 > value_separator > 0:
-    #     rank_result["rank_type"] = "Value"
-    #     is_value = True
-    #
-    # bagger_separator = 0
-    # growth_separator = 0
-    # if not is_value:
-    #     if revenue_estimate_ttm1 > 0:
-    #         growth_separator += 1
-    #     if revenue_estimate_ttm2 > 0:
-    #         growth_separator += 1
-    #     if eps_estimate_ttm1 > 0:
-    #         growth_separator += 1
-    #     if eps_estimate_ttm2 > 0:
-    #         growth_separator += 1
-    #
-    #     if cash_dividends_paid_ttm1 is not None and cash_dividends_paid_ttm1 == 0:
-    #         bagger_separator += 1
-    #     if (share_issued_lq1 - share_issued_lq0) > 0:
-    #         bagger_separator += 1
-    #     if net_liquidity > 2:
-    #         bagger_separator += 1
-    #     if leverage1 > 1:
-    #         bagger_separator += 1
-    #
-    #     debug(f'growth_separator = {growth_separator}')
-    #     debug(f'bagger_separator = {bagger_separator}')
-    #     if value_separator >= 25:
-    #         if growth_separator >= 3:
-    #             is_growth = True
-    #             rank_result["rank_type"] = "Growth"
-    #         else:
-    #             is_nontype = True
-    #             rank_result["rank_type"] = "NonType"
-    #     if value_separator <= 0:
-    #         if bagger_separator >= 3:
-    #             is_bagger = True
-    #             rank_result["rank_type"] = "Ponzi"
-    #         else:
-    #             is_nontype = True
-    #             rank_result["rank_type"] = "NonType"
-    #     if pd.isna(value_separator):
-    #         if growth_separator >= 3:
-    #             is_growth = True
-    #             rank_result["rank_type"] = "Growth"
-    #         elif bagger_separator >= 3:
-    #             is_bagger = True
-    #             rank_result["rank_type"] = "Ponzi"
-    #         else:
-    #             is_nontype = True
-    #             rank_result["rank_type"] = "NonType"
     debug(f'\n\n----------- Rank -----------\n')
     rank = 0
     if is_fin:
         if profitability > 0:
             rank += 1
+            rank_result["profitability"] = 1
+        elif profitability <= 0:
+            rank_result["profitability"] = 0
+        elif profitability is None or pd.isna(profitability):
+            rank_result["profitability"] = None
+
         if delta_profitability > 0:
             rank += 1
+            rank_result["delta_profitability"] = 1
+        elif delta_profitability <= 0:
+            rank_result["delta_profitability"] = 1
+        elif delta_profitability is None or pd.isna(delta_profitability):
+            rank_result["delta_profitability"] = None
+
         if roic > 0:
             rank += 1
+            rank_result["roic"] = 1
+        elif roic <= 0:
+            rank_result["roic"] = 0
+        elif roic is None or pd.isna(roic):
+            rank_result["roic"] = None
+
         if delta_shareholders_equity > 0:
             rank += 1
+            rank_result["delta_shareholders_equity"] = 1
+        elif delta_shareholders_equity <= 0:
+            rank_result["delta_shareholders_equity"] = 0
+        elif delta_shareholders_equity is None or pd.isna(delta_shareholders_equity):
+            rank_result["delta_shareholders_equity"] = None
+
         if margin > 0:
             rank += 1
+            rank_result["margin"] = 1
+        elif margin <= 0:
+            rank_result["margin"] = 0
+        elif margin is None or pd.isna(margin):
+            rank_result["margin"] = None
+
+        rank_result["net_liquidity"] = None
+
         if improving_net_liquidity > 0:
             rank += 1
+            rank_result["improving_net_liquidity"] = 1
+        elif improving_net_liquidity <= 0:
+            rank_result["improving_net_liquidity"] = 0
+        elif improving_net_liquidity is None or pd.isna(improving_net_liquidity):
+            rank_result["improving_net_liquidity"] = None
+
+        rank_result["decrease_in_receivables"] = None
+        rank_result["leverage1"] = None
+
         if leverage0 > 0:
             rank += 1
+            rank_result["leverage0"] = 1
+        elif leverage0 <= 0:
+            rank_result["leverage0"] = 0
+        elif leverage0 is None or pd.isna(leverage0):
+            rank_result["leverage0"] = None
+
+        rank_result["interest_coverage"] = None
+
         if revenue_estimate_ttm1 > 0:
             rank += 1
+            rank_result["revenue_estimate_ttm1"] = 1
+        elif revenue_estimate_ttm1 <= 0:
+            rank_result["revenue_estimate_ttm1"] = 0
+        elif revenue_estimate_ttm1 is None or pd.isna(revenue_estimate_ttm1):
+            rank_result["revenue_estimate_ttm1"] = None
+
         if revenue_estimate_ttm2 > 0:
             rank += 1
+            rank_result["revenue_estimate_ttm2"] = 1
+        elif revenue_estimate_ttm2 <= 0:
+            rank_result["revenue_estimate_ttm2"] = 0
+        elif revenue_estimate_ttm2 is None or pd.isna(revenue_estimate_ttm2):
+            rank_result["revenue_estimate_ttm2"] = None
+
         if eps_estimate_ttm1 > 0:
             rank += 1
+            rank_result["eps_estimate_ttm1"] = 1
+        elif eps_estimate_ttm1 <= 0:
+            rank_result["eps_estimate_ttm1"] = 0
+        elif eps_estimate_ttm1 is None or pd.isna(eps_estimate_ttm1):
+            rank_result["eps_estimate_ttm1"] = None
+
         if eps_estimate_ttm2 > 0:
             rank += 1
+            rank_result["eps_estimate_ttm2"] = 1
+        elif eps_estimate_ttm2 <= 0:
+            rank_result["eps_estimate_ttm2"] = 0
+        elif eps_estimate_ttm2 is None or pd.isna(eps_estimate_ttm2):
+            rank_result["eps_estimate_ttm2"] = None
+
         if value_separator < 25:
             rank += 1
         debug(f'Fin. rank = {rank}\n', WARNING)
     elif is_bagger:
-        if delta_shareholders_equity > 0:
+        rank_result["profitability"] = None
+
+        if delta_profitability > 0:
             rank += 1
-        if net_liquidity > 2:
+            rank_result["delta_profitability"] = 1
+        elif delta_profitability <= 0:
+            rank_result["delta_profitability"] = 1
+        elif delta_profitability is None or pd.isna(delta_profitability):
+            rank_result["delta_profitability"] = None
+
+        rank_result["roic"] = None
+
+        rank_result["delta_shareholders_equity"] = None
+
+        rank_result["margin"] = None
+
+        if net_liquidity > 1:
             rank += 1
+            rank_result["net_liquidity"] = 1
+        elif net_liquidity <= 1:
+            rank_result["net_liquidity"] = 0
+        elif net_liquidity is None or pd.isna(net_liquidity):
+            rank_result["net_liquidity"] = None
+
         if improving_net_liquidity > 0:
             rank += 1
+            rank_result["improving_net_liquidity"] = 1
+        elif improving_net_liquidity <= 0:
+            rank_result["improving_net_liquidity"] = 0
+        elif improving_net_liquidity is None or pd.isna(improving_net_liquidity):
+            rank_result["improving_net_liquidity"] = None
+
         if decrease_in_receivables < 0:
             rank += 1
-        if leverage1 > 1:
+            rank_result["decrease_in_receivables"] = 1
+        elif decrease_in_receivables >= 0:
+            rank_result["decrease_in_receivables"] = 0
+        elif decrease_in_receivables is None or pd.isna(decrease_in_receivables):
+            rank_result["decrease_in_receivables"] = None
+
+        if leverage1 < 1:
             rank += 1
+            rank_result["leverage1"] = 1
+        elif leverage1 >= 1:
+            rank_result["leverage1"] = 0
+        elif leverage1 is None or pd.isna(leverage1):
+            rank_result["leverage1"] = None
+
         if leverage0 > 0:
             rank += 1
+            rank_result["leverage0"] = 1
+        elif leverage0 <= 0:
+            rank_result["leverage0"] = 0
+        elif leverage0 is None or pd.isna(leverage0):
+            rank_result["leverage0"] = None
+
         if interest_coverage > 21:
             rank += 1
+            rank_result["interest_coverage"] = 1
+        elif interest_coverage <= 21:
+            rank_result["interest_coverage"] = 0
+        elif interest_coverage is None or pd.isna(interest_coverage):
+            rank_result["interest_coverage"] = None
+
         if revenue_estimate_ttm1 > 0:
             rank += 1
+            rank_result["revenue_estimate_ttm1"] = 1
+        elif revenue_estimate_ttm1 <= 0:
+            rank_result["revenue_estimate_ttm1"] = 0
+        elif revenue_estimate_ttm1 is None or pd.isna(revenue_estimate_ttm1):
+            rank_result["revenue_estimate_ttm1"] = None
+
         if revenue_estimate_ttm2 > 0:
             rank += 1
+            rank_result["revenue_estimate_ttm2"] = 1
+        elif revenue_estimate_ttm2 <= 0:
+            rank_result["revenue_estimate_ttm2"] = 0
+        elif revenue_estimate_ttm2 is None or pd.isna(revenue_estimate_ttm2):
+            rank_result["revenue_estimate_ttm2"] = None
+
         if eps_estimate_ttm1 > 0:
             rank += 1
+            rank_result["eps_estimate_ttm1"] = 1
+        elif eps_estimate_ttm1 <= 0:
+            rank_result["eps_estimate_ttm1"] = 0
+        elif eps_estimate_ttm1 is None or pd.isna(eps_estimate_ttm1):
+            rank_result["eps_estimate_ttm1"] = None
+
         if eps_estimate_ttm2 > 0:
             rank += 1
+            rank_result["eps_estimate_ttm2"] = 1
+        elif eps_estimate_ttm2 <= 0:
+            rank_result["eps_estimate_ttm2"] = 0
+        elif eps_estimate_ttm2 is None or pd.isna(eps_estimate_ttm2):
+            rank_result["eps_estimate_ttm2"] = None
+
         debug(f'Bagger. rank = {rank}\n', WARNING)
         
     elif is_growth or is_value or is_nontype:
