@@ -205,6 +205,7 @@ class StockStat:
                 continue
             else:
                 msg2 += '\n' + ins.ranking_v3[k][v]
+        return msg1, msg2
 
     def stock_news(self):
         try:
