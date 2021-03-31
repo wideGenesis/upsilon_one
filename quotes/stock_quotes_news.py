@@ -120,9 +120,9 @@ class StockStat:
     #         'AvgVolume: ' + price['Avg Volume'] + '\n'
     #     return msg1
 
-    def stock_description_v2(self):
+    def stock_description_v3(self):
         try:
-            description, rank = get_ranking_data2(self.stock)
+            description, rank = get_ranking_data3(self.stock)
         except Exception as e10:
             msg1 = 'Ошибка, попробуйте позже...'
             return msg1
