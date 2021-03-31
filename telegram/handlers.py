@@ -257,7 +257,7 @@ async def quotes_to_handler(event, client_, limit=20):
     else:
         msg2 = 'Нет данных для данного тикера'
 
-    get = ss.stock_description_v2()
+    get = ss.stock_description_v3()
     if get[0] or get[1] is not None:
         msg1 = get[0]
         msg3 = get[1]
