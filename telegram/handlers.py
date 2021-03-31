@@ -261,6 +261,7 @@ async def quotes_to_handler(event, client_, limit=20):
     if get[0] or get[1] is not None:
         msg1 = get[0]
         msg3 = get[1]
+        msg3 = msg3.replace('\n\n\n', '\n')
     else:
         msg1 = 'Нет данных для данного тикера'
         msg3 = msg1
