@@ -1483,6 +1483,18 @@ def get_ranking_data3(tick, ag=agents()):
                 is_nontype = True
                 rank_result["rank_type"] = "NonType"
 
+    if nopat_ttm1 is not None and not pd.isna(nopat_ttm1) and nopat_ttm0 is not None and not pd.isna(nopat_ttm0):
+        if nopat_ttm1 > 0 and nopat_ttm1 > nopat_ttm0:
+            rank_result["nopat"] = 2
+        elif nopat_ttm1 > 0 and nopat_ttm1 < nopat_ttm0:
+            rank_result["nopat"] = 1
+        elif nopat_ttm1 < 0 and nopat_ttm1 > nopat_ttm0:
+            rank_result["nopat"] = 0
+        elif nopat_ttm1 < 0 and nopat_ttm1 < nopat_ttm0:
+            rank_result["nopat"] = -1
+    else:
+        rank_result["nopat"] = None
+
     debug(f'\n\n----------- Rank -----------\n')
     rank = 0
     if is_fin:
@@ -1510,14 +1522,6 @@ def get_ranking_data3(tick, ag=agents()):
         elif roic is None or pd.isna(roic):
             rank_result["roic"] = None
 
-        if delta_shareholders_equity > 0:
-            rank += 1
-            rank_result["delta_shareholders_equity"] = 1
-        elif delta_shareholders_equity <= 0:
-            rank_result["delta_shareholders_equity"] = 0
-        elif delta_shareholders_equity is None or pd.isna(delta_shareholders_equity):
-            rank_result["delta_shareholders_equity"] = None
-
         if margin > 0:
             rank += 1
             rank_result["margin"] = 1
@@ -1526,6 +1530,15 @@ def get_ranking_data3(tick, ag=agents()):
         elif margin is None or pd.isna(margin):
             rank_result["margin"] = None
 
+        if delta_shareholders_equity > 0:
+            rank += 1
+            rank_result["delta_shareholders_equity"] = 1
+        elif delta_shareholders_equity <= 0:
+            rank_result["delta_shareholders_equity"] = 0
+        elif delta_shareholders_equity is None or pd.isna(delta_shareholders_equity):
+            rank_result["delta_shareholders_equity"] = None
+
+        rank_result["interest_coverage"] = None
         rank_result["net_liquidity"] = None
 
         if improving_net_liquidity > 0:
@@ -1546,8 +1559,6 @@ def get_ranking_data3(tick, ag=agents()):
             rank_result["leverage0"] = 0
         elif leverage0 is None or pd.isna(leverage0):
             rank_result["leverage0"] = None
-
-        rank_result["interest_coverage"] = None
 
         if revenue_estimate_ttm1 > 0:
             rank += 1
@@ -1597,9 +1608,17 @@ def get_ranking_data3(tick, ag=agents()):
 
         rank_result["roic"] = None
 
+        rank_result["margin"] = None
+
         rank_result["delta_shareholders_equity"] = None
 
-        rank_result["margin"] = None
+        if interest_coverage > 21:
+            rank += 1
+            rank_result["interest_coverage"] = 1
+        elif interest_coverage <= 21:
+            rank_result["interest_coverage"] = 0
+        elif interest_coverage is None or pd.isna(interest_coverage):
+            rank_result["interest_coverage"] = None
 
         if net_liquidity > 1:
             rank += 1
@@ -1640,14 +1659,6 @@ def get_ranking_data3(tick, ag=agents()):
             rank_result["leverage0"] = 0
         elif leverage0 is None or pd.isna(leverage0):
             rank_result["leverage0"] = None
-
-        if interest_coverage > 21:
-            rank += 1
-            rank_result["interest_coverage"] = 1
-        elif interest_coverage <= 21:
-            rank_result["interest_coverage"] = 0
-        elif interest_coverage is None or pd.isna(interest_coverage):
-            rank_result["interest_coverage"] = None
 
         if revenue_estimate_ttm1 > 0:
             rank += 1
@@ -1708,6 +1719,14 @@ def get_ranking_data3(tick, ag=agents()):
         elif roic is None or pd.isna(roic):
             rank_result["roic"] = None
 
+        if margin > 0:
+            rank += 1
+            rank_result["margin"] = 1
+        elif margin <= 0:
+            rank_result["margin"] = 0
+        elif margin is None or pd.isna(margin):
+            rank_result["margin"] = None
+
         if delta_shareholders_equity > 0:
             rank += 1
             rank_result["delta_shareholders_equity"] = 1
@@ -1716,13 +1735,13 @@ def get_ranking_data3(tick, ag=agents()):
         elif delta_shareholders_equity is None or pd.isna(delta_shareholders_equity):
             rank_result["delta_shareholders_equity"] = None
 
-        if margin > 0:
+        if interest_coverage > 21:
             rank += 1
-            rank_result["margin"] = 1
-        elif margin <= 0:
-            rank_result["margin"] = 0
-        elif margin is None or pd.isna(margin):
-            rank_result["margin"] = None
+            rank_result["interest_coverage"] = 1
+        elif interest_coverage <= 21:
+            rank_result["interest_coverage"] = 0
+        elif interest_coverage is None or pd.isna(interest_coverage):
+            rank_result["interest_coverage"] = None
 
         if net_liquidity > 1:
             rank += 1
@@ -1763,14 +1782,6 @@ def get_ranking_data3(tick, ag=agents()):
             rank_result["leverage0"] = 0
         elif leverage0 is None or pd.isna(leverage0):
             rank_result["leverage0"] = None
-
-        if interest_coverage > 21:
-            rank += 1
-            rank_result["interest_coverage"] = 1
-        elif interest_coverage <= 21:
-            rank_result["interest_coverage"] = 0
-        elif interest_coverage is None or pd.isna(interest_coverage):
-            rank_result["interest_coverage"] = None
 
         if revenue_estimate_ttm1 > 0:
             rank += 1
@@ -1813,19 +1824,6 @@ def get_ranking_data3(tick, ag=agents()):
         elif is_nontype:
             debug(f'NonType. rank = {rank}\n', WARNING)
 
-    rank_result["rank"] = rank
-    if nopat_ttm1 is not None and not pd.isna(nopat_ttm1) and nopat_ttm0 is not None and not pd.isna(nopat_ttm0):
-        if nopat_ttm1 > 0 and nopat_ttm1 > nopat_ttm0:
-            rank_result["nopat"] = 2
-        elif nopat_ttm1 > 0 and nopat_ttm1 < nopat_ttm0:
-            rank_result["nopat"] = 1
-        elif nopat_ttm1 < 0 and nopat_ttm1 > nopat_ttm0:
-            rank_result["nopat"] = 0
-        elif nopat_ttm1 < 0 and nopat_ttm1 < nopat_ttm0:
-            rank_result["nopat"] = -1
-    else:
-        rank_result["nopat"] = None
-
     if cash_dividends_paid_ttm1 is not None and not pd.isna(cash_dividends_paid_ttm1):
         if cash_dividends_paid_ttm1 < 0:
             rank_result["cash_dividends_paid"] = 1
@@ -1842,6 +1840,7 @@ def get_ranking_data3(tick, ag=agents()):
     else:
         rank_result["D_issued"] = None
 
+    rank_result["rank"] = rank
     rank_result["is_fin"] = is_fin
 
     info_result = {'ticker': ticker,
