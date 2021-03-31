@@ -1592,37 +1592,128 @@ def get_ranking_data3(tick, ag=agents()):
         if eps_estimate_ttm2 > 0:
             rank += 1
         debug(f'Bagger. rank = {rank}\n', WARNING)
+        
     elif is_growth or is_value or is_nontype:
         if profitability > 0:
             rank += 1
+            rank_result["profitability"] = 1
+        elif profitability <= 0:
+            rank_result["profitability"] = 0
+        elif profitability is None or pd.isna(profitability):
+            rank_result["profitability"] = None
+
         if delta_profitability > 0:
             rank += 1
+            rank_result["delta_profitability"] = 1
+        elif delta_profitability <= 0:
+            rank_result["delta_profitability"] = 1
+        elif delta_profitability is None or pd.isna(delta_profitability):
+            rank_result["delta_profitability"] = None
+
         if roic > 0:
             rank += 1
+            rank_result["roic"] = 1
+        elif roic <= 0:
+            rank_result["roic"] = 0
+        elif roic is None or pd.isna(roic):
+            rank_result["roic"] = None
+
         if delta_shareholders_equity > 0:
             rank += 1
+            rank_result["delta_shareholders_equity"] = 1
+        elif delta_shareholders_equity <= 0:
+            rank_result["delta_shareholders_equity"] = 0
+        elif delta_shareholders_equity is None or pd.isna(delta_shareholders_equity):
+            rank_result["delta_shareholders_equity"] = None
+
         if margin > 0:
             rank += 1
+            rank_result["margin"] = 1
+        elif margin <= 0:
+            rank_result["margin"] = 0
+        elif margin is None or pd.isna(margin):
+            rank_result["margin"] = None
+
         if net_liquidity > 1:
             rank += 1
+            rank_result["net_liquidity"] = 1
+        elif net_liquidity <= 0:
+            rank_result["net_liquidity"] = 0
+        elif net_liquidity is None or pd.isna(net_liquidity):
+            rank_result["net_liquidity"] = None
+
         if improving_net_liquidity > 0:
             rank += 1
+            rank_result["improving_net_liquidity"] = 1
+        elif improving_net_liquidity <= 0:
+            rank_result["improving_net_liquidity"] = 0
+        elif improving_net_liquidity is None or pd.isna(improving_net_liquidity):
+            rank_result["improving_net_liquidity"] = None
+
         if decrease_in_receivables < 0:
             rank += 1
+            rank_result["decrease_in_receivables"] = 1
+        elif decrease_in_receivables >= 0:
+            rank_result["decrease_in_receivables"] = 0
+        elif decrease_in_receivables is None or pd.isna(decrease_in_receivables):
+            rank_result["decrease_in_receivables"] = None
+
         if leverage1 < 1:
             rank += 1
+            rank_result["leverage1"] = 1
+        elif leverage1 >= 1:
+            rank_result["leverage1"] = 0
+        elif leverage1 is None or pd.isna(leverage1):
+            rank_result["leverage1"] = None
+
         if leverage0 > 0:
             rank += 1
+            rank_result["leverage0"] = 1
+        elif leverage0 <= 0:
+            rank_result["leverage0"] = 0
+        elif leverage0 is None or pd.isna(leverage0):
+            rank_result["leverage0"] = None
+
         if interest_coverage > 21:
             rank += 1
+            rank_result["interest_coverage"] = 1
+        elif interest_coverage <= 21:
+            rank_result["interest_coverage"] = 0
+        elif interest_coverage is None or pd.isna(interest_coverage):
+            rank_result["interest_coverage"] = None
+
         if revenue_estimate_ttm1 > 0:
             rank += 1
+            rank_result["revenue_estimate_ttm1"] = 1
+        elif revenue_estimate_ttm1 <= 0:
+            rank_result["revenue_estimate_ttm1"] = 0
+        elif revenue_estimate_ttm1 is None or pd.isna(revenue_estimate_ttm1):
+            rank_result["revenue_estimate_ttm1"] = None
+
         if revenue_estimate_ttm2 > 0:
             rank += 1
+            rank_result["revenue_estimate_ttm2"] = 1
+        elif revenue_estimate_ttm2 <= 0:
+            rank_result["revenue_estimate_ttm2"] = 0
+        elif revenue_estimate_ttm2 is None or pd.isna(revenue_estimate_ttm2):
+            rank_result["revenue_estimate_ttm2"] = None
+
         if eps_estimate_ttm1 > 0:
             rank += 1
+            rank_result["eps_estimate_ttm1"] = 1
+        elif eps_estimate_ttm1 <= 0:
+            rank_result["eps_estimate_ttm1"] = 0
+        elif eps_estimate_ttm1 is None or pd.isna(eps_estimate_ttm1):
+            rank_result["eps_estimate_ttm1"] = None
+
         if eps_estimate_ttm2 > 0:
             rank += 1
+            rank_result["eps_estimate_ttm2"] = 1
+        elif eps_estimate_ttm2 <= 0:
+            rank_result["eps_estimate_ttm2"] = 0
+        elif eps_estimate_ttm2 is None or pd.isna(eps_estimate_ttm2):
+            rank_result["eps_estimate_ttm2"] = None
+
         if is_value:
             if 25 > value_separator > 0:
                 rank += 1
@@ -1635,17 +1726,6 @@ def get_ranking_data3(tick, ag=agents()):
     rank_result["rank"] = rank
     rank_result["nopat_ttm1"] = nopat_ttm1
     rank_result["nopat_ttm0"] = nopat_ttm0
-    rank_result["profitability"] = profitability
-    rank_result["delta_profitability"] = delta_profitability
-    rank_result["roic"] = roic
-    rank_result["delta_shareholders_equity"] = delta_shareholders_equity
-    rank_result["margin"] = margin
-    rank_result["margin"] = net_liquidity
-    rank_result["improving_net_liquidity"] = improving_net_liquidity
-    rank_result["decrease_in_receivables"] = decrease_in_receivables
-    rank_result["leverage1"] = leverage1
-    rank_result["leverage0"] = leverage0
-    rank_result["interest_coverage"] = interest_coverage
     rank_result["is_fin"] = is_fin
 
     info_result = {'ticker': ticker,
