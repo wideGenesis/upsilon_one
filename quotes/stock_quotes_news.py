@@ -197,9 +197,15 @@ class StockStat:
             elif k is None:
                 msg2 = 'Нет данных для введённого тикера '
             else:
-                print(k)
-                msg2 += '\n' + ins.ranking_v3[k][v]
-        return msg1, msg2
+                if k == 'rank':
+                    if rank["is_fin"]:
+                        v = ins.ranking_v3[rank['other_rank']]
+                    elif rank["is_bagger"]:
+                        v = ins.ranking_v3[rank['other_rank']]
+                    elif not rank["is_fin"] and not rank["is_bagger"]:
+                        v = ins.ranking_v3[rank["rank"]]
+                else:
+                    msg2 += '\n' + ins.ranking_v3[k][v]
 
     def stock_news(self):
         try:
