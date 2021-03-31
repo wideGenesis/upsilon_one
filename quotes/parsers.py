@@ -1724,8 +1724,34 @@ def get_ranking_data3(tick, ag=agents()):
             debug(f'NonType. rank = {rank}\n', WARNING)
 
     rank_result["rank"] = rank
-    rank_result["nopat_ttm1"] = nopat_ttm1
-    rank_result["nopat_ttm0"] = nopat_ttm0
+    if nopat_ttm1 is not None and not pd.isna(nopat_ttm1) and nopat_ttm0 is not None and not pd.isna(nopat_ttm0):
+        if nopat_ttm1 > 0 and nopat_ttm1 > nopat_ttm0:
+            rank_result["nopat"] = 2
+        elif nopat_ttm1 > 0 and nopat_ttm1 < nopat_ttm0:
+            rank_result["nopat"] = 1
+        elif nopat_ttm1 < 0 and nopat_ttm1 > nopat_ttm0:
+            rank_result["nopat"] = 0
+        elif nopat_ttm1 < 0 and nopat_ttm1 < nopat_ttm0:
+            rank_result["nopat"] = -1
+    else:
+        rank_result["nopat"] = None
+
+    if cash_dividends_paid_ttm1 is not None and not pd.isna(cash_dividends_paid_ttm1):
+        if cash_dividends_paid_ttm1 < 0:
+            rank_result["cash_dividends_paid"] = 1
+        else:
+            rank_result["cash_dividends_paid"] = 0
+    else:
+        rank_result["cash_dividends_paid"] = None
+
+    if share_issued_lq1 is not None and not pd.isna(share_issued_lq1) and share_issued_lq0 is not None and not pd.isna(share_issued_lq0):
+        if (share_issued_lq1 - share_issued_lq0) <= 0:
+            rank_result["D_issued"] = 1
+        else:
+            rank_result["D_issued"] = 0
+    else:
+        rank_result["D_issued"] = None
+
     rank_result["is_fin"] = is_fin
 
     info_result = {'ticker': ticker,
