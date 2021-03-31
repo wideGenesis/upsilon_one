@@ -114,17 +114,11 @@ class StockStat:
                 d_sharpe = f'Премия за риск для {self.stock} ниже, чем у индекса. Если Upsilon-score равен "11" ' \
                          f'или выше, то {self.stock} можно рассмотреть для инвестиций. ' \
                          f'Иначе высокая доходность маловероятна'
-            if float(parse[self.stock]['Daily Value-at-Risk ']) > float(parse['Benchmark']['Daily Value-at-Risk ']):
-                d_var = f'Инвестиции в {self.stock} являются более рискованными, чем инвестиции в индекс'
-            elif float(parse[self.stock]['Daily Value-at-Risk ']) <= float(parse['Benchmark']['Daily Value-at-Risk ']):
-                d_var = f'Инвестиции в {self.stock} являются менее рискованными, чем инвестиции в индекс'
-
             msg = '__Ключевые характеристики проанализированы __ с ' + \
                   parse[self.stock]['Start Period'] + '\n' + \
                 'по ' + parse[self.stock]['End Period'] + '\n' + '\n' + \
                 '```Ожидаемая доходность ```' + '\n' + d_cagr + '\n' + '\n' + \
                 '```Эффективность ```' + '\n' + d_sharpe + '\n' + '\n' + \
-                '```Риск ```' + '\n' + d_var + '\n' + '\n' + \
                 f'\U000026A0 Обратите внимание, что выводы выше в отношении {self.stock} будут адекватными только ' \
                 f'при доступности 3 летней истории. Если доступной истории не хватает, то выводы могут быть ' \
                 f'искажены. Это примечание не относится к Upsilon-score'
