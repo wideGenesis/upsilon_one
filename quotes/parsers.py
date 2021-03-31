@@ -1637,7 +1637,7 @@ def get_ranking_data3(tick, ag=agents()):
         if net_liquidity > 1:
             rank += 1
             rank_result["net_liquidity"] = 1
-        elif net_liquidity <= 0:
+        elif net_liquidity <= 1:
             rank_result["net_liquidity"] = 0
         elif net_liquidity is None or pd.isna(net_liquidity):
             rank_result["net_liquidity"] = None
