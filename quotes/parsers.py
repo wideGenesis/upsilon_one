@@ -1842,6 +1842,7 @@ def get_ranking_data3(tick, ag=agents()):
 
     rank_result["rank"] = rank
     rank_result["is_fin"] = is_fin
+    rank_result["is_bagger"] = is_bagger
 
     info_result = {'ticker': ticker,
                    'quoteType': quoteType,
