@@ -199,11 +199,11 @@ class StockStat:
             else:
                 if k == 'rank':
                     if rank["is_fin"]:
-                        v = ins.ranking_v3[rank['other_rank']]
+                        v = ins.ranking_v3["other_rank"][v]
                     elif rank["is_bagger"]:
-                        v = ins.ranking_v3[rank['other_rank']]
+                        v = ins.ranking_v3["other_rank"][v]
                     elif not rank["is_fin"] and not rank["is_bagger"]:
-                        v = ins.ranking_v3[rank["rank"]]
+                        v = ins.ranking_v3["rank"][v]
                 else:
                     msg2 += '\n' + ins.ranking_v3[k][v]
 
