@@ -253,7 +253,7 @@ async def quotes_to_handler(event, client_, limit=20):
     ss.stock_download()
     if ss.returns is not None:
         ss.stock_snapshot()
-        msg2 = ss.stock_stat()
+        msg2 = ss.stock_stat_v3()
     else:
         msg2 = 'Нет данных для данного тикера'
 
