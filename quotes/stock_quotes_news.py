@@ -122,38 +122,14 @@ class StockStat:
             msg = '__Ключевые характеристики проанализированы __ с ' + \
                   parse[self.stock]['Start Period'] + '\n' + \
                 'по ' + parse[self.stock]['End Period'] + '\n' + '\n' + \
-                  '```Ожидаемая доходность ```' + '\n' + d_cagr + '\n' + '\n' + \
-                  '```Эффективность ```' + '\n' + d_sharpe + '\n' + '\n' + \
-                  '```Риск ```' + '\n' + d_var + '\n' + '\n'
+                '```Ожидаемая доходность ```' + '\n' + d_cagr + '\n' + '\n' + \
+                '```Эффективность ```' + '\n' + d_sharpe + '\n' + '\n' + \
+                '```Риск ```' + '\n' + d_var + '\n' + '\n' + \
+                f'\U000026A0 Обратите внимание, что выводы выше в отношении {self.stock} будут адекватными только ' \
+                f'при доступности 5 летней истории. Если доступной истории не хватает, то выводы могут быть ' \
+                f'искажены. Это примечание не относится к Upsilon-score'
+
             return msg
-
-
-# "```Expected Monthly % ```" + '\n' + f'{self.stock} ' + str(parse[self.stock]['Expected Monthly %']) \
-# + f'| {self.benchmark} ' + str(parse['Benchmark']['Expected Monthly %']) + '\n' + '\n' + \
-# "```Expected Yearly % ```" + '\n' + f'{self.stock} ' + str(parse[self.stock]['Expected Yearly %']) \
-# + f'| {self.benchmark} ' + str(parse['Benchmark']['Expected Yearly %']) + '\n' + '\n' + \
-    # def stock_description(self):
-    #     try:
-    #         price = finviz.get_stock(self.stock)
-    #         sma50 = price['SMA50'].split('%')
-    #         sma50 = float(sma50[0])
-    #     except Exception as e10:
-    #         msg1 = 'Описание для ETF недоступно'
-    #         return msg1
-    #     if sma50 > 0:
-    #         mom = 'у акций компании наблюдается моментум'
-    #     elif sma50 <= 0:
-    #         mom = 'отсутствует'
-    #     msg1 = price['Company'] + '\n' + \
-    #         'Sector: ' + price['Sector'] + '\n' + \
-    #         'Industry: ' + price['Industry'] + '\n' + \
-    #         'Country: ' + price['Country'] + '\n' + \
-    #         'MarketCap: ' + price['Market Cap'] + '\n' + \
-    #         'Price: ' + price['Price'] + '\n' + \
-    #         'SMA50: ' + price['SMA50'] + '\n' + \
-    #         'Моментум: ' + mom + '\n' + \
-    #         'AvgVolume: ' + price['Avg Volume'] + '\n'
-    #     return msg1
 
     def stock_description_v3(self):
         try:
