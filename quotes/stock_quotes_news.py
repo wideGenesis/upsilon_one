@@ -196,16 +196,15 @@ class StockStat:
                 next_earning_date = v
             elif k is None:
                 msg2 = 'Нет данных для введённого тикера '
-            else:
-                if k == 'rank':
-                    if rank["is_fin"]:
-                        v = ins.ranking_v3["other_rank"][v]
-                    elif rank["is_bagger"]:
-                        v = ins.ranking_v3["other_rank"][v]
-                    elif not rank["is_fin"] and not rank["is_bagger"]:
-                        v = ins.ranking_v3["rank"][v]
+            elif k == 'rank':
+                if rank["is_fin"] or rank["is_bagger"]:
+                    msg2 += '\n' + ins.ranking_v3["other_rank"][v]
                 else:
                     msg2 += '\n' + ins.ranking_v3[k][v]
+            elif k == "is_fin" or k == "is_bagger":
+                continue
+            else:
+                msg2 += '\n' + ins.ranking_v3[k][v]
 
     def stock_news(self):
         try:
