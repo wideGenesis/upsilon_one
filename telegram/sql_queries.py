@@ -163,3 +163,53 @@ def save_donate_data(sender_id, summa):
             debug(e, ERROR)
             transaction.rollback()
         transaction.commit()
+
+
+def create_last_action_table(engine=None):
+    with engine.connect() as connection:
+        if not is_table_exist(LAST_ACTION_TABLE_NAME):
+            transaction = connection.begin()
+            try:
+                create_query = f'CREATE TABLE {LAST_ACTION_TABLE_NAME} ' \
+                               f'(user_id  BIGINT NOT NULL, ' \
+                               f'dateTime DATETIME NOT NULL, ' \
+                               f'action_type VARCHAR(100) NOT NULL, ' \
+                               f'action VARCHAR(100) NOT NULL, ' \
+                               f'PRIMARY KEY(user_id)' \
+                               f')'
+                connection.execute(create_query)
+            except Exception as e:
+                debug(e, ERROR)
+                transaction.rollback()
+            transaction.commit()
+
+
+def last_action_lookup(user_id, engine=engine) -> bool:
+    with engine.connect() as connection:
+        try:
+            query_string = f'SELECT * FROM {LAST_ACTION_TABLE_NAME} WHERE user_id = \'{user_id}\' LIMIT 1'
+            result = connection.execute(query_string)
+            return True if result.rowcount > 0 else False
+        except Exception as e:
+            debug(e, ERROR)
+            return False
+
+
+def save_action_data(user_id, action_type, action):
+    with engine.connect() as connection:
+        transaction = connection.begin()
+        try:
+            now = datetime.datetime.now()
+            if last_action_lookup(user_id):
+                connection.execute(f"UPDATE {LAST_ACTION_TABLE_NAME} "
+                                   f"SET dateTime=\'{now}\', action_type=\'{action_type}\', action=\'{action}\'  "
+                                   f"WHERE user_id=\'{user_id}\' ")
+            else:
+                connection.execute(f"INSERT INTO {LAST_ACTION_TABLE_NAME}(user_id, dateTime, action_type, action)  "
+                                   f"VALUES( \'{user_id}\', \'{now}\', \'{action_type}\', \'{action}\')")
+        except Exception as e:
+            debug(e, ERROR)
+            transaction.rollback()
+        transaction.commit()
+
+
