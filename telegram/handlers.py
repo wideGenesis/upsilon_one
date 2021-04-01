@@ -251,24 +251,27 @@ async def quotes_to_handler(event, client_, limit=20):
     img_path = os.path.join('results/ticker_stat', f'{stock}.png')
     ss = StockStat(stock=stock)
     ss.stock_download()
-    if ss.returns is not None:
-        ss.stock_snapshot()
-        msg2 = ss.stock_stat_v3()
-    else:
-        msg2 = 'Нет данных для данного тикера'
 
     get = ss.stock_description_v3()
     if get[0] or get[1] is not None:
         msg1 = get[0]
-        msg3 = get[1]
-        msg3 = msg3.replace('\n\n\n', '\n')
+        msg2 = get[1]
+        msg3 = get[2]
+        print(msg3)
+        msg2 = msg2.replace('\n\n\n\n', '\n')
+        msg2 = msg2.replace('\n\n\n', '\n')
     else:
         msg1 = 'Нет данных для данного тикера'
-        msg3 = msg1
+        msg2 = msg1
 
+    if ss.returns is not None:
+        ss.stock_snapshot()
+        msg4 = ss.stock_stat_v3()
+    else:
+        msg4 = 'Нет данных для данного тикера'
     await client_.edit_message(message1, msg1)
-    await client_.edit_message(message2, msg2)
-    await client_.edit_message(message3, '__Оценка Ипсилона:__ ' + '\n' + msg3 + '\n \n ' +
+    # await client_.edit_message(message2, msg2)
+    await client_.edit_message(message3, '__Оценка Ипсилона:__ ' + '\n' + msg2 + '\n \n ' +
                                '\U00002757 Как использовать скоринг? - \n /instruction28')
     if os.path.exists(img_path):
         await client_.send_file(event.input_sender, img_path)

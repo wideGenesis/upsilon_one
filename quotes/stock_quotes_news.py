@@ -118,10 +118,7 @@ class StockStat:
                   parse[self.stock]['Start Period'] + '\n' + \
                 'по ' + parse[self.stock]['End Period'] + '\n' + '\n' + \
                 '```Ожидаемая доходность ```' + '\n' + d_cagr + '\n' + '\n' + \
-                '```Эффективность ```' + '\n' + d_sharpe + '\n' + '\n' + \
-                f'\U000026A0 Обратите внимание, что выводы выше в отношении {self.stock} будут адекватными только ' \
-                f'при доступности 3 летней истории. Если доступной истории не хватает, то выводы могут быть ' \
-                f'искажены. Это примечание не относится к Upsilon-score'
+                '```Эффективность ```' + '\n' + d_sharpe + '\n' + '\n'
 
             return msg
 
@@ -191,6 +188,10 @@ class StockStat:
                f"__Dividend Date:__ {str(dividendDate)}\n" \
                f"__Earnings Date:__ {str(earn)}\n"
         msg2 = ''
+        if rank["is_fin"] or rank["is_bagger"]:
+            msg3 = {'other': 1, 'rank': rank['rank']}
+        else:
+            msg3 = {'other': 0, 'rank': rank['rank']}
         for k, v in rank.items():
             if k == "next_earning_date":
                 next_earning_date = v
@@ -205,7 +206,7 @@ class StockStat:
                 continue
             else:
                 msg2 += '\n' + ins.ranking_v3[k][v]
-        return msg1, msg2
+        return msg1, msg2, msg3
 
     def stock_news(self):
         try:
