@@ -246,7 +246,7 @@ async def quotes_to_handler(event, client_, limit=20):
                                                            'диверсификации и аллокации__')
     message1 = await client_.send_message(event.input_sender, message='Получаю описание, ожидайте...')
     message2 = await client_.send_message(event.input_sender, message='Строю скоринг, ожидайте...')
-    message3 = await client_.send_message(event.input_sender, message='Рассчитываю ключевые статистики, ожидайте...')
+    message3 = await client_.send_message(event.input_sender, message='Провожу статистический анализ, ожидайте...')
 
     img_path = os.path.join('results/ticker_stat', f'{stock}.png')
     ss = StockStat(stock=stock)

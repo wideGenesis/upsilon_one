@@ -103,37 +103,37 @@ class StockStat:
                     and rank >= 6:
                 sharpe = f'Соотношение доходности и риска у {self.stock} больше чем у индекса. ' \
                          f'Upsilon-score достаточно высок для компании этого типа. ' \
-                         f'\U0001F7E2 {self.stock} - хороший кандидат для инвестиций'
+                         f'\n \U0001F7E2 {self.stock} - хороший кандидат для инвестиций'
             elif float(parse[self.stock]['Sharpe']) <= float(parse['Benchmark']['Sharpe']) and rank_type == 0 \
                     and rank >= 11:
                 sharpe = f'Соотношение доходности и риска у {self.stock} меньше чем у индекса. ' \
                          f'Но Upsilon-score __очень__ высок для компании этого типа. ' \
-                         f'\U0001F7E2 {self.stock} - вероятный кандидат для инвестиций'
+                         f'\n \U0001F7E2 {self.stock} - вероятный кандидат для инвестиций'
             elif float(parse[self.stock]['Sharpe']) > float(parse['Benchmark']['Sharpe']) and rank_type == 1 \
                     and rank >= 4:
                 sharpe = f'Соотношение доходности и риска у {self.stock} больше чем у индекса. ' \
                          f'Upsilon-score достаточно высок для компании этого типа. ' \
-                         f'\U0001F7E2 {self.stock} - вероятный кандидат для инвестиций'
+                         f'\n \U0001F7E2 {self.stock} - вероятный кандидат для инвестиций'
             elif float(parse[self.stock]['Sharpe']) <= float(parse['Benchmark']['Sharpe']) and rank_type == 1 \
                     and rank >= 9:
                 sharpe = f'Соотношение доходности и риска у {self.stock} меньше чем у индекса. ' \
                          f'Но Upsilon-score __очень__ высок для компании этого типа. ' \
-                         f'\U0001F7E2 {self.stock} - вероятный кандидат для инвестиций'
+                         f'\n \U0001F7E2 {self.stock} - вероятный кандидат для инвестиций'
             elif float(parse[self.stock]['Sharpe']) > float(parse['Benchmark']['Sharpe']) and rank_type == 1 \
                     and rank <= 5:
                 sharpe = f'Не смотря на то, что соотношение доходности и риска у {self.stock} больше чем у индекса. ' \
                          f'Upsilon-score слишком мал для компании этого типа. ' \
-                         f'\U0001F7E2 {self.stock} - не следует рассматривать для инвестиций ' \
+                         f'\n \U0001F7E2 {self.stock} - не следует рассматривать для инвестиций ' \
                          f'Потенциальный риск не оправдан'
             elif float(parse[self.stock]['Sharpe']) <= float(parse['Benchmark']['Sharpe']) and rank_type == 1 \
                     and rank <= 10:
                 sharpe = f'Соотношение доходности и риска у {self.stock} меньше чем у индекса. ' \
                          f'Upsilon-score __слишком__ мал для компании этого типа. ' \
-                         f'\U0001F7E2 {self.stock} - не следует рассматривать для инвестиций ' \
+                         f'\n \U0001F7E2 {self.stock} - не следует рассматривать для инвестиций ' \
                          f'Потенциальный риск не оправдан. Исторически {self.stock} не обходил индекс и на ' \
                          f'данный момент имеет плохие финансовые показатели'
             else:
-                sharpe = f'Не хватает данных для построения прогноза'
+                sharpe = f'Противоречивые результаты анализа, рекомендация невозможна'
 
             msg = f' {self.stock} __проанализирован __ с ' + parse[self.stock]['Start Period'] + '\n' + \
                 'по ' + parse[self.stock]['End Period'] + '\n' + '\n' + '```Вывод: ```' + '\n' + sharpe + '\n' + '\n'
