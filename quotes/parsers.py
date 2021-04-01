@@ -1079,13 +1079,13 @@ def get_ranking_data3(tick, ag=agents()):
     debug(f'cash_and_cash_equivalents_lq1 = {cash_and_cash_equivalents_lq1}  '
           f'cash_and_cash_equivalents_lq0 = {cash_and_cash_equivalents_lq0}')
 
-    cash_dividends_paid_ttm1 = None
-    cash_dividends_paid_ttm0 = None
+    cash_dividends_paid_lq1 = None
+    cash_dividends_paid_lq0 = None
     cash_dividends_paid = financial_data_q.get('CashDividendsPaid', None)
     if cash_dividends_paid is not None:
-        cash_dividends_paid_ttm1 = sum(cash_dividends_paid[1:])
-        cash_dividends_paid_ttm0 = sum(cash_dividends_paid[:4])
-    debug(f'cash_dividends_paid_ttm1={cash_dividends_paid_ttm1}   cash_dividends_paid_ttm0={cash_dividends_paid_ttm0}')
+        cash_dividends_paid_lq1 = cash_dividends_paid[-1]
+        cash_dividends_paid_lq0 = cash_dividends_paid[-2]
+    debug(f'cash_dividends_paid_ttm1={cash_dividends_paid_lq1}   cash_dividends_paid_ttm0={cash_dividends_paid_lq0}')
 
     current_liabilities_lq1 = None
     current_liabilities_lq0 = None
@@ -1212,7 +1212,7 @@ def get_ranking_data3(tick, ag=agents()):
         return info_result, rank_result
     else:
         total_assets_lq1 = total_assets[-1]
-        total_assets_lq0 = total_assets[-1]
+        total_assets_lq0 = total_assets[-2]
     debug(f'total_assets_lq1 = {total_assets_lq1}   '
           f'total_assets_lq0 = {total_assets_lq0}')
 
@@ -1419,7 +1419,7 @@ def get_ranking_data3(tick, ag=agents()):
     if eps_estimate_ttm2 > 0:
         growth_separator += 1
 
-    if cash_dividends_paid_ttm1 is not None and cash_dividends_paid_ttm1 == 0:
+    if cash_dividends_paid_lq1 is not None and cash_dividends_paid_lq1 == 0:
         bagger_separator += 1
     if (share_issued_lq1 - share_issued_lq0) > 0:
         bagger_separator += 1
@@ -1842,8 +1842,8 @@ def get_ranking_data3(tick, ag=agents()):
         elif is_nontype:
             debug(f'NonType. rank = {rank}\n', WARNING)
 
-    if cash_dividends_paid_ttm1 is not None and not pd.isna(cash_dividends_paid_ttm1):
-        if cash_dividends_paid_ttm1 < 0:
+    if cash_dividends_paid_lq1 is not None and not pd.isna(cash_dividends_paid_lq1):
+        if cash_dividends_paid_lq1 < 0:
             rank_result["cash_dividends_paid"] = 1
         else:
             rank_result["cash_dividends_paid"] = 0
