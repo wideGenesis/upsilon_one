@@ -1027,6 +1027,24 @@ def get_ranking_data3(tick, ag=agents()):
     if ce_earnings_earnings is not None:
         ce_earnings_earningsDate = ce_earnings_earnings.get('earningsDate', '')
 
+    info_result = {'ticker': ticker,
+                   'quoteType': quoteType,
+                   'longName': longName,
+                   'sector': sector,
+                   'industry': industry,
+                   'country': country,
+                   'regularMarketPrice': regularMarketPrice,
+                   'marketState': marketState,
+                   'marketCap': marketCap,
+                   'beta': beta,
+                   'volume': volume,
+                   'averageVolume': averageVolume,
+                   'trailingPE': trailingPE,
+                   'forwardPE': forwardPE,
+                   'exDividendDate': ce_exDividendDate,
+                   'dividendDate': ce_dividendDate,
+                   'earnings_earningsDate': ce_earnings_earningsDate}
+
 
     debug('--- Ticker Info ---')
     # Если OperatingRevenue отсутствует или последнее значение OperatingRevenue <= 0 то считаем что это скам
@@ -1035,8 +1053,8 @@ def get_ranking_data3(tick, ag=agents()):
     operating_revenue = financial_data_q.get('OperatingRevenue', None)
     if operating_revenue is None or operating_revenue[-1] <= 0:
         debug(f'operating_revenue={operating_revenue}')
-        rank_result = {"rank": None, "rank_type": "NoData"}
-        return rank_result
+        rank_result = {"rank_type": "NoData", "rank": 0}
+        return info_result, rank_result
     else:
         operating_revenue_ttm1 = sum(operating_revenue[1:])
         operating_revenue_ttm0 = sum(operating_revenue[:4])
@@ -1091,8 +1109,8 @@ def get_ranking_data3(tick, ag=agents()):
     fcf = financial_data_q.get('FreeCashFlow', None)
     if fcf is None or fcf[-1] == 0:
         debug(f'fcf={fcf}')
-        rank_result = {"rank": None, "rank_type": "NoData"}
-        return rank_result
+        rank_result = {"rank_type": "NoData", "rank": 0}
+        return info_result, rank_result
     else:
         fcf_ttm1 = sum(fcf[1:])
         fcf_ttm0 = sum(fcf[:4])
@@ -1143,8 +1161,8 @@ def get_ranking_data3(tick, ag=agents()):
     pretax_income = financial_data_q.get('PretaxIncome', None)
     if pretax_income is None or pretax_income[-1] == 0:
         debug(f'pretax_income={pretax_income}')
-        rank_result = {"rank": None, "rank_type": "NonType"}
-        return rank_result
+        rank_result = {"rank_type": "NoData", "rank": 0}
+        return info_result, rank_result
     else:
         pretax_income_ttm1 = sum(pretax_income[1:])
         pretax_income_ttm0 = sum(pretax_income[:4])
@@ -1190,8 +1208,8 @@ def get_ranking_data3(tick, ag=agents()):
     total_assets = financial_data_q.get('TotalAssets', None)
     if total_assets is None or total_assets[-1] == 0:
         debug(f'total_assets={total_assets}')
-        rank_result = {"rank": None, "rank_type": "NoData"}
-        return rank_result
+        rank_result = {"rank_type": "NoData", "rank": 0}
+        return info_result, rank_result
     else:
         total_assets_lq1 = total_assets[-1]
         total_assets_lq0 = total_assets[-1]
@@ -1416,8 +1434,8 @@ def get_ranking_data3(tick, ag=agents()):
 
     if nopat_ttm1 is None and fcf_ttm1 is None:
         debug(f'nopat_ttm1 is None and fcf_ttm1 is None!!!!', ERROR)
-        rank_result["rank_type"] = "NoData"
-        return rank_result
+        rank_result = {"rank_type": "NoData", "rank": 0}
+        return info_result, rank_result
     if (nopat_ttm1 is not None and nopat_ttm1 <= 0) or (fcf_ttm1 is not None and fcf_ttm1 <= 0):
         if bagger_separator >= 3:
             is_bagger = True
@@ -1843,24 +1861,6 @@ def get_ranking_data3(tick, ag=agents()):
     rank_result["rank"] = rank
     rank_result["is_fin"] = is_fin
     rank_result["is_bagger"] = is_bagger
-
-    info_result = {'ticker': ticker,
-                   'quoteType': quoteType,
-                   'longName': longName,
-                   'sector': sector,
-                   'industry': industry,
-                   'country': country,
-                   'regularMarketPrice': regularMarketPrice,
-                   'marketState': marketState,
-                   'marketCap': marketCap,
-                   'beta': beta,
-                   'volume': volume,
-                   'averageVolume': averageVolume,
-                   'trailingPE': trailingPE,
-                   'forwardPE': forwardPE,
-                   'exDividendDate': ce_exDividendDate,
-                   'dividendDate': ce_dividendDate,
-                   'earnings_earningsDate': ce_earnings_earningsDate}
 
     return info_result, rank_result
 
