@@ -137,7 +137,7 @@ class StockStat:
                          f'ценовой динамике акций {self.stock}. Если ты решишь купить {self.stock} ' \
                          f'то не вкладывай более 5% от суммы капитала'
 
-            msg = f' {self.stock} __проанализирован __ с ' + parse[self.stock]['Start Period'] + '\n' + \
+            msg = f' {self.stock} __проанализирована __ с ' + parse[self.stock]['Start Period'] + '\n' + \
                 'по ' + parse[self.stock]['End Period'] + '\n' + '\n' + '```Вывод: ```' + '\n' + sharpe + '\n' + '\n'
             return msg
 
