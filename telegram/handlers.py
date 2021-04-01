@@ -245,9 +245,9 @@ async def quotes_to_handler(event, client_, limit=20):
                                                            'риски и последствия, а также придерживаться разумной '
                                                            'диверсификации и аллокации__' + '\n' +
                                '\U00002757 Как использовать анализатор? - \n /instruction28')
-    message1 = await client_.send_message(event.input_sender, message='Получаю описание, ожидайте...')
-    message2 = await client_.send_message(event.input_sender, message='Провожу финансовый анализ, ожидайте...')
-    message3 = await client_.send_message(event.input_sender, message='Провожу статистический анализ, ожидайте...')
+    message1 = await client_.send_message(event.input_sender, message='Получаю описание \U000023F3')
+    message2 = await client_.send_message(event.input_sender, message='Провожу финансовый анализ \U000023F3')
+    message3 = await client_.send_message(event.input_sender, message='Провожу статистический анализ \U000023F3')
 
     img_path = os.path.join('results/ticker_stat', f'{stock}.png')
     ss = StockStat(stock=stock)
