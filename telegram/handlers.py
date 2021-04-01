@@ -245,7 +245,7 @@ async def quotes_to_handler(event, client_, limit=20):
     message2 = await client_.send_message(event.input_sender, message='Рассчитываю ключевые статистики, ожидайте...')
     message3 = await client_.send_message(event.input_sender, message='Строю скоринг, ожидайте...')
     await client_.send_message(event.input_sender, message='\U0001F4CD \U000026A0 \n__Выбирая отдельные акции '
-                                                           'следует придерживаться стретегии, учитывать возможные '
+                                                           'следует придерживаться стратегии, учитывать возможные '
                                                            'риски и последствия, а также придерживаться разумной '
                                                            'диверсификации и аллокации__')
     img_path = os.path.join('results/ticker_stat', f'{stock}.png')
