@@ -240,14 +240,14 @@ async def quotes_to_handler(event, client_, limit=20):
     # print(parse)
     stock = parse[1]
     stock = stock.upper()
-
-    message1 = await client_.send_message(event.input_sender, message='Получаю описание, ожидайте...')
-    message2 = await client_.send_message(event.input_sender, message='Рассчитываю ключевые статистики, ожидайте...')
-    message3 = await client_.send_message(event.input_sender, message='Строю скоринг, ожидайте...')
     await client_.send_message(event.input_sender, message='\U0001F4CD \U000026A0 \n__Выбирая отдельные акции '
                                                            'следует придерживаться стратегии, учитывать возможные '
                                                            'риски и последствия, а также придерживаться разумной '
                                                            'диверсификации и аллокации__')
+    message1 = await client_.send_message(event.input_sender, message='Получаю описание, ожидайте...')
+    message2 = await client_.send_message(event.input_sender, message='Строю скоринг, ожидайте...')
+    message3 = await client_.send_message(event.input_sender, message='Рассчитываю ключевые статистики, ожидайте...')
+
     img_path = os.path.join('results/ticker_stat', f'{stock}.png')
     ss = StockStat(stock=stock)
     ss.stock_download()
@@ -263,16 +263,18 @@ async def quotes_to_handler(event, client_, limit=20):
     else:
         msg1 = 'Нет данных для данного тикера'
         msg2 = msg1
+        msg3 = get[2]
 
     if ss.returns is not None:
         ss.stock_snapshot()
-        msg4 = ss.stock_stat_v3()
+        msg4 = ss.stock_stat_v3(rank_type=msg3['other'], rank=msg3['rank'])
     else:
         msg4 = 'Нет данных для данного тикера'
     await client_.edit_message(message1, msg1)
-    # await client_.edit_message(message2, msg2)
-    await client_.edit_message(message3, '__Оценка Ипсилона:__ ' + '\n' + msg2 + '\n \n ' +
+    await client_.edit_message(message2, '__Оценка Ипсилона:__ ' + '\n' + msg2 + '\n \n ' +
                                '\U00002757 Как использовать скоринг? - \n /instruction28')
+    await client_.edit_message(message3, msg4)
+
     if os.path.exists(img_path):
         await client_.send_file(event.input_sender, img_path)
         os.remove(img_path)

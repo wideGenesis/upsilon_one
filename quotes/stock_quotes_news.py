@@ -91,7 +91,7 @@ class StockStat:
     #               + f'| {self.benchmark} ' + str(parse['Benchmark']['Beta'])
     #
     #         return msg
-    def stock_stat_v3(self):
+    def stock_stat_v3(self, rank_type=None, rank=None):
         if self.returns is not None:
             stats = qs.reports.metrics_v2(self.returns,
                                           benchmark=self.benchmark,
@@ -99,27 +99,44 @@ class StockStat:
                                           ticker_=self.stock,
                                           display=self.display)
             parse = json.loads(stats)
-            if float(parse[self.stock]['CAGR%']) > float(parse['Benchmark']['CAGR%']):
-                d_cagr = f'Среднегодовой темп роста акций {self.stock} больше чем у индекса. ' \
-                         f'Если Upsilon-score равен "6" или выше, то {self.stock} отличный кандидат для инвестиций'
-            elif float(parse[self.stock]['CAGR%']) <= float(parse['Benchmark']['CAGR%']):
-                d_cagr = f'Среднегодовой темп роста акций {self.stock} меньше чем у индекса. ' \
-                         f'Если Upsilon-score равен "11" или выше, то {self.stock} можно рассмотреть для инвестиций. ' \
-                         f'Иначе высокая доходность маловероятна'
-            if float(parse[self.stock]['Sharpe']) > float(parse['Benchmark']['Sharpe']):
-                d_sharpe = f'Премия за риск для {self.stock} выше, чем у индекса. Если Upsilon-score равен "6" ' \
-                         f'или выше, то {self.stock} отличный кандидат для инвестиций. ' \
-                         f'Иначе высокая доходность маловероятна'
-            elif float(parse[self.stock]['Sharpe']) <= float(parse['Benchmark']['Sharpe']):
-                d_sharpe = f'Премия за риск для {self.stock} ниже, чем у индекса. Если Upsilon-score равен "11" ' \
-                         f'или выше, то {self.stock} можно рассмотреть для инвестиций. ' \
-                         f'Иначе высокая доходность маловероятна'
-            msg = '__Ключевые характеристики проанализированы __ с ' + \
+            if float(parse[self.stock]['Sharpe']) > float(parse['Benchmark']['Sharpe']) and rank_type == 0 \
+                    and rank >= 6:
+                sharpe = f'Соотношение доходности и риска у {self.stock} больше чем у индекса. ' \
+                         f'Upsilon-score достаточно высок для компании этого типа. ' \
+                         f'\U0001F7E2 {self.stock} - хороший кандидат для инвестиций'
+            elif float(parse[self.stock]['Sharpe']) <= float(parse['Benchmark']['Sharpe']) and rank_type == 0 \
+                    and rank >= 11:
+                sharpe = f'Соотношение доходности и риска у {self.stock} меньше чем у индекса. ' \
+                         f'Но Upsilon-score __очень__ высок для компании этого типа. ' \
+                         f'\U0001F7E2 {self.stock} - вероятный кандидат для инвестиций'
+            elif float(parse[self.stock]['Sharpe']) > float(parse['Benchmark']['Sharpe']) and rank_type == 1 \
+                    and rank >= 4:
+                sharpe = f'Соотношение доходности и риска у {self.stock} больше чем у индекса. ' \
+                         f'Upsilon-score достаточно высок для компании этого типа. ' \
+                         f'\U0001F7E2 {self.stock} - вероятный кандидат для инвестиций'
+            elif float(parse[self.stock]['Sharpe']) <= float(parse['Benchmark']['Sharpe']) and rank_type == 1 \
+                    and rank >= 9:
+                sharpe = f'Соотношение доходности и риска у {self.stock} меньше чем у индекса. ' \
+                         f'Но Upsilon-score __очень__ высок для компании этого типа. ' \
+                         f'\U0001F7E2 {self.stock} - вероятный кандидат для инвестиций'
+            elif float(parse[self.stock]['Sharpe']) > float(parse['Benchmark']['Sharpe']) and rank_type == 1 \
+                    and rank <= 5:
+                sharpe = f'Не смотря на то, что соотношение доходности и риска у {self.stock} больше чем у индекса. ' \
+                         f'Upsilon-score слишком мал для компании этого типа. ' \
+                         f'\U0001F7E2 {self.stock} - не следует рассматривать для инвестиций ' \
+                         f'Потенциальный риск не оправдан'
+            elif float(parse[self.stock]['Sharpe']) <= float(parse['Benchmark']['Sharpe']) and rank_type == 1 \
+                    and rank <= 10:
+                sharpe = f'Соотношение доходности и риска у {self.stock} меньше чем у индекса. ' \
+                         f'Upsilon-score __слишком__ мал для компании этого типа. ' \
+                         f'\U0001F7E2 {self.stock} - не следует рассматривать для инвестиций ' \
+                         f'Потенциальный риск не оправдан. Исторически {self.stock} не обходил индекс и на ' \
+                         f'данный момент имеет плохие финансовые показатели'
+
+            msg = f' {self.stock} __проанализирован __ с ' + \
                   parse[self.stock]['Start Period'] + '\n' + \
                 'по ' + parse[self.stock]['End Period'] + '\n' + '\n' + \
-                '```Ожидаемая доходность ```' + '\n' + d_cagr + '\n' + '\n' + \
-                '```Эффективность ```' + '\n' + d_sharpe + '\n' + '\n'
-
+                '```Вывод: ```' + '\n' + sharpe + '\n' + '\n'
             return msg
 
     def stock_description_v3(self):
