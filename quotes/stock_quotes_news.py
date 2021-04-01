@@ -103,37 +103,39 @@ class StockStat:
                     and rank >= 6:
                 sharpe = f'Соотношение доходности и риска у {self.stock} больше чем у индекса. ' \
                          f'Upsilon-score достаточно высок для компании этого типа. ' \
-                         f'\n \U0001F7E2 {self.stock} - хороший кандидат для инвестиций'
+                         f'\n \U0001F7E2 {self.stock} - хороший выбор'
             elif float(parse[self.stock]['Sharpe']) <= float(parse['Benchmark']['Sharpe']) and rank_type == 0 \
                     and rank >= 11:
                 sharpe = f'Соотношение доходности и риска у {self.stock} меньше чем у индекса. ' \
                          f'Но Upsilon-score __очень__ высок для компании этого типа. ' \
-                         f'\n \U0001F7E2 {self.stock} - вероятный кандидат для инвестиций'
+                         f'\n \U0001F7E2 {self.stock} - рациональный выбор'
             elif float(parse[self.stock]['Sharpe']) > float(parse['Benchmark']['Sharpe']) and rank_type == 1 \
                     and rank >= 4:
                 sharpe = f'Соотношение доходности и риска у {self.stock} больше чем у индекса. ' \
                          f'Upsilon-score достаточно высок для компании этого типа. ' \
-                         f'\n \U0001F7E2 {self.stock} - вероятный кандидат для инвестиций'
+                         f'\n \U0001F7E1 {self.stock} - приемлемый выбор'
             elif float(parse[self.stock]['Sharpe']) <= float(parse['Benchmark']['Sharpe']) and rank_type == 1 \
                     and rank >= 9:
                 sharpe = f'Соотношение доходности и риска у {self.stock} меньше чем у индекса. ' \
                          f'Но Upsilon-score __очень__ высок для компании этого типа. ' \
-                         f'\n \U0001F7E2 {self.stock} - вероятный кандидат для инвестиций'
+                         f'\n \U0001F7E1 {self.stock} - приемлемый выбор'
             elif float(parse[self.stock]['Sharpe']) > float(parse['Benchmark']['Sharpe']) and rank_type == 1 \
                     and rank <= 5:
                 sharpe = f'Не смотря на то, что соотношение доходности и риска у {self.stock} больше чем у индекса. ' \
                          f'Upsilon-score слишком мал для компании этого типа. ' \
-                         f'\n \U0001F7E2 {self.stock} - не следует рассматривать для инвестиций ' \
-                         f'Потенциальный риск не оправдан'
+                         f'\n \U0001F7E0 {self.stock} - не следует рассматривать для инвестиций ' \
+                         f'Потенциальный риск не оправдан из-за не очень хорошого финансового положения {self.stock} '
             elif float(parse[self.stock]['Sharpe']) <= float(parse['Benchmark']['Sharpe']) and rank_type == 1 \
                     and rank <= 10:
                 sharpe = f'Соотношение доходности и риска у {self.stock} меньше чем у индекса. ' \
                          f'Upsilon-score __слишком__ мал для компании этого типа. ' \
-                         f'\n \U0001F7E2 {self.stock} - не следует рассматривать для инвестиций ' \
-                         f'Потенциальный риск не оправдан. Исторически {self.stock} не обходил индекс и на ' \
+                         f'\n \U0001F7E0 {self.stock} - не следует рассматривать для инвестиций ' \
+                         f'Потенциальный риск не оправдан. Исторически {self.stock} не была лучше индекса и на ' \
                          f'данный момент имеет плохие финансовые показатели'
             else:
-                sharpe = f'Противоречивые результаты анализа, рекомендация невозможна'
+                sharpe = f'\U000026A0 противоречивые результаты анализа. Финансовая оценка не соответсвует ' \
+                         f'ценовой динамике акций {self.stock}. Если ты решишь купить {self.stock} ' \
+                         f'то не вкладывай более 5% от суммы капитала'
 
             msg = f' {self.stock} __проанализирован __ с ' + parse[self.stock]['Start Period'] + '\n' + \
                 'по ' + parse[self.stock]['End Period'] + '\n' + '\n' + '```Вывод: ```' + '\n' + sharpe + '\n' + '\n'

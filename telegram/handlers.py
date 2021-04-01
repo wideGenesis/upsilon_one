@@ -243,9 +243,10 @@ async def quotes_to_handler(event, client_, limit=20):
     await client_.send_message(event.input_sender, message='\U0001F4CD \U000026A0 \n__Выбирая отдельные акции '
                                                            'следует придерживаться стратегии, учитывать возможные '
                                                            'риски и последствия, а также придерживаться разумной '
-                                                           'диверсификации и аллокации__')
+                                                           'диверсификации и аллокации__' + '\n' +
+                               '\U00002757 Как использовать анализатор? - \n /instruction28')
     message1 = await client_.send_message(event.input_sender, message='Получаю описание, ожидайте...')
-    message2 = await client_.send_message(event.input_sender, message='Строю скоринг, ожидайте...')
+    message2 = await client_.send_message(event.input_sender, message='Провожу финансовый анализ, ожидайте...')
     message3 = await client_.send_message(event.input_sender, message='Провожу статистический анализ, ожидайте...')
 
     img_path = os.path.join('results/ticker_stat', f'{stock}.png')
@@ -271,8 +272,7 @@ async def quotes_to_handler(event, client_, limit=20):
     else:
         msg4 = 'Нет данных для данного тикера'
     await client_.edit_message(message1, msg1)
-    await client_.edit_message(message2, '__Оценка Ипсилона:__ ' + '\n' + msg2 + '\n \n ' +
-                               '\U00002757 Как использовать скоринг? - \n /instruction28')
+    await client_.edit_message(message2, '__Оценка Ипсилона:__ ' + '\n' + msg2)
     await client_.edit_message(message3, msg4)
 
     if os.path.exists(img_path):
