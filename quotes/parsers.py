@@ -972,6 +972,7 @@ def get_ranking_data3(tick, ag=agents()):
                  "BasicEPS",
                  "CashAndCashEquivalents",
                  "CashDividendsPaid",
+                 "CurrentAssets",
                  "CurrentLiabilities",
                  "DilutedEPS",
                  "EBIT",
@@ -1086,6 +1087,14 @@ def get_ranking_data3(tick, ag=agents()):
         cash_dividends_paid_lq1 = cash_dividends_paid[-1]
         cash_dividends_paid_lq0 = cash_dividends_paid[-2]
     debug(f'cash_dividends_paid_ttm1={cash_dividends_paid_lq1}   cash_dividends_paid_ttm0={cash_dividends_paid_lq0}')
+
+    current_assets_lq1 = None
+    current_assets_lq0 = None
+    current_assets = financial_data_q.get('CurrentAssets', None)
+    if current_assets is not None:
+        current_assets_lq1 = current_assets[-1]
+        current_assets_lq0 = current_assets[-2]
+    debug(f'current_assets_lq1={current_assets_lq1}   current_assets_lq0={current_assets_lq0}')
 
     current_liabilities_lq1 = None
     current_liabilities_lq0 = None
@@ -1336,8 +1345,8 @@ def get_ranking_data3(tick, ag=agents()):
     # Чистая ликвидность --- Cash and equivalents / current liabilities
     net_liquidity = 0
     if current_liabilities_lq1 is not None and current_liabilities_lq1 != 0:
-        if cash_and_cash_equivalents_lq1 is not None:
-            net_liquidity = cash_and_cash_equivalents_lq1 / current_liabilities_lq1
+        if current_assets_lq1 is not None:
+            net_liquidity = current_assets_lq1 / current_liabilities_lq1
         else:
             net_liquidity = 0
     debug(f'net_liquidity > 1VG / > 2Bagger ={net_liquidity} ')
@@ -1345,13 +1354,13 @@ def get_ranking_data3(tick, ag=agents()):
     # Улучшение чистой ликвидности --- D_(Cash and equivalents / current liabilities)
     minuend = 0
     if current_liabilities_lq1 is not None and current_liabilities_lq1 != 0:
-        minuend = (cash_and_cash_equivalents_lq1 / current_liabilities_lq1)
+        minuend = (current_assets_lq1 / current_liabilities_lq1)
     else:
         minuend = (total_assets_lq1 / total_liabilities_lq1)
 
     subtrahend = 0
     if current_liabilities_lq0 is not None and current_liabilities_lq0 != 0:
-        subtrahend = (cash_and_cash_equivalents_lq0 / current_liabilities_lq0)
+        subtrahend = (current_assets_lq0 / current_liabilities_lq0)
     else:
         subtrahend = (total_assets_lq0 / total_liabilities_lq0)
 
@@ -1425,7 +1434,7 @@ def get_ranking_data3(tick, ag=agents()):
         bagger_separator += 1
     if net_liquidity > 2:
         bagger_separator += 1
-    if leverage1 > 1:
+    if leverage1 < 1:
         bagger_separator += 1
 
     debug(f"value_separator = {value_separator}")
@@ -1662,10 +1671,10 @@ def get_ranking_data3(tick, ag=agents()):
         elif decrease_in_receivables is None or pd.isna(decrease_in_receivables):
             rank_result["decrease_in_receivables"] = None
 
-        if leverage1 < 1:
+        if leverage1 > 1:
             rank += 1
             rank_result["leverage1"] = 1
-        elif leverage1 >= 1:
+        elif leverage1 <= 1:
             rank_result["leverage1"] = 0
         elif leverage1 is None or pd.isna(leverage1):
             rank_result["leverage1"] = None
@@ -1785,10 +1794,10 @@ def get_ranking_data3(tick, ag=agents()):
         elif decrease_in_receivables is None or pd.isna(decrease_in_receivables):
             rank_result["decrease_in_receivables"] = None
 
-        if leverage1 < 1:
+        if leverage1 > 1:
             rank += 1
             rank_result["leverage1"] = 1
-        elif leverage1 >= 1:
+        elif leverage1 <= 1:
             rank_result["leverage1"] = 0
         elif leverage1 is None or pd.isna(leverage1):
             rank_result["leverage1"] = None
