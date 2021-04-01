@@ -1777,10 +1777,10 @@ def get_ranking_data3(tick, ag=agents()):
 
         if interest_coverage is None or pd.isna(interest_coverage):
             rank_result["interest_coverage"] = None
-        elif interest_coverage > 21:
+        elif interest_coverage >= 6:
             rank += 1
             rank_result["interest_coverage"] = 1
-        elif interest_coverage <= 21:
+        elif interest_coverage < 6:
             rank_result["interest_coverage"] = 0
 
         if net_liquidity is None or pd.isna(net_liquidity):
