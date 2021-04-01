@@ -132,11 +132,11 @@ class StockStat:
                          f'\U0001F7E2 {self.stock} - не следует рассматривать для инвестиций ' \
                          f'Потенциальный риск не оправдан. Исторически {self.stock} не обходил индекс и на ' \
                          f'данный момент имеет плохие финансовые показатели'
+            else:
+                sharpe = f'Не хватает данных для построения прогноза'
 
-            msg = f' {self.stock} __проанализирован __ с ' + \
-                  parse[self.stock]['Start Period'] + '\n' + \
-                'по ' + parse[self.stock]['End Period'] + '\n' + '\n' + \
-                '```Вывод: ```' + '\n' + sharpe + '\n' + '\n'
+            msg = f' {self.stock} __проанализирован __ с ' + parse[self.stock]['Start Period'] + '\n' + \
+                'по ' + parse[self.stock]['End Period'] + '\n' + '\n' + '```Вывод: ```' + '\n' + sharpe + '\n' + '\n'
             return msg
 
     def stock_description_v3(self):
