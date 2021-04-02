@@ -483,7 +483,6 @@ def metrics_v1(returns, benchmark=None, rf=0., display=True,
 def metrics_v2(returns, benchmark=None, ticker_=None, rf=0., display=False,
             mode='full', sep=False, compounded=False, **kwargs):
 
-
     if isinstance(returns, _pd.DataFrame) and len(returns.columns) > 1:
         raise ValueError("`returns` must be a pandas Series, "
                          "but a multi-column DataFrame was passed")

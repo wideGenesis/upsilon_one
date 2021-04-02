@@ -238,7 +238,6 @@ def _prepare_returns_v2(data, rf=0., nperiods=None):
     # cleanup data
     data = data.replace([_np.inf, -_np.inf], float('NaN'))
 
-
     if isinstance(data, (_pd.DataFrame, _pd.Series)):
         data = data.fillna(0).replace(
             [_np.inf, -_np.inf], float('NaN'))
@@ -247,7 +246,8 @@ def _prepare_returns_v2(data, rf=0., nperiods=None):
         return to_excess_returns(data, rf, nperiods)
     return data
 
-def download_returns(ticker, period="5y"):
+
+def download_returns(ticker, period="3y"):
     if isinstance(period, _pd.DatetimeIndex):
         p = {"start": period[0]}
     else:
