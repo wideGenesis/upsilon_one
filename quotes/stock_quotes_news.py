@@ -196,7 +196,7 @@ class StockStat:
                 sharpe = f'\U000026A0 противоречивые результаты анализа. Финансовая оценка не соответсвует ' \
                          f'ценовой динамике акций {self.stock}'
 
-            msg = f' {self.stock} __проанализирована __ с ' + parse[self.stock]['Start Period'] + '\n' + \
+            msg = f' {self.stock} __проанализирована __\nс ' + parse[self.stock]['Start Period'] + '\n' + \
                 'по ' + parse[self.stock]['End Period'] + '\n' + '\n' + '```Вывод: ```' + '\n' + sharpe + '\n' + '\n'
             print(rank, rank_type)
             return msg
