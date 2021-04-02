@@ -150,7 +150,8 @@ class StockStat:
         if len(description) == 0 and rank['rank'] is None and rank['data'] is None:
             msg1 = None
             msg2 = None
-            return msg1, msg2
+            msg3 = None
+            return msg1, msg2, msg3
         if description['marketCap'] is not None:
             mc = round(float(description['marketCap'] / 1000000000), 2)
         else:
@@ -207,7 +208,7 @@ class StockStat:
                f"__Dividend Date:__ {str(dividendDate)}\n" \
                f"__Earnings Date:__ {str(earn)}\n"
         msg2 = ''
-        if rank["is_fin"] or rank["is_bagger"]:
+        if ("is_fin" in rank and rank["is_fin"]) or ("is_bagger" in rank and rank["is_bagger"]):
             msg3 = {'other': 1, 'rank': rank['rank']}
         else:
             msg3 = {'other': 0, 'rank': rank['rank']}

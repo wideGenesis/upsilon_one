@@ -254,11 +254,10 @@ async def quotes_to_handler(event, client_, limit=20):
     ss.stock_download()
 
     get = ss.stock_description_v3()
-    if get[0] or get[1] is not None:
+    if get[0] or get[1] or get[2] is not None:
         msg1 = get[0]
         msg2 = get[1]
         msg3 = get[2]
-        print(msg3)
         msg2 = msg2.replace('\n\n\n\n', '\n')
         msg2 = msg2.replace('\n\n\n', '\n')
     else:
@@ -268,7 +267,10 @@ async def quotes_to_handler(event, client_, limit=20):
 
     if ss.returns is not None:
         ss.stock_snapshot()
-        msg4 = ss.stock_stat_v3(rank_type=msg3['other'], rank=msg3['rank'])
+        if msg3 is not None:
+            msg4 = ss.stock_stat_v3(rank_type=msg3['other'], rank=msg3['rank'])
+        else:
+            msg4 = 'Нет данных для данного тикера'
     else:
         msg4 = 'Нет данных для данного тикера'
     await client_.edit_message(message1, msg1)
