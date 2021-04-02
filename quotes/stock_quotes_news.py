@@ -132,6 +132,8 @@ class StockStat:
                          f'\n \U0001F7E0 {self.stock} - не следует рассматривать для инвестиций ' \
                          f'Потенциальный риск не оправдан. Исторически {self.stock} не была лучше индекса и на ' \
                          f'данный момент имеет плохие финансовые показатели'
+            elif rank == 0:
+                sharpe = f'\U000026D4 отсутствуют данные для оценки {self.stock} или крайне плохое ведение бизнеса'
             else:
                 sharpe = f'\U000026A0 противоречивые результаты анализа. Финансовая оценка не соответсвует ' \
                          f'ценовой динамике акций {self.stock}. Если ты решишь купить {self.stock} ' \
@@ -225,6 +227,7 @@ class StockStat:
             elif k == "is_fin" or k == "is_bagger":
                 continue
             else:
+                print(rank)
                 msg2 += '\n' + ins.ranking_v3[k][v]
         return msg1, msg2, msg3
 
