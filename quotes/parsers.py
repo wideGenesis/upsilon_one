@@ -993,7 +993,13 @@ def get_ranking_data3(tick, ag=agents()):
                  "TotalNonCurrentAssets",
                  "TotalRevenue"
                  ]
-    financial_data_q = ticker_data.get_financial_data(need_data, frequency="q", trailing=False)
+    financial_data_q = None
+    try:
+        financial_data_q = ticker_data.get_financial_data(need_data, frequency="q", trailing=False)
+    except Exception as e:
+        debug(e, ERROR)
+        return err_info_result, err_rank_result
+
     # all_financial_data_q = ticker_data.all_financial_data('q')
     if isinstance(financial_data_q, str):
         debug(f"Can't get ticker data -- [{ticker}]")
@@ -1284,7 +1290,7 @@ def get_ranking_data3(tick, ag=agents()):
     eps_actual = earning_history.get("epsActual", None)
     eps_estimate_ttm1 = earnings_estimate_avg1 if earnings_estimate_avg1 is not None else 0
     eps_estimate_ttm2 = earnings_estimate_avg2 if earnings_estimate_avg2 is not None else 0
-    if eps_actual is not None and len(eps_actual) == 4:
+    if eps_actual is not None and len(eps_actual) == 4 and eps_actual.dtypes.name != 'object':
         eps_estimate_ttm0 = sum(eps_actual)
         eps_estimate_ttm1 += sum(eps_actual[1:])
         eps_estimate_ttm2 += sum(eps_actual[2:])
@@ -1298,7 +1304,7 @@ def get_ranking_data3(tick, ag=agents()):
     total_revenue = financial_data_q.get('TotalRevenue', None)
     revenue_estimate_ttm1 = revenue_estimate_avg1 if revenue_estimate_avg1 is not None else 0
     revenue_estimate_ttm2 = revenue_estimate_avg2 if revenue_estimate_avg2 is not None else 0
-    if total_revenue is not None:
+    if total_revenue is not None and total_revenue.dtype.name != 'object':
         if len(total_revenue) == 5:
             revenue_estimate_ttm0 = sum(total_revenue[1:])
             revenue_estimate_ttm1 += sum(total_revenue[2:])
@@ -1317,8 +1323,9 @@ def get_ranking_data3(tick, ag=agents()):
     nopat_ttm1 = None
     nopat_ttm0 = None
     if current_liabilities is not None and ebit is not None:
-        nopat_ttm1 = ebit_ttm1 * (1 - (tax_provision_ttm1 / pretax_income_ttm1))
-        nopat_ttm0 = ebit_ttm0 * (1 - (tax_provision_ttm0 / pretax_income_ttm0))
+        if tax_provision_ttm1 is not None and pretax_income_ttm1 is not None and ebit_ttm1 is not None:
+            nopat_ttm1 = ebit_ttm1 * (1 - (tax_provision_ttm1 / pretax_income_ttm1))
+            nopat_ttm0 = ebit_ttm0 * (1 - (tax_provision_ttm0 / pretax_income_ttm0))
         debug(f'nopat_ttm1={nopat_ttm1}   nopat_ttm0={nopat_ttm0}')
 
     # Рентабельность всех активов через NOPAT ---  NOPAT/Total Assets

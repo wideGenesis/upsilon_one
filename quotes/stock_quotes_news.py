@@ -278,7 +278,7 @@ class StockStat:
             elif k is None:
                 msg2 = 'Нет данных для введённого тикера '
             elif k == 'rank':
-                if ("is_fin" in rank and rank["is_fin"]) or ("is_fin" in rank and rank["is_bagger"]):
+                if ("is_fin" in rank and rank["is_fin"]) or ("is_bagger" in rank and rank["is_bagger"]):
                     msg2 += '\n' + ins.ranking_v3["other_rank"][v]
                 else:
                     msg2 += '\n' + ins.ranking_v3[k][v]
