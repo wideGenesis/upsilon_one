@@ -1000,7 +1000,6 @@ def get_ranking_data3(tick, ag=agents()):
         debug(e, ERROR)
         return err_info_result, err_rank_result
 
-    # all_financial_data_q = ticker_data.all_financial_data('q')
     if isinstance(financial_data_q, str):
         debug(f"Can't get ticker data -- [{ticker}]")
         return err_info_result, err_rank_result
@@ -1301,9 +1300,9 @@ def get_ranking_data3(tick, ag=agents()):
     eps_estimate_ttm1 = earnings_estimate_avg1 if earnings_estimate_avg1 is not None else 0
     eps_estimate_ttm2 = earnings_estimate_avg2 if earnings_estimate_avg2 is not None else 0
     if eps_actual is not None and len(eps_actual) == 4 and eps_actual.dtypes.name != 'object':
-        eps_estimate_ttm0 = sum(eps_actual)
+        eps_estimate_ttm2 += eps_estimate_ttm1 + sum(eps_actual[2:])
         eps_estimate_ttm1 += sum(eps_actual[1:])
-        eps_estimate_ttm2 += sum(eps_actual[2:])
+        eps_estimate_ttm0 = sum(eps_actual)
     debug(f'eps_estimate_ttm0 = {eps_estimate_ttm0}   '
           f'eps_estimate_ttm1 = {eps_estimate_ttm1}   '
           f'eps_estimate_ttm2 = {eps_estimate_ttm2}')
@@ -1316,16 +1315,27 @@ def get_ranking_data3(tick, ag=agents()):
     revenue_estimate_ttm2 = revenue_estimate_avg2 if revenue_estimate_avg2 is not None else 0
     if total_revenue is not None and total_revenue.dtype.name != 'object':
         if len(total_revenue) == 5:
-            revenue_estimate_ttm0 = sum(total_revenue[1:])
+            revenue_estimate_ttm2 += revenue_estimate_ttm1 + sum(total_revenue[3:])
             revenue_estimate_ttm1 += sum(total_revenue[2:])
-            revenue_estimate_ttm2 += sum(total_revenue[3:])
+            revenue_estimate_ttm0 = sum(total_revenue[1:])
         elif len(total_revenue) == 4:
-            revenue_estimate_ttm0 = sum(total_revenue)
+            revenue_estimate_ttm2 += revenue_estimate_ttm1 + sum(total_revenue[2:])
             revenue_estimate_ttm1 += sum(total_revenue[1:])
-            revenue_estimate_ttm2 += sum(total_revenue[2:])
+            revenue_estimate_ttm0 = sum(total_revenue)
     debug(f'revenue_estimate_ttm0 = {revenue_estimate_ttm0}   '
           f'revenue_estimate_ttm1 = {revenue_estimate_ttm1}   '
           f'revenue_estimate_ttm2 = {revenue_estimate_ttm2}')
+
+    # revenue_gowth_rate = []
+    # if revenue_estimate_ttm0 != 0 and revenue_estimate_ttm1 != 0 and revenue_estimate_ttm2 != 0:
+    #     if revenue_estimate_ttm_1 != 0:
+    #         revenue_gowth_rate1 = (revenue_estimate_ttm0 - revenue_estimate_ttm_1)/revenue_estimate_ttm_1 * 100
+    #         revenue_gowth_rate.append(revenue_gowth_rate1)
+    #     revenue_gowth_rate2 = (revenue_estimate_ttm1 - revenue_estimate_ttm0)/revenue_estimate_ttm0 * 100
+    #     revenue_gowth_rate.append(revenue_gowth_rate2)
+    #     revenue_gowth_rate3 = (revenue_estimate_ttm2 - revenue_estimate_ttm1)/revenue_estimate_ttm1 * 100
+    #     revenue_gowth_rate.append(revenue_gowth_rate3)
+    # debug(f"revenue_gowth_rate = {revenue_gowth_rate}")
 
     debug(f'\n\n----------- Расчетные величины -----------\n')
     # -------------- Далее расчеты для скоринга --------------
