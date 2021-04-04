@@ -940,9 +940,11 @@ def get_ranking_data3(tick, ag=agents()):
     ticker = tick.upper()
     err_info_result = {}
     err_rank_result = {"rank": None, "data": None}
+    revenue_data = {}
+
     if ticker is None or len(ticker) == 0:
         debug(f'Ticker is none, or len = 0 -- [{ticker}]')
-        return err_info_result, err_rank_result
+        return err_info_result, err_rank_result, revenue_data
 
     ticker_data = None
     try:
@@ -955,7 +957,7 @@ def get_ranking_data3(tick, ag=agents()):
     quoteType = None
     if ticker_data.quotes == 'No data found':
         debug(f"No data found -- [{ticker}]")
-        return err_info_result, err_rank_result
+        return err_info_result, err_rank_result, revenue_data
     else:
         quoteType = ticker_data.quotes[ticker].get('quoteType', None)
         fullExchangeName = ticker_data.quotes[ticker].get('fullExchangeName')
@@ -965,7 +967,7 @@ def get_ranking_data3(tick, ag=agents()):
                 quoteType == 'ETF' or
                 (quoteType == 'EQUITY' and fullExchangeName == 'Other OTC')):
             debug(f"quoteType == {quoteType} -- [{ticker}]")
-            return err_info_result, err_rank_result
+            return err_info_result, err_rank_result, revenue_data
 
     rank_result = {}
     need_data = ["AdditionalPaidInCapital",
@@ -998,11 +1000,11 @@ def get_ranking_data3(tick, ag=agents()):
         financial_data_q = ticker_data.get_financial_data(need_data, frequency="q", trailing=False)
     except Exception as e:
         debug(e, ERROR)
-        return err_info_result, err_rank_result
+        return err_info_result, err_rank_result, revenue_data
 
     if isinstance(financial_data_q, str):
         debug(f"Can't get ticker data -- [{ticker}]")
-        return err_info_result, err_rank_result
+        return err_info_result, err_rank_result, revenue_data
 
     valuation = None
     if not isinstance(ticker_data.valuation_measures, str):
@@ -1060,7 +1062,7 @@ def get_ranking_data3(tick, ag=agents()):
     if operating_revenue is None or operating_revenue[-1] <= 0:
         debug(f'operating_revenue={operating_revenue}')
         rank_result = {"rank_type": "NoData", "rank": 0}
-        return info_result, rank_result
+        return info_result, rank_result, revenue_data
     else:
         operating_revenue_ttm1 = sum(operating_revenue[1:])
         operating_revenue_ttm0 = sum(operating_revenue[:4])
@@ -1134,7 +1136,7 @@ def get_ranking_data3(tick, ag=agents()):
     if fcf is None or fcf[-1] == 0:
         debug(f'fcf={fcf}')
         rank_result = {"rank_type": "NoData", "rank": 0}
-        return info_result, rank_result
+        return info_result, rank_result, revenue_data
     else:
         fcf_ttm1 = sum(fcf[1:])
         fcf_ttm0 = sum(fcf[:4])
@@ -1186,7 +1188,7 @@ def get_ranking_data3(tick, ag=agents()):
     if pretax_income is None or pretax_income[-1] == 0:
         debug(f'pretax_income={pretax_income}')
         rank_result = {"rank_type": "NoData", "rank": 0}
-        return info_result, rank_result
+        return info_result, rank_result, revenue_data
     else:
         pretax_income_ttm1 = sum(pretax_income[1:])
         pretax_income_ttm0 = sum(pretax_income[:4])
@@ -1233,7 +1235,7 @@ def get_ranking_data3(tick, ag=agents()):
     if total_assets is None or total_assets[-1] == 0:
         debug(f'total_assets={total_assets}')
         rank_result = {"rank_type": "NoData", "rank": 0}
-        return info_result, rank_result
+        return info_result, rank_result, revenue_data
     else:
         total_assets_lq1 = total_assets[-1]
         total_assets_lq0 = total_assets[-2]
@@ -1274,11 +1276,14 @@ def get_ranking_data3(tick, ag=agents()):
     earnings_estimate_avg2 = None
     revenue_estimate_avg1 = None
     revenue_estimate_avg2 = None
+    revenue_estimate_avg1_date = None
+    revenue_estimate_avg2_date = None
     if not isinstance(earnings_trend_data, str):
         earnings_trend_ticker_trend = earnings_trend_data.get('trend', None)
         if len(earnings_trend_ticker_trend) >= 1:
             earnings_estimate_avg1 = earnings_trend_ticker_trend[0]['earningsEstimate']['avg']
             revenue_estimate_avg1 = earnings_trend_ticker_trend[0]['revenueEstimate']['avg']
+            revenue_estimate_avg1_date = earnings_trend_ticker_trend[0]['endDate']
             if isinstance(earnings_estimate_avg1, dict):
                 earnings_estimate_avg1 = None
             if isinstance(revenue_estimate_avg1, dict):
@@ -1287,6 +1292,7 @@ def get_ranking_data3(tick, ag=agents()):
         if len(earnings_trend_ticker_trend) >= 2:
             earnings_estimate_avg2 = earnings_trend_ticker_trend[1]['earningsEstimate']['avg']
             revenue_estimate_avg2 = earnings_trend_ticker_trend[1]['revenueEstimate']['avg']
+            revenue_estimate_avg2_date = earnings_trend_ticker_trend[1]['endDate']
             if isinstance(earnings_estimate_avg2, dict):
                 earnings_estimate_avg2 = None
             if isinstance(revenue_estimate_avg2, dict):
@@ -1325,6 +1331,16 @@ def get_ranking_data3(tick, ag=agents()):
     debug(f'revenue_estimate_ttm0 = {revenue_estimate_ttm0}   '
           f'revenue_estimate_ttm1 = {revenue_estimate_ttm1}   '
           f'revenue_estimate_ttm2 = {revenue_estimate_ttm2}')
+
+    dates = financial_data_q.get('asOfDate', None)
+    for rdate, value in zip(dates, total_revenue):
+        if not pd.isna(value):
+            revenue_data[pd.to_datetime(rdate).strftime('%Y-%m-%d')] = value
+    if revenue_estimate_avg1 is not None:
+        revenue_data[revenue_estimate_avg1_date] = revenue_estimate_avg1
+    if revenue_estimate_avg2 is not None:
+        revenue_data[revenue_estimate_avg2_date] = revenue_estimate_avg2
+    debug(f'revenue_data = {revenue_data}')
 
     # revenue_gowth_rate = []
     # if revenue_estimate_ttm0 != 0 and revenue_estimate_ttm1 != 0 and revenue_estimate_ttm2 != 0:
@@ -1485,7 +1501,7 @@ def get_ranking_data3(tick, ag=agents()):
     if nopat_ttm1 is None and fcf_ttm1 is None:
         debug(f'nopat_ttm1 is None and fcf_ttm1 is None!!!!', ERROR)
         rank_result = {"rank_type": "NoData", "rank": 0}
-        return info_result, rank_result
+        return info_result, rank_result, revenue_data
     if (nopat_ttm1 is not None and nopat_ttm1 <= 0) or (fcf_ttm1 is not None and fcf_ttm1 <= 0):
         if bagger_separator >= 3:
             is_bagger = True
@@ -1912,7 +1928,7 @@ def get_ranking_data3(tick, ag=agents()):
     rank_result["is_fin"] = is_fin
     rank_result["is_bagger"] = is_bagger
 
-    return info_result, rank_result
+    return info_result, rank_result, revenue_data
 
 
 # ============================== FINVIZ TREEMAP GET ================================

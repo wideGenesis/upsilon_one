@@ -134,7 +134,7 @@ async def get_all_users(engine=None):
     return users
 
 
-def create_donate_data_table(engine=None):
+async def create_donate_data_table(engine=None):
     with engine.connect() as connection:
         if not is_table_exist(DONATE_DATA_TABLE_NAME):
             transaction = connection.begin()
@@ -152,7 +152,7 @@ def create_donate_data_table(engine=None):
             transaction.commit()
 
 
-def save_donate_data(sender_id, summa):
+async def save_donate_data(sender_id, summa):
     with engine.connect() as connection:
         transaction = connection.begin()
         try:
@@ -165,9 +165,10 @@ def save_donate_data(sender_id, summa):
         transaction.commit()
 
 
-def create_last_action_table(engine=None):
+async def create_last_action_table(engine=engine):
     with engine.connect() as connection:
-        if not is_table_exist(LAST_ACTION_TABLE_NAME):
+        ite = await is_table_exist(LAST_ACTION_TABLE_NAME, engine)
+        if not ite:
             transaction = connection.begin()
             try:
                 create_query = f'CREATE TABLE {LAST_ACTION_TABLE_NAME} ' \
@@ -184,7 +185,7 @@ def create_last_action_table(engine=None):
             transaction.commit()
 
 
-def last_action_lookup(user_id, engine=engine) -> bool:
+async def last_action_lookup(user_id, engine=engine) -> bool:
     with engine.connect() as connection:
         try:
             query_string = f'SELECT * FROM {LAST_ACTION_TABLE_NAME} WHERE user_id = \'{user_id}\' LIMIT 1'
@@ -195,12 +196,16 @@ def last_action_lookup(user_id, engine=engine) -> bool:
             return False
 
 
-def save_action_data(user_id, action_type, action):
+async def save_action_data(user_id, action_type, action):
     with engine.connect() as connection:
+        ite = await is_table_exist(LAST_ACTION_TABLE_NAME, engine)
+        if not ite:
+            await create_last_action_table(engine)
         transaction = connection.begin()
         try:
             now = datetime.datetime.now()
-            if last_action_lookup(user_id):
+            lal = await last_action_lookup(user_id)
+            if lal:
                 connection.execute(f"UPDATE {LAST_ACTION_TABLE_NAME} "
                                    f"SET dateTime=\'{now}\', action_type=\'{action_type}\', action=\'{action}\'  "
                                    f"WHERE user_id=\'{user_id}\' ")
