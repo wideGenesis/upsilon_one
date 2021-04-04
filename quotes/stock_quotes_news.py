@@ -203,7 +203,7 @@ class StockStat:
 
     def stock_description_v3(self):
         try:
-            description, rank = get_ranking_data3(self.stock)
+            description, rank, revenue_data = get_ranking_data3(self.stock)
         except Exception as e10:
             msg1 = 'Ошибка, попробуйте позже...'
             return msg1
@@ -285,9 +285,9 @@ class StockStat:
             elif k == "is_fin" or k == "is_bagger":
                 continue
             else:
-                print(rank)
+                # print(rank)
                 msg2 += '\n' + ins.ranking_v3[k][v]
-        return msg1, msg2, msg3
+        return msg1, msg2, msg3, revenue_data
 
     def stock_news(self):
         try:

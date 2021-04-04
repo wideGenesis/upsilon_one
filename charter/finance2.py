@@ -1,4 +1,6 @@
 #!/usr/bin/python
+import math
+
 from FinanceChart import *
 from pychartdir import *
 from datetime import date, timedelta
@@ -250,6 +252,48 @@ def create_excess_histogram(ticker, data, compare_ticker, compare_data):
     excess_chart.xAxis().setLabels(labels)
 
     filename = "port_excess_over_" + compare_ticker + ".png"
+    excess_chart.makeChart(filename)
+
+
+def create_revenue_histogram(ticker, data, img_path):
+    millnames = ['', ' Thousand', ' M', ' B', ' T']
+    labels = data.keys()
+    bars = []
+    colors = []
+    millidx = 0
+    for k in data:
+        n = float(data[k])
+        millidx = max(0, min(len(millnames) - 1,
+                             int(math.floor(0 if n == 0 else math.log10(abs(n)) / 3))))
+        bars.append(round(n / 10**(3 * millidx), 2))
+        if date.fromisoformat(k) > datetime.datetime.now().date():
+            colors.append(0x06468f)
+        else:
+            colors.append(BAR_UP_COLOR)
+    excess_chart = XYChart(H_IMAGE_WIDTH, H_IMAGE_HEIGHT, HIST_BACKGROUND_COLOR)
+    excess_chart.setYAxisOnRight(True)
+    excess_chart.xAxis().setLabelStyle("normal", 8, H_AXIS_FONT_COLOR, 0)
+    excess_chart.yAxis().setLabelStyle("normal", 8, H_AXIS_FONT_COLOR, 0)
+    if millidx == 0:
+        excess_chart.yAxis().setLabelFormat("{value}")
+    elif millidx == 1:
+        excess_chart.yAxis().setLabelFormat("{value}Th")
+    elif millidx == 2:
+        excess_chart.yAxis().setLabelFormat("{value}M")
+    elif millidx == 3:
+        excess_chart.yAxis().setLabelFormat("{value}B")
+    elif millidx == 4:
+        excess_chart.yAxis().setLabelFormat("{value}T")
+    excess_chart.setPlotArea(0, 25, 605, 205, Transparent, -1, Transparent, 0xcccccc)
+    title_str = f'{ticker} Revenue'
+    excess_chart.addTitle(title_str, "arialbd.ttf", 12, H_TITLE_FONT_COLOR)
+    excess_chart.addText(100, 100, "    @UpsilonBot", "arialbd.ttf", 32, H_WATERMARK_TEXT_COLOR)
+    bl = excess_chart.addBarLayer3(bars, colors)
+    bl.setBorderColor(Transparent)
+    bl.setBarShape(CircleShape)
+    excess_chart.xAxis().setLabels(labels)
+
+    filename = f'{img_path}revenue_{ticker}.png'
     excess_chart.makeChart(filename)
 
 

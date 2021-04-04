@@ -27,6 +27,8 @@ from messages.message import *
 
 
 # ============================== Environment Setup ======================
+from telegram.sql_queries import save_action_data
+
 PYTHON_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir))
 sys.path.append(PYTHON_PATH)
 ABS_ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -50,38 +52,38 @@ async def start(event):
 
 @client.on(events.NewMessage(pattern='Главное меню|\U0001F4C1 Главное меню|📁 Главное меню'))
 async def tools(event):
-    await acion_info(event, f'Главное меню')
+    await acion_info(event, 'main menu', f'Главное меню')
     await menu.tools_menu(event, client)
 
 
 @client.on(events.NewMessage(pattern='menu|Menu|Меню|меню'))
 async def meta_tools(event):
-    await acion_info(event, f'Меню')
+    await acion_info(event, 'cmd', f'Меню')
     await menu.meta_menu(event, client)
 
 
 @client.on(events.NewMessage(pattern='Профиль|профиль|Profile|profile|👤 Профиль|\U0001F464 Профиль'))
 async def profile(event):
-    await acion_info(event, f'Профиль')
+    await acion_info(event, 'main menu', f'Профиль')
     await menu.profile_menu(event, client, engine=engine)
 
 
 @client.on(events.NewMessage(pattern='Помощь|инструкции|Инструкции|помощь|help|Help|/help'))
 async def helper(event):
-    await acion_info(event, f'Помощь')
+    await acion_info(event, 'main menu', f'Помощь')
     await menu.information_menu(event, client, engine=engine)
 
 
 @client.on(events.NewMessage(pattern='Информация|инфомация|инфо|Инфо|🛎 Информация|\U0001F6CE Информация'))
 async def information(event):
-    await acion_info(event, f'Информация')
+    await acion_info(event, 'main menu', f'Информация')
     await menu.information_menu(event, client, engine=engine)
 
 
 # ============================== Commands ===============================
 @client.on(events.NewMessage(pattern='портфель|портфели|Портфель|Портфели|portfolio|portfolios'))
 async def portfolios(event):
-    await acion_info(event, f'Портфель')
+    await acion_info(event, 'cmd', f'Портфель')
     await handlers.portfolios_cmd(client, event)
 
 
@@ -102,21 +104,22 @@ async def dialog_flow(event):
 
 @client.on(events.NewMessage(pattern='/q|[$#@]'))
 async def quotes_to(event):
-    await acion_info(event, f'Try get ticker data')
+    await acion_info(event, 'ticker data', f'Try get ticker data')
     await handlers.quotes_to_handler(event, client, limit=0)
 
 
 @client.on(events.NewMessage(pattern='news'))
 async def news_to(event):
-    await acion_info(event, f'news')
+    await acion_info(event, 'cmd',  f'news')
     await handlers.news_to_handler(event, client, limit=0)
 
 
 # ============================== Callbacks =======================
 @client.on(events.CallbackQuery)
 async def callback(event):
-    action = f'Press button {event.data}'
-    await acion_info(event, action)
+    button = event.data
+    action = f'Press button {button.decode("utf-8")}'
+    await acion_info(event, 'press button', action)
     await callbacks.callback_handler(event, client, img_path=IMAGES_OUT_PATH, yahoo_path=YAHOO_PATH,
                                      engine=engine)
 
@@ -129,19 +132,19 @@ async def handler(update):
 # ============================== Instructions ===============================
 @client.on(events.NewMessage(pattern='/goals'))
 async def goals(event):
-    await acion_info(event, f'goals')
+    await acion_info(event, 'cmd', f'goals')
     await handlers.goals_handler(event, client)
 
 
 @client.on(events.NewMessage(pattern='/skills'))
 async def skills(event):
-    await acion_info(event, f'skills')
+    await acion_info(event, 'cmd', f'skills')
     await handlers.skills_handler(event, client)
 
 
 @client.on(events.NewMessage(pattern='^/(instruction[0-9][0-9]|mindepo)$'))
 async def instructions(event):
-    await acion_info(event, f'instruction')
+    await acion_info(event, 'cmd', f'instruction')
     await handlers.instructions_handler(event, client)
 
 
@@ -152,17 +155,17 @@ async def instructions(event):
 
 @client.on(events.NewMessage(pattern='Анкета регистрации управляющего'))
 async def instructions(event):
-    await acion_info(event, f'Анкета регистрации управляющего')
+    await acion_info(event, 'cmd', f'Анкета регистрации управляющего')
     await handlers.managers_form_handler(event, client)
 
 
 @client.on(events.NewMessage(pattern='/(support|adv|bug)'))
 async def support(event):
-    await acion_info(event, f'support|adv|bug')
+    await acion_info(event, 'cmd', f'support|adv|bug')
     await handlers.support_handler(event, client)
 
 
-async def acion_info(event, action):
+async def acion_info(event, action_type, action):
     msg = getattr(event, "message", None)
     sender = getattr(event.message, "sender", None) if msg else None
     if msg is None and sender is None:
@@ -177,6 +180,7 @@ async def acion_info(event, action):
             if event.message.sender.last_name:
                 usr_data += f'{sender.last_name}'
             debug(f' -- {action} -- {sender.id} - ( {usr_data} )')
+        await sql.save_action_data(sender.id, action_type, action)
 
 
 # ============================== Main  =============================

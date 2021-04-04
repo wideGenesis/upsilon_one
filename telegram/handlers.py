@@ -9,6 +9,8 @@ from fastnumbers import *
 
 from datetime import timedelta, datetime
 from aiohttp import web
+
+from charter.finance2 import create_revenue_histogram
 from telegram import sql_queries as sql
 from telegram import ai
 from telegram import shared
@@ -112,8 +114,8 @@ class WebHandler:
                     shared.ORDER_MAP.pop(order_id)
                     await sql.delete_from_payment_message(order_id, self.engine)
                     if not is_table_exist(DONATE_DATA_TABLE_NAME):
-                        sql.create_donate_data_table(self.engine)
-                    sql.save_donate_data(sender_id, fast_float(summa))
+                        await sql.create_donate_data_table(self.engine)
+                    await sql.save_donate_data(sender_id, fast_float(summa))
                     return web.Response(status=200)
 
             else:
@@ -249,7 +251,9 @@ async def quotes_to_handler(event, client_, limit=20):
     message2 = await client_.send_message(event.input_sender, message='Провожу финансовый анализ \U000023F3')
     message3 = await client_.send_message(event.input_sender, message='Провожу статистический анализ \U000023F3')
 
-    img_path = os.path.join('results/ticker_stat', f'{stock}.png')
+    path = f'{PROJECT_HOME_DIR}/results/ticker_stat/'
+    img_path = f'{path}{stock}.png'
+
     ss = StockStat(stock=stock)
     ss.stock_download()
 
@@ -265,6 +269,11 @@ async def quotes_to_handler(event, client_, limit=20):
         msg2 = msg1
         msg3 = get[2]
 
+    revenue_data = None
+    if len(get) == 4:
+        revenue_data = get[3]
+        debug(f'revenue_data = {revenue_data}!!!!!!')
+
     if ss.returns is not None:
         ss.stock_snapshot()
         if msg3 is not None:
@@ -278,8 +287,17 @@ async def quotes_to_handler(event, client_, limit=20):
     await client_.edit_message(message3, msg4)
 
     if os.path.exists(img_path):
+        add_watermark(img_path, img_path, 64, wtermark_color=(217, 217, 217, 50))
         await client_.send_file(event.input_sender, img_path)
         os.remove(img_path)
+
+    if revenue_data is not None and len(revenue_data) != 0:
+        create_revenue_histogram(stock, revenue_data, path)
+
+    revenue_hist_path = f'{path}revenue_{stock}.png'
+    if os.path.exists(revenue_hist_path):
+        await client_.send_file(event.input_sender, revenue_hist_path)
+        os.remove(revenue_hist_path)
 
 
 async def news_to_handler(event, client_, limit=20):
