@@ -52,6 +52,32 @@ class StockStat:
         else:
             self.returns = returns
 
+    def ema(self, data, window):
+        alpha = 2 / (window + 1.0)
+        alpha_rev = 1 - alpha
+        n = data.shape[0]
+        pows = alpha_rev ** (np.arange(n + 1))
+        scale_arr = 1 / pows[:-1]
+        offset = data[0] * pows[1:]
+        pw0 = alpha * alpha_rev ** (n - 1)
+        mult = data * pw0 * scale_arr
+        cumsums = mult.cumsum()
+        out = offset + cumsums * scale_arr[::-1]
+        return out
+
+    def is_stock_lq_ema10(self):
+        try:
+            returns = qs.utils.download_weekly(self.stock)
+        except ValueError as e11:
+            return e11
+        if returns.empty:
+            self.returns = None
+        else:
+            ema10 = self.ema(returns, 10)
+            debug(ema10)
+            self.returns = returns
+
+
     def stock_snapshot(self):
         if self.returns is not None:
             img = f'results/ticker_stat/{self.stock}.png'
