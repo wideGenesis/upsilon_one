@@ -1194,8 +1194,8 @@ def get_ranking_data3(tick, ag=agents()):
         pretax_income_ttm0 = sum(pretax_income[:4])
     debug(f'pretax_income_ttm1={pretax_income_ttm1}   pretax_income_ttm0={pretax_income_ttm0}')
 
-    receivables_lq1 = None
-    receivables_lq0 = None
+    receivables_lq1 = 0
+    receivables_lq0 = 0
     receivables = financial_data_q.get('Receivables', None)
     if receivables is not None:
         receivables_lq1 = receivables[-1]
