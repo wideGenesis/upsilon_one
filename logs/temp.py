@@ -7,8 +7,9 @@ stock_list = Screener(filters=filters, table='Overview', order='-marketcap')  # 
 
 stock_list.to_csv("/home/gene/projects/upsilon_one/logs/stock.csv")
 
-def ewma(data, window):
-    alpha = 2 /(window + 1.0)
+
+def ema(data, window):
+    alpha = 2 / (window + 1.0)
     alpha_rev = 1-alpha
     n = data.shape[0]
     pows = alpha_rev**(np.arange(n+1))
