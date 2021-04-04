@@ -77,7 +77,6 @@ class StockStat:
             debug(ema10)
             self.returns = returns
 
-
     def stock_snapshot(self):
         if self.returns is not None:
             img = f'results/ticker_stat/{self.stock}.png'
