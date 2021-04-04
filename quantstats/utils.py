@@ -256,6 +256,14 @@ def download_returns(ticker, period="3y"):
     return data
 
 
+def download_weekly(ticker, period="6mo", interval="1wk"):
+    if isinstance(period, _pd.DatetimeIndex):
+        p = {"start": period[0]}
+    else:
+        p = {"period": period}
+    data = _yf.Ticker(ticker).history(interval=interval, auto_adjust=False, **p, )['Close']
+    return data
+
 def _prepare_benchmark(benchmark=None, period="max", rf=0.):
     """
     fetch benchmark if ticker is provided, and pass through

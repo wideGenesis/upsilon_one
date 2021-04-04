@@ -326,3 +326,4 @@ def none_to_str(s):
     if s is None:
         return '*'
     return str(s)
+
