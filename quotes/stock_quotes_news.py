@@ -81,7 +81,7 @@ class StockStat:
     def stock_snapshot(self):
         if self.returns is not None:
             img = f'results/ticker_stat/{self.stock}.png'
-            qs.plots.snapshot_v2(self.returns,
+            qs.plots.snapshot_v2(self.returns[-335:],
                                  title=f'{self.stock}',
                                  savefig=img)
 

@@ -247,7 +247,7 @@ def _prepare_returns_v2(data, rf=0., nperiods=None):
     return data
 
 
-def download_returns(ticker, period="1y"):
+def download_returns(ticker, period="3y"):
     if isinstance(period, _pd.DatetimeIndex):
         p = {"start": period[0]}
     else:

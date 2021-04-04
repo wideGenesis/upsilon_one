@@ -242,11 +242,12 @@ async def quotes_to_handler(event, client_, limit=20):
     # print(parse)
     stock = parse[1]
     stock = stock.upper()
-    await client_.send_message(event.input_sender, message='\U0001F4CD \U000026A0 \n__Выбирая отдельные акции '
+    await client_.send_message(event.input_sender, message='\U000026A0 \n__Выбирая отдельные акции '
                                                            'следует придерживаться стратегии, учитывать возможные '
                                                            'риски и последствия, а также придерживаться разумной '
-                                                           'диверсификации и аллокации__' + '\n' +
-                               '\U00002757 Как использовать анализатор? - \n /instruction28')
+                                                           'диверсификации и аллокации__' + '\n\n' +
+                               '\U00002757 Как построен рейтинг? - /instruction28' + '\n'
+                               '\U00002757\U00002757 Как использовать рейтинг? - /instruction34')
     message1 = await client_.send_message(event.input_sender, message='Получаю описание \U000023F3')
     message2 = await client_.send_message(event.input_sender, message='Провожу финансовый анализ \U000023F3')
     message3 = await client_.send_message(event.input_sender, message='Провожу статистический анализ \U000023F3')
@@ -408,6 +409,8 @@ async def instructions_handler(event, client_):
         await client_.send_message(event.input_sender, ins.instruction32, buttons=buttons.keyboard_0_back)
     elif pattern == 'instruction33':
         await client_.send_message(event.input_sender, ins.instruction33, buttons=buttons.keyboard_0_back)
+    elif pattern == 'instruction34':
+        await client_.send_message(event.input_sender, ins.instruction34, buttons=buttons.keyboard_0_back)
 
 
 async def portfolio_candle_chart_handler(event, client_):
