@@ -140,9 +140,7 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
         await event.edit()
         await shared.delete_old_message(client, sender_id)
         await client.send_file(entity, img_path + 'sectors.png')
-        await client.send_message(event.input_sender, 'Обзор рынка США\n'
-                                                      '/instruction02\n'
-                                  '/instruction35\n')
+        await client.send_message(event.input_sender, 'Обзор рынка США\n /instruction02\n /instruction35\n')
         await client.send_file(entity, img_path + 'treemap_1d.png')
         await client.send_message(event.input_sender, 'Тепловая карта рынка США\n'
                                                       '/instruction04',
@@ -152,9 +150,7 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
         await event.edit()
         await shared.delete_old_message(client, sender_id)
         await client.send_file(entity, img_path + 'crypto.png')
-        await client.send_message(event.input_sender, 'Обзор BTCUSD и ETHUSD\n'
-                                                      '/instruction07'
-                                                      '/instruction35\n')
+        await client.send_message(event.input_sender, 'Обзор BTCUSD и ETHUSD\n /instruction07 /instruction35\n')
         await client.send_file(entity, img_path + 'coins_treemap.png')
         await client.send_message(event.input_sender, 'Тепловая карта основных криптовалют\n'
                                                       '/instruction04',
