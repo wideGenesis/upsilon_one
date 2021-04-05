@@ -258,7 +258,7 @@ async def quotes_to_handler(event, client_, limit=20):
     ss = StockStat(stock=stock)
     ss.stock_download()
 
-    ss.is_stock_lq_ema10()
+    sma_sig = ss.higher_sma8()
 
     get = ss.stock_description_v3()
     if get[0] or get[1] or get[2] is not None:
@@ -280,7 +280,7 @@ async def quotes_to_handler(event, client_, limit=20):
     if ss.returns is not None:
         ss.stock_snapshot()
         if msg3 is not None:
-            msg4 = ss.stock_stat_v3(rank_type=msg3['other'], rank=msg3['rank'])
+            msg4 = ss.stock_stat_v3(rank_type=msg3['other'], rank=msg3['rank'], sma_sig=sma_sig)
         else:
             msg4 = 'Нет данных для данного тикера'
     else:

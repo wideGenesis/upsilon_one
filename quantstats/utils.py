@@ -262,6 +262,7 @@ def download_weekly(ticker, period="6mo", interval="1wk"):
     else:
         p = {"period": period}
     data = _yf.Ticker(ticker).history(interval=interval, auto_adjust=False, **p, )['Close']
+    data.dropna(inplace=True)
     return data
 
 
