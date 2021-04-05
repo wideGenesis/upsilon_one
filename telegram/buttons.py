@@ -330,7 +330,7 @@ keyboard_restart_poll = [
 # ============================== Кнопки донатов =============================
 keyboard_donate = [
     [
-        Button.inline('\U0001F949   ' + '1$', b'donate1')
+        Button.inline('\U0001F949   ' + '2$', b'donate1')
     ],
     [
         Button.inline('\U0001F948   ' + '5$', b'donate5')

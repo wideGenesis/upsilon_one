@@ -84,8 +84,8 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
             msg = await client.send_message(event.input_sender, 'Donate', buttons=buttons.keyboard_donate)
             await shared.save_old_message(sender_id, msg)
 
-    elif event.data == b'donate1':
-        await make_donate(event, client, 1.0)
+    elif event.data == b'donate2':
+        await make_donate(event, client, 2.0)
 
     elif event.data == b'donate5':
         await make_donate(event, client, 5.0)
@@ -195,7 +195,6 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
         msg = await client.send_message(event.input_sender, 'Анализ рынков', buttons=buttons.keyboard_a1)
         await shared.save_old_message(sender_id, msg)
 
-    # ============================== Анализ рынков уровень 3 =============================
     elif event.data == b'kb_us_market_adl':
         await event.edit()
         await shared.delete_old_message(client, sender_id)
