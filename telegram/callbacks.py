@@ -1122,13 +1122,13 @@ async def make_donate(event, client_, summ):
             msg_id = old_msg_id
             await client_.edit_message(event.input_sender, old_msg_id,
                                        f'Для оплаты нажми кнопку Оплатить\n '
-                                       f'(Инструкция по оплате [тут](https://telegra.ph/Rrrtt-10-13)! )',
+                                       f'(Инструкция по оплате [тут](https://telegra.ph/Instrukciya-po-oplate-04-05)! )',
                                        link_preview=True,
                                        buttons=kbd_payment_button)
         else:
             paymsg = await client_.send_message(event.input_sender,
                                                 f'Для оплаты нажми кнопку Оплатить\n '
-                                                f'(Инструкция по оплате [тут](https://telegra.ph/Rrrtt-10-13)! )',
+                                                f'(Инструкция по оплате [тут](https://telegra.ph/Instrukciya-po-oplate-04-05)! )',
                                                 link_preview=True,
                                                 buttons=kbd_payment_button)
             await shared.save_old_message(sender_id, paymsg)
