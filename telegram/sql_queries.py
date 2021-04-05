@@ -134,9 +134,9 @@ async def get_all_users(engine=None):
     return users
 
 
-async def create_donate_data_table(engine=None):
+async def create_donate_data_table(engine=engine):
     with engine.connect() as connection:
-        ite = await is_table_exist(DONATE_DATA_TABLE_NAME)
+        ite = await is_table_exist(DONATE_DATA_TABLE_NAME, engine)
         if not ite:
             transaction = connection.begin()
             try:
