@@ -175,9 +175,9 @@ async def acion_info(event, action_type, action):
         if sender.username:
             debug(f' -- {action} -- {sender.id} - {sender.username}')
         else:
-            if event.message.sender.first_name:
+            if sender.first_name:
                 usr_data += f'{sender.first_name} '
-            if event.message.sender.last_name:
+            if sender.last_name:
                 usr_data += f'{sender.last_name}'
             debug(f' -- {action} -- {sender.id} - ( {usr_data} )')
         await sql.save_action_data(sender.id, action_type, action)
