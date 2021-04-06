@@ -261,11 +261,20 @@ def create_revenue_histogram(ticker, data, img_path):
     bars = []
     colors = []
     millidx = 0
+    millidxs = []
     for k in data:
         n = float(data[k])
         millidx = max(0, min(len(millnames) - 1,
                              int(math.floor(0 if n == 0 else math.log10(abs(n)) / 3))))
-        bars.append(round(n / 10**(3 * millidx), 2))
+        millidxs.append(millidx)
+    millidx = max(millidxs)
+    for k in data:
+        n = float(data[k])
+        # millidx = max(0, min(len(millnames) - 1,
+        #                      int(math.floor(0 if n == 0 else math.log10(abs(n)) / 3))))
+
+        val = round(n / 10**(3 * millidx), 2)
+        bars.append(val)
         if date.fromisoformat(k) > datetime.datetime.now().date():
             colors.append(0x06468f)
         else:
