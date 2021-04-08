@@ -171,7 +171,7 @@ async def acion_info(event, action_type, action):
     if msg is None and sender is None:
         sender = getattr(event, "sender", None)
     if sender is not None:
-        usr_data = None
+        usr_data = ''
         if sender.username:
             debug(f' -- {action} -- {sender.id} - {sender.username}')
         else:
