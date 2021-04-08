@@ -170,14 +170,14 @@ async def acion_info(event, action_type, action):
     sender = getattr(event.message, "sender", None) if msg else None
     if msg is None and sender is None:
         sender = getattr(event, "sender", None)
-    if sender:
+    if sender is not None:
         usr_data = None
         if sender.username:
             debug(f' -- {action} -- {sender.id} - {sender.username}')
         else:
-            if sender.first_name:
+            if sender.first_name is not None:
                 usr_data += f'{sender.first_name} '
-            if sender.last_name:
+            if sender.last_name is not None:
                 usr_data += f'{sender.last_name}'
             debug(f' -- {action} -- {sender.id} - ( {usr_data} )')
         await sql.save_action_data(sender.id, action_type, action)
