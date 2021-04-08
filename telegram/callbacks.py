@@ -1002,6 +1002,19 @@ async def polls_handler(update, client):
                 menu_msg = await client.send_message(user_id, '📁 Главное меню', buttons=buttons.keyboard_0)
                 await shared.delete_old_message(client, user_id)
                 await shared.save_old_message(user_id, menu_msg)
+    else:
+        user_id, msg_id = get_userid_by_broadcastpollid(poll_id)
+        if user_id is not None:
+            sentusrdict, failusrdict, pollresult = get_mailing_data(msg_id)
+            votes_list = update.results.results
+            if len(pollresult) == 0:
+                for count, vote in enumerate(votes_list, start=1):
+                    pollresult[str(count)] = 1 if vote.voters == 1 else 0
+            else:
+                for count, vote in enumerate(votes_list, start=1):
+                    if vote.voters == 1:
+                        pollresult[str(count)] += 1
+            update_mailing_lists(msg_id, sentusrdict, failusrdict, pollresult)
 
 
 async def my_strategies_dynamic_menu(event, client, sender_id, old_msg_id):

@@ -83,7 +83,7 @@ def save_message_to_db(msg_id, body, fname, sent_dt, msgtype, parent_id, table_n
             try:
                 sbody = ""
                 if msgtype == POLL_MESSAGE_TYPE:
-                    sbody = json.dumps(body, ensure_ascii=False, encoding='utf8')
+                    sbody = json.dumps(body, ensure_ascii=False)
                 else:
                     sbody = body
                 insert_query = f'INSERT INTO {table_name} (msg_id, body, fname, sent_dt, msgtype, parent_id) ' \
@@ -95,6 +95,19 @@ def save_message_to_db(msg_id, body, fname, sent_dt, msgtype, parent_id, table_n
             except Exception as e:
                 debug(e, ERROR)
                 transaction.rollback()
+
+
+def get_poll_body_from_db(msg_id, table_name=MSG_TABLE_NAME, engine=engine):
+    with engine.connect() as connection:
+        body = None
+        try:
+            sel_query = f'SELECT body from {table_name} WHERE msg_id=\'{msg_id}\''
+            result = connection.execute(sel_query)
+            body = result.fetchone()
+            return json.loads(body)
+        except Exception as e:
+            debug(e, ERROR)
+            return body
 
 
 def get_mailing_data(msg_id, table_name=MAILING_DATA_TABLE_NAME, engine=engine):
@@ -151,7 +164,7 @@ def update_mailing_data(msg_id, sentusrdict, failusrdict, pollresult, parent_id,
             if len(failusrdict) > 0:
                 fusrdict.update(failusrdict)
             if len(pollresult) > 0:
-                presult.update(pollresult) # TODO переделать - надо просто инкрементить результаты, а не заменять их
+                presult.update(pollresult)
             try:
                 json_sentusr = ''
                 if len(susrdict) > 0:
@@ -383,4 +396,70 @@ def is_user_profile_done(user_id, engine=engine):
         except Exception as e:
             debug(e, ERROR)
             return False
+
+
+# ================================= B r o a d c a s t  P o l l  =================================
+def create_user_poll_map_table(table_name=USER_POLL_MAP_TABLE_NAME, engine=engine):
+    with engine.connect() as connection:
+        if not is_table_exist(table_name):
+            transaction = connection.begin()
+            try:
+                create_query = f'CREATE TABLE {table_name} ' \
+                               f'(usr_id BIGINT NOT NULL, ' \
+                               f'msg_id BIGINT NOT NULL, ' \
+                               f'send_poll_id VARCHAR(100), ' \
+                               f'PRIMARY KEY(usr_id, msg_id)' \
+                               f')'
+                connection.execute(create_query)
+            except Exception as e:
+                debug(e, ERROR)
+                transaction.rollback()
+            transaction.commit()
+
+
+def user_poll_map_lookup(usr_id, table_name=USER_POLL_MAP_TABLE_NAME, engine=engine) -> bool:
+    with engine.connect() as connection:
+        try:
+            query_string = f'SELECT * FROM {table_name} WHERE usr_id = \'{usr_id}\' LIMIT 1'
+            result = connection.execute(query_string)
+            return True if result.rowcount > 0 else False
+        except:
+            return False
+
+
+def get_userid_by_broadcastpollid(poll_id, table_name=USER_POLL_MAP_TABLE_NAME, engine=engine):
+    with engine.connect() as connection:
+        usr_id = None
+        msg_id = None
+        try:
+            query_string = f'SELECT usr_id, msg_id FROM {table_name} WHERE send_poll_id=\'{str(poll_id)}\''
+            result = connection.execute(query_string)
+            if result.rowcount > 0:
+                row = result.fetchone()
+                usr_id = row[0]
+                msg_id = row[1]
+        except:
+            return usr_id, msg_id
+        return usr_id, msg_id
+
+
+def save_user_poll_map(usr_id, poll_id, msg_id, table_name=USER_POLL_MAP_TABLE_NAME, engine=engine):
+    with engine.connect() as connection:
+        if not is_table_exist(USER_POLL_MAP_TABLE_NAME):
+            create_user_poll_map_table()
+
+        transaction = connection.begin()
+        try:
+            insert_query = f'INSERT INTO {table_name} ' \
+                           f'(usr_id, send_poll_id, msg_id) ' \
+                           f'VALUES (\'{usr_id}\', ' \
+                           f'\'{poll_id}\', ' \
+                           f'\'{msg_id}\')'
+            connection.execute(insert_query)
+            transaction.commit()
+        except Exception as e:
+            debug(e, ERROR)
+            transaction.rollback()
+        return
+
 

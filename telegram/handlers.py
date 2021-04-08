@@ -515,13 +515,16 @@ async def send_broadcast_message(clnt, engine, msg):
 
 
 async def send_broadcast_poll(clnt):
-    _question = "###3 Тест  полла с выбором из 4х вариантов? :-)))"
+    _question = "Какой функционал более интересен, необходим тебе?"
     _poll_id = get_next_id()
-    _answers = [PollAnswer('Answer1', b'1'),
-                PollAnswer('Answer2', b'2'),
-                PollAnswer('Answer3', b'3'),
-                PollAnswer('Answer4', b'4')]
-    _answersdict = {"Answer1": 1, "Answer2": 2, "Answer3": 3, "Answer4": 4}
+    _answers = [PollAnswer('Инспектор риска', b'1'),
+                PollAnswer('Upsilon Radar', b'2'),
+                PollAnswer('Топ10 тикеров', b'3'),
+                PollAnswer('Ничего из перечисленного не интересует', b'4')]
+    _answersdict = {"Инспектор риска": 1,
+                    "Upsilon Radar": 2,
+                    "Топ10 тикеров": 3,
+                    "Ничего из перечисленного не интересует": 4}
     poll = Poll(id=_poll_id,
                 question=_question,
                 answers=_answers)
@@ -549,6 +552,7 @@ async def send_broadcast_poll(clnt):
             dt = datetime.datetime.now()
             sm_log_file.write(f'[{dt.strftime("%H:%M:%S")}]:{user_id}\n')
             sent_users_dict[user_id] = dt.strftime("%Y-%m-%d %H:%M:%S")
+            save_user_poll_map(user_id, real_poll_id, msg_id)
         except Exception as e:
             debug(e, ERROR)
             dt = datetime.datetime.now()
