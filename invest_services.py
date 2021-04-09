@@ -26,13 +26,13 @@ def main():
     # debug(y)
     # exit()
 
-    while True:
-        ticker = input("\n\n\nInput ticker:")
-        if ticker == "quit":
-            break
-        x = get_ranking_data3(ticker)
-        debug(x)
-    exit()
+    # while True:
+    #     ticker = input("\n\n\nInput ticker:")
+    #     if ticker == "quit":
+    #         break
+    #     x = get_ranking_data3(ticker)
+    #     debug(x)
+    # exit()
 
     get_tw_charts(driver=chrome_init())
     exit()
