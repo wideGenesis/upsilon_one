@@ -217,7 +217,7 @@ async def dialog_flow_handler(event, client_):
             try:
                 dialogflow_answer = ai.detect_intent_texts(project_id, sender_id.user_id, user_message, 'ru-RU')
                 await client_.send_message(sender_id, dialogflow_answer)
-                usr_data = None
+                usr_data = ''
                 if event.message.sender.username:
                     usr_data = f'{event.message.sender.username}'
                 else:
