@@ -20,6 +20,9 @@ from quotes.stock_quotes_news import StockStat
 
 # ============================== Main  =============================
 def main():
+    inp = inspector_inputs()
+    inspector(constituents=inp[0], equal=inp[1])
+    exit()
 
     # x, y = get_ranking_data2("DOCN")
     # debug(x)
