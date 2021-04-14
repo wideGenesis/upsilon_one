@@ -206,6 +206,11 @@ async def init_db():
     for row in rows:
         shared.ORDER_MAP[row[0]] = (row[1], row[2], row[3])
 
+    # должно стать обычной практикой - при релизе руками создавать все новые таблицы
+    # что бы избежать ошибок отсутствия нужных таблиц
+    # проинициализировать таблицы, если это нужно
+    await db_init_new_tables()
+
 
 def main():
     # Подгружаем публичный ключ для проверки подписи данных об успешных платежах
@@ -217,11 +222,6 @@ def main():
     handlers.set_route(app, PAYMENT_TOKEN, COMMAND_TOKEN, PUBKEY, client, engine)
 
     shared.create_subscribes(TARIFF_IMAGES)
-
-    # должно стать обычной практикой - при релизе руками создавать все новые таблицы
-    # что бы избежать ошибок отсутствия нужных таблиц
-    # проинициализировать таблицы, если это нужно
-    db_init_new_tables()
 
     # Стартуем веб сервер с отдельным event loop
     debug("_____Running db init_____")

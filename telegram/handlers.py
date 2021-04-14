@@ -238,7 +238,7 @@ async def quotes_to_handler(event, client_, limit=20):
         pricing = importlib.import_module("telegram.pricing")
 
     pricing.check_request_amount(event.input_sender.user_id, client_)
-    
+
     parse = str(event.text)
     parse = re.split('/q |#|@|\$', parse)
     # print(parse)
