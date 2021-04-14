@@ -97,8 +97,8 @@ def inspector(constituents=None, equal=False, init_capital_for_equal=None,
     print('Квартальная доходность портфеля', port_Perf_Quart)
     print('Моментум портфеля', port_SMA50)
     print('Шарп портфеля', port_sharpe_total)
-    print('Волатильность/риск портфеля', port_volatility)
-    print('Худший сценарий риска', port_volatility*3.14)
+    print('Среднедневной риск портфеля', port_volatility)
+    print('Худший сценарий дневного риска', port_volatility*3.14)
     spy_tlt = 0.6*bench_df.loc['SPY']['bench_sharpe'] + 0.4*bench_df.loc['TLT']['bench_sharpe']
     acwi = bench_df.loc['ACWI']['bench_sharpe']
     spy = bench_df.loc['SPY']['bench_sharpe']
@@ -109,6 +109,7 @@ def inspector(constituents=None, equal=False, init_capital_for_equal=None,
     print('QQQ Implied Diversification Ratio', port_sharpe_total / qqq)
     print('ACWI Implied Diversification Ratio', port_sharpe_total / acwi)
     print('ARKs Implied Diversification Ratio', port_sharpe_total / arkw)
+    print('arkw', arkw)
     # print('SSR', bench_df)
     if os.path.exists(csv_path + filename):
         os.remove(csv_path + filename)
