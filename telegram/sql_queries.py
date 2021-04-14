@@ -254,7 +254,7 @@ async def request_amount_lookup(user_id, engine=engine) -> bool:
 
 
 async def increment_paid_request_amount(user_id, amount):
-    debug(f'user_id:{user_id} amount:{amount}')
+    debug(f'increment_paid_request_amount:   user_id:{user_id} amount:{amount}')
     with engine.connect() as connection:
         transaction = connection.begin()
         try:
@@ -270,7 +270,7 @@ async def increment_paid_request_amount(user_id, amount):
 
 
 async def decrement_paid_request_amount(user_id, amount):
-    debug(f'user_id:{user_id} amount:{amount}')
+    debug(f'decrement_paid_request_amount:   user_id:{user_id} amount:{amount}')
     with engine.connect() as connection:
         transaction = connection.begin()
         try:
@@ -286,7 +286,7 @@ async def decrement_paid_request_amount(user_id, amount):
 
 
 async def increment_free_request_amount(user_id, amount):
-    debug(f'user_id:{user_id} amount:{amount}')
+    debug(f'increment_free_request_amount:    user_id:{user_id} amount:{amount}')
     with engine.connect() as connection:
         transaction = connection.begin()
         try:
@@ -302,7 +302,7 @@ async def increment_free_request_amount(user_id, amount):
 
 
 async def decrement_free_request_amount(user_id, amount):
-    debug(f'user_id:{user_id} amount:{amount}')
+    debug(f'decrement_free_request_amount:   user_id:{user_id} amount:{amount}')
     with engine.connect() as connection:
         transaction = connection.begin()
         try:

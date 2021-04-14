@@ -29,47 +29,48 @@ async def calc_save_balance(user_id, summ):
     await sql.increment_paid_request_amount(user_id, paid_amount)
 
 
-async def check_request_amount(user_id, client) -> Tuple[bool, str]:
+async def check_request_amount(user_id, client) -> Tuple[bool, str, int]:
     paid_amount, free_amount = await sql.get_request_amount(user_id)
     income_datetime = await sql.get_income_datetime(user_id)
     now = datetime.datetime.now()
     is_new_user = True if (now - income_datetime).days < 3 else False
+    decrement_amount = 1
     if is_new_user:
         if paid_amount == 0:
             last_request_datetime = await sql.get_last_request_datetime(user_id)
             td = (now - last_request_datetime).seconds if last_request_datetime is not None else 500
             if td > 300:
                 await sql.set_last_request_datetime(user_id)
-                return True, 'None'
+                return True, 'None', 0
             else:
                 debug("New user: Timeout 5 min!!")
                 await client.send_message(user_id, f'Чувак!\n '
                                                    f'Новым пользователям можноделать запросы нечаще чем раз в 5 мин\n'
                                                    f'Осталось {300-td}сек')
-                return False, 'None'
+                return False, 'None', 0
         else:
             if free_amount > 0:
-                await sql.decrement_free_request_amount(user_id, 1)
-                return True, 'Free'
+                await sql.decrement_free_request_amount(user_id, decrement_amount)
+                return True, 'Free', decrement_amount
             if paid_amount > 0:
-                await sql.decrement_paid_request_amount(user_id, 1)
-                return True, 'Paid'
+                await sql.decrement_paid_request_amount(user_id, decrement_amount)
+                return True, 'Paid', decrement_amount
             else:
                 debug("User: Not enough balance!!")
                 await client.send_message(user_id, f'Чувак!\n '
                                                    f'Для дальнейшего получения платных данных, '
                                                    f'тебе необходимо пополнить баланс!!')
-                return False, 'None'
+                return False, 'None', 0
     else:
         if free_amount > 0:
-            await sql.decrement_free_request_amount(user_id, 1)
-            return True, 'Free'
+            await sql.decrement_free_request_amount(user_id, decrement_amount)
+            return True, 'Free', decrement_amount
         if paid_amount > 0:
-            await sql.decrement_paid_request_amount(user_id, 1)
-            return True, 'Paid'
+            await sql.decrement_paid_request_amount(user_id, decrement_amount)
+            return True, 'Paid', decrement_amount
         else:
             await client.send_message(user_id, f'Чувак!\n '
                                                f'Для дальнейшего получения платных данных, '
                                                f'тебе необходимо пополнить баланс!!')
-            return False, 'None'
+            return False, 'None', 0
 

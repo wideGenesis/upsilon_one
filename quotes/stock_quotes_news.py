@@ -335,15 +335,15 @@ class StockStat:
             return msg
 
     def stock_description_v3(self):
+        msg1 = None
+        msg2 = None
+        msg3 = None
         try:
             description, rank, revenue_data = get_ranking_data3(self.stock)
         except Exception as e10:
             msg1 = 'Ошибка, попробуйте позже...'
-            return msg1
+            return msg1, msg2, msg3
         if len(description) == 0 and rank['rank'] is None and rank['data'] is None:
-            msg1 = None
-            msg2 = None
-            msg3 = None
             return msg1, msg2, msg3
         if description['marketCap'] is not None:
             mc = round(float(description['marketCap'] / 1000000000), 2)

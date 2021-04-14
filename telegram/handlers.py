@@ -237,7 +237,7 @@ async def quotes_to_handler(event, client_, limit=20):
         debug(f'module NOT imported --- try first import')
         pricing = importlib.import_module("telegram.pricing")
 
-    can_continue, decrement_type = await pricing.check_request_amount(event.input_sender.user_id, client_)
+    can_continue, decrement_type, decrement_amount = await pricing.check_request_amount(event.input_sender.user_id, client_)
     if not can_continue:
         return
 
@@ -275,6 +275,11 @@ async def quotes_to_handler(event, client_, limit=20):
         msg1 = 'Нет данных для данного тикера'
         msg2 = msg1
         msg3 = get[2]
+        # вернем баланс в случае если тикер не найден или это ETF
+        if decrement_type == 'Paid':
+            await sql.increment_paid_request_amount(event.input_sender.user_id, decrement_amount)
+        if decrement_type == 'Free':
+            await sql.increment_free_request_amount(event.input_sender.user_id, decrement_amount)
 
     revenue_data = None
     if len(get) == 4:
