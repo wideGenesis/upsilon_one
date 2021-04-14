@@ -425,8 +425,7 @@ async def get_last_request_datetime(user_id, engine=engine):
             if result.rowcount > 0:
                 last_request = str(result.fetchone()[0])
                 if last_request != 'NULL':
-                    row = result.fetchone()
-                    last_request_datetime = datetime.datetime.fromisoformat(str(row[0]))
+                    last_request_datetime = datetime.datetime.fromisoformat(last_request)
             return last_request_datetime
         except Exception as e:
             debug(e, ERROR)

@@ -40,6 +40,7 @@ async def check_request_amount(user_id, client) -> bool:
                 await sql.set_last_request_datetime(user_id)
                 return True
             else:
+                debug("New user: Timeout 5 min!!")
                 await client.send_message(user_id, f'Чувак!\n '
                                                    f'Новым пользователям можноделать запросы нечаще чем раз в 5 мин\n'
                                                    f'Осталось {300-td}сек')
@@ -52,6 +53,7 @@ async def check_request_amount(user_id, client) -> bool:
                 await sql.decrement_paid_request_amount(user_id, 1)
                 return True
             else:
+                debug("User: Not enough balance!!")
                 await client.send_message(user_id, f'Чувак!\n '
                                                    f'Для дальнейшего получения платных данных, '
                                                    f'тебе необходимо пополнить баланс!!')
