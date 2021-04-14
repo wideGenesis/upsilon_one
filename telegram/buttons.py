@@ -349,6 +349,39 @@ keyboard_donate = [
     ]
 ]
 
+
+# ============================== Кнопки покупки запросов =============================
+keyboard_buy_requests = [
+    [
+        Button.inline('💎 ' + '5$ - 33 запроса', b'buy_requests5')
+    ],
+    [
+        Button.inline('💎 ' + '10$ - 67 запроса', b'buy_requests10')
+    ],
+    [
+        Button.inline('💎 ' + '20$ - 143 запроса', b'buy_requests20')
+    ],
+    [
+        Button.inline('💎 ' + '50$ - 417 запросов', b'buy_requests50')
+    ],
+    [
+        Button.inline('💎 ' + '100$ - 1000 запросов', b'buy_requests100')
+    ],
+    [
+        Button.inline('💎 ' + '150$ - 1875 запроса', b'buy_requests150')
+    ],
+    [
+        Button.inline('💎 ' + '200$ - 3333 запроса', b'buy_requests200')
+    ],
+    [
+        Button.inline('💎 ' + '300$ - 7500 запросов', b'buy_requests300')
+    ],
+    [
+        Button.inline('💎 ' + 'Назад', b'main')
+    ]
+]
+
+
 # ============================== Кнопки подписок =============================
 keyboard_core_subscriptions = [
     [
