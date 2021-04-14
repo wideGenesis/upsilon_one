@@ -86,13 +86,13 @@ def inspector(constituents=None, equal=False, init_capital_for_equal=100000,
 
     df.to_csv(os.path.join(csv_path + 'temp.csv'))
     bench_df.to_csv(os.path.join(csv_path + 'temp_b.csv'))
-    print('port_cap', portfolio_cap)
-    print('port_Perf_Month', port_Perf_Month)
-    print('port_Perf_Quart', port_Perf_Quart)
-    print('port_SMA50', port_SMA50)
-    print('port_sharpe', port_sharpe)
-    print('port_sharpe_2', port_sharpe_2)
-    print('port_vola', port_volatility)
+    print('Капитализация портфеля', portfolio_cap)
+    print('Месячная доходность портфеля', port_Perf_Month)
+    print('Квартальная доходность портфеля', port_Perf_Quart)
+    print('Моментум портфеля', port_SMA50)
+    print('Шарп портфеля', (port_sharpe+port_sharpe_2)/2)
+    print('Волатильность/риск портфеля', port_volatility)
+    print('Худший сценарий риска', port_volatility*3)
     print('SSR', bench_df)
 
     # revenue_hist_path = f'{path}revenue_{stock}.png'
