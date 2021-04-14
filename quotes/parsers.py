@@ -25,13 +25,14 @@ from datetime import date, timedelta
 
 
 # ============================== GET Inspector ================================
-def inspector_inputs():
-    inputs = {'QQQ': 10, 'SPY': 20, 'GOOG': 100, 'NVDA': 250, 'AMZN': 140, 'INTC': 140, 'PYPL': 140}
-    equal = True
-    return inputs, equal
+def inspector_inputs(inputs=None, equal=False, init_cap=None):
+    inputs = inputs
+    equal = equal
+    init_capital_for_equal = init_cap
+    return inputs, equal, init_capital_for_equal
 
 
-def inspector(constituents=None, equal=False, init_capital_for_equal=100000,
+def inspector(constituents=None, equal=False, init_capital_for_equal=None,
               csv_path=f'{PROJECT_HOME_DIR}/results/inspector/'):
     filename = str(uuid.uuid4()) + '.csv'
     benchmarks = ['SPY', 'QQQ', 'ARKW', 'ACWI', 'TLT']

@@ -20,8 +20,10 @@ from quotes.stock_quotes_news import StockStat
 
 # ============================== Main  =============================
 def main():
-    inp = inspector_inputs()
-    inspector(constituents=inp[0], equal=inp[1])
+    inp = inspector_inputs(inputs={'QQQ': 10, 'SPY': 20, 'ARKW': 100, 'NVDA': 250, 'AMZN': 140, 'INTC': 140, 'PYPL': 140},
+                           equal=False,
+                           init_cap=100000)
+    inspector(constituents=inp[0], equal=inp[1], init_capital_for_equal=inp[2])
     exit()
 
     # x, y = get_ranking_data2("DOCN")
