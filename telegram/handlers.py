@@ -237,7 +237,7 @@ async def quotes_to_handler(event, client_, limit=20):
         debug(f'module NOT imported --- try first import')
         pricing = importlib.import_module("telegram.pricing")
 
-    can_continue = await pricing.check_request_amount(event.input_sender.user_id, client_)
+    can_continue, decrement_type = await pricing.check_request_amount(event.input_sender.user_id, client_)
     if not can_continue:
         return
 
