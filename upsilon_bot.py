@@ -27,6 +27,7 @@ from messages.message import *
 
 
 # ============================== Environment Setup ======================
+from telegram.db_init import db_init_new_tables
 from telegram.sql_queries import save_action_data
 
 PYTHON_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir))
@@ -216,6 +217,11 @@ def main():
     handlers.set_route(app, PAYMENT_TOKEN, COMMAND_TOKEN, PUBKEY, client, engine)
 
     shared.create_subscribes(TARIFF_IMAGES)
+
+    # должно стать обычной практикой - при релизе руками создавать все новые таблицы
+    # что бы избежать ошибок отсутствия нужных таблиц
+    # проинициализировать таблицы, если это нужно
+    db_init_new_tables()
 
     # Стартуем веб сервер с отдельным event loop
     debug("_____Running db init_____")

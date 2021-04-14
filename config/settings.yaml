@@ -65,7 +65,9 @@ SQL_TABLE_NAMES:
   DONATE_DATA_TABLE_NAME: 'donate_data'
   LAST_ACTION_TABLE_NAME: 'last_action'
   USER_POLL_MAP_TABLE_NAME: 'user_poll_map'
-
+  REQUEST_AMOUNT_TABLE_NAME: 'request_amount'
+  INCOMING_USERS_TABLE_NAME: 'incoming_users'
+  PAYMENT_HIST_TABLE_NAME: 'payment_hist'
 
 DIALOGFLOW:
   PROJECT_ID: 'common-bot-1'

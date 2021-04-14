@@ -1,3 +1,5 @@
+import importlib
+import sys
 from time import sleep
 import csv
 from datetime import datetime
@@ -10,7 +12,6 @@ from telegram import shared
 from telegram import instructions as ins
 from messages.message import *
 from telegram import callbacks
-
 
 pics = f'{PROJECT_HOME_DIR}/html/'
 
@@ -44,6 +45,8 @@ async def start_menu(event, client, engine=None):
     else:
         # Если юзер уже прошел профайлинг, то ему не надо показывать презу и опрос - сразу главное меню
         await tools_menu(event, client)
+    # Сохраним данные о новом пользователе (функция сохранит и распечатает, только если пользователь ранее не числился)
+    await sql.append_new_user(sender_id)
 
 
 async def meta_menu(event, client):
@@ -98,25 +101,7 @@ async def profile_menu(event, client, engine=None):
 
     await client.get_input_entity(sender_id)
     user_profile = await sql.user_search(sender_id.user_id, engine)
-    expired_date = ""
-    if user_profile[11] is None:
-        expired_date = "None"
-    else:
-        debug("In user_profile = " + str(user_profile[11]))
-        ed = user_profile[11]
-        expired_date = ed.strftime("%d.%m.%Y")
-        debug("expired_date=" + expired_date)
-    # await client.send_message(event.input_sender,
-    #                           f'\U0001F464 : {user_profile[3]}' + '\n' +
-    #                           f'Имя: {user_profile[5]}' + '\n' +
-    #                           '\n' +
-    #                           f'Баланс: __{user_profile[8]}__' + '\n' +
-    #                           f'Подписка действительна до: __' + expired_date + '__' + '\n' +
-    #                           f'Приглашено: __{user_profile[9]}__' + '\n' +
-    #                           f'Уровень подписки: __{user_profile[10]}__' + '\n' +
-    #                           f'Пользователей бота __{int(users_count())}__', buttons=keyboard_profile)
     count = int
-    # filename = os.path.join(RESULTS_PATH, 'users.csv')
     filename = f'{PROJECT_HOME_DIR}/{RESULTS_PATH}users.csv'
     with open(filename, newline='') as f:
         data = csv.reader(f, delimiter=',')
@@ -140,44 +125,34 @@ async def profile_menu(event, client, engine=None):
     else:
         profile_score_str = final_profile_score
 
+    paid_amount, _ = await sql.get_request_amount(sender_id.user_id)
+
     old_msg_id = await shared.get_old_msg_id(sender_id.user_id)
     if old_msg_id is not None:
         is_poll = await shared.is_old_msg_poll(sender_id.user_id)
         if is_poll:
             await shared.delete_old_message(client, sender_id.user_id)
             menu_msg = await client.send_message(event.input_sender,
-                                                 f'\U0001F464 : {user_profile[3]}' + '\n' +
-                                                 f'Имя: {user_profile[5]}' + '\n' +
-                                                 '\n' +
-                                                 f'Результат риск профайла: __{profile_score_str}__' + '\n' +
-                                                 # f'Баланс: __{user_profile[8]}__' + '\n' +
-                                                 f'Подписка действительна до: __' + expired_date + '__' + '\n' +
-                                                 f'Приглашено: __{user_profile[9]}__' + '\n' +
-                                                 f'Уровень подписки: __{user_profile[10]}__' + '\n' +
+                                                 f'\U0001F464 : {user_profile[3]}\n'
+                                                 f'Имя: {user_profile[5]}\n\n'
+                                                 f'Результат риск профайла: __{profile_score_str}__\n'
+                                                 f'Баланс: __{paid_amount}запросов__\n'
                                                  f'Пользователей бота: __{count}__', buttons=keyboard_profile)
             await shared.save_old_message(sender_id.user_id, menu_msg)
             shared.set_old_msg_poll(sender_id.user_id, False)
         else:
             await client.edit_message(event.input_sender, old_msg_id,
-                                      f'\U0001F464 : {user_profile[3]}' + '\n' +
-                                      f'Имя: {user_profile[5]}' + '\n' +
-                                      '\n' +
-                                      f'Результат риск профайла: __{profile_score_str}__' + '\n' +
-                                      # f'Баланс: __{user_profile[8]}__' + '\n' +
-                                      f'Подписка действительна до: __' + expired_date + '__' + '\n' +
-                                      f'Приглашено: __{user_profile[9]}__' + '\n' +
-                                      f'Уровень подписки: __{user_profile[10]}__' + '\n' +
+                                      f'\U0001F464 : {user_profile[3]}\n'
+                                      f'Имя: {user_profile[5]}\n\n'
+                                      f'Результат риск профайла: __{profile_score_str}__\n'
+                                      f'Баланс: __{paid_amount}запросов__\n'
                                       f'Пользователей бота: __{count}__', buttons=keyboard_profile)
     else:
         menu_msg = await client.send_message(event.input_sender,
-                                             f'\U0001F464 : {user_profile[3]}' + '\n' +
-                                             f'Имя: {user_profile[5]}' + '\n' +
-                                             '\n' +
-                                             f'Результат риск профайла: __{profile_score_str}__' + '\n' +
-                                             # f'Баланс: __{user_profile[8]}__' + '\n' +
-                                             f'Подписка действительна до: __' + expired_date + '__' + '\n' +
-                                             f'Приглашено: __{user_profile[9]}__' + '\n' +
-                                             f'Уровень подписки: __{user_profile[10]}__' + '\n' +
+                                             f'\U0001F464 : {user_profile[3]}\n'
+                                             f'Имя: {user_profile[5]}\n\n'
+                                             f'Результат риск профайла: __{profile_score_str}__\n'
+                                             f'Баланс: __{paid_amount}запросов__\n'
                                              f'Пользователей бота: __{count}__', buttons=keyboard_profile)
         await shared.save_old_message(sender_id.user_id, menu_msg)
 

@@ -1,3 +1,4 @@
+import importlib
 import os
 import csv
 import base64
@@ -65,31 +66,20 @@ class WebHandler:
                 debug("Send message \"payment is ok\"")
                 sender_id, message_id, order_type = value
                 if order_type == 'subscription':
+                    # Подгрузим динамически модуль - вдруг ценообразование изменилось?!
+                    pricing = None
+                    if "telegram.pricing" in sys.modules:
+                        debug(f'module imported --- try reload')
+                        pricing = importlib.reload(sys.modules["telegram.pricing"])
+                    else:
+                        debug(f'module NOT imported --- try first import')
+                        pricing = importlib.import_module("telegram.pricing")
+
                     # удаляем платежное сообщение в чате, чтобы клиент не нажимал на него еще
                     await self.client.delete_messages(sender_id, message_id)
                     # сообщаем клиенту об успешном платеже
-                    tariff_str = ""
-                    td = ""
-                    subscribe_level = ""
-                    if summa == "15":
-                        tariff_str = '__Тариф: ' + shared.SUBSCRIBES[shared.TARIFF_START_ID].get_name() + '__\n'
-                        td = timedelta(days=shared.SUBSCRIBES[shared.TARIFF_START_ID].get_duration())
-                        subscribe_level = shared.SUBSCRIBES[shared.TARIFF_START_ID].get_level()
-                    elif summa == "25":
-                        tariff_str = '__Тариф: ' + shared.SUBSCRIBES[shared.TARIFF_BASE_ID].get_name() + '__\n'
-                        td = timedelta(days=shared.SUBSCRIBES[shared.TARIFF_BASE_ID].get_duration())
-                        subscribe_level = shared.SUBSCRIBES[shared.TARIFF_BASE_ID].get_level()
-                    elif summa == "30":
-                        tariff_str = '__Тариф: ' + shared.SUBSCRIBES[shared.TARIFF_ADVANCED_ID].get_name() + '__\n'
-                        td = timedelta(days=shared.SUBSCRIBES[shared.TARIFF_ADVANCED_ID].get_duration())
-                        subscribe_level = shared.SUBSCRIBES[shared.TARIFF_ADVANCED_ID].get_level()
-                    elif summa == "40":
-                        tariff_str = '__Тариф: ' + shared.SUBSCRIBES[shared.TARIFF_PROFESSIONAL_ID].get_name() + '__\n'
-                        td = timedelta(days=shared.SUBSCRIBES[shared.TARIFF_PROFESSIONAL_ID].get_duration())
-                        subscribe_level = shared.SUBSCRIBES[shared.TARIFF_PROFESSIONAL_ID].get_level()
                     await self.client.send_message(sender_id,
                                                    'Оплата прошла успешно:\n'
-                                                   + tariff_str
                                                    + '__Ордер: ' + order_id + '__\n'
                                                    + '__Сумма: ' + summa + '__\n'
                                                    + '**Спасибо, что пользуетесь моими услугами!**')
@@ -97,9 +87,10 @@ class WebHandler:
                     shared.ORDER_MAP.pop(order_id)
                     await sql.delete_from_payment_message(order_id, self.engine)
 
-                    # добавляем запись в базу о том  когда закончится подписка
-                    expired_data = (datetime.now() + td).isoformat(timespec='minutes')
-                    await sql.db_save_expired_data(expired_data, subscribe_level, sender_id, self.engine)
+                    # расчитываем и сохраняем количество доступных запросов
+                    summ = fast_float(summa, 0)
+                    pricing.calc_save_balance(sender_id, summ)
+                    await sql.save_payment_data(sender_id, order_id, summ)
                     return web.Response(status=200)
                 elif order_type == 'donate':
                     # удаляем платежное сообщение в чате, чтобы клиент не нажимал на него еще
@@ -237,6 +228,17 @@ async def dialog_flow_handler(event, client_):
 
 async def quotes_to_handler(event, client_, limit=20):
     await flow_cheker(client_, event)
+    # Подгрузим динамически модуль - вдруг ценообразование изменилось?!
+    pricing = None
+    if "telegram.pricing" in sys.modules:
+        debug(f'module imported --- try reload')
+        pricing = importlib.reload(sys.modules["telegram.pricing"])
+    else:
+        debug(f'module NOT imported --- try first import')
+        pricing = importlib.import_module("telegram.pricing")
+
+    pricing.check_request_amount(event.input_sender.user_id, client_)
+    
     parse = str(event.text)
     parse = re.split('/q |#|@|\$', parse)
     # print(parse)

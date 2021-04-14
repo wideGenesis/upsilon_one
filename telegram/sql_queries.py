@@ -1,3 +1,5 @@
+import json
+
 from project_shared import *
 
 
@@ -108,7 +110,7 @@ async def get_all_payment_message(engine=None):
         return rows
 
 
-async def is_table_exist(table_name, engine=None) -> bool:
+async def is_table_exist(table_name, engine=engine) -> bool:
     with engine.connect() as connection:
         try:
             query_string = "SELECT 1 FROM " + table_name + " LIMIT 1"
@@ -213,6 +215,248 @@ async def save_action_data(user_id, action_type, action):
             else:
                 connection.execute(f"INSERT INTO {LAST_ACTION_TABLE_NAME}(user_id, dateTime, action_type, action)  "
                                    f"VALUES( \'{user_id}\', \'{now}\', \'{action_type}\', \'{action}\')")
+        except Exception as e:
+            debug(e, ERROR)
+            transaction.rollback()
+        transaction.commit()
+
+
+# =============================== Ticker request amount ===============================
+async def create_request_amount_table(engine=engine):
+    with engine.connect() as connection:
+        ite = await is_table_exist(REQUEST_AMOUNT_TABLE_NAME, engine)
+        if not ite:
+            transaction = connection.begin()
+            try:
+                create_query = f'CREATE TABLE {REQUEST_AMOUNT_TABLE_NAME} ' \
+                               f'(user_id  BIGINT NOT NULL, ' \
+                               f'paid_amount INT NOT NULL, ' \
+                               f'free_amount INT NOT NULL, ' \
+                               f'PRIMARY KEY(user_id)' \
+                               f')'
+                connection.execute(create_query)
+            except Exception as e:
+                debug(e, ERROR)
+                transaction.rollback()
+            transaction.commit()
+
+# TODO Нужно по всем пользователям бота проинициализировать бесплатное количество запросов = 25
+# TODO Нужен шедулер который каждый месяц - первого числа пройдет по таблице и всем проставит 25 бесплатных запросов
+
+
+async def request_amount_lookup(user_id, engine=engine) -> bool:
+    with engine.connect() as connection:
+        try:
+            query_string = f'SELECT * FROM {REQUEST_AMOUNT_TABLE_NAME} ' \
+                           f'WHERE user_id = \'{user_id}\' LIMIT 1'
+            result = connection.execute(query_string)
+            return True if result.rowcount > 0 else False
+        except Exception as e:
+            debug(e, ERROR)
+            return False
+
+
+async def increment_paid_request_amount(user_id, amount):
+    debug(f'user_id:{user_id} amount:{amount}')
+    with engine.connect() as connection:
+        transaction = connection.begin()
+        try:
+            now = datetime.datetime.now()
+            connection.execute(f"UPDATE {REQUEST_AMOUNT_TABLE_NAME} "
+                               f"SET paid_amount=\'paid_amount+{amount}\' "
+                               f"WHERE user_id=\'{user_id}\' ")
+        except Exception as e:
+            debug(e, ERROR)
+            transaction.rollback()
+        transaction.commit()
+
+
+async def decrement_paid_request_amount(user_id, amount):
+    debug(f'user_id:{user_id} amount:{amount}')
+    with engine.connect() as connection:
+        transaction = connection.begin()
+        try:
+            now = datetime.datetime.now()
+            connection.execute(f"UPDATE {REQUEST_AMOUNT_TABLE_NAME} "
+                               f"SET paid_amount=\'paid_amount-{amount}\' "
+                               f"WHERE user_id=\'{user_id}\' ")
+        except Exception as e:
+            debug(e, ERROR)
+            transaction.rollback()
+        transaction.commit()
+
+
+async def increment_free_request_amount(user_id, amount):
+    debug(f'user_id:{user_id} amount:{amount}')
+    with engine.connect() as connection:
+        transaction = connection.begin()
+        try:
+            now = datetime.datetime.now()
+            connection.execute(f"UPDATE {REQUEST_AMOUNT_TABLE_NAME} "
+                               f"SET free_amount=\'free_amount+{amount}\' "
+                               f"WHERE user_id=\'{user_id}\' ")
+        except Exception as e:
+            debug(e, ERROR)
+            transaction.rollback()
+        transaction.commit()
+
+
+async def decrement_free_request_amount(user_id, amount):
+    debug(f'user_id:{user_id} amount:{amount}')
+    with engine.connect() as connection:
+        transaction = connection.begin()
+        try:
+            now = datetime.datetime.now()
+            connection.execute(f"UPDATE {REQUEST_AMOUNT_TABLE_NAME} "
+                               f"SET free_amount=\'free_amount-{amount}\' "
+                               f"WHERE user_id=\'{user_id}\' ")
+        except Exception as e:
+            debug(e, ERROR)
+            transaction.rollback()
+        transaction.commit()
+
+
+async def get_request_amount(user_id, engine=engine):
+    with engine.connect() as connection:
+        try:
+            request_amount = (0, 0)
+            query_string = f'SELECT paid_amount, free_amount FROM {REQUEST_AMOUNT_TABLE_NAME} ' \
+                           f'WHERE user_id = \'{user_id}\' '
+            result = connection.execute(query_string)
+            if result.rowcount > 0:
+                request_amount = (result.fetchone()[0], result.fetchone()[1])
+            return request_amount
+        except Exception as e:
+            debug(e, ERROR)
+            return request_amount
+
+
+# =============================== Пришедшие пользователи ===============================
+async def create_incoming_users_table(engine=engine):
+    with engine.connect() as connection:
+        ite = await is_table_exist(INCOMING_USERS_TABLE_NAME, engine)
+        if not ite:
+            transaction = connection.begin()
+            try:
+                create_query = f'CREATE TABLE {INCOMING_USERS_TABLE_NAME} ' \
+                               f'(user_id  BIGINT NOT NULL, ' \
+                               f'income_datetime DATETIME NOT NULL, ' \
+                               f'last_request DATETIME, ' \
+                               f'PRIMARY KEY(user_id)' \
+                               f')'
+                connection.execute(create_query)
+            except Exception as e:
+                debug(e, ERROR)
+                transaction.rollback()
+            transaction.commit()
+
+
+async def incoming_users_lookup(user_id, engine=engine) -> bool:
+    with engine.connect() as connection:
+        try:
+            query_string = f'SELECT * FROM {INCOMING_USERS_TABLE_NAME} ' \
+                           f'WHERE user_id = \'{user_id}\' LIMIT 1'
+            result = connection.execute(query_string)
+            return True if result.rowcount > 0 else False
+        except Exception as e:
+            debug(e, ERROR)
+            return False
+
+
+async def append_new_user(user_id):
+    # Добавляем новго пользователя как в таблицу новопришедших пользователей,
+    # так и в таблицу подсчета количества запросов платных - 0, бесплатных сразу даем 25
+    with engine.connect() as connection:
+        iul = await incoming_users_lookup(user_id)
+        if not iul:
+            debug(f'----------- Append new user_id:{user_id}')
+            transaction = connection.begin()
+            try:
+                now = datetime.datetime.now()
+                connection.execute(f"INSERT INTO {INCOMING_USERS_TABLE_NAME}(user_id, income_datetime)  "
+                                   f"VALUES( \'{user_id}\', \'{now}\')")
+                connection.execute(f"INSERT INTO {REQUEST_AMOUNT_TABLE_NAME}(user_id, paid_amount, free_amount)  "
+                                   f"VALUES( \'{user_id}\', \'0\', \'25\')")
+            except Exception as e:
+                debug(e, ERROR)
+                transaction.rollback()
+            transaction.commit()
+
+
+async def set_last_request_datetime(user_id):
+    with engine.connect() as connection:
+        transaction = connection.begin()
+        try:
+            now = datetime.datetime.now()
+            connection.execute(f"UPDATE {INCOMING_USERS_TABLE_NAME} "
+                               f"SET last_request=\'{now}\' "
+                               f"WHERE user_id=\'{user_id}\' ")
+        except Exception as e:
+            debug(e, ERROR)
+            transaction.rollback()
+        transaction.commit()
+
+
+async def get_income_datetime(user_id, engine=engine):
+    with engine.connect() as connection:
+        try:
+            income_datetime = None
+            query_string = f'SELECT income_datetime FROM {INCOMING_USERS_TABLE_NAME} ' \
+                           f'WHERE user_id = \'{user_id}\' '
+            result = connection.execute(query_string)
+            if result.rowcount > 0:
+                income_datetime = datetime.date.fromisoformat(str(result.fetchone()[0]))
+            return income_datetime
+        except Exception as e:
+            debug(e, ERROR)
+            return income_datetime
+
+
+async def get_last_request_datetime(user_id, engine=engine):
+    with engine.connect() as connection:
+        try:
+            last_request_datetime = None
+            query_string = f'SELECT last_request FROM {INCOMING_USERS_TABLE_NAME} ' \
+                           f'WHERE user_id = \'{user_id}\' '
+            result = connection.execute(query_string)
+            if result.rowcount > 0:
+                last_request = str(result.fetchone()[0])
+                if last_request != 'NULL':
+                    last_request_datetime = datetime.date.fromisoformat(str(result.fetchone()[0]))
+            return last_request_datetime
+        except Exception as e:
+            debug(e, ERROR)
+            return last_request_datetime
+
+
+# =============================== Пополнения баланса пользователей ===============================
+async def create_payment_history_table(engine=engine):
+    with engine.connect() as connection:
+        ite = await is_table_exist(PAYMENT_HIST_TABLE_NAME, engine)
+        if not ite:
+            transaction = connection.begin()
+            try:
+                create_query = f'CREATE TABLE {PAYMENT_HIST_TABLE_NAME} ' \
+                               f'(user_id  BIGINT NOT NULL, ' \
+                               f'order_id VARCHAR(20) NOT NULL, ' \
+                               f'payment_datetime DATETIME NOT NULL, ' \
+                               f'summ DOUBLE NOT NULL, ' \
+                               f'PRIMARY KEY(user_id, order_id)' \
+                               f')'
+                connection.execute(create_query)
+            except Exception as e:
+                debug(e, ERROR)
+                transaction.rollback()
+            transaction.commit()
+
+
+async def save_payment_data(user_id, order_id, summ, engine=engine):
+    with engine.connect() as connection:
+        transaction = connection.begin()
+        try:
+            now = datetime.datetime.now()
+            connection.execute(f"INSERT INTO {PAYMENT_HIST_TABLE_NAME}(user_id, order_id, payment_datetime, summ)  "
+                               f"VALUES( \'{user_id}\', \'{order_id}\', \'{now}\', \'{summ}\')")
         except Exception as e:
             debug(e, ERROR)
             transaction.rollback()
