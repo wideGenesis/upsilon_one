@@ -25,13 +25,14 @@ from datetime import date, timedelta
 
 
 # ============================== GET Inspector ================================
-def inspector_inputs():
-    inputs = {'QQQ': 10, 'SPY': 20, 'GOOG': 100, 'NVDA': 250, 'AMZN': 140, 'INTC': 140, 'PYPL': 140}
-    equal = True
-    return inputs, equal
+def inspector_inputs(inputs=None, equal=False, init_cap=None):
+    inputs = inputs
+    equal = equal
+    init_capital_for_equal = init_cap
+    return inputs, equal, init_capital_for_equal
 
 
-def inspector(constituents=None, equal=False, init_capital_for_equal=100000,
+def inspector(constituents=None, equal=False, init_capital_for_equal=None,
               csv_path=f'{PROJECT_HOME_DIR}/results/inspector/'):
     filename = str(uuid.uuid4()) + '.csv'
     benchmarks = ['SPY', 'QQQ', 'ARKW', 'ACWI', 'TLT']
@@ -45,13 +46,17 @@ def inspector(constituents=None, equal=False, init_capital_for_equal=100000,
         debug(e1)
 
     df = pd.read_csv(csv_path + filename)
+    df.drop(columns={'No.'}, inplace=True)
+    df['Symbol'] = df['Ticker']
     df.rename(columns={'Perf Month': 'Perf_Month', 'Volatility M': 'Volat_M', 'Perf Quart': 'Perf_Quart'}, inplace=True)
     df.replace('%', '', regex=True, inplace=True)
     df = df.astype({"Perf_Month": np.float64, "Volat_M": np.float64, "Perf_Quart": np.float64, "SMA50": np.float64})
     bench_df = df.copy()
 
     bench_df.drop(bench_df[~bench_df['Ticker'].isin(benchmarks)].index, inplace=True)
+    bench_df.set_index('Symbol', inplace=True)
     df.drop(df[~df['Ticker'].isin([*constituents])].index, inplace=True)
+    df.set_index('Symbol', inplace=True)
 
     df['natr'] = df['ATR'] / df['Price']
     df['volatility'] = (df['natr'] + df['Volat_M']) / 2
@@ -78,27 +83,35 @@ def inspector(constituents=None, equal=False, init_capital_for_equal=100000,
     port_volatility = (port_Volat_M + port_natr) / 2
     port_sharpe = (df['weights'] * df['sharpe']).sum(axis=0)
     port_sharpe_2 = port_Perf_Month / port_volatility
+    port_sharpe_total = (port_sharpe+port_sharpe_2)/2
 
     bench_df['bench_natr'] = bench_df['ATR'] / bench_df['Price']
     bench_df['bench_volatility'] = (bench_df['bench_natr'] + bench_df['Volat_M']) / 2
     bench_df['bench_sharpe'] = bench_df['Perf_Month'] / bench_df['bench_volatility']
-    bench_df['bench_sharpe_to_sharpe'] = port_sharpe / bench_df['bench_sharpe']
+    bench_df['bench_sharpe_to_sharpe'] = port_sharpe_total / bench_df['bench_sharpe']
 
-    df.to_csv(os.path.join(csv_path + 'temp.csv'))
-    bench_df.to_csv(os.path.join(csv_path + 'temp_b.csv'))
+    # df.to_csv(os.path.join(csv_path + 'temp.csv'))
+    # bench_df.to_csv(os.path.join(csv_path + 'temp_b.csv'))
     print('Капитализация портфеля', portfolio_cap)
     print('Месячная доходность портфеля', port_Perf_Month)
     print('Квартальная доходность портфеля', port_Perf_Quart)
     print('Моментум портфеля', port_SMA50)
-    print('Шарп портфеля', (port_sharpe+port_sharpe_2)/2)
+    print('Шарп портфеля', port_sharpe_total)
     print('Волатильность/риск портфеля', port_volatility)
-    print('Худший сценарий риска', port_volatility*3)
-    print('SSR', bench_df)
-
-    # revenue_hist_path = f'{path}revenue_{stock}.png'
-    # if os.path.exists(revenue_hist_path):
-    #     await client_.send_file(event.input_sender, revenue_hist_path)
-    #     os.remove(revenue_hist_path)
+    print('Худший сценарий риска', port_volatility*3.14)
+    spy_tlt = 0.6*bench_df.loc['SPY']['bench_sharpe'] + 0.4*bench_df.loc['TLT']['bench_sharpe']
+    acwi = bench_df.loc['ACWI']['bench_sharpe']
+    spy = bench_df.loc['SPY']['bench_sharpe']
+    qqq = bench_df.loc['QQQ']['bench_sharpe']
+    arkw = bench_df.loc['ARKW']['bench_sharpe']
+    print('SPY/TLT Implied Diversification Ratio', port_sharpe_total / spy_tlt)
+    print('SPY Implied Diversification Ratio', port_sharpe_total / spy)
+    print('QQQ Implied Diversification Ratio', port_sharpe_total / qqq)
+    print('ACWI Implied Diversification Ratio', port_sharpe_total / acwi)
+    print('ARKs Implied Diversification Ratio', port_sharpe_total / arkw)
+    # print('SSR', bench_df)
+    if os.path.exists(csv_path + filename):
+        os.remove(csv_path + filename)
 
     # Укажите среднюю цену покупки, если куплено несколько раз
 
