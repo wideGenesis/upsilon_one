@@ -35,7 +35,7 @@ def inspector(constituents=None, equal=False, init_capital_for_equal=100000,
               csv_path=f'{PROJECT_HOME_DIR}/results/inspector/'):
     filename = str(uuid.uuid4()) + '.csv'
     benchmarks = {'SPY': 1, 'QQQ': 1, 'ARKW': 1, 'ACWI': 1, 'TLT': 1}
-    # constituents.update(benchmarks)
+    constituents.update(benchmarks)
     custom = ['1', '2', '3', '4', '43', '44', '49', '51', '53', '65']
     try:
         stock_list = Screener(tickers=constituents, rows=50, order='ticker', table='Overview', custom=custom)
@@ -47,8 +47,13 @@ def inspector(constituents=None, equal=False, init_capital_for_equal=100000,
     df.rename(columns={'Perf Month': 'Perf_Month', 'Volatility M': 'Volat_M', 'Perf Quart': 'Perf_Quart'}, inplace=True)
     df.replace('%', '', regex=True, inplace=True)
     df = df.astype({"Perf_Month": np.float64, "Volat_M": np.float64, "Perf_Quart": np.float64, "SMA50": np.float64})
+    bench_df = df[df['Ticker'].isin(['SPY', 'QQQ', 'ARKW', 'ACWI', 'TLT'])]
+    df.drop(df[df['Ticker'].isin(['SPY', 'QQQ', 'ARKW', 'ACWI', 'TLT'])].index, inplace=True)
+    print(bench_df)
+    print(df)
     df['natr'] = df['ATR'] / df['Price']
-    df['sharpe'] = df['Perf_Month'] / df['Volat_M']
+    df['volatility'] = (df['natr'] + df['Volat_M']) / 2
+    df['sharpe'] = df['Perf_Month'] / df['volatility']
     if not equal:
         df['qty'] = df['Ticker'].map(constituents)
         df['market_value'] = df['Price'] * df['qty']
@@ -63,14 +68,15 @@ def inspector(constituents=None, equal=False, init_capital_for_equal=100000,
         df['qty'] = (df['market_value'] / df['Price']).apply(np.floor)
         df['market_value'] = df['Price'] * df['qty']
         portfolio_cap = df['market_value'].sum(axis=0)
+
     port_Perf_Month = (df['weights'] * df['Perf_Month']).sum(axis=0)
     port_Perf_Quart = (df['weights'] * df['Perf_Quart']).sum(axis=0)
-
     port_SMA50 = (df['weights'] * df['SMA50']).sum(axis=0)
     port_Volat_M = (df['weights'] * df['Volat_M']).sum(axis=0)
-    port_sharpe = (df['weights'] * df['sharpe']).sum(axis=0)
     port_natr = (df['weights'] * df['natr']).sum(axis=0)
-    port_sharpe_2 = port_Perf_Month / ((port_Volat_M + port_natr) / 2)
+    port_volatility = (port_Volat_M + port_natr) / 2
+    port_sharpe = (df['weights'] * df['sharpe']).sum(axis=0)
+    port_sharpe_2 = port_Perf_Month / port_volatility
 
     df.to_csv(os.path.join(csv_path + 'temp.csv'))
     print('port_cap', portfolio_cap)
@@ -79,7 +85,7 @@ def inspector(constituents=None, equal=False, init_capital_for_equal=100000,
     print('port_SMA50', port_SMA50)
     print('port_sharpe', port_sharpe)
     print('port_sharpe_2', port_sharpe_2)
-    print('port_vola', (port_Volat_M + port_natr) / 2)
+    print('port_vola', port_volatility)
 
     # revenue_hist_path = f'{path}revenue_{stock}.png'
     # if os.path.exists(revenue_hist_path):
