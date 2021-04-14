@@ -107,6 +107,30 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
             msg = await client.send_message(event.input_sender, 'Donate', buttons=buttons.keyboard_donate)
             await shared.save_old_message(sender_id, msg)
 
+    elif event.data == b'buy_requests5':
+        await make_donate(event, client, 5.0)
+
+    elif event.data == b'buy_requests10':
+        await make_donate(event, client, 10.0)
+
+    elif event.data == b'buy_requests20':
+        await make_donate(event, client, 20.0)
+
+    elif event.data == b'buy_requests50':
+        await make_donate(event, client, 50.0)
+
+    elif event.data == b'buy_requests100':
+        await make_donate(event, client, 100.0)
+
+    elif event.data == b'buy_requests150':
+        await make_donate(event, client, 150.0)
+
+    elif event.data == b'buy_requests200':
+        await make_donate(event, client, 200.0)
+
+    elif event.data == b'buy_requests300':
+        await make_donate(event, client, 300.0)
+
     elif event.data == b'main':
         await event.edit()
         if old_msg_id is not None:
@@ -751,6 +775,18 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
     elif event.data == b'reset_no':
         await event.edit()
         await menu.profile_menu(event, client, engine=engine)
+
+    elif event.data == b'requests_store':
+        await event.edit()
+        if old_msg_id is not None:
+            await client.edit_message(event.input_sender, old_msg_id,
+                                      'Lorem Ipsum',
+                                      buttons=buttons.keyboard_buy_requests)
+        else:
+            msg = await client.send_message(event.input_sender,
+                                            'Lorem Ipsum',
+                                            buttons=buttons.keyboard_buy_requests)
+            await shared.save_old_message(sender_id, msg)
 
     elif event.data == b'invite_friends':
         await event.edit()
