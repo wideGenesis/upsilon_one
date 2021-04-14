@@ -324,7 +324,8 @@ async def get_request_amount(user_id, engine=engine):
                            f'WHERE user_id = \'{user_id}\' '
             result = connection.execute(query_string)
             if result.rowcount > 0:
-                request_amount = (result.fetchone()[0], result.fetchone()[1])
+                row = result.fetchone()
+                request_amount = (row[0], row[1])
             return request_amount
         except Exception as e:
             debug(e, ERROR)
@@ -405,7 +406,8 @@ async def get_income_datetime(user_id, engine=engine):
                            f'WHERE user_id = \'{user_id}\' '
             result = connection.execute(query_string)
             if result.rowcount > 0:
-                income_datetime = datetime.date.fromisoformat(str(result.fetchone()[0]))
+                row = result.fetchone()
+                income_datetime = datetime.date.fromisoformat(str(row[0]))
             return income_datetime
         except Exception as e:
             debug(e, ERROR)
@@ -422,7 +424,8 @@ async def get_last_request_datetime(user_id, engine=engine):
             if result.rowcount > 0:
                 last_request = str(result.fetchone()[0])
                 if last_request != 'NULL':
-                    last_request_datetime = datetime.date.fromisoformat(str(result.fetchone()[0]))
+                    row = result.fetchone()
+                    last_request_datetime = datetime.date.fromisoformat(str(row[0]))
             return last_request_datetime
         except Exception as e:
             debug(e, ERROR)
