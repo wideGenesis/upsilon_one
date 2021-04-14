@@ -240,9 +240,6 @@ async def create_request_amount_table(engine=engine):
                 transaction.rollback()
             transaction.commit()
 
-# TODO Нужно по всем пользователям бота проинициализировать бесплатное количество запросов = 25
-# TODO Нужен шедулер который каждый месяц - первого числа пройдет по таблице и всем проставит 25 бесплатных запросов
-
 
 async def request_amount_lookup(user_id, engine=engine) -> bool:
     with engine.connect() as connection:
@@ -261,14 +258,15 @@ async def increment_paid_request_amount(user_id, amount):
     with engine.connect() as connection:
         transaction = connection.begin()
         try:
+            paid_amount, free_amount = await get_request_amount(user_id)
             now = datetime.datetime.now()
             connection.execute(f"UPDATE {REQUEST_AMOUNT_TABLE_NAME} "
-                               f"SET paid_amount=\'paid_amount+{amount}\' "
+                               f"SET paid_amount=\'{paid_amount+amount}\' "
                                f"WHERE user_id=\'{user_id}\' ")
+            transaction.commit()
         except Exception as e:
             debug(e, ERROR)
             transaction.rollback()
-        transaction.commit()
 
 
 async def decrement_paid_request_amount(user_id, amount):
@@ -276,14 +274,15 @@ async def decrement_paid_request_amount(user_id, amount):
     with engine.connect() as connection:
         transaction = connection.begin()
         try:
+            paid_amount, free_amount = await get_request_amount(user_id)
             now = datetime.datetime.now()
             connection.execute(f"UPDATE {REQUEST_AMOUNT_TABLE_NAME} "
-                               f"SET paid_amount=\'paid_amount-{amount}\' "
+                               f"SET paid_amount=\'{paid_amount-amount}\' "
                                f"WHERE user_id=\'{user_id}\' ")
+            transaction.commit()
         except Exception as e:
             debug(e, ERROR)
             transaction.rollback()
-        transaction.commit()
 
 
 async def increment_free_request_amount(user_id, amount):
@@ -291,14 +290,15 @@ async def increment_free_request_amount(user_id, amount):
     with engine.connect() as connection:
         transaction = connection.begin()
         try:
+            paid_amount, free_amount = await get_request_amount(user_id)
             now = datetime.datetime.now()
             connection.execute(f"UPDATE {REQUEST_AMOUNT_TABLE_NAME} "
-                               f"SET free_amount=\'free_amount+{amount}\' "
+                               f"SET free_amount=\'{free_amount+amount}\' "
                                f"WHERE user_id=\'{user_id}\' ")
+            transaction.commit()
         except Exception as e:
             debug(e, ERROR)
             transaction.rollback()
-        transaction.commit()
 
 
 async def decrement_free_request_amount(user_id, amount):
@@ -306,14 +306,15 @@ async def decrement_free_request_amount(user_id, amount):
     with engine.connect() as connection:
         transaction = connection.begin()
         try:
+            paid_amount, free_amount = await get_request_amount(user_id)
             now = datetime.datetime.now()
             connection.execute(f"UPDATE {REQUEST_AMOUNT_TABLE_NAME} "
-                               f"SET free_amount=\'free_amount-{amount}\' "
+                               f"SET free_amount=\'{free_amount-amount}\' "
                                f"WHERE user_id=\'{user_id}\' ")
+            transaction.commit()
         except Exception as e:
             debug(e, ERROR)
             transaction.rollback()
-        transaction.commit()
 
 
 async def get_request_amount(user_id, engine=engine):
@@ -407,7 +408,7 @@ async def get_income_datetime(user_id, engine=engine):
             result = connection.execute(query_string)
             if result.rowcount > 0:
                 row = result.fetchone()
-                income_datetime = datetime.date.fromisoformat(str(row[0]))
+                income_datetime = datetime.datetime.fromisoformat(str(row[0]))
             return income_datetime
         except Exception as e:
             debug(e, ERROR)
@@ -425,7 +426,7 @@ async def get_last_request_datetime(user_id, engine=engine):
                 last_request = str(result.fetchone()[0])
                 if last_request != 'NULL':
                     row = result.fetchone()
-                    last_request_datetime = datetime.date.fromisoformat(str(row[0]))
+                    last_request_datetime = datetime.datetime.fromisoformat(str(row[0]))
             return last_request_datetime
         except Exception as e:
             debug(e, ERROR)

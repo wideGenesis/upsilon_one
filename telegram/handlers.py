@@ -89,7 +89,7 @@ class WebHandler:
 
                     # расчитываем и сохраняем количество доступных запросов
                     summ = fast_float(summa, 0)
-                    pricing.calc_save_balance(sender_id, summ)
+                    await pricing.calc_save_balance(sender_id, summ)
                     await sql.save_payment_data(sender_id, order_id, summ)
                     return web.Response(status=200)
                 elif order_type == 'donate':
@@ -237,7 +237,9 @@ async def quotes_to_handler(event, client_, limit=20):
         debug(f'module NOT imported --- try first import')
         pricing = importlib.import_module("telegram.pricing")
 
-    pricing.check_request_amount(event.input_sender.user_id, client_)
+    can_continue = await pricing.check_request_amount(event.input_sender.user_id, client_)
+    if not can_continue:
+        return
 
     parse = str(event.text)
     parse = re.split('/q |#|@|\$', parse)
