@@ -26,19 +26,20 @@ from datetime import date, timedelta
 
 # ============================== GET Inspector ================================
 def inspector_inputs():
-    inputs = {'FB': 10, 'TSLA': 20, 'DIS': 100, 'BA': 250, 'HON': 140}
-    equal = False
+    inputs = {'QQQ': 10, 'SPY': 20, 'GOOG': 100, 'NVDA': 250, 'AMZN': 140, 'INTC': 140, 'PYPL': 140}
+    equal = True
     return inputs, equal
 
 
 def inspector(constituents=None, equal=False, init_capital_for_equal=100000,
               csv_path=f'{PROJECT_HOME_DIR}/results/inspector/'):
     filename = str(uuid.uuid4()) + '.csv'
-    benchmarks = {'SPY': 1, 'QQQ': 1, 'ARKW': 1, 'ACWI': 1, 'TLT': 1}
-    constituents.update(benchmarks)
+    benchmarks = ['SPY', 'QQQ', 'ARKW', 'ACWI', 'TLT']
+    tickers = list(set(constituents) | set(benchmarks))
+    print(tickers)
     custom = ['1', '2', '3', '4', '43', '44', '49', '51', '53', '65']
     try:
-        stock_list = Screener(tickers=constituents, rows=50, order='ticker', table='Overview', custom=custom)
+        stock_list = Screener(tickers=tickers, rows=50, order='ticker', table='Overview', custom=custom)
         stock_list.to_csv(os.path.join(csv_path + filename))
     except Exception as e1:
         debug(e1)
@@ -47,10 +48,11 @@ def inspector(constituents=None, equal=False, init_capital_for_equal=100000,
     df.rename(columns={'Perf Month': 'Perf_Month', 'Volatility M': 'Volat_M', 'Perf Quart': 'Perf_Quart'}, inplace=True)
     df.replace('%', '', regex=True, inplace=True)
     df = df.astype({"Perf_Month": np.float64, "Volat_M": np.float64, "Perf_Quart": np.float64, "SMA50": np.float64})
-    bench_df = df[df['Ticker'].isin(['SPY', 'QQQ', 'ARKW', 'ACWI', 'TLT'])]
-    df.drop(df[df['Ticker'].isin(['SPY', 'QQQ', 'ARKW', 'ACWI', 'TLT'])].index, inplace=True)
-    print(bench_df)
-    print(df)
+    bench_df = df.copy()
+
+    bench_df.drop(bench_df[~bench_df['Ticker'].isin(benchmarks)].index, inplace=True)
+    df.drop(df[~df['Ticker'].isin([*constituents])].index, inplace=True)
+
     df['natr'] = df['ATR'] / df['Price']
     df['volatility'] = (df['natr'] + df['Volat_M']) / 2
     df['sharpe'] = df['Perf_Month'] / df['volatility']
@@ -62,7 +64,6 @@ def inspector(constituents=None, equal=False, init_capital_for_equal=100000,
     else:
         equal_w = 1 / len(constituents.keys())
         constituents.update((k, equal_w) for k, v in constituents.items())
-        print(constituents)
         df['weights'] = df['Ticker'].map(constituents)
         df['market_value'] = init_capital_for_equal * df['weights']
         df['qty'] = (df['market_value'] / df['Price']).apply(np.floor)
@@ -78,7 +79,13 @@ def inspector(constituents=None, equal=False, init_capital_for_equal=100000,
     port_sharpe = (df['weights'] * df['sharpe']).sum(axis=0)
     port_sharpe_2 = port_Perf_Month / port_volatility
 
+    bench_df['bench_natr'] = bench_df['ATR'] / bench_df['Price']
+    bench_df['bench_volatility'] = (bench_df['bench_natr'] + bench_df['Volat_M']) / 2
+    bench_df['bench_sharpe'] = bench_df['Perf_Month'] / bench_df['bench_volatility']
+    bench_df['bench_sharpe_to_sharpe'] = port_sharpe / bench_df['bench_sharpe']
+
     df.to_csv(os.path.join(csv_path + 'temp.csv'))
+    bench_df.to_csv(os.path.join(csv_path + 'temp_b.csv'))
     print('port_cap', portfolio_cap)
     print('port_Perf_Month', port_Perf_Month)
     print('port_Perf_Quart', port_Perf_Quart)
@@ -86,6 +93,7 @@ def inspector(constituents=None, equal=False, init_capital_for_equal=100000,
     print('port_sharpe', port_sharpe)
     print('port_sharpe_2', port_sharpe_2)
     print('port_vola', port_volatility)
+    print('SSR', bench_df)
 
     # revenue_hist_path = f'{path}revenue_{stock}.png'
     # if os.path.exists(revenue_hist_path):
