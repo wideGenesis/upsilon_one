@@ -135,7 +135,7 @@ async def profile_menu(event, client, engine=None):
                                                  f'\U0001F464 : {user_profile[3]}\n'
                                                  f'Имя: {user_profile[5]}\n\n'
                                                  f'Твой уровень риска: __{profile_score_str}__\n\n'
-                                                 f'Количество оплаченных запросов: __{paid_amount}__ 🔋\n'
+                                                 f'Оплаченных запросов: __{paid_amount}__ 🔋\n'
                                                  f'--------------------------------------------------------\n\n'
                                                  f'Пользователей бота: __{count}__', buttons=keyboard_profile)
             await shared.save_old_message(sender_id.user_id, menu_msg)
@@ -145,7 +145,7 @@ async def profile_menu(event, client, engine=None):
                                       f'\U0001F464 : {user_profile[3]}\n'
                                       f'Имя: {user_profile[5]}\n\n'
                                       f'Твой уровень риска: __{profile_score_str}__\n\n'
-                                      f'Количество оплаченных запросов: __{paid_amount}__ 🔋\n'
+                                      f'Оплаченных запросов: __{paid_amount}__ 🔋\n'
                                       f'--------------------------------------------------------\n\n'
                                       f'Пользователей бота: __{count}__', buttons=keyboard_profile)
     else:
@@ -153,7 +153,7 @@ async def profile_menu(event, client, engine=None):
                                              f'\U0001F464 : {user_profile[3]}\n'
                                              f'Имя: {user_profile[5]}\n\n'
                                              f'Твой уровень риска: __{profile_score_str}__\n\n'
-                                             f'Количество оплаченных запросов: __{paid_amount}__ 🔋\n'
+                                             f'Оплаченных запросов: __{paid_amount}__ 🔋\n'
                                              f'--------------------------------------------------------\n\n'
                                              f'Пользователей бота: __{count}__', buttons=keyboard_profile)
         await shared.save_old_message(sender_id.user_id, menu_msg)
