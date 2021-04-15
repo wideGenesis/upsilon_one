@@ -34,6 +34,8 @@ def inspector_inputs(inputs=None, equal=False, init_cap=None):
 
 def inspector(constituents=None, equal=False, init_capital_for_equal=None,
               csv_path=f'{PROJECT_HOME_DIR}/results/inspector/'):
+    if not os.path.exists(csv_path):
+        os.mkdir(csv_path, 0o774)
     filename = str(uuid.uuid4()) + '.csv'
     benchmarks = ['SPY', 'QQQ', 'ARKW', 'ACWI', 'TLT']
     tickers = list(set(constituents) | set(benchmarks))
