@@ -64,6 +64,7 @@ def inspector(constituents=None, equal=False, init_capital_for_equal=None,
     if not equal:
         df['qty'] = df['Ticker'].map(constituents)
         df['market_value'] = df['Price'] * df['qty']
+        total_cap = (df['Price'] * abs(df['qty'])).sum(axis=0)
         portfolio_cap = df['market_value'].sum(axis=0)
         df['weights'] = df['market_value'] / portfolio_cap
     else:
@@ -73,7 +74,8 @@ def inspector(constituents=None, equal=False, init_capital_for_equal=None,
         df['market_value'] = init_capital_for_equal * df['weights']
         df['qty'] = (df['market_value'] / df['Price']).apply(np.floor)
         df['market_value'] = df['Price'] * df['qty']
-        portfolio_cap = df['market_value'].sum(axis=0)
+        total_cap = (df['Price'] * (init_capital_for_equal * abs(df['weights']) / df['Price']).apply(np.floor)).sum(axis=0)
+        # portfolio_cap = df['market_value'].sum(axis=0)
 
     port_Perf_Month = (df['weights'] * df['Perf_Month']).sum(axis=0)
     port_Perf_Quart = (df['weights'] * df['Perf_Quart']).sum(axis=0)
@@ -81,39 +83,64 @@ def inspector(constituents=None, equal=False, init_capital_for_equal=None,
     port_Volat_M = (df['weights'] * df['Volat_M']).sum(axis=0)
     port_natr = (df['weights'] * df['natr']).sum(axis=0)
     port_volatility = (port_Volat_M + port_natr) / 2
+
     port_sharpe = (df['weights'] * df['sharpe']).sum(axis=0)
     port_sharpe_2 = port_Perf_Month / port_volatility
     port_sharpe_total = (port_sharpe+port_sharpe_2)/2
 
+
     bench_df['bench_natr'] = bench_df['ATR'] / bench_df['Price']
     bench_df['bench_volatility'] = (bench_df['bench_natr'] + bench_df['Volat_M']) / 2
-    bench_df['bench_sharpe'] = bench_df['Perf_Month'] / bench_df['bench_volatility']
-    bench_df['bench_sharpe_to_sharpe'] = port_sharpe_total / bench_df['bench_sharpe']
+    # bench_df['bench_sharpe'] = bench_df['Perf_Month'] / bench_df['bench_volatility']
+    # bench_df['bench_sharpe_to_sharpe'] = port_sharpe_total / bench_df['bench_sharpe']
+
+    bench_df['port_m2'] = port_Perf_Month / port_volatility * bench_df['bench_volatility']
+    bench_df['divers_percent'] = round(bench_df['bench_volatility'] * 100 / port_volatility, 2)
 
     # df.to_csv(os.path.join(csv_path + 'temp.csv'))
     # bench_df.to_csv(os.path.join(csv_path + 'temp_b.csv'))
-    print('Капитализация портфеля', portfolio_cap)
+    print('Капитализация портфеля', total_cap)
     print('Месячная доходность портфеля', port_Perf_Month)
     print('Квартальная доходность портфеля', port_Perf_Quart)
     print('Моментум портфеля', port_SMA50)
     print('Шарп портфеля', port_sharpe_total)
-    print('Среднедневной риск портфеля', port_volatility)
-    print('Худший сценарий дневного риска', port_volatility*3.14)
-    spy_tlt = 0.6*bench_df.loc['SPY']['bench_sharpe'] + 0.4*bench_df.loc['TLT']['bench_sharpe']
-    acwi = bench_df.loc['ACWI']['bench_sharpe']
-    spy = bench_df.loc['SPY']['bench_sharpe']
-    qqq = bench_df.loc['QQQ']['bench_sharpe']
-    arkw = bench_df.loc['ARKW']['bench_sharpe']
-    print('SPY/TLT Implied Diversification Ratio', port_sharpe_total / spy_tlt)
-    print('SPY Implied Diversification Ratio', port_sharpe_total / spy)
-    print('QQQ Implied Diversification Ratio', port_sharpe_total / qqq)
-    print('ACWI Implied Diversification Ratio', port_sharpe_total / acwi)
-    print('ARKs Implied Diversification Ratio', port_sharpe_total / arkw)
-    print('arkw', arkw)
+    print('Ожидаемый средний дневной риск', port_volatility)
+    print('Ожидаемый максимальный дневной риск', port_volatility*3.14)
+
+    spy_tlt_vola = 0.6*bench_df.loc['SPY']['bench_volatility'] + 0.4*bench_df.loc['TLT']['bench_volatility']
+    acwi = bench_df.loc['ACWI']['divers_percent']
+    spy = bench_df.loc['SPY']['divers_percent']
+    qqq = bench_df.loc['QQQ']['divers_percent']
+    arkw = bench_df.loc['ARKW']['divers_percent']
+
+    print('\n\nУровень диверсификации vs.  60% SPY 40% TLT - ', round(spy_tlt_vola * 100 / port_volatility, 2))
+    print('Уровень диверсификации vs. SPY - ', spy)
+    print('Уровень диверсификации vs. QQQ - ', qqq)
+    print('Уровень диверсификации vs. ACWI - ', acwi)
+    print('Уровень диверсификации vs. ARKs - ', arkw)
+
+    spy_tlt_m2 = port_Perf_Month / port_volatility * spy_tlt_vola
+    spy_tlt_mom = 0.6*bench_df.loc['SPY']['Perf_Month'] + 0.4*bench_df.loc['TLT']['Perf_Month']
+    acwi_m2 = bench_df.loc['ACWI']['port_m2'] - (bench_df.loc['ACWI']['Perf_Month'])
+    spy_m2 = bench_df.loc['SPY']['port_m2'] - (bench_df.loc['SPY']['Perf_Month'])
+    qqq_m2 = bench_df.loc['QQQ']['port_m2'] - (bench_df.loc['QQQ']['Perf_Month'])
+    arkw_m2 = bench_df.loc['ARKW']['port_m2'] - (bench_df.loc['ARKW']['Perf_Month'])
+
+    print('\n\nРиск-Премия в сравнении с 60% SPY 40% TLT - ', spy_tlt_m2)
+    print('Риск-Премия в сравнении с SPY - ', spy_m2)
+    print('Риск-Премия в сравнении с QQQ - ', qqq_m2)
+    print('Риск-Премия в сравнении с ACWI - ', acwi_m2)
+    print('Риск-Премия в сравнении с ARKs - ', arkw_m2)
     # print('SSR', bench_df)
     if os.path.exists(csv_path + filename):
         os.remove(csv_path + filename)
-
+    '''
+    насколько хорошо доходность портфеля вознаграждает инвестора за взятый на себя риск по сравнению с доходностью 
+    некоторого эталонного портфеля и безрисковой ставкой . Таким образом, инвестиция, которая подвергалась 
+    гораздо большему риску, чем какой-либо эталонный портфель, но имела лишь небольшое преимущество в 
+    производительности, могла бы иметь меньшую производительность с поправкой на риск, чем другой портфель, 
+    который подвергался значительно меньшему риску по сравнению с эталонным портфелем, но имел аналогичную доходность.
+    '''
     # Укажите среднюю цену покупки, если куплено несколько раз
 
 
