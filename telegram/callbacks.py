@@ -85,19 +85,19 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
             await shared.save_old_message(sender_id, msg)
 
     elif event.data == b'donate2':
-        await make_donate(event, client, 2.0)
+        await make_payment(event, client, 2.0, 'donate')
 
     elif event.data == b'donate5':
-        await make_donate(event, client, 5.0)
+        await make_payment(event, client, 5.0, 'donate')
 
     elif event.data == b'donate10':
-        await make_donate(event, client, 10.0)
+        await make_payment(event, client, 10.0, 'donate')
 
     elif event.data == b'donate50':
-        await make_donate(event, client, 50.0)
+        await make_payment(event, client, 50.0, 'donate')
 
     elif event.data == b'donate100':
-        await make_donate(event, client, 100.0)
+        await make_payment(event, client, 100.0, 'donate')
 
     elif event.data == b'donate_back':
         await event.edit()
@@ -108,28 +108,28 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
             await shared.save_old_message(sender_id, msg)
 
     elif event.data == b'buy_requests5':
-        await make_donate(event, client, 5.0)
+        await make_payment(event, client, 5.0, 'replenishment')
 
     elif event.data == b'buy_requests10':
-        await make_donate(event, client, 10.0)
+        await make_payment(event, client, 10.0, 'replenishment')
 
     elif event.data == b'buy_requests20':
-        await make_donate(event, client, 20.0)
+        await make_payment(event, client, 20.0, 'replenishment')
 
     elif event.data == b'buy_requests50':
-        await make_donate(event, client, 50.0)
+        await make_payment(event, client, 50.0, 'replenishment')
 
     elif event.data == b'buy_requests100':
-        await make_donate(event, client, 100.0)
+        await make_payment(event, client, 100.0, 'replenishment')
 
     elif event.data == b'buy_requests150':
-        await make_donate(event, client, 150.0)
+        await make_payment(event, client, 150.0, 'replenishment')
 
     elif event.data == b'buy_requests200':
-        await make_donate(event, client, 200.0)
+        await make_payment(event, client, 200.0, 'replenishment')
 
     elif event.data == b'buy_requests300':
-        await make_donate(event, client, 300.0)
+        await make_payment(event, client, 300.0, 'replenishment')
 
     elif event.data == b'main':
         await event.edit()
@@ -1116,7 +1116,7 @@ async def my_strategies_dynamic_menu(event, client, sender_id, old_msg_id):
         await shared.save_old_message(sender_id, msg)
 
 
-async def make_donate(event, client_, summ):
+async def make_payment(event, client_, summ, order_type):
     if summ is None or summ <= 0.0:
         debug(f'Упс. Нажали донат {summ}. Но что-топошло не так')
         return
@@ -1166,24 +1166,29 @@ async def make_donate(event, client_, summ):
         debug(f'payment_link={payment_link}')
         kbd_payment_button = buttons.generate_payment_button(f'Оплатить ( ${summ} )', payment_link)
 
+        instuction_link = ''
+        if order_type == 'donate':
+            instuction_link = 'https://telegra.ph/Instrukciya-po-oplate-04-05'
+        elif order_type == 'replenishment':
+            instuction_link = 'https://telegra.ph/Instrukciya-po-oplate-04-05'
+
         msg_id = None
         if old_msg_id is not None:
             msg_id = old_msg_id
             await client_.edit_message(event.input_sender, old_msg_id,
                                        f'Для оплаты нажми кнопку Оплатить\n '
-                                       f'(Инструкция по оплате [тут](https://telegra.ph/Instrukciya-po-oplate-04-05)! )',
+                                       f'(Инструкция по оплате [тут]({instuction_link})! )',
                                        link_preview=True,
                                        buttons=kbd_payment_button)
         else:
             paymsg = await client_.send_message(event.input_sender,
                                                 f'Для оплаты нажми кнопку Оплатить\n '
-                                                f'(Инструкция по оплате [тут](https://telegra.ph/Instrukciya-po-oplate-04-05)! )',
+                                                f'(Инструкция по оплате [тут]({instuction_link})! )',
                                                 link_preview=True,
                                                 buttons=kbd_payment_button)
             await shared.save_old_message(sender_id, paymsg)
             msg_id = utils.get_message_id(paymsg)
 
-        order_type = 'donate'
         shared.ORDER_MAP[order_id] = (sender_id, msg_id, order_type)
         dt_int = shared.datetime2int(datetime.datetime.now())
         await sql.insert_into_payment_message(order_id, sender_id, msg_id, dt_int, engine)

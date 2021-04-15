@@ -65,7 +65,7 @@ class WebHandler:
             if value is not None:
                 debug("Send message \"payment is ok\"")
                 sender_id, message_id, order_type = value
-                if order_type == 'subscription':
+                if order_type == 'subscription' or order_type == 'replenishment':
                     # Подгрузим динамически модуль - вдруг ценообразование изменилось?!
                     pricing = None
                     if "telegram.pricing" in sys.modules:
