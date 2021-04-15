@@ -14,6 +14,8 @@ import io
 import quandl
 from scipy.stats import norm
 import random
+
+from charter.finance2 import *
 from project_shared import *
 from yahooquery import Ticker
 from PIL import Image
@@ -36,7 +38,7 @@ def inspector(constituents=None, equal=False, init_capital_for_equal=None,
               csv_path=f'{PROJECT_HOME_DIR}/results/inspector/'):
     if not os.path.exists(csv_path):
         os.mkdir(csv_path, 0o774)
-    filename = str(uuid.uuid4()) + '.csv'
+    filename = str(uuid.uuid4()).replace('-', '') + '.csv'
     benchmarks = ['SPY', 'QQQ', 'ARKW', 'ACWI', 'TLT']
     tickers = list(set(constituents) | set(benchmarks))
     custom = ['1', '2', '3', '4', '43', '44', '49', '51', '53', '65']
@@ -141,6 +143,14 @@ def inspector(constituents=None, equal=False, init_capital_for_equal=None,
     # print('SSR', bench_df)
     if os.path.exists(csv_path + filename):
         os.remove(csv_path + filename)
+
+    filename = str(uuid.uuid4()).replace('-', '')
+    debug(f"Divers filename: {filename}")
+    create_custom_histogram(divers, "Уровень диверсификации против бенмарков", csv_path, filename)
+
+    filename = str(uuid.uuid4()).replace('-', '')
+    debug(f"M2 filename: {filename}")
+    create_custom_histogram(m2, "Размер премии против бенчмарков", csv_path, filename)
     return divers, m2
     # насколько хорошо доходность портфеля вознаграждает инвестора за взятый на себя риск по сравнению с доходностью
     # некоторого эталонного портфеля и безрисковой ставкой . Таким образом, инвестиция, которая подвергалась
