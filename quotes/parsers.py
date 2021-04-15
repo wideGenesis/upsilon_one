@@ -39,7 +39,6 @@ def inspector(constituents=None, equal=False, init_capital_for_equal=None,
     filename = str(uuid.uuid4()) + '.csv'
     benchmarks = ['SPY', 'QQQ', 'ARKW', 'ACWI', 'TLT']
     tickers = list(set(constituents) | set(benchmarks))
-    print(tickers)
     custom = ['1', '2', '3', '4', '43', '44', '49', '51', '53', '65']
     try:
         stock_list = Screener(tickers=tickers, rows=50, order='ticker', table='Overview', custom=custom)
@@ -53,16 +52,13 @@ def inspector(constituents=None, equal=False, init_capital_for_equal=None,
     df.rename(columns={'Perf Month': 'Perf_Month', 'Volatility M': 'Volat_M', 'Perf Quart': 'Perf_Quart'}, inplace=True)
     df.replace('%', '', regex=True, inplace=True)
     df = df.astype({"Perf_Month": np.float64, "Volat_M": np.float64, "Perf_Quart": np.float64, "SMA50": np.float64})
-    bench_df = df.copy()
 
+    bench_df = df.copy()
     bench_df.drop(bench_df[~bench_df['Ticker'].isin(benchmarks)].index, inplace=True)
     bench_df.set_index('Symbol', inplace=True)
     df.drop(df[~df['Ticker'].isin([*constituents])].index, inplace=True)
     df.set_index('Symbol', inplace=True)
 
-    df['natr'] = df['ATR'] / df['Price']
-    df['volatility'] = (df['natr'] + df['Volat_M']) / 2
-    # df['sharpe'] = df['Perf_Month'] / df['volatility']
     if not equal:
         df['qty'] = df['Ticker'].map(constituents)
         df['market_value'] = df['Price'] * df['qty']
@@ -77,8 +73,9 @@ def inspector(constituents=None, equal=False, init_capital_for_equal=None,
         df['qty'] = (df['market_value'] / df['Price']).apply(np.floor)
         df['market_value'] = df['Price'] * df['qty']
         total_cap = (df['Price'] * (init_capital_for_equal * abs(df['weights']) / df['Price']).apply(np.floor)).sum(axis=0)
-        # portfolio_cap = df['market_value'].sum(axis=0)
 
+    df['natr'] = df['ATR'] / df['Price']
+    df['volatility'] = (df['natr'] + df['Volat_M']) / 2
     port_Perf_Month = (df['weights'] * df['Perf_Month']).sum(axis=0)
     port_Perf_Quart = (df['weights'] * df['Perf_Quart']).sum(axis=0)
     port_SMA50 = (df['weights'] * df['SMA50']).sum(axis=0)
@@ -86,15 +83,8 @@ def inspector(constituents=None, equal=False, init_capital_for_equal=None,
     port_natr = (df['weights'] * df['natr']).sum(axis=0)
     port_volatility = (port_Volat_M + port_natr) / 2
 
-    # port_sharpe = (df['weights'] * df['sharpe']).sum(axis=0)
-    # port_sharpe_2 = port_Perf_Month / port_volatility
-    # port_sharpe_total = (port_sharpe+port_sharpe_2)/2
-
     bench_df['bench_natr'] = bench_df['ATR'] / bench_df['Price']
     bench_df['bench_volatility'] = (bench_df['bench_natr'] + bench_df['Volat_M']) / 2
-    # bench_df['bench_sharpe'] = bench_df['Perf_Month'] / bench_df['bench_volatility']
-    # bench_df['bench_sharpe_to_sharpe'] = port_sharpe_total / bench_df['bench_sharpe']
-
     bench_df['port_m2'] = port_Perf_Month / port_volatility * bench_df['bench_volatility']
     bench_df['divers_percent'] = round(bench_df['bench_volatility'] * 100 / port_volatility, 2)
 
@@ -102,7 +92,6 @@ def inspector(constituents=None, equal=False, init_capital_for_equal=None,
     print('Месячная доходность портфеля', port_Perf_Month)
     print('Квартальная доходность портфеля', port_Perf_Quart)
     print('Моментум портфеля', port_SMA50)
-    # print('Шарп портфеля', port_sharpe_total)
     print('Ожидаемый средний дневной риск', port_volatility)
     print('Ожидаемый максимальный дневной риск', port_volatility*3.14)
 
