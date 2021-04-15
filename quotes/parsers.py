@@ -90,7 +90,6 @@ def inspector(constituents=None, equal=False, init_capital_for_equal=None,
     # port_sharpe_2 = port_Perf_Month / port_volatility
     # port_sharpe_total = (port_sharpe+port_sharpe_2)/2
 
-
     bench_df['bench_natr'] = bench_df['ATR'] / bench_df['Price']
     bench_df['bench_volatility'] = (bench_df['bench_natr'] + bench_df['Volat_M']) / 2
     # bench_df['bench_sharpe'] = bench_df['Perf_Month'] / bench_df['bench_volatility']
