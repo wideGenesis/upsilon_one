@@ -83,9 +83,9 @@ async def tools_menu(event, client):
 
 async def profile_menu(event, client, engine=None):
     keyboard_profile = [
-        [Button.inline('💎	  ' + 'Купить запросы', b'requests_store')],
+        [Button.inline('🔋	  ' + 'Купить запросы❗', b'requests_store')],
         [Button.inline('\U0001F91D	  ' + 'Пригласить друга', b'invite_friends')],
-        [Button.inline('\U0000267B	  ' + 'Сбросить профиль риска', b'risk_reset')],
+        [Button.inline('🔃	  ' + 'Сбросить профиль риска', b'risk_reset')],
         [Button.inline('\U0001F519    ' + 'В главное меню', b'main')]
     ]
 
@@ -134,8 +134,9 @@ async def profile_menu(event, client, engine=None):
             menu_msg = await client.send_message(event.input_sender,
                                                  f'\U0001F464 : {user_profile[3]}\n'
                                                  f'Имя: {user_profile[5]}\n\n'
-                                                 f'Результат риск профайла: __{profile_score_str}__\n'
-                                                 f'Количество доступных запросов: __{paid_amount}__\n'
+                                                 f'Твой уровень риска: __{profile_score_str}__\n\n'
+                                                 f'Количество оплаченных запросов: __{paid_amount}__ 🔋\n'
+                                                 f'--------------------------------------------------------\n\n'
                                                  f'Пользователей бота: __{count}__', buttons=keyboard_profile)
             await shared.save_old_message(sender_id.user_id, menu_msg)
             shared.set_old_msg_poll(sender_id.user_id, False)
@@ -143,15 +144,17 @@ async def profile_menu(event, client, engine=None):
             await client.edit_message(event.input_sender, old_msg_id,
                                       f'\U0001F464 : {user_profile[3]}\n'
                                       f'Имя: {user_profile[5]}\n\n'
-                                      f'Результат риск профайла: __{profile_score_str}__\n'
-                                      f'Количество доступных запросов: __{paid_amount}__\n'
+                                      f'Твой уровень риска: __{profile_score_str}__\n\n'
+                                      f'Количество оплаченных запросов: __{paid_amount}__ 🔋\n'
+                                      f'--------------------------------------------------------\n\n'
                                       f'Пользователей бота: __{count}__', buttons=keyboard_profile)
     else:
         menu_msg = await client.send_message(event.input_sender,
                                              f'\U0001F464 : {user_profile[3]}\n'
                                              f'Имя: {user_profile[5]}\n\n'
-                                             f'Результат риск профайла: __{profile_score_str}__\n'
-                                             f'Количество доступных запросов: __{paid_amount}__\n'
+                                             f'Твой уровень риска: __{profile_score_str}__\n\n'
+                                             f'Количество оплаченных запросов: __{paid_amount}__ 🔋\n'
+                                             f'--------------------------------------------------------\n\n'
                                              f'Пользователей бота: __{count}__', buttons=keyboard_profile)
         await shared.save_old_message(sender_id.user_id, menu_msg)
 

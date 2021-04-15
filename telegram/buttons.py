@@ -352,28 +352,20 @@ keyboard_donate = [
 # ============================== Кнопки покупки запросов =============================
 keyboard_buy_requests = [
     [
-        Button.inline('33 запроса 🎁', b'buy_requests5')
+        Button.inline('33 🔋', b'buy_requests5'),
+        Button.inline('67 🔋', b'buy_requests10')
     ],
     [
-        Button.inline('67 запросов 🎁', b'buy_requests10')
+        Button.inline('143 🔋 (6% 🎁)', b'buy_requests20'),
+        Button.inline('417 🔋 (20% 🎁)', b'buy_requests50')
     ],
     [
-        Button.inline('143 запроса 🎁 Скидка 6%', b'buy_requests20')
+        Button.inline('1000 🔋 (33% 🎁)', b'buy_requests100'),
+        Button.inline('1875 🔋 (46% 🎁)', b'buy_requests150')
     ],
     [
-        Button.inline('417 запросов 🎁 Скидка 20%', b'buy_requests50')
-    ],
-    [
-        Button.inline('1000 запросов 🎁 Скидка 33%', b'buy_requests100')
-    ],
-    [
-        Button.inline('1875 запросов 🎁 Скидка 46%', b'buy_requests150')
-    ],
-    [
-        Button.inline('3333 запроса 🎁 Скидка 60%', b'buy_requests200')
-    ],
-    [
-        Button.inline('7500 запросов 🎁 Скидка 73%', b'buy_requests300')
+        Button.inline('3333 🔋 (60% 🎁)', b'buy_requests200'),
+        Button.inline('7500 🔋 (73% 🎁)', b'buy_requests300')
     ],
     [
         Button.inline('\U0001F519   ' + 'Назад', b'main')

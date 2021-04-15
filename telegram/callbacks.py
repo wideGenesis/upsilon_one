@@ -780,11 +780,11 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
         await event.edit()
         if old_msg_id is not None:
             await client.edit_message(event.input_sender, old_msg_id,
-                                      'Lorem Ipsum',
+                                      '🔋 - один запрос',
                                       buttons=buttons.keyboard_buy_requests)
         else:
             msg = await client.send_message(event.input_sender,
-                                            'Lorem Ipsum',
+                                            '🔋 - один запрос',
                                             buttons=buttons.keyboard_buy_requests)
             await shared.save_old_message(sender_id, msg)
 
