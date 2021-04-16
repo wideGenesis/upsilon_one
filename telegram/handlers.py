@@ -100,6 +100,7 @@ class WebHandler:
                     shared.ORDER_MAP.pop(order_id)
                     await sql.delete_from_payment_message(order_id, self.engine)
                     debug(f'After agregate payment: shared.ORDER_MAP={shared.ORDER_MAP}')
+
                     return web.Response(status=200)
                 elif order_type == 'donate':
                     # удаляем платежное сообщение в чате, чтобы клиент не нажимал на него еще
