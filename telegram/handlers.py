@@ -61,10 +61,11 @@ class WebHandler:
                 debug("Verification failed")
                 return web.Response(status=403)
 
-            value = shared.ORDER_MAP.get(order_id)
+            value = shared.get_order_data(order_id)
             if value is not None:
                 debug("Send message \"payment is ok\"")
-                debug(f'Before agregate payment: shared.ORDER_MAP={shared.ORDER_MAP}')
+                debug(f'Before agregate payment: shared.ORDER_MAP=')
+                shared.print_order_map()
                 sender_id, message_id, order_type = value
                 debug(f'Shared data by order_id: '
                       f'sender_id:[{sender_id}], message_id:[{message_id}], order_type:[{order_type}]')
@@ -97,10 +98,10 @@ class WebHandler:
                                                    + '__Сумма: ' + summa + '__\n'
                                                    + '**Спасибо, что пользуетесь моими услугами!**')
                     # удаляем данные о платеже из памяти и из базы, они нам больше не нужны
-                    shared.ORDER_MAP.pop(order_id)
+                    shared.pop_old_order(order_id)
                     await sql.delete_from_payment_message(order_id, self.engine)
-                    debug(f'After agregate payment: shared.ORDER_MAP={shared.ORDER_MAP}')
-
+                    debug(f'After agregate payment: shared.ORDER_MAP=')
+                    shared.print_order_map()
                     return web.Response(status=200)
                 elif order_type == 'donate':
                     # удаляем платежное сообщение в чате, чтобы клиент не нажимал на него еще
@@ -116,12 +117,13 @@ class WebHandler:
                                                    + '__Сумма: ' + summa + '__\n'
                                                    + '**Спасибо, что пользуешься моими услугами!**')
                     # удаляем данные о платеже из памяти и из базы, они нам больше не нужны
-                    shared.ORDER_MAP.pop(order_id)
+                    shared.pop_old_order(order_id)
                     await sql.delete_from_payment_message(order_id, self.engine)
                     if not is_table_exist(DONATE_DATA_TABLE_NAME):
                         await sql.create_donate_data_table(self.engine)
                     await sql.save_donate_data(sender_id, fast_float(summa))
-                    debug(f'After agregate payment: shared.ORDER_MAP={shared.ORDER_MAP}')
+                    debug(f'After agregate payment: shared.ORDER_MAP=')
+                    shared.print_order_map()
                     return web.Response(status=200)
             else:
                 debug("Global SenderID is None")
@@ -605,10 +607,14 @@ async def portfolios_cmd(client, event):
 
 
 async def inspector_to_handler(event, client_):
+    sender_id = event.input_sender.user_id
+    await client_.delete_messages(sender_id, event.message.id)
     parse = str(event.text)
     parse = re.split('!', parse)
     parse = parse[1]
     parse = re.split(' ', parse)
+    stock = ''
+    size = ''
     if len(parse) == 2 and len(parse[0]) <= 5:
         stock, size = parse[0], parse[1]
         stock = stock.upper()
@@ -620,9 +626,15 @@ async def inspector_to_handler(event, client_):
             msg = f'{stock} {size} позиция не будет сохранена, нажмите кнопку исправить'
     else:
         msg = 'Ошибочный ввод, нажмите кнопку исправить'
-
-    await client_.send_message(event.input_sender, message=msg, buttons=buttons.inspector_next)
-
+    portfolio_ticker = f'{stock}:{size};'
+    shared.set_inspector_ticker(sender_id, portfolio_ticker)
+    debug(f'portfolio_ticker={portfolio_ticker}')
+    old_msg_id = await shared.get_old_msg_id(sender_id)
+    if old_msg_id is not None:
+        await client_.edit_message(event.input_sender, old_msg_id, msg, buttons=buttons.inspector_next)
+    else:
+        msg = await client_.send_message(event.input_sender, msg, buttons=buttons.inspector_next)
+        await shared.save_old_message(sender_id, msg)
     #
     # path = f'{PROJECT_HOME_DIR}/results/ticker_stat/'
     # img_path = f'{path}{stock}.png'

@@ -99,6 +99,9 @@ ANSWERS_MAP = [
 
 IS_OLD_MSG_POLL_MAP = {}
 
+INSPECTOR_TICKER_MAP = {}
+INSPECTOR_PORFOLIO_MAP = {}
+
 
 def datetime2int(dt):
     return int(dt.strftime("%Y%m%d%H%M%S"))
@@ -154,6 +157,45 @@ def pop_old_msg_poll(user_id):
     if user_id in IS_OLD_MSG_POLL_MAP:
         IS_OLD_MSG_POLL_MAP.pop(user_id)
 
+
+def get_order_data(order_id):
+    global ORDER_MAP
+    if order_id in ORDER_MAP:
+        return ORDER_MAP.get(order_id)
+
+
+def print_order_map():
+    global ORDER_MAP
+    debug(f'ORDER_MAP={ORDER_MAP}')
+
+
+def pop_old_order(order_id):
+    global ORDER_MAP
+    if order_id in ORDER_MAP:
+        ORDER_MAP.pop(order_id)
+
+
+def set_inspector_ticker(user_id, ticker):
+    global INSPECTOR_TICKER_MAP
+    INSPECTOR_TICKER_MAP[user_id] = ticker
+
+
+def get_inspector_ticker(user_id):
+    global INSPECTOR_TICKER_MAP
+    return INSPECTOR_TICKER_MAP.get(user_id, None)
+
+
+def update_inspector_portfolio(user_id, ticker):
+    global INSPECTOR_PORFOLIO_MAP
+    if user_id in INSPECTOR_PORFOLIO_MAP:
+        INSPECTOR_PORFOLIO_MAP[user_id] = f'{INSPECTOR_PORFOLIO_MAP[user_id]}{ticker}'
+    else:
+        INSPECTOR_PORFOLIO_MAP[user_id] = ticker
+
+
+def get_inspector_portfolio(user_id):
+    global INSPECTOR_PORFOLIO_MAP
+    return INSPECTOR_PORFOLIO_MAP.get(user_id, None)
 
 class Subscribe(object):
     def __init__(self, name="", level="Free", cost=0.0, describe="", duration=30.0, img_path=""):

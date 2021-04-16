@@ -835,7 +835,7 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
     elif event.data == b'inspector_start_manual':
         await event.edit()
         if old_msg_id is not None:
-            await client.edit_message(event.input_sender, old_msg_id, 'Введите тикер и количество акций в формате:\n'
+            await client.edit_message(event.input_sender, old_msg_id, 'Введи тикер и количество акций в формате:\n'
                                                                       'для длинной позиции (Long)\n!тикер 100\n'
                                                                       '__Пример__: !NVDA 135\n\n'
                                                                       'для короткой позиции (Short)\n!тикер -100\n'
@@ -844,7 +844,7 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
                                                                       'означает короткую позицию.',
                                       buttons=buttons.inspector_next)
         else:
-            msg = await client.send_message(event.input_sender, 'Введите тикер и количество акций в формате:\n'
+            msg = await client.send_message(event.input_sender, 'Введи тикер и количество акций в формате:\n'
                                                                 'для длинной позиции (Long)\n!тикер 100\n'
                                                                 '__Пример__: !NVDA 135\n\n'
                                                                 'для короткой позиции (Short)\n!тикер -100\n'
@@ -853,6 +853,22 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
                                                                 'означает короткую позицию.',
                                             buttons=buttons.inspector_next)
             await shared.save_old_message(sender_id, msg)
+
+    elif event.data == b'inspector_next_ok':
+        shared.update_inspector_portfolio(sender_id, shared.get_inspector_ticker(sender_id))
+        current_portfolio = shared.get_inspector_portfolio(sender_id)
+        debug(f'current_portfolio={current_portfolio}')
+        await event.edit()
+        if old_msg_id is not None:
+            await client.edit_message(event.input_sender, old_msg_id,
+                                      f'Твой портфель сейчас выглядит так: ```{current_portfolio}```\n\n'
+                                      f'Введи следующий тикер:')
+        else:
+            msg = await client.send_message(event.input_sender, old_msg_id,
+                                            f'Твой портфель сейчас выглядит так: ```{current_portfolio}```\n\n'
+                                            f'Введи следующий тикер:')
+            await shared.save_old_message(sender_id, msg)
+
 
     # ============================== Subscriptions =============================
     elif event.data == b'z1':
