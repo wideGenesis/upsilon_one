@@ -7,7 +7,7 @@ from quotes.get_universe import *
 from quotes.quote_loader import *
 from quotes.create_last_tinkoff_universe import *
 from quotes.create_last_historical_universe import *
-
+from telegram.sql_queries import wipe_free_request_amount_for_all
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Set log filename')
@@ -17,6 +17,8 @@ if __name__ == '__main__':
 
     debug_init(file_name=log_file_name)
 
+    debug(f"### Start wipe_free_request_amount_for_all. Added 25 free request  ###")
+    wipe_free_request_amount_for_all(25)
     # ****************************************** СТАРЫЕ ПОРТФЕЛИ ******************************************
 
     debug(f"### Start eod_get_and_save_holdings ###")
