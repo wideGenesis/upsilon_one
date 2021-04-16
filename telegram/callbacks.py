@@ -18,6 +18,7 @@ from quotes.stock_quotes_news import fin_news
 from quotes.parsers import nyse_nasdaq_stat
 from messages.message import *
 from telethon.tl.types import InputMediaPoll, Poll, PollAnswer, DocumentAttributeFilename, DocumentAttributeVideo
+from quotes.parsers import *
 
 PAYMENT_AGGREGATOR = None
 PAYMENT_AGGREGATOR_TIMER = None
@@ -856,21 +857,63 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
             await shared.save_old_message(sender_id, msg)
 
     elif event.data == b'inspector_next_ok':
-        shared.update_inspector_portfolio(sender_id, shared.get_inspector_ticker(sender_id))
+        ticker, size = shared.get_inspector_ticker(sender_id)
+        shared.update_inspector_portfolio(sender_id, ticker, size)
         current_portfolio = shared.get_inspector_portfolio(sender_id)
         debug(f'current_portfolio={current_portfolio}')
         await event.edit()
         if old_msg_id is not None:
             await client.edit_message(event.input_sender, old_msg_id,
-                                      f'__Твой портфель сейчас выглядит так:__\n{current_portfolio}\n\n'
+                                      f'__Твой портфель сейчас выглядит так:__\n```{current_portfolio}```\n\n'
                                       f'__Введи следующий тикер или выбери действие:__',
                                       buttons=buttons.inspector_ends)
         else:
             msg = await client.send_message(event.input_sender, old_msg_id,
-                                            f'__Твой портфель сейчас выглядит так:__\n{current_portfolio}\n\n'
+                                            f'__Твой портфель сейчас выглядит так:__\n```{current_portfolio}```\n\n'
                                             f'__Введи следующий тикер или выбери действие:__',
                                             buttons=buttons.inspector_ends)
             await shared.save_old_message(sender_id, msg)
+
+    elif event.data == b'inspector_next_edit':
+        await event.edit()
+        if old_msg_id is not None:
+            await client.edit_message(event.input_sender, old_msg_id, 'Введи тикер и количество акций в формате:\n'
+                                                                      'для длинной позиции (Long)\n!тикер 100\n'
+                                                                      '__Пример__: !NVDA 135\n\n'
+                                                                      'для короткой позиции (Short)\n!тикер -100\n'
+                                                                      '__Пример__: !GOOG -21\n'
+                                                                      '❗ знак \"минус\" перед количеством акций '
+                                                                      'означает короткую позицию.\n\n'
+                                                                      '__Введи тикер:__')
+        else:
+            msg = await client.send_message(event.input_sender, 'Введи тикер и количество акций в формате:\n'
+                                                                'для длинной позиции (Long)\n!тикер 100\n'
+                                                                '__Пример__: !NVDA 135\n\n'
+                                                                'для короткой позиции (Short)\n!тикер -100\n'
+                                                                '__Пример__: !GOOG -21\n'
+                                                                '❗ знак \"минус\" перед количеством акций '
+                                                                'означает короткую позицию.\n\n'
+                                                                '__Введи тикер__:')
+
+            await shared.save_old_message(sender_id, msg)
+
+    elif event.data == b'inspector_ends_cancel':
+        shared.clear_inspectors_data_by_user(sender_id)
+        await event.edit()
+        if old_msg_id is not None:
+            await client.edit_message(event.input_sender, old_msg_id, 'Ввести тикеры',
+                                      buttons=buttons.keyboard_portfolio)
+        else:
+            msg = await client.send_message(event.input_sender, 'Ввести тикеры',
+                                            buttons=buttons.keyboard_portfolio)
+            await shared.save_old_message(sender_id, msg)
+
+    elif event.data == b'inspector_ends_finish':
+        current_portfolio = shared.get_inspector_portfolio(sender_id)
+        debug(f'current_portfolio={current_portfolio}')
+        path, fn1, fn2 = inspector(constituents=current_portfolio, init_capital_for_equal=100000)
+        await client.send_file(entity, f'{path}{fn1}.png')
+        await client.send_file(entity, f'{path}{fn2}.png')
 
 
     # ============================== Subscriptions =============================

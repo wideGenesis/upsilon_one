@@ -142,14 +142,14 @@ def inspector(constituents=None, equal=False, init_capital_for_equal=None,
     if os.path.exists(csv_path + filename):
         os.remove(csv_path + filename)
 
-    filename = str(uuid.uuid4()).replace('-', '')
-    debug(f"Divers filename: {filename}")
-    create_custom_histogram(divers, "Уровень диверсификации (%) против бенмарков", csv_path, filename)
+    filename_h1 = str(uuid.uuid4()).replace('-', '')
+    debug(f"Divers filename: {filename_h1}")
+    create_custom_histogram(divers, "Уровень диверсификации (%) против бенмарков", csv_path, filename_h1)
 
-    filename = str(uuid.uuid4()).replace('-', '')
-    debug(f"M2 filename: {filename}")
-    create_custom_histogram(m2, "Размер премии (%) против бенчмарков", csv_path, filename)
-    return divers, m2
+    filename_h2 = str(uuid.uuid4()).replace('-', '')
+    debug(f"M2 filename: {filename_h2}")
+    create_custom_histogram(m2, "Размер премии (%) против бенчмарков", csv_path, filename_h2)
+    return csv_path, filename_h1, filename_h2
 
 
 # ============================== GET ADV ================================

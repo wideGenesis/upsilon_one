@@ -626,9 +626,8 @@ async def inspector_to_handler(event, client_):
             msg = f'{stock} {size} позиция не будет сохранена, нажмите кнопку исправить'
     else:
         msg = 'Ошибочный ввод, нажмите кнопку исправить'
-    portfolio_ticker = f'{stock}:{size};'
-    shared.set_inspector_ticker(sender_id, portfolio_ticker)
-    debug(f'portfolio_ticker={portfolio_ticker}')
+    shared.set_inspector_ticker(sender_id, stock, size)
+    debug(f'portfolio_ticker={stock}:{size}')
     old_msg_id = await shared.get_old_msg_id(sender_id)
     if old_msg_id is not None:
         await client_.edit_message(event.input_sender, old_msg_id, msg, buttons=buttons.inspector_next)

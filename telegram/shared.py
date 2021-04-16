@@ -100,7 +100,7 @@ ANSWERS_MAP = [
 IS_OLD_MSG_POLL_MAP = {}
 
 INSPECTOR_TICKER_MAP = {}
-INSPECTOR_PORFOLIO_MAP = {}
+INSPECTOR_PORTFOLIO_MAP = {}
 
 
 def datetime2int(dt):
@@ -175,9 +175,9 @@ def pop_old_order(order_id):
         ORDER_MAP.pop(order_id)
 
 
-def set_inspector_ticker(user_id, ticker):
+def set_inspector_ticker(user_id, ticker, size):
     global INSPECTOR_TICKER_MAP
-    INSPECTOR_TICKER_MAP[user_id] = ticker
+    INSPECTOR_TICKER_MAP[user_id] = (ticker, size)
 
 
 def get_inspector_ticker(user_id):
@@ -185,17 +185,29 @@ def get_inspector_ticker(user_id):
     return INSPECTOR_TICKER_MAP.get(user_id, None)
 
 
-def update_inspector_portfolio(user_id, ticker):
-    global INSPECTOR_PORFOLIO_MAP
-    if user_id in INSPECTOR_PORFOLIO_MAP:
-        INSPECTOR_PORFOLIO_MAP[user_id] = f'{INSPECTOR_PORFOLIO_MAP[user_id]}{ticker}'
+def update_inspector_portfolio(user_id, ticker, size):
+    global INSPECTOR_PORTFOLIO_MAP
+
+    if user_id in INSPECTOR_PORTFOLIO_MAP:
+        INSPECTOR_PORTFOLIO_MAP[user_id][ticker] = size
     else:
-        INSPECTOR_PORFOLIO_MAP[user_id] = ticker
+        portfolio = {ticker: size}
+        INSPECTOR_PORTFOLIO_MAP[user_id] = portfolio
 
 
 def get_inspector_portfolio(user_id):
-    global INSPECTOR_PORFOLIO_MAP
-    return INSPECTOR_PORFOLIO_MAP.get(user_id, None)
+    global INSPECTOR_PORTFOLIO_MAP
+    return INSPECTOR_PORTFOLIO_MAP.get(user_id, None)
+
+
+def clear_inspectors_data_by_user(user_id):
+    global INSPECTOR_TICKER_MAP
+    if user_id in INSPECTOR_TICKER_MAP:
+        INSPECTOR_TICKER_MAP.pop(user_id)
+    global INSPECTOR_PORTFOLIO_MAP
+    if user_id in INSPECTOR_PORTFOLIO_MAP:
+        INSPECTOR_PORTFOLIO_MAP.pop(user_id)
+
 
 class Subscribe(object):
     def __init__(self, name="", level="Free", cost=0.0, describe="", duration=30.0, img_path=""):
