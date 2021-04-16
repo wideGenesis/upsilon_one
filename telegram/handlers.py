@@ -64,7 +64,10 @@ class WebHandler:
             value = shared.ORDER_MAP.get(order_id)
             if value is not None:
                 debug("Send message \"payment is ok\"")
+                debug(f'Before agregate payment: shared.ORDER_MAP={shared.ORDER_MAP}')
                 sender_id, message_id, order_type = value
+                debug(f'Shared data by order_id: '
+                      f'sender_id:[{sender_id}], message_id:[{message_id}], order_type:[{order_type}]')
                 if order_type == 'subscription' or order_type == 'replenishment':
                     # Подгрузим динамически модуль - вдруг ценообразование изменилось?!
                     pricing = None
@@ -75,8 +78,18 @@ class WebHandler:
                         debug(f'module NOT imported --- try first import')
                         pricing = importlib.import_module("telegram.pricing")
 
+                    # расчитываем и сохраняем количество доступных запросов
+                    summ = fast_float(summa, 0)
+                    await pricing.calc_save_balance(sender_id, summ)
+                    await sql.save_payment_data(sender_id, order_id, summ)
+
                     # удаляем платежное сообщение в чате, чтобы клиент не нажимал на него еще
-                    await self.client.delete_messages(sender_id, message_id)
+                    if sender_id is not None and message_id is not None:
+                        try:
+                            await self.client.delete_messages(sender_id, message_id)
+                        except Exception as e:
+                            debug(e, ERROR)
+
                     # сообщаем клиенту об успешном платеже
                     await self.client.send_message(sender_id,
                                                    'Оплата прошла успешно:\n'
@@ -86,15 +99,15 @@ class WebHandler:
                     # удаляем данные о платеже из памяти и из базы, они нам больше не нужны
                     shared.ORDER_MAP.pop(order_id)
                     await sql.delete_from_payment_message(order_id, self.engine)
-
-                    # расчитываем и сохраняем количество доступных запросов
-                    summ = fast_float(summa, 0)
-                    await pricing.calc_save_balance(sender_id, summ)
-                    await sql.save_payment_data(sender_id, order_id, summ)
+                    debug(f'After agregate payment: shared.ORDER_MAP={shared.ORDER_MAP}')
                     return web.Response(status=200)
                 elif order_type == 'donate':
                     # удаляем платежное сообщение в чате, чтобы клиент не нажимал на него еще
-                    await self.client.delete_messages(sender_id, message_id)
+                    if sender_id is not None and message_id is not None:
+                        try:
+                            await self.client.delete_messages(sender_id, message_id)
+                        except Exception as e:
+                            debug(e, ERROR)
                     # сообщаем клиенту об успешном платеже
                     await self.client.send_message(sender_id,
                                                    'Оплата прошла успешно:\n'
@@ -107,8 +120,8 @@ class WebHandler:
                     if not is_table_exist(DONATE_DATA_TABLE_NAME):
                         await sql.create_donate_data_table(self.engine)
                     await sql.save_donate_data(sender_id, fast_float(summa))
+                    debug(f'After agregate payment: shared.ORDER_MAP={shared.ORDER_MAP}')
                     return web.Response(status=200)
-
             else:
                 debug("Global SenderID is None")
                 return web.Response(status=403)
