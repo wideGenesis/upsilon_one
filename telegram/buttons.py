@@ -243,9 +243,9 @@ keyboard_us_analysis_back = [
 ]
 
 keyboard_portfolio = [
-    # [
-    #     Button.inline('\U0001F4B0  ' + 'Мой портфель', b'mp1')
-    # ],
+    [
+        Button.inline('🔮  ' + 'Инспектор портфеля', b'portfolio_inspector')
+    ],
     [
         Button.inline('\U0001F9F0  ' + 'Мои стратегии', b'my_strategies')
     ],
@@ -576,6 +576,31 @@ my_strategies_back = [
         Button.inline('\U0001F519  ' + 'Назад', b'strategies_back')
     ]
 ]
+
+
+# ============= Кнопки Инспектора =============
+inspector_start = [
+    [
+        Button.inline('⌨  ' + 'Ввести тикеры', b'inspector_start_manual')
+    ],
+    # [
+    #     Button.inline('\U0001F4BC  ' + 'Загрузить csv-файл', b'inspector_start_csv')
+    # ],
+    [
+        Button.inline('\U0001F519  ' + 'Назад', b'inspector_start_back')
+    ]
+]
+
+inspector_next = [
+    [
+        Button.inline('✅  ' + 'Все верно', b'inspector_next_ok'),
+        Button.inline('🔄  ' + 'Исправить', b'inspector_next_cancel')
+    ],
+    [
+        Button.inline('🏁  ' + 'Завершить ввод и начать анализ', b'inspector_next_finish')
+    ]
+]
+
 
 
 

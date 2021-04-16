@@ -115,6 +115,12 @@ async def news_to(event):
     await handlers.news_to_handler(event, client, limit=0)
 
 
+@client.on(events.NewMessage(pattern='!'))
+async def inspector_to(event):
+    # await acion_info(event)
+    await handlers.inspector_to_handler(event, client)
+
+
 # ============================== Callbacks =======================
 @client.on(events.CallbackQuery)
 async def callback(event):

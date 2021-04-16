@@ -807,6 +807,53 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
                                             f'(https://t.me/UpsilonBot?start={sender_id})',
                                             buttons=buttons.keyboard_friend_back)
             await shared.save_old_message(sender_id, msg)
+    # ============================== Inspector's Flow ==========================
+    elif event.data == b'portfolio_inspector':
+        await event.edit()
+        if old_msg_id is not None:
+            await client.edit_message(event.input_sender, old_msg_id,
+                                      'Инспектор портфеля\n\n'
+                                      '\U00002757 Как работает инспектор портфелей? - /instruction666',
+                                      buttons=buttons.inspector_start)
+        else:
+            msg = await client.send_message(event.input_sender,
+                                            'Инспектор портфеля\n\n'
+                                            '\U00002757 Как работает инспектор портфелей? - /instruction666',
+                                            buttons=buttons.inspector_start)
+            await shared.save_old_message(sender_id, msg)
+
+    elif event.data == b'inspector_start_back':
+        await event.edit()
+        if old_msg_id is not None:
+            await client.edit_message(event.input_sender, old_msg_id, 'Ввести тикеры',
+                                      buttons=buttons.keyboard_portfolio)
+        else:
+            msg = await client.send_message(event.input_sender, 'Ввести тикеры',
+                                            buttons=buttons.keyboard_portfolio)
+            await shared.save_old_message(sender_id, msg)
+
+    elif event.data == b'inspector_start_manual':
+        await event.edit()
+        if old_msg_id is not None:
+            await client.edit_message(event.input_sender, old_msg_id, 'Введите тикер и количество акций в формате:\n'
+                                                                      'для длинной позиции (Long)\n!тикер 100\n'
+                                                                      '__Пример__: !NVDA 135\n\n'
+                                                                      'для короткой позиции (Short)\n!тикер -100\n'
+                                                                      '__Пример__: !GOOG -21\n'
+                                                                      '❗ знак \"минус\" перед количеством акций '
+                                                                      'означает короткую позицию.',
+                                      buttons=buttons.inspector_next)
+        else:
+            msg = await client.send_message(event.input_sender, 'Введите тикер и количество акций в формате:\n'
+                                                                'для длинной позиции (Long)\n!тикер 100\n'
+                                                                '__Пример__: !NVDA 135\n\n'
+                                                                'для короткой позиции (Short)\n!тикер -100\n'
+                                                                '__Пример__: !GOOG -21\n'
+                                                                '❗ знак \"минус\" перед количеством акций '
+                                                                'означает короткую позицию.',
+                                            buttons=buttons.inspector_next)
+            await shared.save_old_message(sender_id, msg)
+
     # ============================== Subscriptions =============================
     elif event.data == b'z1':
         await event.edit()

@@ -588,3 +588,28 @@ async def portfolios_cmd(client, event):
     await flow_cheker(client, event)
     msg = await client.send_message(event.input_sender, 'Портфели', buttons=buttons.keyboard_historical_tests)
     await shared.save_old_message(sender_id, msg)
+
+
+async def inspector_to_handler(event, client_):
+    parse = str(event.text)
+    parse = re.split('!', parse)
+    parse = parse[1]
+    parse = re.split(' ', parse)
+    if len(parse) == 2 and len(parse[0]) <= 5:
+        stock, size = parse[0], parse[1]
+        stock = stock.upper()
+        if int(size) > 0:
+            msg = f'Ты ввёл тикер {stock} в размере {size} Long?'
+        elif int(size) < 0:
+            msg = f'Ты ввёл тикер {stock} в размере {size} Short?'
+        else:
+            msg = f'{stock} {size} позиция не будет сохранена, нажмите кнопку исправить'
+    else:
+        msg = 'Ошибочный ввод, нажмите кнопку исправить'
+
+    await client_.send_message(event.input_sender, message=msg, buttons=buttons.inspector_next)
+
+    #
+    # path = f'{PROJECT_HOME_DIR}/results/ticker_stat/'
+    # img_path = f'{path}{stock}.png'
+
