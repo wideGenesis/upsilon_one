@@ -862,13 +862,13 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
         await event.edit()
         if old_msg_id is not None:
             await client.edit_message(event.input_sender, old_msg_id,
-                                      f'Твой портфель сейчас выглядит так:\n{current_portfolio}\n\n'
-                                      f'Введи следующий тикер или выбери действие:',
+                                      f'__Твой портфель сейчас выглядит так:__\n{current_portfolio}\n\n'
+                                      f'__Введи следующий тикер или выбери действие:__',
                                       buttons=buttons.inspector_ends)
         else:
             msg = await client.send_message(event.input_sender, old_msg_id,
-                                            f'Твой портфель сейчас выглядит так:\n{current_portfolio}\n\n'
-                                            f'Введи следующий тикер или выбери действие:',
+                                            f'__Твой портфель сейчас выглядит так:__\n{current_portfolio}\n\n'
+                                            f'__Введи следующий тикер или выбери действие:__',
                                             buttons=buttons.inspector_ends)
             await shared.save_old_message(sender_id, msg)
 
