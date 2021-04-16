@@ -303,6 +303,33 @@ def create_revenue_histogram(ticker, data, img_path):
     excess_chart.makeChart(filename)
 
 
+def create_custom_histogram(data, header, img_path, filename):
+    labels = data.keys()
+    bars = data.values()
+    colors = []
+    for bar in bars:
+        if bar >= 0:
+            colors.append(BAR_UP_COLOR)
+        else:
+            colors.append(BAR_DOWN_COLOR)
+    excess_chart = XYChart(H_IMAGE_WIDTH, H_IMAGE_HEIGHT, HIST_BACKGROUND_COLOR)
+    excess_chart.setYAxisOnRight(True)
+    excess_chart.xAxis().setLabelStyle("normal", 8, H_AXIS_FONT_COLOR, 0)
+    excess_chart.yAxis().setLabelStyle("normal", 8, H_AXIS_FONT_COLOR, 0)
+    excess_chart.yAxis().setLabelFormat("{value}")
+    excess_chart.setPlotArea(0, 25, 605, 205, Transparent, -1, Transparent, 0xcccccc)
+    title_str = header
+    excess_chart.addTitle(title_str, "arialbd.ttf", 12, H_TITLE_FONT_COLOR)
+    excess_chart.addText(100, 100, "    @UpsilonBot", "arialbd.ttf", 32, H_WATERMARK_TEXT_COLOR)
+    bl = excess_chart.addBarLayer3(bars, colors)
+    bl.setBorderColor(Transparent)
+    bl.setBarShape(CircleShape)
+    excess_chart.xAxis().setLabels(labels)
+
+    filename = f'{img_path}{filename}.png'
+    excess_chart.makeChart(filename)
+
+
 def create_portfolio_donut(portfolio_data=None, title="", filename="pie"):
     data = [round((i * 100), 2) for i in portfolio_data.values()]
     # debug(data)
