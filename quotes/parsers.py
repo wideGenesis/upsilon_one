@@ -115,7 +115,6 @@ def inspector(constituents=None, equal=False, init_capital_for_equal=None,
     # qqq_m2 = bench_df.loc['QQQ']['port_m2'] - (bench_df.loc['QQQ']['Perf_Month'])
     # arkw_m2 = bench_df.loc['ARKW']['port_m2'] - (bench_df.loc['ARKW']['Perf_Month'])
 
-
     spy_tlt_divers = {'SPY_TLT': spy_tlt_divers}
     divers = bench_df['divers_percent'].to_dict()
     divers.update(spy_tlt_divers)
@@ -128,7 +127,6 @@ def inspector(constituents=None, equal=False, init_capital_for_equal=None,
     m2.update(spy_tlt_m2)
     m2.pop('TLT', None)
     m2 = {key: round(m2[key], 2) for key in m2}
-
     print(divers)
     print(m2)
     # df.to_csv(os.path.join(csv_path + 'temp.csv'))
