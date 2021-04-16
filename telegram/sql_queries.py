@@ -301,6 +301,19 @@ async def increment_free_request_amount(user_id, amount):
             transaction.rollback()
 
 
+async def wipe_free_request_amount_for_all(amount):
+    debug(f'wipe_free_request_amount_for_all: amount:{amount}')
+    with engine.connect() as connection:
+        transaction = connection.begin()
+        try:
+            connection.execute(f"UPDATE {REQUEST_AMOUNT_TABLE_NAME} "
+                               f"SET free_amount=\'{amount}\' ")
+            transaction.commit()
+        except Exception as e:
+            debug(e, ERROR)
+            transaction.rollback()
+
+
 async def decrement_free_request_amount(user_id, amount):
     debug(f'decrement_free_request_amount:   user_id:{user_id} amount:{amount}')
     with engine.connect() as connection:
