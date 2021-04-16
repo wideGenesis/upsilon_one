@@ -596,15 +596,17 @@ inspector_next = [
         Button.inline('✅  ' + 'Все верно', b'inspector_next_ok'),
         Button.inline('🔄  ' + 'Исправить', b'inspector_next_edit')
     ],
-    [
-        Button.inline('🏁  ' + 'Завершить ввод и начать анализ', b'inspector_next_finish')
-    ],
-    [
-        Button.inline('🗑  ' + 'Отмена. Завершить работу инспектора', b'inspector_next_cancel')
-    ]
+
 ]
 
-
+inspector_ends = [
+    [
+        Button.inline('🏁  ' + 'Завершить ввод и начать анализ', b'inspector_ends_finish')
+    ],
+    [
+        Button.inline('🗑  ' + 'Отмена. Завершить работу инспектора', b'inspector_ends_cancel')
+    ]
+]
 
 
 # keyboard_managed_strategies = [
