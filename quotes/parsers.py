@@ -53,8 +53,8 @@ def get_inspector_data(tickerlist, length=63):
         df['pct_neg'] = df['pct']
     else:
         df['pct_neg'] = 0
+    df['sma'] = df['pct_neg'].rolling(length).mean()
 
-        # print(x)
     df.to_csv(f'{PROJECT_HOME_DIR}/results/inspector/data.csv')
     return df
 
