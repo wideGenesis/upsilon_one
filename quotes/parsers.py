@@ -211,11 +211,17 @@ def nyse_nasdaq_stat(img_out_path_=IMAGES_OUT_PATH):
 # ============================== GET INSPECTOR DATA I ================================
 def get_inspector_data(tickerlist, ag=agents()):
     debug(f' ### {tickerlist} ###')
+    tickers_data = None
     try:
         tickers_data = Ticker(tickerlist)
     except Exception as e:
         debug(e, ERROR)
-    df = tickers_data.history()
+
+    now = datetime.datetime.now()
+    six_month_ago = add_months(now, -6)
+
+    df = tickers_data.history(start=six_month_ago)
+
     pass
 
 # ============================== GET RANKING DATA III ================================
