@@ -5,14 +5,6 @@ from typing import Any
 from telethon import utils
 from project_shared import *
 from telethon import functions, types
-from PyQt5.QtCore import QObject, QThread, pyqtSignal
-
-
-class Worker(QObject):
-
-    def run(self):
-        for i in range(5):
-            print(f'################## WORKER {i + 1}')
 
 
 ORDER_MAP = {}
