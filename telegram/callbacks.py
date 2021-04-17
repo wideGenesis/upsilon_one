@@ -999,7 +999,7 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
             await event.edit()
             msg_id = utils.get_message_id(paymsg)
             order_type = 'subscription'
-            shared.ORDER_MAP[order_id] = (sender_id, msg_id, order_type)
+            shared.set_order_data(order_id, sender_id, msg_id, order_type)
             dt = datetime.now()
             dt_int = shared.datetime2int(dt)
             await sql.insert_into_payment_message(order_id, sender_id, msg_id, dt_int, engine)
@@ -1295,7 +1295,7 @@ async def make_payment(event, client_, summ, order_type):
             await shared.save_old_message(sender_id, paymsg)
             msg_id = utils.get_message_id(paymsg)
 
-        shared.ORDER_MAP[order_id] = (sender_id, msg_id, order_type)
+        shared.set_order_data(order_id, sender_id, msg_id, order_type)
         dt_int = shared.datetime2int(datetime.datetime.now())
         await sql.insert_into_payment_message(order_id, sender_id, msg_id, dt_int, engine)
 

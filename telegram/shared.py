@@ -160,6 +160,11 @@ def pop_old_msg_poll(user_id):
         IS_OLD_MSG_POLL_MAP.pop(user_id)
 
 
+def set_order_data(order_id, sender_id, msg_id, order_type):
+    global ORDER_MAP
+    ORDER_MAP[order_id] = (sender_id, msg_id, order_type)
+
+
 def get_order_data(order_id):
     global ORDER_MAP
     if order_id in ORDER_MAP:
