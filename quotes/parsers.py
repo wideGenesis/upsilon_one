@@ -55,6 +55,9 @@ def get_inspector_data(tickerlist, length=63):
     #     df['pct_neg'] = 0
     # # df['sma'] = df['pct_neg'].rolling(length).mean()
 
+    df.reset_index(level=df.index.names, inplace=True)
+    df = (df.assign(idx=df.groupby('symbol').cumcount()).pivot_table(index='date', columns='symbol', values='hlc3'))
+
     df.to_csv(f'{PROJECT_HOME_DIR}/results/inspector/data.csv')
     return df
 
