@@ -1,9 +1,19 @@
 import datetime
 import sys
+from time import sleep
 from typing import Any
 from telethon import utils
 from project_shared import *
 from telethon import functions, types
+from PyQt5.QtCore import QObject, QThread, pyqtSignal
+
+
+class Worker(QObject):
+
+    def run(self):
+        for i in range(5):
+            print(f'################## WORKER {i + 1}')
+
 
 ORDER_MAP = {}
 OLD_MESSAGE_MAP = {}
@@ -95,7 +105,7 @@ ANSWERS_MAP = [
     #   Гарантированные 50% от вашей суммы через 3 года', b'1'           -- -1
     #   35% - 80% через  5лет, но без гарантий, но не менее 35%', b'2'   -- 1
     {b'1': -1, b'2': 1}
-    ]
+]
 
 IS_OLD_MSG_POLL_MAP = {}
 

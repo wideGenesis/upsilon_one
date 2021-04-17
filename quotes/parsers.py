@@ -208,6 +208,16 @@ def nyse_nasdaq_stat(img_out_path_=IMAGES_OUT_PATH):
     return msg
 
 
+# ============================== GET INSPECTOR DATA I ================================
+def get_inspector_data(tickerlist, ag=agents()):
+    debug(f' ### {tickerlist} ###')
+    try:
+        tickers_data = Ticker(tickerlist)
+    except Exception as e:
+        debug(e, ERROR)
+    df = tickers_data.history()
+    pass
+
 # ============================== GET RANKING DATA III ================================
 def get_ranking_data3(tick, ag=agents()):
     debug(f' ### {tick} ###')

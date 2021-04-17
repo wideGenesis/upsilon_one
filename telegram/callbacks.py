@@ -1,3 +1,4 @@
+import asyncio
 import os
 import csv
 import datetime
@@ -20,12 +21,12 @@ from messages.message import *
 from telethon.tl.types import InputMediaPoll, Poll, PollAnswer, DocumentAttributeFilename, DocumentAttributeVideo
 from quotes.parsers import *
 
+
 PAYMENT_AGGREGATOR = None
 PAYMENT_AGGREGATOR_TIMER = None
 
 
 # ============================== Callbacks =======================
-
 async def callback_handler(event, client, img_path=None, yahoo_path=None, engine=None):
     sender_id = event.original_update.user_id
     entity = await client.get_input_entity(sender_id)
@@ -910,11 +911,7 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
 
     elif event.data == b'inspector_ends_finish':
         current_portfolio = shared.get_inspector_portfolio(sender_id)
-        debug(f'current_portfolio={current_portfolio}')
-        path, fn1, fn2 = inspector(constituents=current_portfolio, init_capital_for_equal=100000)
-        await client.send_file(entity, f'{path}{fn1}.png')
-        await client.send_file(entity, f'{path}{fn2}.png')
-
+        get_inspector_data(current_portfolio.keys())
 
     # ============================== Subscriptions =============================
     elif event.data == b'z1':
