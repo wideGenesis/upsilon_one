@@ -911,10 +911,9 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
     elif event.data == b'inspector_ends_finish':
         current_portfolio = shared.get_inspector_portfolio(sender_id)
         debug(f'current_portfolio={current_portfolio}')
-        path, fn1, fn2 = inspector(constituents=current_portfolio, init_capital_for_equal=100000)
+        path, fn1, fn2 = await inspector(constituents=current_portfolio, init_capital_for_equal=100000)
         await client.send_file(entity, f'{path}{fn1}.png')
         await client.send_file(entity, f'{path}{fn2}.png')
-
 
     # ============================== Subscriptions =============================
     elif event.data == b'z1':

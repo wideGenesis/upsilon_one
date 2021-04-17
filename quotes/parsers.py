@@ -139,8 +139,8 @@ def inspector(constituents=None, equal=False, init_capital_for_equal=None,
     # print('Риск-Премия в сравнении с ACWI - ', acwi_m2)
     # print('Риск-Премия в сравнении с ARKs - ', arkw_m2)
     # print('SSR', bench_df)
-    if os.path.exists(csv_path + filename):
-        os.remove(csv_path + filename)
+    # if os.path.exists(csv_path + filename):
+    #     os.remove(csv_path + filename)
 
     filename_h1 = str(uuid.uuid4()).replace('-', '')
     debug(f"Divers filename: {filename_h1}")
