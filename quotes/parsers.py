@@ -48,12 +48,12 @@ def get_inspector_data(tickerlist, length=63):
     df = tickers_data.history(start=six_month_ago)
     df['hlc3'] = (df['high'] + df['low'] + df['close']) / 3
     df.drop(columns={'open', 'volume', 'adjclose', 'dividends', 'splits', 'high', 'low', 'close'}, inplace=True)
-    df['pct'] = df.groupby(['symbol']).pct_change
-    if df['pct'] < 0:
-        df['pct_neg'] = df['pct']
-    else:
-        df['pct_neg'] = 0
-    df['sma'] = df['pct_neg'].rolling(length).mean()
+    # df['pct'] = df.groupby(['symbol']).pct_change
+    # if df.groupby(['symbol']).pct_change < 0:
+    #     df['pct_neg'] = df['pct']
+    # else:
+    #     df['pct_neg'] = 0
+    # # df['sma'] = df['pct_neg'].rolling(length).mean()
 
     df.to_csv(f'{PROJECT_HOME_DIR}/results/inspector/data.csv')
     return df
