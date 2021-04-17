@@ -222,7 +222,7 @@ def get_inspector_data(tickerlist, ag=agents()):
 
     df = tickers_data.history(start=six_month_ago)
 
-    pass
+    return df
 
 # ============================== GET RANKING DATA III ================================
 def get_ranking_data3(tick, ag=agents()):
