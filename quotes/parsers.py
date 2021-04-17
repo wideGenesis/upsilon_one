@@ -34,6 +34,31 @@ def inspector_inputs(inputs=None, equal=False, init_cap=None):
     return inputs, equal, init_capital_for_equal
 
 
+def get_inspector_data(tickerlist, length=63):
+    debug(f' ### {tickerlist} ###')
+    tickers_data = None
+    try:
+        tickers_data = Ticker(tickerlist)
+    except Exception as e:
+        debug(e, ERROR)
+
+    now = datetime.datetime.now()
+    six_month_ago = add_months(now, -6)
+
+    df = tickers_data.history(start=six_month_ago)
+    df['hlc3'] = (df['high'] + df['low'] + df['close']) / 3
+    df.drop(columns={'open', 'volume', 'adjclose', 'dividends', 'splits', 'high', 'low', 'close'}, inplace=True)
+    df['pct'] = df.groupby(['symbol']).pct_change
+    if df['pct'] < 0:
+        df['pct_neg'] = df['pct']
+    else:
+        df['pct_neg'] = 0
+
+        # print(x)
+    df.to_csv(f'{PROJECT_HOME_DIR}/results/inspector/data.csv')
+    return df
+
+
 def inspector(constituents=None, equal=False, init_capital_for_equal=None,
               csv_path=f'{PROJECT_HOME_DIR}/results/inspector/'):
     if not os.path.exists(csv_path):
@@ -207,22 +232,6 @@ def nyse_nasdaq_stat(img_out_path_=IMAGES_OUT_PATH):
 
     return msg
 
-
-# ============================== GET INSPECTOR DATA I ================================
-def get_inspector_data(tickerlist, ag=agents()):
-    debug(f' ### {tickerlist} ###')
-    tickers_data = None
-    try:
-        tickers_data = Ticker(tickerlist)
-    except Exception as e:
-        debug(e, ERROR)
-
-    now = datetime.datetime.now()
-    six_month_ago = add_months(now, -6)
-
-    df = tickers_data.history(start=six_month_ago)
-
-    return df
 
 # ============================== GET RANKING DATA III ================================
 def get_ranking_data3(tick, ag=agents()):

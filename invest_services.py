@@ -20,11 +20,14 @@ from quotes.stock_quotes_news import StockStat
 
 # ============================== Main  =============================
 def main():
-    inp = inspector_inputs(#inputs={'QQQ': 100},
-                           inputs={'CSCO': 19, 'WMT': 10, 'NEE': 8, 'PEP': 7, 'SBUX': 6, 'COST': 5, 'MSFT': 5, 'TXN': 5, 'FB': 1, 'AMAT': 4},
-                           equal=False,
-                           init_cap=10692)
-    inspector(constituents=inp[0], equal=inp[1], init_capital_for_equal=inp[2])
+
+    x = get_inspector_data(['CSCO', 'WMT', 'NEE'])
+    print(x)
+    # inp = inspector_inputs(#inputs={'QQQ': 100},
+    #                        inputs={'CSCO': 19, 'WMT': 10, 'NEE': 8, 'PEP': 7, 'SBUX': 6, 'COST': 5, 'MSFT': 5, 'TXN': 5, 'FB': 1, 'AMAT': 4},
+    #                        equal=False,
+    #                        init_cap=10692)
+    # inspector(constituents=inp[0], equal=inp[1], init_capital_for_equal=inp[2])
     exit()
 
     # x, y = get_ranking_data2("DOCN")
