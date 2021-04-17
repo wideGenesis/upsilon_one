@@ -1,9 +1,11 @@
 import datetime
 import sys
+from time import sleep
 from typing import Any
 from telethon import utils
 from project_shared import *
 from telethon import functions, types
+
 
 ORDER_MAP = {}
 OLD_MESSAGE_MAP = {}
@@ -95,7 +97,7 @@ ANSWERS_MAP = [
     #   Гарантированные 50% от вашей суммы через 3 года', b'1'           -- -1
     #   35% - 80% через  5лет, но без гарантий, но не менее 35%', b'2'   -- 1
     {b'1': -1, b'2': 1}
-    ]
+]
 
 IS_OLD_MSG_POLL_MAP = {}
 
@@ -156,6 +158,11 @@ def pop_old_msg_poll(user_id):
     global IS_OLD_MSG_POLL_MAP
     if user_id in IS_OLD_MSG_POLL_MAP:
         IS_OLD_MSG_POLL_MAP.pop(user_id)
+
+
+def set_order_data(order_id, sender_id, msg_id, order_type):
+    global ORDER_MAP
+    ORDER_MAP[order_id] = (sender_id, msg_id, order_type)
 
 
 def get_order_data(order_id):

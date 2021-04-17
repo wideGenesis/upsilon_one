@@ -210,7 +210,7 @@ async def init_db():
     rows = await sql.get_all_payment_message(engine)
     # print("rows=" + str(rows))
     for row in rows:
-        shared.ORDER_MAP[row[0]] = (row[1], row[2], row[3])
+        shared.set_order_data(row[0], row[1], row[2], row[3])
 
     # должно стать обычной практикой - при релизе руками создавать все новые таблицы
     # что бы избежать ошибок отсутствия нужных таблиц
