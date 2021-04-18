@@ -35,8 +35,9 @@ def inspector_inputs(inputs=None, equal=False, init_cap=None):
     return inputs, equal, init_capital_for_equal
 
 
-def get_inspector_data(tickerlist):
+def get_inspector_data(portfolio):
     benchmarks = ['SPY', 'QQQ', 'ARKW', 'ACWI', 'TLT']
+    tickerlist = portfolio.keys()
     debug(f' ### {tickerlist + benchmarks} ###')
     scrape_tickers = tickerlist + benchmarks
     tickers_data = None
