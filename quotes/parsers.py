@@ -68,9 +68,23 @@ def get_inspector_data(portfolio):
             df.drop(col, axis=1, inplace=True)
 
     stocks = df.columns.tolist()
+
+    portfolio_cap = 0.0
+    portfolio_weights_pct = {}
+    first_value = list(constituents.values())[0]
+    if first_value == 0:
+        for ticker in stocks:
+            portfolio_weights_pct[ticker] = 1 / len(constituents)
+    else:
+        for ticker in stocks:
+            portfolio_cap += df[ticker][-1] * constituents[ticker]
+
+        for ticker in stocks:
+            portfolio_weights_pct[ticker] = (df[ticker][-1] * constituents[ticker])/portfolio_cap
+
     for col in stocks:
         n = 63
-        returns = df[col].pct_change() * 100
+        returns = df[col].pct_change() * 100 * portfolio_weights_pct[col]
 
         df[col + ' returns'] = df[col].pct_change() * 100
 
