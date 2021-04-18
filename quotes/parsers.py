@@ -36,10 +36,14 @@ def inspector_inputs(inputs=None, equal=False, init_cap=None):
 
 
 def get_inspector_data(portfolio):
-    benchmarks = ['SPY', 'QQQ', 'ARKW', 'ACWI', 'TLT']
+    benchmarks = {'SPY': 1, 'QQQ': 1, 'ARKW': 1, 'ACWI': 1, 'TLT': 1}
+    constituents = {}
+    constituents.update(portfolio)
+    portfolio.update(benchmarks)
+    debug(f' ### {portfolio} ###')
+    debug(f' ### {constituents} ###')
     tickerlist = portfolio.keys()
-    debug(f' ### {tickerlist + benchmarks} ###')
-    scrape_tickers = tickerlist + benchmarks
+    scrape_tickers = tickerlist
     tickers_data = None
     try:
         tickers_data = Ticker(scrape_tickers)
@@ -54,48 +58,85 @@ def get_inspector_data(portfolio):
     df.drop(columns={'open', 'volume', 'adjclose', 'dividends', 'splits', 'high', 'low', 'close'}, inplace=True)
     df.reset_index(level=df.index.names, inplace=True)
     df = (df.assign(idx=df.groupby('symbol').cumcount()).pivot_table(index='date', columns='symbol', values='hlc3'))
-    return df
+    all_symbols = df.columns.tolist()
+    bench_df = df.copy()
+    for col in all_symbols:
+        if col not in benchmarks.keys():
+            bench_df.drop(col, axis=1, inplace=True)
+    for col in all_symbols:
+        if col not in constituents.keys():
+            df.drop(col, axis=1, inplace=True)
+
+    stocks = df.columns.tolist()
+    for col in stocks:
+        n = 63
+        returns = df[col].pct_change() * 100
+
+        df[col + ' returns'] = df[col].pct_change() * 100
+
+        returns_n = (df[col] - df[col].shift(n)) / df[col].shift(n)
+
+        df[col + ' returns_n'] = returns_n
+
+    return df, bench_df
 
 
-def inspector(symbols: pd = None, equal=False, init_capital_for_equal=100000,
+def inspector(portfolio=None, equal=False, init_capital_for_equal=100000,
               csv_path=f'{PROJECT_HOME_DIR}/results/inspector/'):
     if not os.path.exists(csv_path):
         os.mkdir(csv_path, 0o774)
+    exit()
+    df = portfolio[0]
+    bench_df = portfolio[1]
+    constituents = df.columns.tolist()
+    # for col in constituents:
+    #     n = 63
+    #     returns = df[col].pct_change()*100
+    #
+    #     df[col + ' returns'] = df[col].pct_change()*100
+    #
+    #     returns_n = (df[col] - df[col].shift(n)) / df[col].shift(n)
+    #
+    #     df[col + ' returns_n'] = returns_n
+        # df[col + ' returns_neg'] = df[col + ' returns'].apply(lambda x: df[col + ' returns'] if x < 0 else 0)
+        # df.loc[df[col + ' returns'] < 0, col + ' returns_neg'] = df[col + ' returns']
+        # returns_neg = df[col + ' returns']
+        # df.loc[df[col + ' returns'] < 0, col + ' ds_returns'] = df[col + ' returns']**2
+        # semi_std = (df[col + ' ds_returns'].mean())**0.5
 
-    benchmarks = ['SPY', 'QQQ', 'ARKW', 'ACWI', 'TLT']
-    df = symbols
-    constituents = symbols.columns.tolist()
-    statistics = df.copy()
-    for col in constituents:
-        n = 63
-        returns = statistics[col].pct_change()*100
-        statistics[col + ' returns'] = statistics[col].pct_change()*100
-        returns_n = (statistics[col] - statistics[col].shift(n)) / statistics[col].shift(n)
-        statistics[col + ' returns_neg'] = statistics[col + ' returns'].apply(lambda x: statistics[col + ' returns'] if x < 0 else 0)
-        statistics.loc[statistics[col + ' returns'] < 0, col + ' returns_neg'] = statistics[col + ' returns']
-        returns_neg = statistics[col + ' returns']
-        statistics.loc[statistics[col + ' returns'] < 0, col + ' ds_returns'] = statistics[col + ' returns']**2
-        semi_std = (statistics[col + ' ds_returns'].mean())**0.5
-
-
-        weights = np.arange(1, n + 1)
-        wma = returns_neg.rolling(n).apply(lambda x: np.dot(x, weights) / weights.sum())
-        dd = 0
-        for i in range(n-1):
-            dd = dd + pow(returns_neg - wma, 2)
-            dd = dd**0.5
+        # if not equal:
+        #     df['qty'] = df['Ticker'].map(constituents)
+        #     df['market_value'] = df['Price'] * df['qty']
+        #     total_cap = (df['Price'] * abs(df['qty'])).sum(axis=0)
+        #     portfolio_cap = df['market_value'].sum(axis=0)
+        #     df['weights'] = df['market_value'] / portfolio_cap
+        # else:
+        #     equal_w = 1 / len(constituents.keys())
+        #     constituents.update((k, equal_w) for k, v in constituents.items())
+        #     df['weights'] = df['Ticker'].map(constituents)
+        #     df['market_value'] = init_capital_for_equal * df['weights']
+        #     df['qty'] = (df['market_value'] / df['Price']).apply(np.floor)
+        #     df['market_value'] = df['Price'] * df['qty']
+        #     total_cap = (df['Price'] * (init_capital_for_equal * abs(df['weights']) / df['Price']).apply(np.floor)).sum(
+        #         axis=0)
+        # weights = np.arange(1, n + 1)
+        # wma = returns_neg.rolling(n).apply(lambda x: np.dot(x, weights) / weights.sum())
+        # dd = 0
+        # for i in range(n-1):
+        #     dd = dd + pow(returns_neg - wma, 2)
+        #     dd = dd**0.5
         # print(f'wma {col}', wma)
         # dd = pow(returns_neg - wma, 2)
         # print(f'dd {col}', dd)
         # dsdev = dd.rolling(n).sum()
         # print(f'dsdev {col}', dd)
 
-        statistics[col + ' returns_n'] = returns_n
-        statistics[col + ' dsdev'] = semi_std
-    # statistics.dropna(inplace=True)
-    statistics.drop_duplicates(inplace=True)
-    statistics.to_csv(os.path.join(csv_path + 'temp.csv'))
-    exit()
+        # df[col + ' returns_n'] = returns_n
+        # df[col + ' dsdev'] = semi_std
+    # df.dropna(inplace=True)
+    # df.drop_duplicates(inplace=True)
+    # df.to_csv(os.path.join(csv_path + 'temp.csv'))
+
 
 
 
@@ -104,11 +145,11 @@ def inspector(symbols: pd = None, equal=False, init_capital_for_equal=100000,
     # df.replace('%', '', regex=True, inplace=True)
     # df = df.astype({"Perf_Month": np.float64, "Volat_M": np.float64, "Perf_Quart": np.float64, "SMA50": np.float64})
 
-    bench_df = df.copy()
-    bench_df.drop(bench_df[~bench_df['Ticker'].isin(benchmarks)].index, inplace=True)
-    bench_df.set_index('Symbol', inplace=True)
-    df.drop(df[~df['Ticker'].isin([*constituents])].index, inplace=True)
-    df.set_index('Symbol', inplace=True)
+    # bench_df = df.copy()
+    # bench_df.drop(bench_df[~bench_df['Ticker'].isin(benchmarks)].index, inplace=True)
+    # bench_df.set_index('Symbol', inplace=True)
+    # df.drop(df[~df['Ticker'].isin([*constituents])].index, inplace=True)
+    # df.set_index('Symbol', inplace=True)
 
     if not equal:
         df['qty'] = df['Ticker'].map(constituents)

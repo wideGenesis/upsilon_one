@@ -21,7 +21,7 @@ from quotes.stock_quotes_news import StockStat
 # ============================== Main  =============================
 def main():
 
-    x = get_inspector_data(['CSCO', 'WMT', 'NEE'])
+    x = get_inspector_data({'CSCO': 10, 'WMT': 50, 'NEE': 152, 'QQQ': 25})
     y = inspector(x, equal=False)
     # inp = inspector_inputs(#inputs={'QQQ': 100},
     #                        inputs={'CSCO': 19, 'WMT': 10, 'NEE': 8, 'PEP': 7, 'SBUX': 6, 'COST': 5, 'MSFT': 5, 'TXN': 5, 'FB': 1, 'AMAT': 4},
