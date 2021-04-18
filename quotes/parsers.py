@@ -82,19 +82,24 @@ def get_inspector_data(portfolio):
         for ticker in stocks:
             portfolio_weights_pct[ticker] = (df[ticker][-1] * constituents[ticker])/portfolio_cap
     df['portfolio_pct'] = 0
+    port_returns = 0
     df['portfolio_returns_n'] = 0
     for col in stocks:
         n = 63
+        returns = df[col].pct_change() * 100 * portfolio_weights_pct[col]
+        port_returns += returns
         df[col + ' returns'] = df[col].pct_change() * 100 * portfolio_weights_pct[col]
         df[col + ' returns_n'] = ((df[col] - df[col].shift(n)) / df[col].shift(n)) * 100 * portfolio_weights_pct[col]
         df['portfolio_pct'] += df[col + ' returns']
         df['portfolio_returns_n'] += df[col + ' returns_n']
         df.drop(columns={f'{col} returns', f'{col} returns_n'}, inplace=True)
+
     df['downside_dev'] = np.sqrt(np.nanmean(np.square(np.clip(df['portfolio_pct'], np.NINF, 0))) * 252)
     df['downside_dev_n'] = np.sqrt(np.nanmean(np.square(np.clip(df['portfolio_returns_n'], np.NINF, 0))) * 252)
-    #
-    # df.loc[df['downside_dev'] != 0, 'sortino'] = (np.nanmean(returns) * np.sqrt(252)) / drisk
-    # df.to_csv(os.path.join(f'{PROJECT_HOME_DIR}/results/inspector/temp.csv'))
+
+    port_dd_dev = np.sqrt(np.nanmean(np.square(np.clip(df['portfolio_pct'], np.NINF, 0))) * 252)
+    df.loc[df['downside_dev'] != 0, 'sortino'] = (np.nanmean(port_returns) * np.sqrt(252)) / port_dd_dev
+    df.to_csv(os.path.join(f'{PROJECT_HOME_DIR}/results/inspector/temp.csv'))
     return df, bench_df
 
 # def sortino(returns, risk_free=0):
