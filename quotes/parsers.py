@@ -86,7 +86,7 @@ def get_inspector_data(portfolio):
         n = 63
         returns = df[col].pct_change() * 100 * portfolio_weights_pct[col]
 
-        df[col + ' returns'] = df[col].pct_change() * 100
+        df[col + ' returns'] = df[col].pct_change() * 100 * portfolio_weights_pct[col]
 
         returns_n = (df[col] - df[col].shift(n)) / df[col].shift(n)
 
