@@ -55,6 +55,7 @@ def get_inspector_data(portfolio):
 
     df = tickers_data.history(start=six_month_ago)
     df['hlc3'] = (df['high'] + df['low'] + df['close']) / 3
+    print(df)
     df.drop(columns={'open', 'volume', 'adjclose', 'dividends', 'splits', 'high', 'low', 'close'}, inplace=True)
     df.reset_index(level=df.index.names, inplace=True)
     df = (df.assign(idx=df.groupby('symbol').cumcount()).pivot_table(index='date', columns='symbol', values='hlc3'))
@@ -93,7 +94,7 @@ def get_inspector_data(portfolio):
         df['portfolio_pct'] += df[col + ' returns']
         df['portfolio_returns_n'] += df[col + ' returns_n']
         df.drop(columns={f'{col} returns', f'{col} returns_n'}, inplace=True)
-
+    df['st_dev'] = df['portfolio_pct'].rolling(63).std()
     df['downside_dev'] = np.sqrt(np.nanmean(np.square(np.clip(df['portfolio_pct'], np.NINF, 0))) * 252)
     df['downside_dev_n'] = np.sqrt(np.nanmean(np.square(np.clip(df['portfolio_returns_n'], np.NINF, 0))) * 252)
 
