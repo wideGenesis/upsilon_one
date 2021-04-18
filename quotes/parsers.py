@@ -24,6 +24,7 @@ import uuid
 from reuterspy import Reuters
 import numpy as np
 from datetime import date, timedelta
+from math import sqrt
 
 
 # ============================== GET Inspector ================================
@@ -34,11 +35,13 @@ def inspector_inputs(inputs=None, equal=False, init_cap=None):
     return inputs, equal, init_capital_for_equal
 
 
-def get_inspector_data(tickerlist, length=63):
-    debug(f' ### {tickerlist} ###')
+def get_inspector_data(tickerlist):
+    benchmarks = ['SPY', 'QQQ', 'ARKW', 'ACWI', 'TLT']
+    debug(f' ### {tickerlist + benchmarks} ###')
+    scrape_tickers = tickerlist + benchmarks
     tickers_data = None
     try:
-        tickers_data = Ticker(tickerlist)
+        tickers_data = Ticker(scrape_tickers)
     except Exception as e:
         debug(e, ERROR)
 
@@ -48,40 +51,57 @@ def get_inspector_data(tickerlist, length=63):
     df = tickers_data.history(start=six_month_ago)
     df['hlc3'] = (df['high'] + df['low'] + df['close']) / 3
     df.drop(columns={'open', 'volume', 'adjclose', 'dividends', 'splits', 'high', 'low', 'close'}, inplace=True)
-    # df['pct'] = df.groupby(['symbol']).pct_change
-    # if df.groupby(['symbol']).pct_change < 0:
-    #     df['pct_neg'] = df['pct']
-    # else:
-    #     df['pct_neg'] = 0
-    # # df['sma'] = df['pct_neg'].rolling(length).mean()
-
     df.reset_index(level=df.index.names, inplace=True)
     df = (df.assign(idx=df.groupby('symbol').cumcount()).pivot_table(index='date', columns='symbol', values='hlc3'))
-
-    df.to_csv(f'{PROJECT_HOME_DIR}/results/inspector/data.csv')
     return df
 
 
-def inspector(constituents=None, equal=False, init_capital_for_equal=None,
+def inspector(symbols: pd = None, equal=False, init_capital_for_equal=100000,
               csv_path=f'{PROJECT_HOME_DIR}/results/inspector/'):
     if not os.path.exists(csv_path):
         os.mkdir(csv_path, 0o774)
-    filename = str(uuid.uuid4()).replace('-', '') + '.csv'
-    benchmarks = ['SPY', 'QQQ', 'ARKW', 'ACWI', 'TLT']
-    tickers = list(set(constituents) | set(benchmarks))
-    custom = ['1', '2', '3', '4', '43', '44', '49', '51', '53', '65']
-    try:
-        stock_list = Screener(tickers=tickers, rows=50, order='ticker', table='Overview', custom=custom)
-        stock_list.to_csv(os.path.join(csv_path + filename))
-    except Exception as e1:
-        debug(e1)
 
-    df = pd.read_csv(csv_path + filename)
-    df.drop(columns={'No.'}, inplace=True)
-    df['Symbol'] = df['Ticker']
-    df.rename(columns={'Perf Month': 'Perf_Month', 'Volatility M': 'Volat_M', 'Perf Quart': 'Perf_Quart'}, inplace=True)
-    df.replace('%', '', regex=True, inplace=True)
-    df = df.astype({"Perf_Month": np.float64, "Volat_M": np.float64, "Perf_Quart": np.float64, "SMA50": np.float64})
+    benchmarks = ['SPY', 'QQQ', 'ARKW', 'ACWI', 'TLT']
+    df = symbols
+    constituents = symbols.columns.tolist()
+    statistics = df.copy()
+    for col in constituents:
+        n = 63
+        returns = statistics[col].pct_change()*100
+        statistics[col + ' returns'] = statistics[col].pct_change()*100
+        returns_n = (statistics[col] - statistics[col].shift(n)) / statistics[col].shift(n)
+        statistics[col + ' returns_neg'] = statistics[col + ' returns'].apply(lambda x: statistics[col + ' returns'] if x < 0 else 0)
+        statistics.loc[statistics[col + ' returns'] < 0, col + ' returns_neg'] = statistics[col + ' returns']
+        returns_neg = statistics[col + ' returns']
+        statistics.loc[statistics[col + ' returns'] < 0, col + ' ds_returns'] = statistics[col + ' returns']**2
+        semi_std = (statistics[col + ' ds_returns'].mean())**0.5
+
+
+        weights = np.arange(1, n + 1)
+        wma = returns_neg.rolling(n).apply(lambda x: np.dot(x, weights) / weights.sum())
+        dd = 0
+        for i in range(n-1):
+            dd = dd + pow(returns_neg - wma, 2)
+            dd = dd**0.5
+        # print(f'wma {col}', wma)
+        # dd = pow(returns_neg - wma, 2)
+        # print(f'dd {col}', dd)
+        # dsdev = dd.rolling(n).sum()
+        # print(f'dsdev {col}', dd)
+
+        statistics[col + ' returns_n'] = returns_n
+        statistics[col + ' dsdev'] = semi_std
+    # statistics.dropna(inplace=True)
+    statistics.drop_duplicates(inplace=True)
+    statistics.to_csv(os.path.join(csv_path + 'temp.csv'))
+    exit()
+
+
+
+    # df['Symbol'] = df['Ticker']
+    # df.rename(columns={'Perf Month': 'Perf_Month', 'Volatility M': 'Volat_M', 'Perf Quart': 'Perf_Quart'}, inplace=True)
+    # df.replace('%', '', regex=True, inplace=True)
+    # df = df.astype({"Perf_Month": np.float64, "Volat_M": np.float64, "Perf_Quart": np.float64, "SMA50": np.float64})
 
     bench_df = df.copy()
     bench_df.drop(bench_df[~bench_df['Ticker'].isin(benchmarks)].index, inplace=True)

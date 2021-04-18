@@ -22,7 +22,7 @@ from quotes.stock_quotes_news import StockStat
 def main():
 
     x = get_inspector_data(['CSCO', 'WMT', 'NEE'])
-    print(x)
+    y = inspector(x, equal=False)
     # inp = inspector_inputs(#inputs={'QQQ': 100},
     #                        inputs={'CSCO': 19, 'WMT': 10, 'NEE': 8, 'PEP': 7, 'SBUX': 6, 'COST': 5, 'MSFT': 5, 'TXN': 5, 'FB': 1, 'AMAT': 4},
     #                        equal=False,
