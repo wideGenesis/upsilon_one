@@ -92,7 +92,7 @@ def get_inspector_data(portfolio):
 
         df[col + ' returns_n'] = returns_n
 
-        df['portfolio-pct'] += df[col + ' returns']
+        df['portfolio_pct'] += df[col + ' returns']
 
     return df, bench_df
 
