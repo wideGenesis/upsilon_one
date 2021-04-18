@@ -56,7 +56,8 @@ def get_inspector_data(portfolio):
     df = tickers_data.history(start=six_month_ago)
     df['hlc3'] = (df['high'] + df['low'] + df['close']) / 3
     print(df)
-    df.drop(columns={'open', 'volume', 'adjclose', 'dividends', 'splits', 'high', 'low', 'close'}, inplace=True)
+    df.drop(columns={'open', 'volume', 'adjclose', 'dividends', 'splits', 'high', 'low', 'close'}, errors='ignore',
+            inplace=True)
     df.reset_index(level=df.index.names, inplace=True)
     df = (df.assign(idx=df.groupby('symbol').cumcount()).pivot_table(index='date', columns='symbol', values='hlc3'))
     all_symbols = df.columns.tolist()
