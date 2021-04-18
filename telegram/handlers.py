@@ -609,23 +609,39 @@ async def portfolios_cmd(client, event):
 async def inspector_to_handler(event, client_):
     sender_id = event.input_sender.user_id
     await client_.delete_messages(sender_id, event.message.id)
+    regex = r"^\![a-zA-Z]{1,5} ((\d*[\%]?$)|(\d*(?!\.$)\.?\d{1,2}\%$))"
     parse = str(event.text)
+    match = re.match(regex, parse)
     parse = re.split('!', parse)
     parse = parse[1]
     parse = re.split(' ', parse)
     stock = ''
     size = ''
-    if len(parse) == 2 and len(parse[0]) <= 5:
+    if match is not None and len(parse) == 2 and len(parse[0]) <= 5:
         stock, size = parse[0], parse[1]
         stock = stock.upper()
-        if int(size) > 0:
-            msg = f'Ты ввёл тикер {stock} в размере {size} Long?'
-        elif int(size) < 0:
-            msg = f'Ты ввёл тикер {stock} в размере {size} Short?'
+        is_percent = size.endswith('%')
+        size_value = 0.0
+        if is_percent:
+            size_value = fast_float(re.split('%', size)[0], None)
         else:
-            msg = f'{stock} {size} позиция не будет сохранена, нажмите кнопку исправить'
+            size_value = fast_int(size, None)
+            
+        if is_percent:
+            if size_value > 0.0:
+                msg = f'Ты ввёл тикер {stock} в размере {size} Long?'
+            else:
+                msg = f'{stock} {size} позиция не будет сохранена, нажмите кнопку исправить'
+        else:
+            if size_value > 0:
+                msg = f'Ты ввёл тикер {stock} в размере {size} Long?'
+            elif size_value < 0:
+                msg = f'Ты ввёл тикер {stock} в размере {size} Short?'
+            else:
+                msg = f'{stock} {size} позиция не будет сохранена, нажмите кнопку исправить'
     else:
-        msg = 'Ошибочный ввод, нажмите кнопку исправить'
+        msg = 'Ошибочный ввод: не соответствует формату. Нажмите кнопку исправить'
+
     shared.set_inspector_ticker(sender_id, stock, size)
     debug(f'portfolio_ticker={stock}:{size}')
     old_msg_id = await shared.get_old_msg_id(sender_id)
