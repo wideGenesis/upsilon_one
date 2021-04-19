@@ -626,7 +626,7 @@ async def inspector_to_handler(event, client_):
             size_value = fast_float(re.split('%', size)[0], None)
         else:
             size_value = fast_int(size, None)
-            
+
         if is_percent:
             if size_value > 0.0:
                 msg = f'Ты ввёл тикер {stock} в размере {size} Long?'

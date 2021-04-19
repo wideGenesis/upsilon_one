@@ -912,6 +912,40 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
     elif event.data == b'inspector_ends_finish':
         current_portfolio = shared.get_inspector_portfolio(sender_id)
         debug(f'current_portfolio={current_portfolio}')
+        first_value = list(current_portfolio.values())[0]
+        msg = None
+        if isinstance(first_value, int) and first_value == 0:
+            for k in current_portfolio:
+                if current_portfolio[k] != 0:
+                    msg = f'Если портфель равновзвешенный, все веса в портфеле должны быть равны нулю!' \
+                          f'__Твой портфель сейчас выглядит так:__\n```{current_portfolio}```\n\n' \
+                          f'Необходимо поправить портфель и попробовать еще раз'
+                    break
+        elif isinstance(first_value, int) and first_value != 0:
+            for k in current_portfolio:
+                if current_portfolio[k] == 0:
+                    msg = f'Если веса активов в портфеле указаны в количестве, ' \
+                          f'то все веса должны быть указаны в количестве!' \
+                          f'__Твой портфель сейчас выглядит так:__\n```{current_portfolio}```\n\n' \
+                          f'Необходимо поправить портфель и попробовать еще раз'
+                    break
+        elif isinstance(first_value, str) and first_value.endswith('%'):
+            for k in current_portfolio:
+                if not current_portfolio[k].endswith('%'):
+                    msg = f'Если веса активов в портфеле указаны в процентах, ' \
+                          f'то все веса должны быть указаны в процентах!' \
+                          f'__Твой портфель сейчас выглядит так:__\n```{current_portfolio}```\n\n' \
+                          f'Необходимо поправить портфель и попробовать еще раз'
+                    break
+
+        if msg is not None:
+            await event.edit()
+            if old_msg_id is not None:
+                await client.edit_message(event.input_sender, old_msg_id, msg)
+            else:
+                msg = await client.send_message(event.input_sender, msg)
+            await shared.save_old_message(sender_id, msg)
+
         path, fn1, fn2 = await inspector(constituents=current_portfolio, init_capital_for_equal=100000)
         await client.send_file(entity, f'{path}{fn1}.png')
         await client.send_file(entity, f'{path}{fn2}.png')
