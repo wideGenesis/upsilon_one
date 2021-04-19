@@ -51,13 +51,13 @@ def get_inspector_data(portfolio):
         debug(e, ERROR)
 
     now = datetime.datetime.now()
-    six_month_ago = add_months(now, -6)
+    six_month_ago = add_months(now, -13)
 
     df = tickers_data.history(start=six_month_ago)
     df['hlc3'] = (df['high'] + df['low'] + df['close']) / 3
-    print(df)
     df.drop(columns={'open', 'volume', 'adjclose', 'dividends', 'splits', 'high', 'low', 'close'}, errors='ignore',
             inplace=True)
+
     df.reset_index(level=df.index.names, inplace=True)
     df = (df.assign(idx=df.groupby('symbol').cumcount()).pivot_table(index='date', columns='symbol', values='hlc3'))
     all_symbols = df.columns.tolist()
@@ -70,7 +70,9 @@ def get_inspector_data(portfolio):
             df.drop(col, axis=1, inplace=True)
 
     stocks = df.columns.tolist()
-
+    benches = bench_df.columns.tolist()
+    quarter = 63
+    year = 252
     portfolio_cap = 0.0
     portfolio_weights_pct = {}
     first_value = list(constituents.values())[0]
@@ -84,32 +86,32 @@ def get_inspector_data(portfolio):
         for ticker in stocks:
             portfolio_weights_pct[ticker] = (df[ticker][-1] * constituents[ticker])/portfolio_cap
     df['portfolio_pct'] = 0
-    port_returns = 0
-    df['portfolio_returns_n'] = 0
     for col in stocks:
-        n = 63
-        returns = df[col].pct_change() * 100 * portfolio_weights_pct[col]
-        port_returns += returns
-        df[col + ' returns'] = df[col].pct_change() * 100 * portfolio_weights_pct[col]
-        df[col + ' returns_n'] = ((df[col] - df[col].shift(n)) / df[col].shift(n)) * 100 * portfolio_weights_pct[col]
+        df[col + ' returns'] = df[col].pct_change() * portfolio_weights_pct[col]
         df['portfolio_pct'] += df[col + ' returns']
-        df['portfolio_returns_n'] += df[col + ' returns_n']
-        df.drop(columns={f'{col} returns', f'{col} returns_n'}, inplace=True)
-    df['st_dev'] = df['portfolio_pct'].rolling(63).std()
-    df['downside_dev'] = np.sqrt(np.nanmean(np.square(np.clip(df['portfolio_pct'], np.NINF, 0))) * 252)
-    df['downside_dev_n'] = np.sqrt(np.nanmean(np.square(np.clip(df['portfolio_returns_n'], np.NINF, 0))) * 252)
+        df[f'{col}_sharpe_{year}'] = (df[col].pct_change().rolling(year).mean() /
+                                      df[col].pct_change().rolling(year).std()) * sqrt(year)
+        df.drop(columns={f'{col} returns', f'{col}'}, inplace=True)
 
-    port_dd_dev = np.sqrt(np.nanmean(np.square(np.clip(df['portfolio_pct'], np.NINF, 0))) * 252)
-    df.loc[df['downside_dev'] != 0, 'sortino'] = (np.nanmean(port_returns) * np.sqrt(252)) / port_dd_dev
-    df.to_csv(os.path.join(f'{PROJECT_HOME_DIR}/results/inspector/temp.csv'))
+    df[f'port_sharpe_{quarter}'] = (df['portfolio_pct'].rolling(quarter).mean() /
+                                    df['portfolio_pct'].rolling(quarter).std()) * sqrt(quarter)
+
+    df[f'port_sharpe_{year}'] = (df['portfolio_pct'].rolling(year).mean() /
+                                 df['portfolio_pct'].rolling(year).std()) * sqrt(year)
+    df.drop(columns={'portfolio_pct'}, inplace=True)
+    df.dropna(inplace=True)
+    for col in benches:
+        bench_df[f'{col}_sharpe_{year}'] = (bench_df[col].pct_change().rolling(year).mean() /
+                                            bench_df[col].pct_change().rolling(year).std()) * sqrt(year)
+        bench_df.drop(columns={f'{col}'}, inplace=True)
+
+    bench_df[f'SPY_TLT_{year}'] = 0.6*bench_df[f'SPY_sharpe_{year}'] + 0.4*bench_df[f'TLT_sharpe_{year}']
+    bench_df.drop(columns={f'TLT_sharpe_{year}'}, inplace=True)
+    bench_df.dropna(inplace=True)
+    df.to_csv(os.path.join(f'{PROJECT_HOME_DIR}/results/inspector/stocks.csv'))
+    bench_df.to_csv(os.path.join(f'{PROJECT_HOME_DIR}/results/inspector/bench.csv'))
     return df, bench_df
 
-# def sortino(returns, risk_free=0):
-#     adj_returns = returns - risk_free
-#     drisk = downside_risk(adj_returns)
-#     if drisk == 0:
-#         return np.nan
-#     return (np.nanmean(adj_returns) * np.sqrt(252)) / drisk
 
 def inspector(portfolio=None, equal=False, init_capital_for_equal=100000,
               csv_path=f'{PROJECT_HOME_DIR}/results/inspector/'):
