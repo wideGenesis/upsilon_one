@@ -253,12 +253,12 @@ async def quotes_to_handler(event, client_, limit=20):
         debug(f'module NOT imported --- try first import')
         pricing = importlib.import_module("telegram.pricing")
 
-    can_continue, decrement_type, decrement_amount = await pricing.check_request_amount(event.input_sender.user_id, client_)
-    if not can_continue:
+    pricing_result = await pricing.check_request_amount(event.input_sender.user_id, client_)
+    if not pricing_result["result"]:
         return
 
     parse = str(event.text)
-    parse = re.split('/q |#|@|\$', parse)
+    parse = re.split('^[#@$]', parse)
     # print(parse)
     stock = parse[1]
     stock = stock.upper()
@@ -292,10 +292,10 @@ async def quotes_to_handler(event, client_, limit=20):
         msg2 = msg1
         msg3 = get[2]
         # вернем баланс в случае если тикер не найден или это ETF
-        if decrement_type == 'Paid':
-            await sql.increment_paid_request_amount(event.input_sender.user_id, decrement_amount)
-        if decrement_type == 'Free':
-            await sql.increment_free_request_amount(event.input_sender.user_id, decrement_amount)
+        if pricing_result['Paid'] > 0:
+            await sql.increment_paid_request_amount(event.input_sender.user_id, pricing_result['Paid'])
+        if pricing_result['Free'] > 0:
+            await sql.increment_free_request_amount(event.input_sender.user_id, pricing_result['Free'])
 
     revenue_data = None
     if len(get) == 4:
