@@ -59,6 +59,7 @@ def inspector_inputs(inputs=None, equal=False, init_cap=None):
 
 
 def get_inspector_data(portfolio, quarter=63, year=252):
+    path = f'{PROJECT_HOME_DIR}/results/inspector/'
     benchmarks = {'SPY': 1, 'QQQ': 1, 'ARKW': 1, 'ACWI': 1, 'TLT': 1, 'VLUE': 1, 'EEM': 1}
     constituents = {}
     constituents.update(portfolio)
@@ -114,13 +115,13 @@ def get_inspector_data(portfolio, quarter=63, year=252):
     for col in stocks:
         df[col + ' returns'] = df[col].pct_change() * portfolio_weights_pct[col]
         df['portfolio_pct'] += df[col + ' returns']
-        df[f'{col}_sharpe_{year}'] = (df[col].pct_change().rolling(year).mean() /
-                                      df[col].pct_change().rolling(year).std()) * sqrt(year)  # годовой шарп потикерно
+        # df[f'{col}_sharpe_{year}'] = (df[col].pct_change().rolling(year).mean() /
+        #                               df[col].pct_change().rolling(year).std()) * sqrt(year)  # годовой шарп потикерно
         angular_stocks[col] = df[col].pct_change()  # ретурны для угловой матрицы конституентов
         df.drop(columns={f'{col} returns', f'{col}'}, inplace=True)
-
+    # квартальный шарп порта
     df[f'port_sharpe_{quarter}'] = (df['portfolio_pct'].rolling(quarter).mean() /
-                                    df['portfolio_pct'].rolling(quarter).std()) * sqrt(quarter)  # квартальный шарп порта
+                                    df['portfolio_pct'].rolling(quarter).std()) * sqrt(quarter)
 
     df[f'port_sharpe_{year}'] = (df['portfolio_pct'].rolling(year).mean() /
                                  df['portfolio_pct'].rolling(year).std()) * sqrt(year)  # годовой шарп порта
@@ -129,12 +130,12 @@ def get_inspector_data(portfolio, quarter=63, year=252):
     # месячная аннуализированная/стандартная вола порта
     df[f'port_volatility_21'] = df['portfolio_pct'].rolling(21).std() * sqrt(252)
     # df.drop(columns={'portfolio_pct'}, inplace=True)
-    angular_benches['Portfolio'] = df['portfolio_pct']
+    angular_benches['PORTFOLIO'] = df['portfolio_pct']
     df.dropna(inplace=True)
     # расчет углового сходства конституентов
     angular_stocks.dropna(inplace=True)
     if len(stocks) >= 2:
-        angular_dist(angular_stocks, save_path=f'{PROJECT_HOME_DIR}/results/inspector/angular_stocks.png',
+        angular_dist(angular_stocks, save_path=path + 'angular_stocks.png',
                      title='схожесть акций портфеля между собой')
     else:
         pass
@@ -154,32 +155,61 @@ def get_inspector_data(portfolio, quarter=63, year=252):
         # квартальный диверс ратио по бенчам
         bench_df[f'{col}_dr_{quarter}'] = bench_df[f'{col}_volatility_{quarter}'] * 100/df[f'port_volatility_{quarter}']
         angular_benches[col] = bench_df[col].pct_change()  # ретурны для угловой матрицы бенчей
-        # bench_df.drop(columns={f'{col}'}, inplace=True)
+        bench_df.drop(columns={f'{col}'}, inplace=True)
 
     # расчеты для спай/тлт бенча
     bench_df[f'SPY_TLT_{year}'] = 0.6 * bench_df[f'SPY_sharpe_{year}'] + 0.4 * bench_df[f'TLT_sharpe_{year}']
     bench_df[f'SPY_TLT_volatility_{quarter}'] =\
         0.6 * bench_df[f'SPY_volatility_{quarter}'] + 0.4 * bench_df[f'TLT_volatility_{quarter}']
     bench_df[f'SPY_TLT_m2_{quarter}'] = df[f'port_sharpe_{quarter}'] * bench_df[f'SPY_TLT_volatility_{quarter}']
+    bench_df[f'SPY_TLT_dr_{quarter}'] = bench_df[f'SPY_TLT_volatility_{quarter}'] * 100 / \
+        df[f'port_volatility_{quarter}']
     bench_df.drop(columns={f'TLT_sharpe_{year}'}, inplace=True)
 
     # расчет беты для стресс-теста
     bench_df[f'PORT_TO_SPY_beta_{year}'] = \
         bench_df[f'SPY_return'].corr(df['portfolio_pct']) * df[f'port_volatility_{quarter}'] \
         / bench_df[f'SPY_volatility_{quarter}']
-    # расчет 3х месячной волы для стресс-теста
+    # расчет 3,14 * месячной волы для стресс-теста
     bench_df[f'PORT_WORST_21'] = df[f'port_volatility_21'] * 3.14
 
     # расчет углового сходства бенчей и порта
     angular_benches['SPY_TLT'] = 0.6 * bench_df['SPY_return'] + 0.4 * bench_df['TLT_return']
     angular_benches.dropna(inplace=True)
-    angular_dist(angular_benches, save_path=f'{PROJECT_HOME_DIR}/results/inspector/angular_benches.png',
+    angular_dist(angular_benches, save_path=path + 'angular_benches.png',
                  title='схожесть портфеля и бенчмарков между собой')
-
+    df.dropna(inplace=True)
+    bench_df.dropna(inplace=True)
     df.to_csv(os.path.join(f'{PROJECT_HOME_DIR}/results/inspector/stocks.csv'))
     bench_df.to_csv(os.path.join(f'{PROJECT_HOME_DIR}/results/inspector/bench.csv'))
 
-    return df, bench_df
+    # сбор словарей для визуализаций
+    mask_m2 = ['SPY_m2_63', 'QQQ_m2_63', 'ARKW_m2_63', 'ACWI_m2_63',
+               'TLT_m2_63', 'VLUE_m2_63', 'EEM_m2_63', 'SPY_TLT_m2_63']
+    mask_dr = ['SPY_dr_63', 'QQQ_dr_63', 'ARKW_dr_63', 'ACWI_dr_63',
+               'TLT_dr_63', 'VLUE_dr_63', 'EEM_dr_63', 'SPY_TLT_dr_63']
+    m2_cols = bench_df[mask_m2].columns.tolist()
+    dr_cols = bench_df[mask_dr].columns.tolist()
+    divers = {}
+    for col in dr_cols:
+        name = str(col).replace('_dr_63', '')
+        temp = {f'{name}': bench_df[f'{col}'].iloc[-1]}
+        divers.update(temp)
+
+    m2 = {}
+    for col in m2_cols:
+        name = str(col).replace('_m2_63', '')
+        temp2 = {f'{name}': bench_df[f'{col}'].iloc[-1]}
+        m2.update(temp2)
+
+    filename_h1 = str(uuid.uuid4()).replace('-', '')
+    debug(f"Divers filename: {filename_h1}")
+    create_custom_histogram(divers, "Уровень диверсификации (%) против бенчмарков", path, filename_h1)
+
+    filename_h2 = str(uuid.uuid4()).replace('-', '')
+    debug(f"M2 filename: {filename_h2}")
+    create_custom_histogram(m2, "Размер премии (%) бенчмарков в сравнении с портфелем", path, filename_h2)
+    return path, filename_h1, filename_h2
 
 
 def inspector(portfolio=None, equal=False, init_capital_for_equal=100000,
@@ -221,32 +251,11 @@ def inspector(portfolio=None, equal=False, init_capital_for_equal=100000,
     bench_df['port_m2'] = port_Perf_Month / port_volatility * bench_df['bench_volatility']
     bench_df['divers_percent'] = round(bench_df['bench_volatility'] * 100 / port_volatility, 2)
 
-    print('Капитализация портфеля', total_cap)
-    print('Месячная доходность портфеля', port_Perf_Month)
-    print('Квартальная доходность портфеля', port_Perf_Quart)
-    print('Моментум портфеля', port_SMA50)
-    print('Ожидаемый средний дневной риск', port_volatility)
-    print('Ожидаемый максимальный дневной риск', port_volatility * 3.14)
 
     spy_tlt_vola = 0.6 * bench_df.loc['SPY']['bench_volatility'] + 0.4 * bench_df.loc['TLT']['bench_volatility']
     spy_tlt_divers = round(spy_tlt_vola * 100 / port_volatility, 2)
-    # acwi = bench_df.loc['ACWI']['divers_percent']
-    # spy = bench_df.loc['SPY']['divers_percent']
-    # qqq = bench_df.loc['QQQ']['divers_percent']
-    # arkw = bench_df.loc['ARKW']['divers_percent']
-    #
-    # print('\n\nУровень диверсификации vs.  60% SPY 40% TLT - ', spy_tlt_divers)
-    # print('Уровень диверсификации vs. SPY - ', spy)
-    # print('Уровень диверсификации vs. QQQ - ', qqq)
-    # print('Уровень диверсификации vs. ACWI - ', acwi)
-    # print('Уровень диверсификации vs. ARKs - ', arkw)
-
     spy_tlt_m2 = port_Perf_Month / port_volatility * spy_tlt_vola
-    # spy_tlt_mom = 0.6*bench_df.loc['SPY']['Perf_Month'] + 0.4*bench_df.loc['TLT']['Perf_Month']
-    # acwi_m2 = bench_df.loc['ACWI']['port_m2'] - (bench_df.loc['ACWI']['Perf_Month'])
-    # spy_m2 = bench_df.loc['SPY']['port_m2'] - (bench_df.loc['SPY']['Perf_Month'])
-    # qqq_m2 = bench_df.loc['QQQ']['port_m2'] - (bench_df.loc['QQQ']['Perf_Month'])
-    # arkw_m2 = bench_df.loc['ARKW']['port_m2'] - (bench_df.loc['ARKW']['Perf_Month'])
+
 
     spy_tlt_divers = {'SPY_TLT': spy_tlt_divers}
     divers = bench_df['divers_percent'].to_dict()
@@ -262,14 +271,7 @@ def inspector(portfolio=None, equal=False, init_capital_for_equal=100000,
     m2 = {key: round(m2[key], 2) for key in m2}
     print(divers)
     print(m2)
-    # df.to_csv(os.path.join(csv_path + 'temp.csv'))
-    # bench_df.to_csv(os.path.join(csv_path + 'temp_b.csv'))
-    # print('\n\nРиск-Премия в сравнении с 60% SPY 40% TLT - ', spy_tlt_m2)
-    # print('Риск-Премия в сравнении с SPY - ', spy_m2)
-    # print('Риск-Премия в сравнении с QQQ - ', qqq_m2)
-    # print('Риск-Премия в сравнении с ACWI - ', acwi_m2)
-    # print('Риск-Премия в сравнении с ARKs - ', arkw_m2)
-    # print('SSR', bench_df)
+
     # if os.path.exists(csv_path + filename):
     #     os.remove(csv_path + filename)
 
