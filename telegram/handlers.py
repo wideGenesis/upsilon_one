@@ -10,8 +10,11 @@ from fastnumbers import *
 
 from datetime import timedelta, datetime
 from aiohttp import web
+from telethon import errors as terr
 
 from charter.finance2 import create_revenue_histogram
+from quotes import sql_queries as qsql
+from quotes import eodhistoricaldata as eod
 from telegram import sql_queries as sql
 from telegram import ai
 from telegram import shared
@@ -627,16 +630,34 @@ async def inspector_to_handler(event, client_):
         else:
             size_value = fast_int(size, None)
 
+        now = datetime.datetime.now()
+        start_date = add_months(now, -13)
+        spy_bars_amount = qsql.get_bars_amount('SPY', start_date=start_date)
         if is_percent:
             if size_value > 0.0:
-                msg = f'Ты ввёл тикер {stock} в размере {size} Long?'
+                ticker_bars_amount = eod.get_bars_amount(stock, start_date, now)
+                if ticker_bars_amount < spy_bars_amount:
+                    debug(f'spy_bars_amount={spy_bars_amount}  ticker_bars_amount={ticker_bars_amount}')
+                    msg = f'По этому тикеру не достаточно данных для анализа.'
+                else:
+                    msg = f'Ты ввёл тикер {stock} в размере {size} Long?'
             else:
                 msg = f'{stock} {size} позиция не будет сохранена, нажмите кнопку исправить'
         else:
             if size_value > 0:
-                msg = f'Ты ввёл тикер {stock} в размере {size} Long?'
+                ticker_bars_amount = eod.get_bars_amount(stock, start_date, now)
+                if ticker_bars_amount < spy_bars_amount:
+                    debug(f'spy_bars_amount={spy_bars_amount}  ticker_bars_amount={ticker_bars_amount}')
+                    msg = f'По этому тикеру не достаточно данных для анализа.'
+                else:
+                    msg = f'Ты ввёл тикер {stock} в размере {size} Long?'
             elif size_value < 0:
-                msg = f'Ты ввёл тикер {stock} в размере {size} Short?'
+                ticker_bars_amount = eod.get_bars_amount(stock, start_date, now)
+                if ticker_bars_amount < spy_bars_amount:
+                    debug(f'spy_bars_amount={spy_bars_amount}  ticker_bars_amount={ticker_bars_amount}')
+                    msg = f'По этому тикеру не достаточно данных для анализа.'
+                else:
+                    msg = f'Ты ввёл тикер {stock} в размере {size} Short?'
             else:
                 msg = f'{stock} {size} позиция не будет сохранена, нажмите кнопку исправить'
     else:
@@ -646,7 +667,10 @@ async def inspector_to_handler(event, client_):
     debug(f'portfolio_ticker={stock}:{size}')
     old_msg_id = await shared.get_old_msg_id(sender_id)
     if old_msg_id is not None:
-        await client_.edit_message(event.input_sender, old_msg_id, msg, buttons=buttons.inspector_next)
+        try:
+            await client_.edit_message(event.input_sender, old_msg_id, msg, buttons=buttons.inspector_next)
+        except terr.MessageNotModifiedError:
+            pass
     else:
         msg = await client_.send_message(event.input_sender, msg, buttons=buttons.inspector_next)
         await shared.save_old_message(sender_id, msg)
