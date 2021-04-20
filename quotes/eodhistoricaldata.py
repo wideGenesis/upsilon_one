@@ -404,6 +404,39 @@ def get_company_rank(ticker, exchange="US", sess=None):
             return res1, res2, res3, ""
 
 
+def get_bars_amount(ticker, from_date, end_date):
+    # debug("#Start get Historical Prices")
+    session = requests.Session()
+    request_result = None
+    prices = {}
+    bars_amount = 0
+    url = f'https://eodhistoricaldata.com/api/eod/{ticker}.US'
+    params = {'api_token': EOD_API_KEY,
+              'from': from_date.strftime("%Y-%m-%d"),
+              'to': end_date.strftime("%Y-%m-%d"),
+              'period': 'd',
+              'fmt': 'json'}
+    try:
+        request_result = session.get(url, params=params)
+    except Exception as e:
+        count = 0
+        while request_result.status_code != requests.codes.ok:
+            sleep(5)
+            request_result = session.get(url, params=params)
+            count += 1
+            if count == 10:
+                debug(f"Cant get_historical_adjprices by ticker {ticker}", WARNING)
+                break
+    if request_result.status_code == requests.codes.ok:
+        parsed_json = json.loads(request_result.text)
+        for bar in parsed_json:
+            prices[bar['date']] = (bar['open'], bar['high'], bar['low'], bar['close'], bar['close'],
+                                   bar['volume'], 0)
+
+        bars_amount = len(prices)
+    return bars_amount
+
+
 def main():
     debug("__Start main__")
     # mkt_cap = get_market_cap('AAPL')

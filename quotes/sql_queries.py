@@ -253,6 +253,24 @@ def get_ohlc_dict_by_ticker(ticker, start_date=None, end_date=date.today(),
     return ohlc
 
 
+def get_bars_amount(ticker, start_date=None, end_date=date.today(),
+                            q_table_name=QUOTE_TABLE_NAME,
+                            engine=engine):
+    with engine.connect() as connection:
+        bars_amount = 0
+        query_string = f'SELECT COUNT(*) ' \
+                       f'FROM {q_table_name} q ' \
+                       f'WHERE q.ticker=\'{ticker}\' '
+        if start_date is not None:
+            query_string += f' AND q.dateTime >= \'{str(start_date)}\' '
+        if end_date is not None:
+            query_string += f' AND q.dateTime < \'{str(end_date)}\' '
+        q_result = connection.execute(query_string)
+        if q_result.rowcount > 0:
+            bars_amount = q_result.fetchone()[0]
+    return bars_amount
+
+
 def get_ohlc_dict_by_port_id_h(port_id, start_date=None, end_date=date.today(),
                                  q_table_name=QUOTE_TABLE_NAME, u_table_name=UNIVERSE_TABLE_NAME,
                                  engine=engine):

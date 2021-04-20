@@ -4,6 +4,7 @@ import csv
 import datetime
 import time
 import uuid
+import re
 
 from datetime import timedelta, datetime
 from telethon import utils
@@ -930,6 +931,7 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
                           f'Необходимо поправить портфель и попробовать еще раз'
                     break
         elif isinstance(first_value, str) and first_value.endswith('%'):
+            total_weight = 0.0
             for k in current_portfolio:
                 if not current_portfolio[k].endswith('%'):
                     msg = f'Если веса активов в портфеле указаны в процентах, ' \
@@ -937,6 +939,12 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
                           f'__Твой портфель сейчас выглядит так:__\n```{current_portfolio}```\n\n' \
                           f'Необходимо поправить портфель и попробовать еще раз'
                     break
+                else:
+                    total_weight += fast_float(re.split('%', current_portfolio[k])[0], 0)
+            if total_weight != 100.0:
+                msg = f'Сумма весов в пртфеле не равна 100% !' \
+                      f'__Твой портфель сейчас выглядит так:__\n```{current_portfolio}```\n\n' \
+                      f'Необходимо поправить портфель и попробовать еще раз'
 
         if msg is not None:
             await event.edit()
