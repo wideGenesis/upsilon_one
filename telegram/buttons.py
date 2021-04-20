@@ -599,6 +599,12 @@ inspector_next = [
 
 ]
 
+inspector_error = [
+    [
+        Button.inline('🔄  ' + 'Исправить', b'inspector_next_edit')
+    ],
+]
+
 inspector_ends = [
     [
         Button.inline('🏁  ' + 'Завершить ввод и начать анализ', b'inspector_ends_finish')
