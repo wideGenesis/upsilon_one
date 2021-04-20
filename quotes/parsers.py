@@ -4,7 +4,11 @@ from fastnumbers import *
 import csv
 import pandas as pd
 import requests
-from finviz.screener import Screener
+import matplotlib.pyplot as plt
+from pandas.plotting import register_matplotlib_converters
+import seaborn as sns
+from mlfinlab.codependence import get_dependence_matrix, get_distance_matrix
+
 from bs4 import BeautifulSoup
 from selenium import webdriver
 from selenium.webdriver.support.ui import WebDriverWait
@@ -21,12 +25,23 @@ from yahooquery import Ticker
 from PIL import Image
 from quotes.parsers_env import agents
 import uuid
-from reuterspy import Reuters
 import numpy as np
 from datetime import date, timedelta
 from math import sqrt
-import seaborn as sns
-import matplotlib.pyplot as plt
+
+
+def angular_dist(ret_df_=None, distance_metric='angular', save_path=None):
+    from scipy.cluster.hierarchy import ClusterWarning
+    from warnings import simplefilter
+    simplefilter("ignore", ClusterWarning)
+    # Calculate absolute angular distance from a Pearson correlation matrix
+    distance_corr_ = get_dependence_matrix(ret_df_, dependence_method='distance_correlation')
+    angular_distance = get_distance_matrix(distance_corr_, distance_metric=distance_metric)
+    sns.set(font_scale=1.1)
+    g = sns.clustermap(angular_distance, yticklabels=True, annot=True, cmap='RdYlGn_r', row_colors=None,
+                       col_colors=None, figsize=(10, 10))
+    plt.setp(g.ax_heatmap.yaxis.get_majorticklabels(), rotation=0)  # ytick rotate
+    g.savefig(save_path)
 
 
 # ============================== GET Inspector ================================
@@ -37,8 +52,8 @@ def inspector_inputs(inputs=None, equal=False, init_cap=None):
     return inputs, equal, init_capital_for_equal
 
 
-def get_inspector_data(portfolio):
-    benchmarks = {'SPY': 1, 'QQQ': 1, 'ARKW': 1, 'ACWI': 1, 'TLT': 1}
+def get_inspector_data(portfolio, quarter=63, year=252):
+    benchmarks = {'SPY': 1, 'QQQ': 1, 'ARKW': 1, 'ACWI': 1, 'TLT': 1, 'VLUE': 1, 'EEM': 1}
     constituents = {}
     constituents.update(portfolio)
     portfolio.update(benchmarks)
@@ -59,9 +74,9 @@ def get_inspector_data(portfolio):
     df['hlc3'] = (df['high'] + df['low'] + df['close']) / 3
     df.drop(columns={'open', 'volume', 'adjclose', 'dividends', 'splits', 'high', 'low', 'close'}, errors='ignore',
             inplace=True)
-
     df.reset_index(level=df.index.names, inplace=True)
     df = (df.assign(idx=df.groupby('symbol').cumcount()).pivot_table(index='date', columns='symbol', values='hlc3'))
+
     all_symbols = df.columns.tolist()
     bench_df = df.copy()
     for col in all_symbols:
@@ -73,8 +88,7 @@ def get_inspector_data(portfolio):
 
     stocks = df.columns.tolist()
     benches = bench_df.columns.tolist()
-    quarter = 63
-    year = 252
+
     portfolio_cap = 0.0
     portfolio_weights_pct = {}
     first_value = list(constituents.values())[0]
@@ -87,12 +101,16 @@ def get_inspector_data(portfolio):
 
         for ticker in stocks:
             portfolio_weights_pct[ticker] = (df[ticker][-1] * constituents[ticker]) / portfolio_cap
+
+    angular_stocks = pd.DataFrame()
+    angular_benches = pd.DataFrame()
     df['portfolio_pct'] = 0
     for col in stocks:
         df[col + ' returns'] = df[col].pct_change() * portfolio_weights_pct[col]
         df['portfolio_pct'] += df[col + ' returns']
         df[f'{col}_sharpe_{year}'] = (df[col].pct_change().rolling(year).mean() /
                                       df[col].pct_change().rolling(year).std()) * sqrt(year)
+        angular_stocks[col] = df[col].pct_change()
         df.drop(columns={f'{col} returns', f'{col}'}, inplace=True)
 
     df[f'port_sharpe_{quarter}'] = (df['portfolio_pct'].rolling(quarter).mean() /
@@ -102,15 +120,20 @@ def get_inspector_data(portfolio):
                                  df['portfolio_pct'].rolling(year).std()) * sqrt(year)
     df[f'port_volatility_{quarter}'] = df['portfolio_pct'].rolling(quarter).std() * sqrt(quarter)
     # df.drop(columns={'portfolio_pct'}, inplace=True)
+    angular_benches['Portfolio'] = df['portfolio_pct']
     df.dropna(inplace=True)
+    angular_stocks.dropna(inplace=True)
+    angular_dist(angular_stocks, save_path=f'{PROJECT_HOME_DIR}/results/inspector/angular_stocks.png')
 
     for col in benches:
+        bench_df[f'{col}_return'] = bench_df[col].pct_change()
         bench_df[f'{col}_sharpe_{year}'] = (bench_df[col].pct_change().rolling(year).mean() /
                                             bench_df[col].pct_change().rolling(year).std()) * sqrt(year)
 
         bench_df[f'{col}_volatility_{quarter}'] = bench_df[col].pct_change().rolling(quarter).std() * sqrt(quarter)
         bench_df[f'{col}_m2_{quarter}'] = df[f'port_sharpe_{quarter}'] * bench_df[f'{col}_volatility_{quarter}']
         bench_df[f'{col}_dr_{quarter}'] = bench_df[f'{col}_volatility_{quarter}'] * 100 / df[f'port_volatility_{quarter}']
+        angular_benches[col] = bench_df[col].pct_change()
         # bench_df.drop(columns={f'{col}'}, inplace=True)
 
     bench_df[f'SPY_TLT_{year}'] = 0.6 * bench_df[f'SPY_sharpe_{year}'] + 0.4 * bench_df[f'TLT_sharpe_{year}']
@@ -119,29 +142,12 @@ def get_inspector_data(portfolio):
     bench_df[f'SPY_TLT_m2_{quarter}'] = df[f'port_sharpe_{quarter}'] * bench_df[f'SPY_TLT_volatility_{quarter}']
 
     bench_df.drop(columns={f'TLT_sharpe_{year}'}, inplace=True)
-    bench_df.dropna(inplace=True)
-    corr_df = pd.DataFrame()
-    corr_df['Portfolio'] = df['portfolio_pct']
-    corr_df['ACWI'] = bench_df['ACWI'].pct_change()
-    corr_df['SPY'] = bench_df['SPY'].pct_change()
-    corr_df['QQQ'] = bench_df['QQQ'].pct_change()
-    corr_df['ARKW'] = bench_df['ARKW'].pct_change()
-    corr_df.dropna(inplace=True)
-    corrs = corr_df.corr()
-    print(corr_df)
-    plt.figure(figsize=(13, 8))
-    x_axis_labels = ['Portfolio', 'ACWI', 'SPY', 'QQQ', 'ARKW']  # labels for x-axis
-    y_axis_labels = ['Portfolio', 'ACWI', 'SPY', 'QQQ', 'ARKW']  # labels for y-axis
-    g = sns.clustermap(corrs, metric="correlation", xticklabels=x_axis_labels, yticklabels=y_axis_labels, annot=True, cmap='RdYlGn_r')
-    g.fig.suptitle(f'Matrix of Portfolio vs. Bencmarks', fontsize=15)
-    plt.setp(g.ax_heatmap.yaxis.get_majorticklabels(), rotation=0)  # ytick rotate
-    plt.setp(g.ax_heatmap.get_xticklabels(), rotation=90)  # For x axis
-    plt.savefig(f'{PROJECT_HOME_DIR}/results/inspector/cov.png')
-    plt.show()
-
-
+    angular_benches['SPY_TLT'] = 0.6 * bench_df['SPY_return'] + 0.4 * bench_df['TLT_return']
+    angular_benches.dropna(inplace=True)
+    angular_dist(angular_benches, save_path=f'{PROJECT_HOME_DIR}/results/inspector/angular_benches.png')
     df.to_csv(os.path.join(f'{PROJECT_HOME_DIR}/results/inspector/stocks.csv'))
     bench_df.to_csv(os.path.join(f'{PROJECT_HOME_DIR}/results/inspector/bench.csv'))
+
     return df, bench_df
 
 
@@ -1395,11 +1401,11 @@ def get_tw_charts(driver=None, img_out_path_=IMAGES_OUT_PATH):
             for k, v in treemaps.items():
                 im_path = os.path.join(img_out_path_, k + '.png')
                 driver.get(v)
-                sleep(20)
+                sleep(15)
                 elem = driver.find_element_by_class_name("chart-container-border")
                 webdriver.ActionChains(driver).move_to_element(elem).perform()
                 driver.execute_script("return arguments[0].scrollIntoView();", elem)
-                sleep(8)
+                # sleep(5)
                 try:
                     close_button1 = driver.find_element_by_class_name(
                         'tv-dialog__close close-d1KI_uC8 dialog-close-3phLlAHH js-dialog__close')
@@ -1412,6 +1418,12 @@ def get_tw_charts(driver=None, img_out_path_=IMAGES_OUT_PATH):
                     sleep(3)
                 except Exception as e2:
                     debug(e2)
+                try:
+                    close_button3 = driver.find_element_by_class_name(
+                        'closeIcon-29Jv6tZx')
+                    driver.execute_script("arguments[0].click();", close_button3)
+                except Exception as e3:
+                    debug(e3)
 
                 elem = driver.find_element_by_class_name("layout__area--top")
                 webdriver.ActionChains(driver).move_to_element(elem).click().perform()

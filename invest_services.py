@@ -20,9 +20,10 @@ from quotes.stock_quotes_news import StockStat
 
 # ============================== Main  =============================
 def main():
-
-    x = get_inspector_data({'CSCO': 19, 'WMT': 10, 'NEE': 8, 'PEP': 7, 'SBUX': 6, 'COST': 5, 'MSFT': 5, 'TXN': 5, 'FB': 1, 'AMAT': 4})
+    x = get_inspector_data({'goog': 19, 'googl': 10, 'aapl': 8, 'PEP': 7, 'SBUX': 6, 'COST': 5, 'MSFT': 5, 'amzn': 5, 'FB': 1, 'qqq': 4})
     y = inspector(x, equal=False)
+
+
     # inp = inspector_inputs(#inputs={'QQQ': 100},
     #                        inputs={'CSCO': 19, 'WMT': 10, 'NEE': 8, 'PEP': 7, 'SBUX': 6, 'COST': 5, 'MSFT': 5, 'TXN': 5, 'FB': 1, 'AMAT': 4},
     #                        equal=False,
@@ -43,8 +44,7 @@ def main():
     #     debug(x)
     # exit()
 
-    get_tw_charts(driver=chrome_init())
-    exit()
+
     # end_date = date.today()
     # td = timedelta(365)
     # start_date = end_date - td
@@ -57,7 +57,10 @@ def main():
     # exit()
     # create_pdf()
     # exit()
-    #
+
+    get_tw_charts(driver=chrome_init())
+    exit()
+
     # before = f'C:\\Projects\\ups_one\\yolo.png'
     # after = f'C:\\Projects\\ups_one\\results\\strategy_stats\\yolo3.png'
     # add_watermark(before, after, 64, wtermark_color=(217, 217, 217, 40))
