@@ -25,6 +25,8 @@ from reuterspy import Reuters
 import numpy as np
 from datetime import date, timedelta
 from math import sqrt
+import seaborn as sns
+import matplotlib.pyplot as plt
 
 
 # ============================== GET Inspector ================================
@@ -84,7 +86,7 @@ def get_inspector_data(portfolio):
             portfolio_cap += df[ticker][-1] * constituents[ticker]
 
         for ticker in stocks:
-            portfolio_weights_pct[ticker] = (df[ticker][-1] * constituents[ticker])/portfolio_cap
+            portfolio_weights_pct[ticker] = (df[ticker][-1] * constituents[ticker]) / portfolio_cap
     df['portfolio_pct'] = 0
     for col in stocks:
         df[col + ' returns'] = df[col].pct_change() * portfolio_weights_pct[col]
@@ -98,16 +100,46 @@ def get_inspector_data(portfolio):
 
     df[f'port_sharpe_{year}'] = (df['portfolio_pct'].rolling(year).mean() /
                                  df['portfolio_pct'].rolling(year).std()) * sqrt(year)
-    df.drop(columns={'portfolio_pct'}, inplace=True)
+    df[f'port_volatility_{quarter}'] = df['portfolio_pct'].rolling(quarter).std() * sqrt(quarter)
+    # df.drop(columns={'portfolio_pct'}, inplace=True)
     df.dropna(inplace=True)
+
     for col in benches:
         bench_df[f'{col}_sharpe_{year}'] = (bench_df[col].pct_change().rolling(year).mean() /
                                             bench_df[col].pct_change().rolling(year).std()) * sqrt(year)
-        bench_df.drop(columns={f'{col}'}, inplace=True)
 
-    bench_df[f'SPY_TLT_{year}'] = 0.6*bench_df[f'SPY_sharpe_{year}'] + 0.4*bench_df[f'TLT_sharpe_{year}']
+        bench_df[f'{col}_volatility_{quarter}'] = bench_df[col].pct_change().rolling(quarter).std() * sqrt(quarter)
+        bench_df[f'{col}_m2_{quarter}'] = df[f'port_sharpe_{quarter}'] * bench_df[f'{col}_volatility_{quarter}']
+        bench_df[f'{col}_dr_{quarter}'] = bench_df[f'{col}_volatility_{quarter}'] * 100 / df[f'port_volatility_{quarter}']
+        # bench_df.drop(columns={f'{col}'}, inplace=True)
+
+    bench_df[f'SPY_TLT_{year}'] = 0.6 * bench_df[f'SPY_sharpe_{year}'] + 0.4 * bench_df[f'TLT_sharpe_{year}']
+
+    bench_df[f'SPY_TLT_volatility_{quarter}'] = 0.6 * bench_df[f'SPY_volatility_{quarter}'] + 0.4 * bench_df[f'TLT_volatility_{quarter}']
+    bench_df[f'SPY_TLT_m2_{quarter}'] = df[f'port_sharpe_{quarter}'] * bench_df[f'SPY_TLT_volatility_{quarter}']
+
     bench_df.drop(columns={f'TLT_sharpe_{year}'}, inplace=True)
     bench_df.dropna(inplace=True)
+    corr_df = pd.DataFrame()
+    corr_df['Portfolio'] = df['portfolio_pct']
+    corr_df['ACWI'] = bench_df['ACWI'].pct_change()
+    corr_df['SPY'] = bench_df['SPY'].pct_change()
+    corr_df['QQQ'] = bench_df['QQQ'].pct_change()
+    corr_df['ARKW'] = bench_df['ARKW'].pct_change()
+    corr_df.dropna(inplace=True)
+    corrs = corr_df.corr()
+    print(corr_df)
+    plt.figure(figsize=(13, 8))
+    x_axis_labels = ['Portfolio', 'ACWI', 'SPY', 'QQQ', 'ARKW']  # labels for x-axis
+    y_axis_labels = ['Portfolio', 'ACWI', 'SPY', 'QQQ', 'ARKW']  # labels for y-axis
+    g = sns.clustermap(corrs, metric="correlation", xticklabels=x_axis_labels, yticklabels=y_axis_labels, annot=True, cmap='RdYlGn_r')
+    g.fig.suptitle(f'Matrix of Portfolio vs. Bencmarks', fontsize=15)
+    plt.setp(g.ax_heatmap.yaxis.get_majorticklabels(), rotation=0)  # ytick rotate
+    plt.setp(g.ax_heatmap.get_xticklabels(), rotation=90)  # For x axis
+    plt.savefig(f'{PROJECT_HOME_DIR}/results/inspector/cov.png')
+    plt.show()
+
+
     df.to_csv(os.path.join(f'{PROJECT_HOME_DIR}/results/inspector/stocks.csv'))
     bench_df.to_csv(os.path.join(f'{PROJECT_HOME_DIR}/results/inspector/bench.csv'))
     return df, bench_df
@@ -121,67 +153,6 @@ def inspector(portfolio=None, equal=False, init_capital_for_equal=100000,
     df = portfolio[0]
     bench_df = portfolio[1]
     constituents = df.columns.tolist()
-    # for col in constituents:
-    #     n = 63
-    #     returns = df[col].pct_change()*100
-    #
-    #     df[col + ' returns'] = df[col].pct_change()*100
-    #
-    #     returns_n = (df[col] - df[col].shift(n)) / df[col].shift(n)
-    #
-    #     df[col + ' returns_n'] = returns_n
-        # df[col + ' returns_neg'] = df[col + ' returns'].apply(lambda x: df[col + ' returns'] if x < 0 else 0)
-        # df.loc[df[col + ' returns'] < 0, col + ' returns_neg'] = df[col + ' returns']
-        # returns_neg = df[col + ' returns']
-        # df.loc[df[col + ' returns'] < 0, col + ' ds_returns'] = df[col + ' returns']**2
-        # semi_std = (df[col + ' ds_returns'].mean())**0.5
-
-        # if not equal:
-        #     df['qty'] = df['Ticker'].map(constituents)
-        #     df['market_value'] = df['Price'] * df['qty']
-        #     total_cap = (df['Price'] * abs(df['qty'])).sum(axis=0)
-        #     portfolio_cap = df['market_value'].sum(axis=0)
-        #     df['weights'] = df['market_value'] / portfolio_cap
-        # else:
-        #     equal_w = 1 / len(constituents.keys())
-        #     constituents.update((k, equal_w) for k, v in constituents.items())
-        #     df['weights'] = df['Ticker'].map(constituents)
-        #     df['market_value'] = init_capital_for_equal * df['weights']
-        #     df['qty'] = (df['market_value'] / df['Price']).apply(np.floor)
-        #     df['market_value'] = df['Price'] * df['qty']
-        #     total_cap = (df['Price'] * (init_capital_for_equal * abs(df['weights']) / df['Price']).apply(np.floor)).sum(
-        #         axis=0)
-        # weights = np.arange(1, n + 1)
-        # wma = returns_neg.rolling(n).apply(lambda x: np.dot(x, weights) / weights.sum())
-        # dd = 0
-        # for i in range(n-1):
-        #     dd = dd + pow(returns_neg - wma, 2)
-        #     dd = dd**0.5
-        # print(f'wma {col}', wma)
-        # dd = pow(returns_neg - wma, 2)
-        # print(f'dd {col}', dd)
-        # dsdev = dd.rolling(n).sum()
-        # print(f'dsdev {col}', dd)
-
-        # df[col + ' returns_n'] = returns_n
-        # df[col + ' dsdev'] = semi_std
-    # df.dropna(inplace=True)
-    # df.drop_duplicates(inplace=True)
-    # df.to_csv(os.path.join(csv_path + 'temp.csv'))
-
-
-
-
-    # df['Symbol'] = df['Ticker']
-    # df.rename(columns={'Perf Month': 'Perf_Month', 'Volatility M': 'Volat_M', 'Perf Quart': 'Perf_Quart'}, inplace=True)
-    # df.replace('%', '', regex=True, inplace=True)
-    # df = df.astype({"Perf_Month": np.float64, "Volat_M": np.float64, "Perf_Quart": np.float64, "SMA50": np.float64})
-
-    # bench_df = df.copy()
-    # bench_df.drop(bench_df[~bench_df['Ticker'].isin(benchmarks)].index, inplace=True)
-    # bench_df.set_index('Symbol', inplace=True)
-    # df.drop(df[~df['Ticker'].isin([*constituents])].index, inplace=True)
-    # df.set_index('Symbol', inplace=True)
 
     if not equal:
         df['qty'] = df['Ticker'].map(constituents)
@@ -196,7 +167,8 @@ def inspector(portfolio=None, equal=False, init_capital_for_equal=100000,
         df['market_value'] = init_capital_for_equal * df['weights']
         df['qty'] = (df['market_value'] / df['Price']).apply(np.floor)
         df['market_value'] = df['Price'] * df['qty']
-        total_cap = (df['Price'] * (init_capital_for_equal * abs(df['weights']) / df['Price']).apply(np.floor)).sum(axis=0)
+        total_cap = (df['Price'] * (init_capital_for_equal * abs(df['weights']) / df['Price']).apply(np.floor)).sum(
+            axis=0)
 
     df['natr'] = df['ATR'] / df['Price']
     df['volatility'] = (df['natr'] + df['Volat_M']) / 2
@@ -217,9 +189,9 @@ def inspector(portfolio=None, equal=False, init_capital_for_equal=100000,
     print('Квартальная доходность портфеля', port_Perf_Quart)
     print('Моментум портфеля', port_SMA50)
     print('Ожидаемый средний дневной риск', port_volatility)
-    print('Ожидаемый максимальный дневной риск', port_volatility*3.14)
+    print('Ожидаемый максимальный дневной риск', port_volatility * 3.14)
 
-    spy_tlt_vola = 0.6*bench_df.loc['SPY']['bench_volatility'] + 0.4*bench_df.loc['TLT']['bench_volatility']
+    spy_tlt_vola = 0.6 * bench_df.loc['SPY']['bench_volatility'] + 0.4 * bench_df.loc['TLT']['bench_volatility']
     spy_tlt_divers = round(spy_tlt_vola * 100 / port_volatility, 2)
     # acwi = bench_df.loc['ACWI']['divers_percent']
     # spy = bench_df.loc['SPY']['divers_percent']
@@ -448,7 +420,6 @@ def get_ranking_data3(tick, ag=agents()):
                    'exDividendDate': ce_exDividendDate,
                    'dividendDate': ce_dividendDate,
                    'earnings_earningsDate': ce_earnings_earningsDate}
-
 
     # debug('--- Ticker Info ---')
     # Если OperatingRevenue отсутствует или последнее значение OperatingRevenue <= 0 то считаем что это скам
@@ -1173,7 +1144,7 @@ def get_ranking_data3(tick, ag=agents()):
             rank_result["eps_estimate_ttm2"] = None
 
         debug(f'Bagger. rank = {rank}\n', WARNING)
-        
+
     elif is_growth or is_value or is_nontype:
         if profitability is None or pd.isna(profitability):
             rank_result["profitability"] = None
@@ -1312,7 +1283,8 @@ def get_ranking_data3(tick, ag=agents()):
     else:
         rank_result["cash_dividends_paid"] = None
 
-    if share_issued_lq1 is not None and not pd.isna(share_issued_lq1) and share_issued_lq0 is not None and not pd.isna(share_issued_lq0):
+    if share_issued_lq1 is not None and not pd.isna(share_issued_lq1) and share_issued_lq0 is not None and not pd.isna(
+            share_issued_lq0):
         if (share_issued_lq1 - share_issued_lq0) <= 0:
             rank_result["D_issued"] = 1
         else:
