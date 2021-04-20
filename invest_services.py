@@ -20,7 +20,7 @@ from quotes.stock_quotes_news import StockStat
 
 # ============================== Main  =============================
 def main():
-    x = get_inspector_data({'goog': 19, 'googl': 10, 'aapl': 8, 'PEP': 7, 'SBUX': 6, 'COST': 5, 'MSFT': 5, 'amzn': 5, 'FB': 1, 'qqq': 4})
+    x = get_inspector_data({'QQQ': 400})
     y = inspector(x, equal=False)
 
 

@@ -30,18 +30,24 @@ from datetime import date, timedelta
 from math import sqrt
 
 
-def angular_dist(ret_df_=None, distance_metric='angular', save_path=None):
+def angular_dist(ret_df_=None, distance_metric='angular', save_path=None, title=None):
     from scipy.cluster.hierarchy import ClusterWarning
     from warnings import simplefilter
     simplefilter("ignore", ClusterWarning)
     # Calculate absolute angular distance from a Pearson correlation matrix
     distance_corr_ = get_dependence_matrix(ret_df_, dependence_method='distance_correlation')
     angular_distance = get_distance_matrix(distance_corr_, distance_metric=distance_metric)
-    sns.set(font_scale=1.1)
+    sns.set(font_scale=0.95)
+
+    sns.set(rc={'figure.facecolor': 'black', 'xtick.color': 'white', 'ytick.color': 'white', 'text.color': 'white',
+                'axes.labelcolor': 'white'})
     g = sns.clustermap(angular_distance, yticklabels=True, annot=True, cmap='RdYlGn_r', row_colors=None,
                        col_colors=None, figsize=(10, 10))
     plt.setp(g.ax_heatmap.yaxis.get_majorticklabels(), rotation=0)  # ytick rotate
-    g.savefig(save_path)
+    g.ax_row_dendrogram.set_visible(False)
+    g.ax_col_dendrogram.set_visible(False)
+    g.fig.suptitle(f'Similarity - \n{title}', fontsize=25)
+    g.savefig(save_path, facecolor='black', transparent=True)
 
 
 # ============================== GET Inspector ================================
@@ -102,49 +108,74 @@ def get_inspector_data(portfolio, quarter=63, year=252):
         for ticker in stocks:
             portfolio_weights_pct[ticker] = (df[ticker][-1] * constituents[ticker]) / portfolio_cap
 
-    angular_stocks = pd.DataFrame()
-    angular_benches = pd.DataFrame()
+    angular_stocks = pd.DataFrame()  # для угловой матрицы
+    angular_benches = pd.DataFrame()  # для угловой матрицы
     df['portfolio_pct'] = 0
     for col in stocks:
         df[col + ' returns'] = df[col].pct_change() * portfolio_weights_pct[col]
         df['portfolio_pct'] += df[col + ' returns']
         df[f'{col}_sharpe_{year}'] = (df[col].pct_change().rolling(year).mean() /
-                                      df[col].pct_change().rolling(year).std()) * sqrt(year)
-        angular_stocks[col] = df[col].pct_change()
+                                      df[col].pct_change().rolling(year).std()) * sqrt(year)  # годовой шарп потикерно
+        angular_stocks[col] = df[col].pct_change()  # ретурны для угловой матрицы конституентов
         df.drop(columns={f'{col} returns', f'{col}'}, inplace=True)
 
     df[f'port_sharpe_{quarter}'] = (df['portfolio_pct'].rolling(quarter).mean() /
-                                    df['portfolio_pct'].rolling(quarter).std()) * sqrt(quarter)
+                                    df['portfolio_pct'].rolling(quarter).std()) * sqrt(quarter)  # квартальный шарп порта
 
     df[f'port_sharpe_{year}'] = (df['portfolio_pct'].rolling(year).mean() /
-                                 df['portfolio_pct'].rolling(year).std()) * sqrt(year)
-    df[f'port_volatility_{quarter}'] = df['portfolio_pct'].rolling(quarter).std() * sqrt(quarter)
+                                 df['portfolio_pct'].rolling(year).std()) * sqrt(year)  # годовой шарп порта
+
+    df[f'port_volatility_{quarter}'] = df['portfolio_pct'].rolling(quarter).std() * sqrt(quarter)  # квартал вола порта
+    # месячная аннуализированная/стандартная вола порта
+    df[f'port_volatility_21'] = df['portfolio_pct'].rolling(21).std() * sqrt(252)
     # df.drop(columns={'portfolio_pct'}, inplace=True)
     angular_benches['Portfolio'] = df['portfolio_pct']
     df.dropna(inplace=True)
+    # расчет углового сходства конституентов
     angular_stocks.dropna(inplace=True)
-    angular_dist(angular_stocks, save_path=f'{PROJECT_HOME_DIR}/results/inspector/angular_stocks.png')
-
+    if len(stocks) >= 2:
+        angular_dist(angular_stocks, save_path=f'{PROJECT_HOME_DIR}/results/inspector/angular_stocks.png',
+                     title='схожесть акций портфеля между собой')
+    else:
+        pass
+    # расчет бенчей
     for col in benches:
         bench_df[f'{col}_return'] = bench_df[col].pct_change()
+        # годовой шарп по бенчам
         bench_df[f'{col}_sharpe_{year}'] = (bench_df[col].pct_change().rolling(year).mean() /
                                             bench_df[col].pct_change().rolling(year).std()) * sqrt(year)
-
+        # квартал шарп по бенчам
+        bench_df[f'{col}_sharpe_{quarter}'] = (bench_df[col].pct_change().rolling(quarter).mean() /
+                                               bench_df[col].pct_change().rolling(quarter).std()) * sqrt(quarter)
+        # квартальная вола по бенчам
         bench_df[f'{col}_volatility_{quarter}'] = bench_df[col].pct_change().rolling(quarter).std() * sqrt(quarter)
-        bench_df[f'{col}_m2_{quarter}'] = df[f'port_sharpe_{quarter}'] * bench_df[f'{col}_volatility_{quarter}']
-        bench_df[f'{col}_dr_{quarter}'] = bench_df[f'{col}_volatility_{quarter}'] * 100 / df[f'port_volatility_{quarter}']
-        angular_benches[col] = bench_df[col].pct_change()
+        # квартальный м2 по бенчам
+        bench_df[f'{col}_m2_{quarter}'] = bench_df[f'{col}_sharpe_{quarter}'] * df[f'port_volatility_{quarter}']
+        # квартальный диверс ратио по бенчам
+        bench_df[f'{col}_dr_{quarter}'] = bench_df[f'{col}_volatility_{quarter}'] * 100/df[f'port_volatility_{quarter}']
+        angular_benches[col] = bench_df[col].pct_change()  # ретурны для угловой матрицы бенчей
         # bench_df.drop(columns={f'{col}'}, inplace=True)
 
+    # расчеты для спай/тлт бенча
     bench_df[f'SPY_TLT_{year}'] = 0.6 * bench_df[f'SPY_sharpe_{year}'] + 0.4 * bench_df[f'TLT_sharpe_{year}']
-
-    bench_df[f'SPY_TLT_volatility_{quarter}'] = 0.6 * bench_df[f'SPY_volatility_{quarter}'] + 0.4 * bench_df[f'TLT_volatility_{quarter}']
+    bench_df[f'SPY_TLT_volatility_{quarter}'] =\
+        0.6 * bench_df[f'SPY_volatility_{quarter}'] + 0.4 * bench_df[f'TLT_volatility_{quarter}']
     bench_df[f'SPY_TLT_m2_{quarter}'] = df[f'port_sharpe_{quarter}'] * bench_df[f'SPY_TLT_volatility_{quarter}']
-
     bench_df.drop(columns={f'TLT_sharpe_{year}'}, inplace=True)
+
+    # расчет беты для стресс-теста
+    bench_df[f'PORT_TO_SPY_beta_{year}'] = \
+        bench_df[f'SPY_return'].corr(df['portfolio_pct']) * df[f'port_volatility_{quarter}'] \
+        / bench_df[f'SPY_volatility_{quarter}']
+    # расчет 3х месячной волы для стресс-теста
+    bench_df[f'PORT_WORST_21'] = df[f'port_volatility_21'] * 3.14
+
+    # расчет углового сходства бенчей и порта
     angular_benches['SPY_TLT'] = 0.6 * bench_df['SPY_return'] + 0.4 * bench_df['TLT_return']
     angular_benches.dropna(inplace=True)
-    angular_dist(angular_benches, save_path=f'{PROJECT_HOME_DIR}/results/inspector/angular_benches.png')
+    angular_dist(angular_benches, save_path=f'{PROJECT_HOME_DIR}/results/inspector/angular_benches.png',
+                 title='схожесть портфеля и бенчмарков между собой')
+
     df.to_csv(os.path.join(f'{PROJECT_HOME_DIR}/results/inspector/stocks.csv'))
     bench_df.to_csv(os.path.join(f'{PROJECT_HOME_DIR}/results/inspector/bench.csv'))
 
