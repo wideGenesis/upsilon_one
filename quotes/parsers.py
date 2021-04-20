@@ -153,7 +153,8 @@ def get_inspector_data(portfolio, quarter=63, year=252):
         # квартальная вола по бенчам
         bench_df[f'{col}_volatility_{quarter}'] = bench_df[col].pct_change().rolling(quarter).std() * sqrt(quarter)
         # квартальный м2 по бенчам
-        bench_df[f'{col}_m2_{quarter}'] = bench_df[f'{col}_sharpe_{quarter}'] * df[f'port_volatility_{quarter}']
+        # bench_df[f'{col}_m2_{quarter}'] = bench_df[f'{col}_sharpe_{quarter}'] * df[f'port_volatility_{quarter}']
+        bench_df[f'{col}_m2_{quarter}'] = df[f'port_sharpe_{quarter}'] * bench_df[f'{col}_volatility_{quarter}']
         # квартальный диверс ратио по бенчам
         bench_df[f'{col}_dr_{quarter}'] = bench_df[f'{col}_volatility_{quarter}'] * 100/df[f'port_volatility_{quarter}']
         angular_benches[col] = bench_df[col].pct_change()  # ретурны для угловой матрицы бенчей
