@@ -135,7 +135,9 @@ def get_inspector_data(portfolio, quarter=63, year=252):
     # расчет углового сходства конституентов
     angular_stocks.dropna(inplace=True)
     if len(stocks) >= 2:
-        angular_dist(angular_stocks, save_path=path + 'angular_stocks.png',
+        filename_h3 = str(uuid.uuid4()).replace('-', '')
+        debug(f"Divers filename: {filename_h3}")
+        angular_dist(angular_stocks, save_path=path + filename_h3,
                      title='схожесть акций портфеля между собой')
     else:
         pass
@@ -176,12 +178,14 @@ def get_inspector_data(portfolio, quarter=63, year=252):
     # расчет углового сходства бенчей и порта
     angular_benches['SPY_TLT'] = 0.6 * bench_df['SPY_return'] + 0.4 * bench_df['TLT_return']
     angular_benches.dropna(inplace=True)
-    angular_dist(angular_benches, save_path=path + 'angular_benches.png',
+    filename_h4 = str(uuid.uuid4()).replace('-', '')
+    debug(f"Divers filename: {filename_h4}")
+    angular_dist(angular_benches, save_path=path + filename_h4,
                  title='схожесть портфеля и бенчмарков между собой')
     df.dropna(inplace=True)
     bench_df.dropna(inplace=True)
-    df.to_csv(os.path.join(f'{PROJECT_HOME_DIR}/results/inspector/stocks.csv'))
-    bench_df.to_csv(os.path.join(f'{PROJECT_HOME_DIR}/results/inspector/bench.csv'))
+    # df.to_csv(os.path.join(f'{PROJECT_HOME_DIR}/results/inspector/stocks.csv'))
+    # bench_df.to_csv(os.path.join(f'{PROJECT_HOME_DIR}/results/inspector/bench.csv'))
 
     # сбор словарей для визуализаций
     mask_m2 = ['SPY_m2_63', 'QQQ_m2_63', 'ARKW_m2_63', 'ACWI_m2_63',
