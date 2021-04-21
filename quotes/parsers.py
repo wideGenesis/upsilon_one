@@ -51,13 +51,21 @@ def angular_dist(ret_df_=None, distance_metric='angular', save_path=None, title=
 
 
 def risk_premium(pct_df: pd = None, period=21):
-    print(pct_df)
     tickers = pct_df.columns.tolist()
     for col in tickers:
-        print(col)
-
+        up_df = pct_df[col].rolling(21).apply(lambda x: premium_period_calc(x, col, period,))
         pct_df.to_csv(os.path.join(f'{PROJECT_HOME_DIR}/results/inspector/premium.csv'))
         return pct_df
+
+
+def premium_period_calc(roll_df, column, period):
+    up_mask = roll_df.values >= 0
+    dn_mask = roll_df.values < 0
+    up_df = roll_df[up_mask]
+    dn_df = roll_df[dn_mask]
+    up_prob = len(up_df) / period
+    dn_prob = len(dn_df) / period
+
 
 
 # ============================== GET Inspector ================================
