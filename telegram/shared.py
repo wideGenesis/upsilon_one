@@ -5,6 +5,22 @@ from typing import Any
 from telethon import utils
 from project_shared import *
 from telethon import functions, types
+from PyQt5.QtCore import QObject, QThread, pyqtSignal
+
+
+class Worker(QObject):
+    minute_signal = pyqtSignal()
+
+    def run(self):
+        start_thread_time = datetime.datetime.now()
+        debug(f'start_thread_time={start_thread_time}')
+        i = 0
+        while True:
+            sleep(1)
+            i += 1
+            if i % 60 == 0:
+                debug(f"i = {i}")
+                inspector_scheduler()
 
 
 ORDER_MAP = {}
@@ -104,6 +120,49 @@ IS_OLD_MSG_POLL_MAP = {}
 INSPECTOR_TICKER_MAP = {}
 INSPECTOR_PORTFOLIO_MAP = {}
 IN_INSPECTOR_FLOW_MAP = {}
+INSPECTOR_FLOW_START_TIME = {}
+
+
+def inspector_scheduler():
+    global INSPECTOR_FLOW_START_TIME
+    global INSPECTOR_TICKER_MAP
+    global INSPECTOR_PORTFOLIO_MAP
+    debug(f"INSPECTOR_FLOW_START_TIME = {INSPECTOR_FLOW_START_TIME}")
+    debug(f"INSPECTOR_TICKER_MAP = {INSPECTOR_TICKER_MAP}")
+    debug(f"INSPECTOR_PORTFOLIO_MAP = {INSPECTOR_PORTFOLIO_MAP}")
+    now = datetime.datetime.now()
+    need_clear = []
+    for k in INSPECTOR_FLOW_START_TIME:
+        debug(f'1.1')
+        td = (now - INSPECTOR_FLOW_START_TIME[k]).seconds
+        debug(f'1.2 td={td}')
+        if td >= 300:
+            debug(f'1.3')
+            if k in INSPECTOR_PORTFOLIO_MAP:
+                debug(f'1.4')
+                INSPECTOR_PORTFOLIO_MAP.pop(k)
+            if k in INSPECTOR_TICKER_MAP:
+                debug(f'1.5')
+                INSPECTOR_TICKER_MAP.pop(k)
+            need_clear.append(k)
+    for user in need_clear:
+        INSPECTOR_FLOW_START_TIME.pop(user)
+
+
+def get_inspector_time(user_id):
+    global INSPECTOR_FLOW_START_TIME
+    return INSPECTOR_FLOW_START_TIME.get(user_id, None)
+
+
+def set_inspector_time(user_id):
+    global INSPECTOR_FLOW_START_TIME
+    INSPECTOR_FLOW_START_TIME[user_id] = datetime.datetime.now()
+
+
+def del_inspector_time(user_id):
+    global INSPECTOR_FLOW_START_TIME
+    if user_id in INSPECTOR_FLOW_START_TIME:
+        INSPECTOR_FLOW_START_TIME.pop(user_id)
 
 
 def datetime2int(dt):
@@ -193,13 +252,15 @@ def get_inspector_ticker(user_id):
     return INSPECTOR_TICKER_MAP.get(user_id, None)
 
 
-def update_inspector_portfolio(user_id, ticker, size):
+def update_inspector_portfolio(user_id, ticker, size) -> bool:
     global INSPECTOR_PORTFOLIO_MAP
     if user_id in INSPECTOR_PORTFOLIO_MAP:
         INSPECTOR_PORTFOLIO_MAP[user_id][ticker] = size
+        return False
     else:
         portfolio = {ticker: size}
         INSPECTOR_PORTFOLIO_MAP[user_id] = portfolio
+        return True
 
 
 def get_inspector_portfolio(user_id):

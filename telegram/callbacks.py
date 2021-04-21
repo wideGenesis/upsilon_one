@@ -21,7 +21,7 @@ from quotes.parsers import nyse_nasdaq_stat
 from messages.message import *
 from telethon.tl.types import InputMediaPoll, Poll, PollAnswer, DocumentAttributeFilename, DocumentAttributeVideo
 from quotes.parsers import *
-
+from PyQt5.QtCore import QObject, QThread, pyqtSignal, QTimer
 
 PAYMENT_AGGREGATOR = None
 PAYMENT_AGGREGATOR_TIMER = None
@@ -862,7 +862,9 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
 
     elif event.data == b'inspector_next_ok':
         ticker, size = shared.get_inspector_ticker(sender_id)
-        shared.update_inspector_portfolio(sender_id, ticker, size)
+        is_first_ticker = shared.update_inspector_portfolio(sender_id, ticker, size)
+        if is_first_ticker:
+            shared.set_inspector_time(sender_id)
         shared.set_is_inspector_flow(sender_id, True)
         current_portfolio = shared.get_inspector_portfolio(sender_id)
         debug(f'current_portfolio={current_portfolio}')
@@ -906,6 +908,7 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
     elif event.data == b'inspector_ends_cancel':
         shared.clear_inspectors_data_by_user(sender_id)
         shared.del_is_inspector_flow(sender_id)
+        shared.del_inspector_time(sender_id)
         await event.edit()
         if old_msg_id is not None:
             await client.edit_message(event.input_sender, old_msg_id, 'Ввести тикеры',
@@ -963,6 +966,12 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
             return
 
         # get_inspector_data(current_portfolio)
+
+        # После расчетов и показа всех картинок тоже нужно очистить всю память
+        shared.clear_inspectors_data_by_user(sender_id)
+        shared.del_is_inspector_flow(sender_id)
+        shared.del_inspector_time(sender_id)
+
 
     # ============================== Subscriptions =============================
     elif event.data == b'z1':
@@ -1349,6 +1358,8 @@ async def make_payment(event, client_, summ, order_type):
         shared.set_order_data(order_id, sender_id, msg_id, order_type)
         dt_int = shared.datetime2int(datetime.datetime.now())
         await sql.insert_into_payment_message(order_id, sender_id, msg_id, dt_int, engine)
+
+
 
 # elif event.data == b'a1a4':
 #     await event.edit()

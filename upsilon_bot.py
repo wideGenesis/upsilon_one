@@ -24,7 +24,7 @@ from project_shared import *
 from tcp_client_server.libserver import *
 import concurrent.futures
 from messages.message import *
-
+from PyQt5.QtCore import QObject, QThread, pyqtSignal, QTimer
 
 # ============================== Environment Setup ======================
 from telegram.db_init import db_init_new_tables
@@ -218,6 +218,16 @@ async def init_db():
     await db_init_new_tables()
 
 
+async def run_worker(thread, worker):
+    worker.moveToThread(thread)
+    thread.started.connect(worker.run)
+    # worker.finished.connect(thread.quit)
+    # worker.finished.connect(worker.deleteLater)
+    # thread.finished.connect(thread.deleteLater)
+    worker.minute_signal.connect(shared.inspector_scheduler)
+    thread.start()
+
+
 def main():
     # Подгружаем публичный ключ для проверки подписи данных об успешных платежах
     with open('config/key.pub', mode='rb') as public_file:
@@ -233,6 +243,12 @@ def main():
     debug("_____Running db init_____")
     loop_db = asyncio.get_event_loop()
     loop_db.run_until_complete(init_db())
+
+    thread = QThread()
+    worker = shared.Worker()
+    debug("_____Running worker_____")
+    loop_worker = asyncio.get_event_loop()
+    loop_worker.run_until_complete(run_worker(thread, worker))
 
     debug("_____Running web server_____")
     loop = asyncio.get_event_loop()
