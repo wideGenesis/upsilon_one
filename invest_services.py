@@ -20,7 +20,7 @@ from quotes.stock_quotes_news import StockStat
 
 # ============================== Main  =============================
 def main():
-    x = get_inspector_data({'AYX': 0, 'MDLY': 0, 'DDD': 0, 'SOL': 0, 'NLS': 0, 'IO': 0})
+    x = get_inspector_data({'QQQ': 0, 'SPY': 0, 'GME': 0})
     # {'QQQ': 0, 'MSFT': 0, 'AMZN': 0, 'TSLA': 0,
     #  'QLD': 0, 'AGG': 0, 'AAPL': 0, 'VLUE': 0}
     # {'AAPL': 0, 'MSFT': 0, 'AMZN': 0, 'TSLA': 0, 'FB': 0, 'GOOG': 0, 'IBM': 0,
