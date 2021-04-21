@@ -170,7 +170,7 @@ def datetime2int(dt):
 
 
 def int2datetime(dt_int):
-    return datetime.strptime(str(dt_int), "%Y%m%d%H%M%S")
+    return datetime.datetime.strptime(str(dt_int), "%Y%m%d%H%M%S")
 
 
 async def save_old_message(user_id, msg):

@@ -965,7 +965,7 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
                 await shared.save_old_message(sender_id, msg)
             return
 
-        # get_inspector_data(current_portfolio)
+        get_inspector_data(current_portfolio)
 
         # После расчетов и показа всех картинок тоже нужно очистить всю память
         shared.clear_inspectors_data_by_user(sender_id)
