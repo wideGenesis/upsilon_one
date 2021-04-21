@@ -103,6 +103,7 @@ IS_OLD_MSG_POLL_MAP = {}
 
 INSPECTOR_TICKER_MAP = {}
 INSPECTOR_PORTFOLIO_MAP = {}
+IN_INSPECTOR_FLOW_MAP = {}
 
 
 def datetime2int(dt):
@@ -194,7 +195,6 @@ def get_inspector_ticker(user_id):
 
 def update_inspector_portfolio(user_id, ticker, size):
     global INSPECTOR_PORTFOLIO_MAP
-
     if user_id in INSPECTOR_PORTFOLIO_MAP:
         INSPECTOR_PORTFOLIO_MAP[user_id][ticker] = size
     else:
@@ -214,6 +214,22 @@ def clear_inspectors_data_by_user(user_id):
     global INSPECTOR_PORTFOLIO_MAP
     if user_id in INSPECTOR_PORTFOLIO_MAP:
         INSPECTOR_PORTFOLIO_MAP.pop(user_id)
+
+
+def get_is_inspector_flow(user_id):
+    global IN_INSPECTOR_FLOW_MAP
+    return IN_INSPECTOR_FLOW_MAP.get(user_id, False)
+
+
+def set_is_inspector_flow(user_id, value):
+    global IN_INSPECTOR_FLOW_MAP
+    IN_INSPECTOR_FLOW_MAP[user_id] = value
+
+
+def del_is_inspector_flow(user_id):
+    global IN_INSPECTOR_FLOW_MAP
+    if user_id in IN_INSPECTOR_FLOW_MAP:
+        IN_INSPECTOR_FLOW_MAP.pop(user_id)
 
 
 class Subscribe(object):

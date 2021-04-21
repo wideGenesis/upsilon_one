@@ -35,6 +35,8 @@ async def check_request_amount(user_id, client, decrement_amount=1) -> Dict[str,
     now = datetime.datetime.now()
     is_new_user = True if (now - income_datetime).days < 3 else False
     result = {"result": True, 'Free': 0, 'Paid': 0}
+    # if user_id in OWNERS:
+    #     return result
     if is_new_user:
         if paid_amount == 0:
             last_request_datetime = await sql.get_last_request_datetime(user_id)

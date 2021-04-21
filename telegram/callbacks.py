@@ -33,6 +33,7 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
     entity = await client.get_input_entity(sender_id)
     chat = await event.get_chat()
     old_msg_id = await shared.get_old_msg_id(sender_id)
+    shared.set_is_inspector_flow(sender_id, False)
 
     # ============================== 📁 Главное меню 1 уровень=============================
     if event.data == b'kb0_market_analysis':
@@ -837,6 +838,7 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
 
     elif event.data == b'inspector_start_manual':
         await event.edit()
+        shared.set_is_inspector_flow(sender_id, True)
         if old_msg_id is not None:
             await client.edit_message(event.input_sender, old_msg_id, 'Введи тикер и количество акций в формате:\n'
                                                                       'для длинной позиции (Long)\n!тикер 100\n'
@@ -861,6 +863,7 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
     elif event.data == b'inspector_next_ok':
         ticker, size = shared.get_inspector_ticker(sender_id)
         shared.update_inspector_portfolio(sender_id, ticker, size)
+        shared.set_is_inspector_flow(sender_id, True)
         current_portfolio = shared.get_inspector_portfolio(sender_id)
         debug(f'current_portfolio={current_portfolio}')
         await event.edit()
@@ -878,6 +881,7 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
 
     elif event.data == b'inspector_next_edit':
         await event.edit()
+        shared.set_is_inspector_flow(sender_id, True)
         if old_msg_id is not None:
             await client.edit_message(event.input_sender, old_msg_id, 'Введи тикер и количество акций в формате:\n'
                                                                       'для длинной позиции (Long)\n!тикер 100\n'
@@ -901,6 +905,7 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
 
     elif event.data == b'inspector_ends_cancel':
         shared.clear_inspectors_data_by_user(sender_id)
+        shared.del_is_inspector_flow(sender_id)
         await event.edit()
         if old_msg_id is not None:
             await client.edit_message(event.input_sender, old_msg_id, 'Ввести тикеры',
@@ -911,21 +916,23 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
             await shared.save_old_message(sender_id, msg)
 
     elif event.data == b'inspector_ends_finish':
+        shared.del_is_inspector_flow(sender_id)
         current_portfolio = shared.get_inspector_portfolio(sender_id)
         debug(f'current_portfolio={current_portfolio}')
         first_value = list(current_portfolio.values())[0]
-        msg = None
-        if isinstance(first_value, int) and first_value == 0:
+        message = None
+        first_int = fast_int(first_value, None)
+        if first_int is not None and first_int == 0:
             for k in current_portfolio:
                 if current_portfolio[k] != 0:
-                    msg = f'Если портфель равновзвешенный, все веса в портфеле должны быть равны нулю!' \
+                    message = f'Если портфель равновзвешенный, все веса в портфеле должны быть равны нулю!' \
                           f'__Твой портфель сейчас выглядит так:__\n```{current_portfolio}```\n\n' \
                           f'Необходимо поправить портфель и попробовать еще раз'
                     break
-        elif isinstance(first_value, int) and first_value != 0:
+        elif first_int is not None and first_int != 0:
             for k in current_portfolio:
-                if current_portfolio[k] == 0:
-                    msg = f'Если веса активов в портфеле указаны в количестве, ' \
+                if current_portfolio[k] == 0 or current_portfolio[k].endswith('%'):
+                    message = f'Если веса активов в портфеле указаны в количестве, ' \
                           f'то все веса должны быть указаны в количестве!' \
                           f'__Твой портфель сейчас выглядит так:__\n```{current_portfolio}```\n\n' \
                           f'Необходимо поправить портфель и попробовать еще раз'
@@ -934,7 +941,7 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
             total_weight = 0.0
             for k in current_portfolio:
                 if not current_portfolio[k].endswith('%'):
-                    msg = f'Если веса активов в портфеле указаны в процентах, ' \
+                    message = f'Если веса активов в портфеле указаны в процентах, ' \
                           f'то все веса должны быть указаны в процентах!' \
                           f'__Твой портфель сейчас выглядит так:__\n```{current_portfolio}```\n\n' \
                           f'Необходимо поправить портфель и попробовать еще раз'
@@ -942,22 +949,20 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
                 else:
                     total_weight += fast_float(re.split('%', current_portfolio[k])[0], 0)
             if total_weight != 100.0:
-                msg = f'Сумма весов в пртфеле не равна 100% !' \
+                message = f'Сумма весов в пртфеле не равна 100% !' \
                       f'__Твой портфель сейчас выглядит так:__\n```{current_portfolio}```\n\n' \
                       f'Необходимо поправить портфель и попробовать еще раз'
 
-        if msg is not None:
+        if message is not None:
             await event.edit()
             if old_msg_id is not None:
-                await client.edit_message(event.input_sender, old_msg_id, msg)
+                await client.edit_message(event.input_sender, old_msg_id, message)
             else:
-                msg = await client.send_message(event.input_sender, msg)
-            await shared.save_old_message(sender_id, msg)
+                msg = await client.send_message(event.input_sender, message)
+                await shared.save_old_message(sender_id, msg)
+            return
 
-        path, fn1, fn2 = await inspector(constituents=current_portfolio, init_capital_for_equal=100000)
-        await client.send_file(entity, f'{path}{fn1}.png')
-        await client.send_file(entity, f'{path}{fn2}.png')
-        get_inspector_data(current_portfolio)
+        # get_inspector_data(current_portfolio)
 
     # ============================== Subscriptions =============================
     elif event.data == b'z1':

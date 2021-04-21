@@ -221,6 +221,7 @@ async def dialog_flow_handler(event, client_):
         except ValueError as e:
             sender_id = await event.get_input_sender()
         if ins.pattern.search(event.text) is None:
+            shared.del_is_inspector_flow(event.input_sender.user_id)
             await flow_cheker(client_, event)
             user_message = event.text
             project_id = 'common-bot-1'
@@ -246,6 +247,7 @@ async def dialog_flow_handler(event, client_):
 
 
 async def quotes_to_handler(event, client_, limit=20):
+    shared.del_is_inspector_flow(event.input_sender.user_id)
     await flow_cheker(client_, event)
     # Подгрузим динамически модуль - вдруг ценообразование изменилось?!
     pricing = None
@@ -332,6 +334,7 @@ async def quotes_to_handler(event, client_, limit=20):
 
 
 async def news_to_handler(event, client_, limit=20):
+    shared.del_is_inspector_flow(event.input_sender.user_id)
     await flow_cheker(client_, event)
     parse = str(event.text).split(' ')
     stock = parse[1]
@@ -346,22 +349,26 @@ async def news_to_handler(event, client_, limit=20):
 
 
 async def goals_handler(event, client_):
+    shared.del_is_inspector_flow(event.input_sender.user_id)
     await flow_cheker(client_, event)
     await client_.send_message(event.input_sender, ins.goals)
 
 
 async def skills_handler(event, client_):
+    shared.del_is_inspector_flow(event.input_sender.user_id)
     await flow_cheker(client_, event)
     await client_.send_message(event.input_sender, ins.skills)
 
 
 async def support_handler(event, client_):
+    shared.del_is_inspector_flow(event.input_sender.user_id)
     await flow_cheker(client_, event)
     await client_.forward_messages(-1001262211476, event.message)
     await client_.send_message(event.input_sender, 'Сообщение успешно отправлено. Спасибо!')
 
 
 async def instructions_handler(event, client_):
+    shared.del_is_inspector_flow(event.input_sender.user_id)
     await flow_cheker(client_, event)
     pattern = event.original_update.message.message
     pattern = str(pattern).strip('/')
@@ -444,6 +451,7 @@ async def instructions_handler(event, client_):
 
 
 async def portfolio_candle_chart_handler(event, client_):
+    shared.del_is_inspector_flow(event.input_sender.user_id)
     await flow_cheker(client_, event)
     pattern = event.original_update.message.message
     pattern = str(pattern).strip('/').split('_')[1]
@@ -480,6 +488,7 @@ async def portfolio_candle_chart_handler(event, client_):
 async def managers_form_handler(event, client_):
     await flow_cheker(client_, event)
     sender_id = await event.get_input_sender()
+    shared.del_is_inspector_flow(sender_id.user_id)
     user_message = event.text
     await client_.send_message(sender_id, 'Запрос на регистрацию принят')
     await client_.send_message(-1001262211476, str(sender_id.user_id) + '  \n' + str(user_message))
@@ -604,6 +613,7 @@ async def flow_cheker(client, event):
 
 async def portfolios_cmd(client, event):
     sender_id = event.input_sender.user_id
+    shared.del_is_inspector_flow(sender_id)
     await flow_cheker(client, event)
     msg = await client.send_message(event.input_sender, 'Портфели', buttons=buttons.keyboard_historical_tests)
     await shared.save_old_message(sender_id, msg)
@@ -611,8 +621,25 @@ async def portfolios_cmd(client, event):
 
 async def inspector_to_handler(event, client_):
     sender_id = event.input_sender.user_id
-    await client_.delete_messages(sender_id, event.message.id)
-    regex = r"^\![a-zA-Z]{1,5} ((\d*[\%]?$)|(\d*(?!\.$)\.?\d{1,2}\%$))"
+    old_msg_id = await shared.get_old_msg_id(sender_id)
+    try:
+        await client_.delete_messages(sender_id, event.message.id)
+    except Exception:
+        pass
+    if not shared.get_is_inspector_flow(sender_id):
+        message = f'Команда ввода тикера для инспектора портфеля ' \
+                  f'работает только когда ты находишься в меню ' \
+                  f'"Инспектор портфеля" -> "Ввести тикеры"'
+        if old_msg_id is not None:
+            try:
+                await client_.edit_message(event.input_sender, old_msg_id, message)
+            except terr.MessageNotModifiedError:
+                pass
+        else:
+            msg = await client_.send_message(event.input_sender, message)
+            await shared.save_old_message(sender_id, msg)
+        return
+    regex = r"^\![a-zA-Z]{1,5} (([-]?\d{1,}[\%]?$)|(\d{1,}(?!\.$)\.?\d{1,2}\%$))"
     parse = str(event.text)
     match = re.match(regex, parse)
     parse = re.split('!', parse)
@@ -639,22 +666,22 @@ async def inspector_to_handler(event, client_):
                 ticker_bars_amount = eod.get_bars_amount(stock, start_date, now)
                 if ticker_bars_amount < spy_bars_amount:
                     debug(f'spy_bars_amount={spy_bars_amount}  ticker_bars_amount={ticker_bars_amount}')
-                    msg = f'По этому тикеру не достаточно данных для анализа.'
+                    message = f'По этому тикеру не достаточно данных для анализа.'
                     is_error = True
                 else:
-                    msg = f'Ты ввёл тикер {stock} в размере {size} Long?'
+                    message = f'Ты ввёл тикер {stock} в размере {size} Long?'
             else:
-                msg = f'{stock} {size} позиция не будет сохранена, нажмите кнопку исправить'
+                message = f'{stock} {size} Нельзя вводить отрицательные проценты. Нажми кнопу исправить.'
                 is_error = True
         else:
-            if size_value > 0:
+            if size_value >= 0:
                 ticker_bars_amount = eod.get_bars_amount(stock, start_date, now)
                 if ticker_bars_amount < spy_bars_amount:
                     debug(f'spy_bars_amount={spy_bars_amount}  ticker_bars_amount={ticker_bars_amount}')
-                    msg = f'По этому тикеру не достаточно данных для анализа.'
+                    message = f'По этому тикеру не достаточно данных для анализа.'
                     is_error = True
                 else:
-                    msg = f'Ты ввёл тикер {stock} в размере {size} Long?'
+                    message = f'Ты ввёл тикер {stock} в размере {size} Long?'
             elif size_value < 0:
                 ticker_bars_amount = eod.get_bars_amount(stock, start_date, now)
                 if ticker_bars_amount < spy_bars_amount:
@@ -662,26 +689,23 @@ async def inspector_to_handler(event, client_):
                     msg = f'По этому тикеру не достаточно данных для анализа.'
                     is_error = True
                 else:
-                    msg = f'Ты ввёл тикер {stock} в размере {size} Short?'
-            else:
-                msg = f'{stock} {size} позиция не будет сохранена, нажмите кнопку исправить'
-                is_error = True
+                    message = f'Ты ввёл тикер {stock} в размере {size} Short?'
     else:
-        msg = 'Ошибочный ввод: не соответствует формату. Нажмите кнопку исправить'
+        message = 'Ошибочный ввод: не соответствует формату. Нажми кнопку исправить'
         is_error = True
 
     if not is_error:
+        debug(f'shared.set_inspector_ticker({sender_id}, {stock}, {size})')
         shared.set_inspector_ticker(sender_id, stock, size)
     debug(f'portfolio_ticker={stock}:{size}')
-    old_msg_id = await shared.get_old_msg_id(sender_id)
     ibuttons = buttons.inspector_next if not is_error else buttons.inspector_error
     if old_msg_id is not None:
         try:
-            await client_.edit_message(event.input_sender, old_msg_id, msg, buttons=ibuttons)
+            await client_.edit_message(event.input_sender, old_msg_id, message, buttons=ibuttons)
         except terr.MessageNotModifiedError:
             pass
     else:
-        msg = await client_.send_message(event.input_sender, msg, buttons=ibuttons)
+        msg = await client_.send_message(event.input_sender, message, buttons=ibuttons)
         await shared.save_old_message(sender_id, msg)
     #
     # path = f'{PROJECT_HOME_DIR}/results/ticker_stat/'

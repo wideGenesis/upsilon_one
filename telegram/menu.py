@@ -25,6 +25,7 @@ async def start_menu(event, client, engine=None):
         inc = user_profile[13] + 1
         await sql.db_save_referral(inc, referral[1], engine)
     sender_id = event.original_update.message.peer_id.user_id
+    shared.del_is_inspector_flow(event.input_sender.user_id)
     entity = await client.get_input_entity(sender_id)
     old_msg_id = await shared.get_old_msg_id(sender_id)
     if old_msg_id is not None:
@@ -51,6 +52,7 @@ async def start_menu(event, client, engine=None):
 
 async def meta_menu(event, client):
     sender_id = event.original_update.message.sender_id
+    shared.del_is_inspector_flow(event.input_sender.user_id)
     old_msg_id = await shared.get_old_msg_id(sender_id)
     if old_msg_id is not None:
         shared.pop_old_msg_id(sender_id)
@@ -59,7 +61,11 @@ async def meta_menu(event, client):
 
 async def tools_menu(event, client):
     sender_id = event.original_update.message.sender_id
-    await client.delete_messages(sender_id, event.message.id)
+    shared.del_is_inspector_flow(event.input_sender.user_id)
+    try:
+        await client.delete_messages(sender_id, event.message.id)
+    except Exception:
+        pass
 
     # Если клиент не до конца прошел профалинг - сбрасываем результат прохождения
     if not is_user_profile_done(sender_id):
@@ -90,6 +96,7 @@ async def profile_menu(event, client, engine=None):
     ]
 
     sender_id = event.input_sender
+    shared.del_is_inspector_flow(sender_id.user_id)
     m_id = getattr(event, "message", None)
     if m_id is not None:
         await client.delete_messages(sender_id.user_id, event.message.id)
@@ -166,7 +173,11 @@ async def donate_menu(event, client):
 async def information_menu(event, client, engine=engine):
     # Если клиент не до конца прошел профалинг - сбрасываем результат прохождения
     sender_id = event.input_sender.user_id
-    await client.delete_messages(sender_id, event.message.id)
+    shared.del_is_inspector_flow(sender_id.user_id)
+    try:
+        await client.delete_messages(sender_id, event.message.id)
+    except Exception:
+        pass
     if not is_user_profile_done(sender_id):
         reset_user_profiler_data(sender_id)
 
