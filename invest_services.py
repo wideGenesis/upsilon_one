@@ -20,9 +20,13 @@ from quotes.stock_quotes_news import StockStat
 
 # ============================== Main  =============================
 def main():
-    x = get_inspector_data({'QQQ': 201, 'SPY': 23, 'XLV': 21, 'XLY': 28, 'GLD': 28, 'UUP': 1291, 'SHY': 371})
-    y = inspector(x, equal=False)
-
+    x = get_inspector_data({'AYX': 0, 'MDLY': 0, 'DDD': 0, 'SOL': 0, 'NLS': 0, 'IO': 0})
+    # {'QQQ': 0, 'MSFT': 0, 'AMZN': 0, 'TSLA': 0,
+    #  'QLD': 0, 'AGG': 0, 'AAPL': 0, 'VLUE': 0}
+    # {'AAPL': 0, 'MSFT': 0, 'AMZN': 0, 'TSLA': 0, 'FB': 0, 'GOOG': 0, 'IBM': 0,
+    #  'JPM': 0, 'UNH': 0, 'GS': 0, 'HD': 0, 'AMGN': 0, 'INTC': 0, 'T': 0,
+    #  'MU': 0, 'GM': 0}
+    # {'QQQ': 201, 'SPY': 23, 'XLV': 21, 'XLY': 28, 'GLD': 28, 'UUP': 1291, 'SHY': 371}
     exit()
 
     # x, y = get_ranking_data2("DOCN")
