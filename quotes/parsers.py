@@ -50,6 +50,16 @@ def angular_dist(ret_df_=None, distance_metric='angular', save_path=None, title=
     g.savefig(save_path, facecolor='black', transparent=True)
 
 
+def risk_premium(pct_df: pd = None, period=21):
+    print(pct_df)
+    tickers = pct_df.columns.tolist()
+    for col in tickers:
+        print(col)
+
+        pct_df.to_csv(os.path.join(f'{PROJECT_HOME_DIR}/results/inspector/premium.csv'))
+        return pct_df
+
+
 # ============================== GET Inspector ================================
 def inspector_inputs(inputs=None, equal=False, init_cap=None):
     inputs = inputs
@@ -134,6 +144,9 @@ def get_inspector_data(portfolio, quarter=63, year=252):
     df.dropna(inplace=True)
     # расчет углового сходства конституентов
     angular_stocks.dropna(inplace=True)
+    temp = risk_premium(angular_stocks)
+    print('Stop')
+    exit()
     if len(stocks) >= 2:
         filename_h3 = str(uuid.uuid4()).replace('-', '')
         debug(f"Divers filename: {filename_h3}")
