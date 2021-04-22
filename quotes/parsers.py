@@ -51,25 +51,60 @@ def angular_dist(ret_df_=None, distance_metric='angular', save_path=None, title=
 
 
 def risk_premium(pct_df: pd = None, period=21):
-    tickers = pct_df.columns.tolist()
-    premia_df = pct_df.rolling(21, axis='rows').apply(lambda x: premium_rolling_calc(x, period))
-    # for col in tickers:
-    #     pct_df[f'{col}_Premia'] = pct_df[col].rolling(21).apply(lambda x: premium_rolling_calc(x, period))
-    premia_df.to_csv(os.path.join(f'{PROJECT_HOME_DIR}/results/inspector/premium.csv'))
-    return premia_df
+    print(pct_df)
+    premia_diff = pct_df.rolling(21, axis='rows').apply(lambda x: premium_rolling_calc(x, period)[0])
+    premia_diff = premia_diff.rolling(5, axis='rows').mean()
+    premia_diff = premia_diff.iloc[-1]
+
+    premia_dev = pct_df.rolling(21, axis='rows').apply(lambda x: premium_rolling_calc(x, period)[1])
+    premia_dev = premia_dev.rolling(5, axis='rows').mean()
+    premia_dev = premia_dev.iloc[-1, :]
+
+    dnside = pct_df.rolling(21, axis='rows').apply(lambda x: premium_rolling_calc(x, period)[2])
+    dnside = dnside.rolling(5, axis='rows').mean()
+    dnside = dnside.iloc[-1, :]
+    df = pd.concat([premia_diff, premia_dev, dnside], axis=1, join="inner")
+    df.columns = ['Premium', 'RP Ratio', 'Risk']
+    # df.to_csv(os.path.join(f'{PROJECT_HOME_DIR}/results/inspector/premium.csv'))
+
+    sns.set(rc={'figure.facecolor': 'black', 'figure.edgecolor': 'black', 'xtick.color': 'white',
+                'ytick.color': 'white', 'text.color': 'white', 'axes.labelcolor': 'white',
+                'axes.facecolor': 'black', 'grid.color': '#17171a'})
+    sns.set_context('paper', font_scale=1.1)
+    palette = sns.color_palette("RdYlGn", as_cmap=True)
+    sns.despine()
+    ave_risk = df['Risk']
+    ave_alpha = df['Premium']
+    ave_premia = df['RP Ratio']
+    vola = df['RP Ratio']
+    plt.figure(figsize=(10, 6))
+    sns.scatterplot(x=ave_risk, y=ave_alpha, size=ave_premia,
+                    alpha=0.95, legend=True, sizes=(20, 500), hue=vola, markers=True, palette=palette)
+
+    for line in range(0, df.shape[0]):
+        plt.text(df['Risk'][line], df['Premium'][line], df.index[line],
+                 horizontalalignment='left', size='x-small', color='white', weight='semibold')
+
+    plt.xlabel("Ave. Monthly Risk (%)")
+    plt.ylabel("Ave. Excess Return over Risk (%)")
+    plt.suptitle('Risk-Premium Analysis', fontsize=25)
+    plt.legend(title='RP Ratio', loc='center left', bbox_to_anchor=(1.01, 0.5), borderaxespad=0)
+    plt.savefig('/home/gene/projects/upsilon_one/results/inspector/data.png',
+                facecolor='black', transparent=True, bbox_inches='tight')
 
 
 def premium_rolling_calc(roll_df, period):
     up_mask = roll_df.values > 0
-    dn_mask = roll_df.values < 0
+    dn_mask = roll_df.values <= 0
     up_df = roll_df[up_mask]
     dn_df = roll_df[dn_mask]
     up_prob = len(up_df) / period
     dn_prob = len(dn_df) / period
-    upside = up_df.mean() * up_prob
-    dnside = abs(dn_df.mean() * dn_prob)
-    premia = upside - dnside
-    return premia
+    upside = (up_df.mean() * up_prob) * 100
+    dnside = (abs(dn_df.mean() * dn_prob)) * 100
+    premia_diff = (upside - dnside)
+    premia_dev = (upside - dnside) / dnside
+    return premia_diff, premia_dev, dnside,
 
 
 # ============================== GET Inspector ================================
@@ -156,9 +191,6 @@ def get_inspector_data(portfolio, quarter=63, year=252):
     df.dropna(inplace=True)
     # расчет углового сходства конституентов
     angular_stocks.dropna(inplace=True)
-    temp = risk_premium(angular_stocks)
-    print('Stop')
-    exit()
     if len(stocks) >= 2:
         filename_h3 = str(uuid.uuid4()).replace('-', '')
         debug(f"Divers filename: {filename_h3}")
@@ -208,8 +240,13 @@ def get_inspector_data(portfolio, quarter=63, year=252):
     debug(f"Divers filename: {filename_h4}")
     angular_dist(angular_benches, save_path=path + filename_h4,
                  title='схожесть портфеля и бенчмарков между собой')
+
+    scatter = pd.concat([angular_benches, angular_stocks], axis=1, join="inner")
+    scatter = scatter.loc[:, ~scatter.columns.duplicated()]
+    risk_premium(scatter)
     df.dropna(inplace=True)
     bench_df.dropna(inplace=True)
+
     # df.to_csv(os.path.join(f'{PROJECT_HOME_DIR}/results/inspector/stocks.csv'))
     # bench_df.to_csv(os.path.join(f'{PROJECT_HOME_DIR}/results/inspector/bench.csv'))
 
