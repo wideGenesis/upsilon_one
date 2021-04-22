@@ -53,19 +53,24 @@ def angular_dist(ret_df_=None, distance_metric='angular', save_path=None, title=
 def risk_premium(pct_df: pd = None, period=21):
     tickers = pct_df.columns.tolist()
     for col in tickers:
-        up_df = pct_df[col].rolling(21).apply(lambda x: premium_period_calc(x, col, period,))
-        pct_df.to_csv(os.path.join(f'{PROJECT_HOME_DIR}/results/inspector/premium.csv'))
-        return pct_df
+        pct_df[f'{col}_Premia'] = pct_df[col].rolling(21).apply(lambda x: premium_period_calc(x, period))
+    pct_df.to_csv(os.path.join(f'{PROJECT_HOME_DIR}/results/inspector/premium.csv'))
+    return pct_df
 
 
-def premium_period_calc(roll_df, column, period):
+def premium_period_calc(roll_df, period):
     up_mask = roll_df.values >= 0
     dn_mask = roll_df.values < 0
     up_df = roll_df[up_mask]
     dn_df = roll_df[dn_mask]
     up_prob = len(up_df) / period
     dn_prob = len(dn_df) / period
-
+    upside = np.convolve(up_mask, np.ones(period), 'valid') / period * up_prob
+    dnside = np.convolve(dn_mask, np.ones(period), 'valid') / period * dn_prob
+    sma_upside = np.convolve(upside, np.ones(5), 'valid') / 5
+    sma_dnside = np.convolve(dnside, np.ones(5), 'valid') / 5
+    premia = sma_upside - sma_dnside
+    return premia
 
 
 # ============================== GET Inspector ================================
