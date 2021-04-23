@@ -89,7 +89,7 @@ def risk_premium(pct_df: pd = None, period=21):
     plt.ylabel("Ave. Excess Return over Risk (%)")
     plt.suptitle('Risk-Premium Analysis', fontsize=25)
     plt.legend(title='RP Ratio', loc='center left', bbox_to_anchor=(1.01, 0.5), borderaxespad=0)
-    plt.savefig('/home/gene/projects/upsilon_one/results/inspector/data.png',
+    plt.savefig(f'{PROJECT_HOME_DIR}/results/inspector/data.png',
                 facecolor='black', transparent=True, bbox_inches='tight')
 
 
