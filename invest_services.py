@@ -20,9 +20,14 @@ from quotes.stock_quotes_news import StockStat
 
 # ============================== Main  =============================
 def main():
-    x = get_inspector_data({'TOL': 11, 'TMHC': 20, 'PHM': 11, 'TPH': 29, 'LEN': 6, 'THO': 5, 'BLDR': 15,
+    x = get_inspector_data({'TOL': 11, 'TMHC': 20, 'PHM': 11, 'TPH': 29, 'GILD': 8, 'LEN': 6, 'THO': 5, 'BLDR': 15,
                             'MRNA': 4, 'AGCO': 7, 'MOS': 27, 'NUS': 7, 'FORM': 18, 'ASH': 6, 'KHC': 12, 'BIG': 9,
                             'TRU': 6, 'PGTI': 32, 'PATK': 8, 'PCRX': 8})
+    # , 'LGIH': 3, 'PZZA': 4, 'MTH': 6, 'MBUU': 13,
+    #                         'YEXT': 26, 'PRLB': 3, 'MTRN': 5, 'ASGN': 5, 'SMTC': 4, 'SRDX': 8, 'VRTV': 20, 'ATRA': 28,
+    #                         'PS': 13, 'MUSA': 3, 'LLY': 6, 'LGND': 4, 'IIVI': 13, 'HALO': 12, 'CDNS': 2, 'CBPO': 1,
+    #                         'CLX': 1, 'FIZZ': 3, 'SMG': 1, 'AVAV': 3, 'LRN': 14, 'SJM': 1, 'KR': 4, 'CAG': 2})
+        # {'QQQ': 201, 'SPY': 23, 'XLV': 21, 'XLY': 28, 'GLD': 28, 'UUP': 1291, 'SHY': 371})
     # {'QQQ': 0, 'MSFT': 0, 'AMZN': 0, 'TSLA': 0,
     #  'QLD': 0, 'AGG': 0, 'AAPL': 0, 'VLUE': 0}
     # {'AAPL': 0, 'MSFT': 0, 'AMZN': 0, 'TSLA': 0, 'FB': 0, 'GOOG': 0, 'IBM': 0,
