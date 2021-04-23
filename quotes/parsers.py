@@ -50,25 +50,19 @@ def correl(ret_df_=None, save_path=None, title=None):
 
 
 def risk_premium(pct_df: pd = None, period=21):
-    premia_diff = pct_df.rolling(21, axis='rows').apply(lambda x: premium_rolling_calc(x, period)[0])
-    premia_diff = premia_diff.rolling(5, axis='rows').mean()
-    # premia_diff_mean = premia_diff.iloc[-63:].mean()
-    # premia_diff_median = premia_diff.iloc[-63:].median()
-    #
-    # print('63mean\n', premia_diff_mean)
-    # print('63median\n', premia_diff_median)
-    # exit()
-    premia_diff = premia_diff.iloc[-1, :]
-    premia_dev = pct_df.rolling(21, axis='rows').apply(lambda x: premium_rolling_calc(x, period)[1])
-    premia_dev = premia_dev.rolling(5, axis='rows').mean()
-    premia_dev = premia_dev.iloc[-1, :]
+    premia_diff = pct_df.rolling(period, axis='rows').apply(lambda x: premium_rolling_calc(x, period)[0])
+    premia_diff = premia_diff.iloc[-63, :].ewm(alpha=1/63).mean()
 
-    dnside = pct_df.rolling(21, axis='rows').apply(lambda x: premium_rolling_calc(x, period)[2])
-    dnside = dnside.rolling(5, axis='rows').mean()
-    dnside = dnside.iloc[-1, :]
+    premia_dev = pct_df.rolling(period, axis='rows').apply(lambda x: premium_rolling_calc(x, period)[1])
+    premia_dev = premia_dev.iloc[-63, :].ewm(alpha=1/63).mean()
+
+    dnside = pct_df.rolling(period, axis='rows').apply(lambda x: premium_rolling_calc(x, period)[2])
+    dnside = dnside.iloc[-63, :].ewm(alpha=1/63).mean()
+    print(premia_diff)
+    print(premia_dev)
     df = pd.concat([premia_diff, premia_dev, dnside], axis=1, join="inner")
+    df.to_csv(os.path.join(f'{PROJECT_HOME_DIR}/results/inspector/premium.csv'))
     df.columns = ['Premium', 'RP Ratio', 'Risk']
-    # df.to_csv(os.path.join(f'{PROJECT_HOME_DIR}/results/inspector/premium.csv'))
 
     sns.set(rc={'figure.facecolor': 'black', 'figure.edgecolor': 'black', 'xtick.color': 'white',
                 'ytick.color': 'white', 'text.color': 'white', 'axes.labelcolor': 'white',
@@ -103,15 +97,15 @@ def premium_rolling_calc(roll_df, period):
     dn_df = roll_df[dn_mask]
     up_prob = len(up_df) / period
     dn_prob = len(dn_df) / period
-    upside = (up_df.mean() * up_prob) * 100
-    dnside = (abs(dn_df.mean() * dn_prob)) * 100
+    upside = up_df.mean() * 100 * up_prob
+    dnside = abs(dn_df.mean() * 100) * dn_prob
     premia_diff = (upside - dnside)
     premia_dev = (upside - dnside) / dnside
-    return premia_diff, premia_dev, dnside,
+    return premia_diff, premia_dev, dnside
 
 
 # ============================== GET Inspector ================================
-def get_inspector_data(portfolio, quarter=63, year=252):
+def get_inspector_data(portfolio, quarter=63):
     path = f'{PROJECT_HOME_DIR}/results/inspector/'
     benchmarks = {'SPY': 1, 'QQQ': 1, 'ARKK': 1, 'TLT': 1, 'VLUE': 1, 'EEM': 1}
     constituents = {}
@@ -166,6 +160,7 @@ def get_inspector_data(portfolio, quarter=63, year=252):
 
     df['portfolio_pct'] = 0
     for col in stocks:
+        print(portfolio_weights_pct[col])
         df[col + ' returns'] = df[col].pct_change() * portfolio_weights_pct[col]
         df['portfolio_pct'] += df[col + ' returns']
 
@@ -225,12 +220,12 @@ def get_inspector_data(portfolio, quarter=63, year=252):
            title='PORTF vs. ')
 
     # расчет риск-премий
+    # angular_stocks.to_csv(os.path.join(f'{PROJECT_HOME_DIR}/results/inspector/stocks.csv'))
     risk_premium(angular_stocks)
     df.dropna(inplace=True)
     bench_df.dropna(inplace=True)
 
-    # df.to_csv(os.path.join(f'{PROJECT_HOME_DIR}/results/inspector/stocks.csv'))
-    # bench_df.to_csv(os.path.join(f'{PROJECT_HOME_DIR}/results/inspector/bench.csv'))
+
 
     # сбор словарей для визуализаций
     mask_m2 = ['SPY_m2_63', 'QQQ_m2_63', 'ARKK_m2_63', 'VLUE_m2_63', 'EEM_m2_63', 'SPY_TLT_m2_63']
