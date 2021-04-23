@@ -40,26 +40,23 @@ def correl(ret_df_=None, save_path=None, title=None):
     g.ax_row_dendrogram.set_visible(True)
     g.ax_col_dendrogram.set_visible(False)
     g.fig.suptitle(f'Корреляция - \n{title}', fontsize=25)
-    print(datetime.datetime.now())
     # cm = plt.get_cmap('RdYlGn')
     # img = Image.fromarray((cm(g)[:, :, :3] * 255).astype(np.uint8))
     # img.save(save_path + 'image.png')
     # print(datetime.datetime.now())
     g.savefig(save_path, facecolor='black', transparent=True)
-    print(datetime.datetime.now())
 
 
 def risk_premium(pct_df: pd = None, period=21):
     premia_diff = pct_df.rolling(period, axis='rows').apply(lambda x: premium_rolling_calc(x, period)[0])
-    premia_diff = premia_diff.iloc[-63, :].ewm(alpha=1/63).mean()
-
+    premia_diff = premia_diff.iloc[-63:].mean()
+    print('df', premia_diff)
     premia_dev = pct_df.rolling(period, axis='rows').apply(lambda x: premium_rolling_calc(x, period)[1])
-    premia_dev = premia_dev.iloc[-63, :].ewm(alpha=1/63).mean()
+    premia_dev = premia_dev.iloc[-63:].mean()
 
     dnside = pct_df.rolling(period, axis='rows').apply(lambda x: premium_rolling_calc(x, period)[2])
-    dnside = dnside.iloc[-63, :].ewm(alpha=1/63).mean()
-    print(premia_diff)
-    print(premia_dev)
+    dnside = dnside.iloc[-63:].mean()
+
     df = pd.concat([premia_diff, premia_dev, dnside], axis=1, join="inner")
     df.to_csv(os.path.join(f'{PROJECT_HOME_DIR}/results/inspector/premium.csv'))
     df.columns = ['Premium', 'RP Ratio', 'Risk']
@@ -160,7 +157,6 @@ def get_inspector_data(portfolio, quarter=63):
 
     df['portfolio_pct'] = 0
     for col in stocks:
-        print(portfolio_weights_pct[col])
         df[col + ' returns'] = df[col].pct_change() * portfolio_weights_pct[col]
         df['portfolio_pct'] += df[col + ' returns']
 
