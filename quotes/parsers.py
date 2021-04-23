@@ -30,23 +30,16 @@ from math import sqrt
 
 
 def angular_dist(ret_df_=None, distance_metric='angular', save_path=None, title=None):
-    # from scipy.cluster.hierarchy import ClusterWarning
-    # from warnings import simplefilter
-    # simplefilter("ignore", ClusterWarning)
-    # # Calculate absolute angular distance from a Pearson correlation matrix
-    # distance_corr_ = get_dependence_matrix(ret_df_, dependence_method='distance_correlation')
-    # angular_distance = get_distance_matrix(distance_corr_, distance_metric=distance_metric)
     corr = ret_df_.corr()
-    sns.set(font_scale=0.75)
-
     sns.set(rc={'figure.facecolor': 'black', 'xtick.color': 'white', 'ytick.color': 'white', 'text.color': 'white',
                 'axes.labelcolor': 'white'})
-    g = sns.clustermap(corr, yticklabels=True, annot=True, cmap='RdYlGn_r', row_colors=None,
+    sns.set_context('paper', font_scale=0.85)
+    g = sns.clustermap(corr, yticklabels=True, annot=True, cmap='RdYlGn', row_colors=None,
                        col_colors=None, figsize=(10, 10))
     plt.setp(g.ax_heatmap.yaxis.get_majorticklabels(), rotation=0)  # ytick rotate
     g.ax_row_dendrogram.set_visible(False)
     g.ax_col_dendrogram.set_visible(False)
-    g.fig.suptitle(f'Similarity - \n{title}', fontsize=25)
+    g.fig.suptitle(f'Корреляция - \n{title}', fontsize=25)
     g.savefig(save_path, facecolor='black', transparent=True)
 
 
@@ -114,7 +107,7 @@ def premium_rolling_calc(roll_df, period):
 # ============================== GET Inspector ================================
 def get_inspector_data(portfolio, quarter=63, year=252):
     path = f'{PROJECT_HOME_DIR}/results/inspector/'
-    benchmarks = {'SPY': 1, 'QQQ': 1, 'ARKW': 1, 'ACWI': 1, 'TLT': 1, 'VLUE': 1, 'EEM': 1, 'SH': 0, 'VXX': 0}
+    benchmarks = {'SPY': 1, 'QQQ': 1, 'ARKK': 1, 'TLT': 1, 'VLUE': 1, 'EEM': 1}
     constituents = {}
     constituents.update(portfolio)
     portfolio.update(benchmarks)
@@ -163,14 +156,13 @@ def get_inspector_data(portfolio, quarter=63, year=252):
         for ticker in stocks:
             portfolio_weights_pct[ticker] = (df[ticker][-1] * constituents[ticker]) / portfolio_cap
 
-    angular_stocks = pd.DataFrame()  # для угловой матрицы
-    angular_benches = pd.DataFrame()  # для угловой матрицы
+    angular_stocks = pd.DataFrame()  # для коррел матрицы
+    angular_benches = pd.DataFrame()  # для коррел матрицы
     df['portfolio_pct'] = 0
     for col in stocks:
         df[col + ' returns'] = df[col].pct_change() * portfolio_weights_pct[col]
         df['portfolio_pct'] += df[col + ' returns']
-        # df[f'{col}_sharpe_{year}'] = (df[col].pct_change().rolling(year).mean() /
-        #                               df[col].pct_change().rolling(year).std()) * sqrt(year)  # годовой шарп потикерно
+
         angular_stocks[col] = df[col].pct_change()  # ретурны для угловой матрицы конституентов
         df.drop(columns={f'{col} returns', f'{col}'}, inplace=True)
 
@@ -194,7 +186,7 @@ def get_inspector_data(portfolio, quarter=63, year=252):
         filename_h3 = str(uuid.uuid4()).replace('-', '')
         debug(f"Divers filename: {filename_h3}")
         angular_dist(angular_stocks, save_path=path + filename_h3,
-                     title='схожесть акций портфеля между собой')
+                     title='акций портфеля между собой')
     else:
         pass
     # расчет бенчей
@@ -238,7 +230,7 @@ def get_inspector_data(portfolio, quarter=63, year=252):
     filename_h4 = str(uuid.uuid4()).replace('-', '')
     debug(f"Divers filename: {filename_h4}")
     angular_dist(angular_benches, save_path=path + filename_h4,
-                 title='схожесть портфеля и бенчмарков между собой')
+                 title='портфеля и бенчмарков между собой')
 
     scatter = pd.concat([angular_benches, angular_stocks], axis=1, join="inner")
     scatter = scatter.loc[:, ~scatter.columns.duplicated()]
@@ -250,10 +242,8 @@ def get_inspector_data(portfolio, quarter=63, year=252):
     # bench_df.to_csv(os.path.join(f'{PROJECT_HOME_DIR}/results/inspector/bench.csv'))
 
     # сбор словарей для визуализаций
-    mask_m2 = ['SPY_m2_63', 'QQQ_m2_63', 'ARKW_m2_63', 'ACWI_m2_63',
-               'TLT_m2_63', 'VLUE_m2_63', 'EEM_m2_63', 'SPY_TLT_m2_63']
-    mask_dr = ['SPY_dr_63', 'QQQ_dr_63', 'ARKW_dr_63', 'ACWI_dr_63',
-               'TLT_dr_63', 'VLUE_dr_63', 'EEM_dr_63', 'SPY_TLT_dr_63']
+    mask_m2 = ['SPY_m2_63', 'QQQ_m2_63', 'ARKK_m2_63', 'TLT_m2_63', 'VLUE_m2_63', 'EEM_m2_63', 'SPY_TLT_m2_63']
+    mask_dr = ['SPY_dr_63', 'QQQ_dr_63', 'ARKK_dr_63', 'TLT_dr_63', 'VLUE_dr_63', 'EEM_dr_63', 'SPY_TLT_dr_63']
     m2_cols = bench_df[mask_m2].columns.tolist()
     dr_cols = bench_df[mask_dr].columns.tolist()
     divers = {}
