@@ -6,7 +6,6 @@ import pandas as pd
 import requests
 import matplotlib.pyplot as plt
 import seaborn as sns
-from mlfinlab.codependence import get_dependence_matrix, get_distance_matrix
 
 from bs4 import BeautifulSoup
 from selenium import webdriver
@@ -30,6 +29,7 @@ from math import sqrt
 
 
 def correl(ret_df_=None, save_path=None, title=None):
+
     corr = ret_df_.corr()
     sns.set(rc={'figure.facecolor': 'black', 'xtick.color': 'white', 'ytick.color': 'white', 'text.color': 'white',
                 'axes.labelcolor': 'white'})
@@ -39,9 +39,14 @@ def correl(ret_df_=None, save_path=None, title=None):
     plt.setp(g.ax_heatmap.yaxis.get_majorticklabels(), rotation=0)  # ytick rotate
     g.ax_row_dendrogram.set_visible(True)
     g.ax_col_dendrogram.set_visible(False)
-    # plt.legend(loc='center left', bbox_to_anchor=(1.01, 0.5), borderaxespad=0)
     g.fig.suptitle(f'Корреляция - \n{title}', fontsize=25)
+    print(datetime.datetime.now())
+    # cm = plt.get_cmap('RdYlGn')
+    # img = Image.fromarray((cm(g)[:, :, :3] * 255).astype(np.uint8))
+    # img.save(save_path + 'image.png')
+    # print(datetime.datetime.now())
     g.savefig(save_path, facecolor='black', transparent=True)
+    print(datetime.datetime.now())
 
 
 def risk_premium(pct_df: pd = None, period=21):
@@ -123,7 +128,7 @@ def get_inspector_data(portfolio, quarter=63, year=252):
         debug(e, ERROR)
 
     now = datetime.datetime.now()
-    six_month_ago = add_months(now, -8)
+    six_month_ago = add_months(now, -7)
 
     df = tickers_data.history(start=six_month_ago)
     df['hlc3'] = (df['high'] + df['low'] + df['close']) / 3
