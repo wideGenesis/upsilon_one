@@ -5,7 +5,6 @@ import csv
 import pandas as pd
 import requests
 import matplotlib.pyplot as plt
-from pandas.plotting import register_matplotlib_converters
 import seaborn as sns
 from mlfinlab.codependence import get_dependence_matrix, get_distance_matrix
 
@@ -31,17 +30,18 @@ from math import sqrt
 
 
 def angular_dist(ret_df_=None, distance_metric='angular', save_path=None, title=None):
-    from scipy.cluster.hierarchy import ClusterWarning
-    from warnings import simplefilter
-    simplefilter("ignore", ClusterWarning)
-    # Calculate absolute angular distance from a Pearson correlation matrix
-    distance_corr_ = get_dependence_matrix(ret_df_, dependence_method='distance_correlation')
-    angular_distance = get_distance_matrix(distance_corr_, distance_metric=distance_metric)
-    sns.set(font_scale=0.95)
+    # from scipy.cluster.hierarchy import ClusterWarning
+    # from warnings import simplefilter
+    # simplefilter("ignore", ClusterWarning)
+    # # Calculate absolute angular distance from a Pearson correlation matrix
+    # distance_corr_ = get_dependence_matrix(ret_df_, dependence_method='distance_correlation')
+    # angular_distance = get_distance_matrix(distance_corr_, distance_metric=distance_metric)
+    corr = ret_df_.corr()
+    sns.set(font_scale=0.75)
 
     sns.set(rc={'figure.facecolor': 'black', 'xtick.color': 'white', 'ytick.color': 'white', 'text.color': 'white',
                 'axes.labelcolor': 'white'})
-    g = sns.clustermap(angular_distance, yticklabels=True, annot=True, cmap='RdYlGn_r', row_colors=None,
+    g = sns.clustermap(corr, yticklabels=True, annot=True, cmap='RdYlGn_r', row_colors=None,
                        col_colors=None, figsize=(10, 10))
     plt.setp(g.ax_heatmap.yaxis.get_majorticklabels(), rotation=0)  # ytick rotate
     g.ax_row_dendrogram.set_visible(False)
@@ -51,11 +51,15 @@ def angular_dist(ret_df_=None, distance_metric='angular', save_path=None, title=
 
 
 def risk_premium(pct_df: pd = None, period=21):
-    print(pct_df)
     premia_diff = pct_df.rolling(21, axis='rows').apply(lambda x: premium_rolling_calc(x, period)[0])
     premia_diff = premia_diff.rolling(5, axis='rows').mean()
-    premia_diff = premia_diff.iloc[-1]
-
+    # premia_diff_mean = premia_diff.iloc[-63:].mean()
+    # premia_diff_median = premia_diff.iloc[-63:].median()
+    #
+    # print('63mean\n', premia_diff_mean)
+    # print('63median\n', premia_diff_median)
+    # exit()
+    premia_diff = premia_diff.iloc[-1, :]
     premia_dev = pct_df.rolling(21, axis='rows').apply(lambda x: premium_rolling_calc(x, period)[1])
     premia_dev = premia_dev.rolling(5, axis='rows').mean()
     premia_dev = premia_dev.iloc[-1, :]
@@ -108,16 +112,9 @@ def premium_rolling_calc(roll_df, period):
 
 
 # ============================== GET Inspector ================================
-def inspector_inputs(inputs=None, equal=False, init_cap=None):
-    inputs = inputs
-    equal = equal
-    init_capital_for_equal = init_cap
-    return inputs, equal, init_capital_for_equal
-
-
 def get_inspector_data(portfolio, quarter=63, year=252):
     path = f'{PROJECT_HOME_DIR}/results/inspector/'
-    benchmarks = {'SPY': 1, 'QQQ': 1, 'ARKW': 1, 'ACWI': 1, 'TLT': 1, 'VLUE': 1, 'EEM': 1}
+    benchmarks = {'SPY': 1, 'QQQ': 1, 'ARKW': 1, 'ACWI': 1, 'TLT': 1, 'VLUE': 1, 'EEM': 1, 'SH': 0, 'VXX': 0}
     constituents = {}
     constituents.update(portfolio)
     portfolio.update(benchmarks)
@@ -176,6 +173,7 @@ def get_inspector_data(portfolio, quarter=63, year=252):
         #                               df[col].pct_change().rolling(year).std()) * sqrt(year)  # годовой шарп потикерно
         angular_stocks[col] = df[col].pct_change()  # ретурны для угловой матрицы конституентов
         df.drop(columns={f'{col} returns', f'{col}'}, inplace=True)
+
     # квартальный шарп порта
     df[f'port_sharpe_{quarter}'] = (df['portfolio_pct'].rolling(quarter).mean() /
                                     df['portfolio_pct'].rolling(quarter).std()) * sqrt(quarter)
@@ -188,6 +186,7 @@ def get_inspector_data(portfolio, quarter=63, year=252):
     df[f'port_volatility_21'] = df['portfolio_pct'].rolling(21).std() * sqrt(252)
     # df.drop(columns={'portfolio_pct'}, inplace=True)
     angular_benches['PORTFOLIO'] = df['portfolio_pct']
+
     df.dropna(inplace=True)
     # расчет углового сходства конституентов
     angular_stocks.dropna(inplace=True)
@@ -258,6 +257,7 @@ def get_inspector_data(portfolio, quarter=63, year=252):
     m2_cols = bench_df[mask_m2].columns.tolist()
     dr_cols = bench_df[mask_dr].columns.tolist()
     divers = {}
+
     for col in dr_cols:
         name = str(col).replace('_dr_63', '')
         temp = {f'{name}': bench_df[f'{col}'].iloc[-1]}
