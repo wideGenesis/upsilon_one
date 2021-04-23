@@ -40,17 +40,12 @@ def correl(ret_df_=None, save_path=None, title=None):
     g.ax_row_dendrogram.set_visible(True)
     g.ax_col_dendrogram.set_visible(False)
     g.fig.suptitle(f'Корреляция - \n{title}', fontsize=25)
-    # cm = plt.get_cmap('RdYlGn')
-    # img = Image.fromarray((cm(g)[:, :, :3] * 255).astype(np.uint8))
-    # img.save(save_path + 'image.png')
-    # print(datetime.datetime.now())
     g.savefig(save_path, facecolor='black', transparent=True)
 
 
 def risk_premium(pct_df: pd = None, period=21):
     premia_diff = pct_df.rolling(period, axis='rows').apply(lambda x: premium_rolling_calc(x, period)[0])
     premia_diff = premia_diff.iloc[-63:].mean()
-    print('df', premia_diff)
     premia_dev = pct_df.rolling(period, axis='rows').apply(lambda x: premium_rolling_calc(x, period)[1])
     premia_dev = premia_dev.iloc[-63:].mean()
 
@@ -58,7 +53,7 @@ def risk_premium(pct_df: pd = None, period=21):
     dnside = dnside.iloc[-63:].mean()
 
     df = pd.concat([premia_diff, premia_dev, dnside], axis=1, join="inner")
-    df.to_csv(os.path.join(f'{PROJECT_HOME_DIR}/results/inspector/premium.csv'))
+    # df.to_csv(os.path.join(f'{PROJECT_HOME_DIR}/results/inspector/premium.csv'))
     df.columns = ['Premium', 'RP Ratio', 'Risk']
 
     sns.set(rc={'figure.facecolor': 'black', 'figure.edgecolor': 'black', 'xtick.color': 'white',
@@ -160,7 +155,7 @@ def get_inspector_data(portfolio, quarter=63):
         df[col + ' returns'] = df[col].pct_change() * portfolio_weights_pct[col]
         df['portfolio_pct'] += df[col + ' returns']
 
-        angular_stocks[col] = df[col].pct_change()  # ретурны для коррел матрицы конституентов
+        angular_stocks[col] = df[col].pct_change() # ретурны для коррел матрицы конституентов
         df.drop(columns={f'{col} returns', f'{col}'}, inplace=True)
 
     # квартальный шарп порта
