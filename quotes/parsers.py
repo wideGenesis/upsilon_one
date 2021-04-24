@@ -1,3 +1,4 @@
+import datetime
 import os
 import re
 from time import sleep
@@ -40,7 +41,13 @@ def correl(ret_df_=None, save_path=None, title=None):
     g.ax_row_dendrogram.set_visible(True)
     g.ax_col_dendrogram.set_visible(False)
     g.fig.suptitle(f'Корреляция - \n{title}', fontsize=25)
-    g.savefig(save_path, facecolor='black', transparent=True)
+    buf = io.BytesIO()
+    plt.savefig(buf, format='png', facecolor='black', transparent=True)
+    buf.seek(0)
+    im = Image.open(buf)
+    im.save(f'{save_path}.png')
+    buf.close()
+    pass
 
 
 def scatter_for_risk_premium(price_df: pd = None):

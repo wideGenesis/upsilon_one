@@ -238,22 +238,28 @@ def debug_deinit():
         DEBUG_LOG_FILE = None
 
 
-def debug(print_string="", debug_type="NORMAL"):
+def debug(print_string="", debug_type="NORMAL", micro=False):
     caller_frame_record = inspect.stack()[1]
     frame = caller_frame_record[0]
     info = inspect.getframeinfo(frame)
     path, filename = os.path.split(info.filename)
     dt = datetime.datetime.now()
+    time_format = ''
+    if micro:
+        time_format = "%H:%M:%S.%f"
+    else:
+        time_format = "%H:%M:%S"
+
     global DEBUG_LOG_FILE
     if DEBUG_LOG_FILE is not None:
-        DEBUG_LOG_FILE.write(f'[{dt.strftime("%H:%M:%S")}]{filename}:{info.lineno}:{print_string}\n')
+        DEBUG_LOG_FILE.write(f'[{dt.strftime(time_format)}]{filename}:{info.lineno}:{print_string}\n')
     else:
         if debug_type == "NORMAL":
-            print(f'[{dt.strftime("%H:%M:%S")}]{filename}:{info.lineno}:{print_string}')
+            print(f'[{dt.strftime(time_format)}]{filename}:{info.lineno}:{print_string}')
         elif debug_type == "WARNING":
-            print(f'{bcolors.WARNING}[{dt.strftime("%H:%M:%S")}]{filename}:{info.lineno}:{print_string}{bcolors.ENDC}')
+            print(f'{bcolors.WARNING}[{dt.strftime(time_format)}]{filename}:{info.lineno}:{print_string}{bcolors.ENDC}')
         elif debug_type == "ERROR":
-            print(f'{bcolors.FAIL}[{dt.strftime("%H:%M:%S")}]{filename}:{info.lineno}:{print_string}{bcolors.ENDC}')
+            print(f'{bcolors.FAIL}[{dt.strftime(time_format)}]{filename}:{info.lineno}:{print_string}{bcolors.ENDC}')
 
 
 def add_months(sourcedate, months):
