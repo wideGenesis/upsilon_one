@@ -65,8 +65,8 @@ def scatter_for_risk_premium(price_df: pd = None, save_path=''):
     sns.set(rc={'figure.facecolor': 'black', 'figure.edgecolor': 'black', 'xtick.color': 'white',
                 'ytick.color': 'white', 'text.color': 'white', 'axes.labelcolor': 'white',
                 'axes.facecolor': 'black', 'grid.color': '#17171a'})
-    sns.set_context('paper', font_scale=1.1)
-    palette = sns.color_palette("RdYlGn", n_colors=len(df.index),  as_cmap=True)
+    sns.set_context('paper', font_scale=1.25)
+    palette = sns.color_palette("hls", n_colors=len(df.index),  as_cmap=True)
     sns.despine()
     ave_risk = df['Risk']
     ave_alpha = df['Premium']
@@ -74,7 +74,7 @@ def scatter_for_risk_premium(price_df: pd = None, save_path=''):
     sharpe_mean = round(df['Sharpe'], ndigits=2)
 
     plt.figure(figsize=(10, 6))
-    sns.scatterplot(x=ave_risk, y=ave_alpha, hue=sharpe_mean, size=sharpe_mean, alpha=0.95,
+    sns.scatterplot(x=ave_risk - 0.15, y=ave_alpha - 0.5, hue=sharpe_mean, size=sharpe_mean, alpha=0.55,
                     legend=True, sizes=(30, 300), markers=True, palette=palette)
 
     for line in range(0, df.shape[0]):
