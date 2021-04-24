@@ -40,7 +40,7 @@ def correl(ret_df_=None, save_path=None, title=None):
     plt.setp(g.ax_heatmap.yaxis.get_majorticklabels(), rotation=0)  # ytick rotate
     g.ax_row_dendrogram.set_visible(True)
     g.ax_col_dendrogram.set_visible(False)
-    g.fig.suptitle(f'Корреляция - \n{title}', fontsize=25)
+    g.fig.suptitle(f'Матрица корреляций', fontsize=25)
     buf = io.BytesIO()
     plt.savefig(buf, format='png', facecolor='black', transparent=True)
     buf.seek(0)
@@ -71,7 +71,7 @@ def scatter_for_risk_premium(price_df: pd = None, save_path=''):
     ave_risk = df['Risk']
     ave_alpha = df['Premium']
     ave_premia = df['RP Ratio']
-    sharpe_mean = df['Sharpe']
+    sharpe_mean = round(df['Sharpe'], ndigits=2)
 
     plt.figure(figsize=(10, 6))
     sns.scatterplot(x=ave_risk, y=ave_alpha, hue=sharpe_mean, size=sharpe_mean, alpha=0.95,
@@ -81,9 +81,9 @@ def scatter_for_risk_premium(price_df: pd = None, save_path=''):
         plt.text(df['Risk'][line], df['Premium'][line], df.index[line],
                  horizontalalignment='left', size='x-small', color='white', weight='semibold')
 
-    plt.xlabel("Monthly Risk (%)")
-    plt.ylabel("Excess Return over Risk (%)")
-    plt.suptitle('Risk-Premium Analysis', fontsize=25)
+    plt.xlabel("Месячный риск (%)")
+    plt.ylabel("Дополнительная доходность за риск (%)")
+    plt.suptitle('Анализ премий за риск', fontsize=25)
     plt.legend(title='U Sharpe', loc='center left', bbox_to_anchor=(1.01, 0.5), borderaxespad=0)
 
     buf = io.BytesIO()
@@ -202,7 +202,7 @@ def get_inspector_data(portfolio, quarter=63):
         # квартальный диверс ратио по бенчам
         bench_df[f'{col}_dr_{quarter}'] = bench_df[f'{col}_volatility_{quarter}'] * 100/df[f'port_volatility_{quarter}']
 
-        # ретурны для угловой матрицы бенчей
+        # ретурны для correlation матрицы бенчей
         mask = ['SPY', 'QQQ']
         if col in mask:
             angular_stocks[col] = bench_df[col].pct_change()
@@ -211,7 +211,6 @@ def get_inspector_data(portfolio, quarter=63):
         bench_df.drop(columns={f'{col}'}, inplace=True)
 
     metrics = ulcer.columns.tolist()
-
     for col in metrics:
         ulcer[f'{col}_up'] = 100.0 * (ulcer[col] - ulcer[col].rolling(21).min()) / ulcer[col].rolling(21).min()
         ulcer[f'{col}_up'] = ulcer[f'{col}_up'].rolling(3).mean()
@@ -245,8 +244,7 @@ def get_inspector_data(portfolio, quarter=63):
     angular_stocks.dropna(inplace=True)
     filename_h4 = str(uuid.uuid4()).replace('-', '')
     debug(f"Divers filename: {filename_h4}")
-    correl(angular_stocks, save_path=f'{path}{filename_h4}',
-           title='PORTF vs. ')
+    correl(angular_stocks, save_path=f'{path}{filename_h4}')
     add_watermark(f'{path}{filename_h4}.png', f'{path}{filename_h4}.png', 100, wtermark_color=(255, 255, 255, 70))
 
     # расчет риск-премий
