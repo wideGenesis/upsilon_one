@@ -919,7 +919,6 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
             await shared.save_old_message(sender_id, msg)
 
     elif event.data == b'inspector_ends_finish':
-        shared.del_is_inspector_flow(sender_id)
         current_portfolio = shared.get_inspector_portfolio(sender_id)
         debug(f'current_portfolio={current_portfolio}')
         first_value = list(current_portfolio.values())[0]
@@ -927,14 +926,14 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
         first_int = fast_int(first_value, None)
         if first_int is not None and first_int == 0:
             for k in current_portfolio:
-                if current_portfolio[k] != 0:
+                if fast_int(current_portfolio[k]) != 0:
                     message = f'Если портфель равновзвешенный, все веса в портфеле должны быть равны нулю!' \
                           f'__Твой портфель сейчас выглядит так:__\n```{current_portfolio}```\n\n' \
                           f'Необходимо поправить портфель и попробовать еще раз'
                     break
         elif first_int is not None and first_int != 0:
             for k in current_portfolio:
-                if current_portfolio[k] == 0 or current_portfolio[k].endswith('%'):
+                if fast_int(current_portfolio[k]) == 0 or current_portfolio[k].endswith('%'):
                     message = f'Если веса активов в портфеле указаны в количестве, ' \
                           f'то все веса должны быть указаны в количестве!' \
                           f'__Твой портфель сейчас выглядит так:__\n```{current_portfolio}```\n\n' \
@@ -951,12 +950,13 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
                     break
                 else:
                     total_weight += fast_float(re.split('%', current_portfolio[k])[0], 0)
-            if total_weight != 100.0:
+            if message is None and total_weight != 100.0:
                 message = f'Сумма весов в пртфеле не равна 100% !' \
                       f'__Твой портфель сейчас выглядит так:__\n```{current_portfolio}```\n\n' \
                       f'Необходимо поправить портфель и попробовать еще раз'
 
         if message is not None:
+            shared.set_is_inspector_flow(sender_id, True)
             await event.edit()
             if old_msg_id is not None:
                 await client.edit_message(event.input_sender, old_msg_id, message)
@@ -965,7 +965,12 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
                 await shared.save_old_message(sender_id, msg)
             return
 
-        get_inspector_data(current_portfolio)
+        filenames = get_inspector_data(current_portfolio)
+        await shared.delete_old_message(client, sender_id)
+        for filename in filenames:
+            if os.path.exists(filename):
+                await client.send_file(event.input_sender, filename)
+                os.remove(filename)
 
         # После расчетов и показа всех картинок тоже нужно очистить всю память
         shared.clear_inspectors_data_by_user(sender_id)
