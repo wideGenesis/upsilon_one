@@ -247,12 +247,14 @@ def get_inspector_data(portfolio, quarter=63):
     debug(f"Divers filename: {filename_h4}")
     correl(angular_stocks, save_path=f'{path}{filename_h4}',
            title='PORTF vs. ')
+    add_watermark(f'{path}{filename_h4}.png', f'{path}{filename_h4}.png', 100, wtermark_color=(255, 255, 255, 70))
 
     # расчет риск-премий
     # angular_stocks.to_csv(os.path.join(f'{PROJECT_HOME_DIR}/results/inspector/angular.csv'))
     filename_h3 = str(uuid.uuid4()).replace('-', '')
     debug(f"scatter filename: {filename_h3 }")
     scatter_for_risk_premium(ulcer, save_path=f'{path}{filename_h3}')
+    add_watermark(f'{path}{filename_h3}.png', f'{path}{filename_h3}.png', 100)
     df.dropna(inplace=True)
     bench_df.dropna(inplace=True)
 
