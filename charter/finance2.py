@@ -1,7 +1,9 @@
 #!/usr/bin/python
 import math
+import re
 
 from FinanceChart import *
+from fastnumbers import fast_float
 from pychartdir import *
 from datetime import date, timedelta
 from project_shared import *
@@ -305,9 +307,19 @@ def create_revenue_histogram(ticker, data, img_path):
 
 def create_custom_histogram(data, header, img_path, filename):
     labels = data.keys()
-    bars = data.values()
+    bars = []
     colors = []
-    for bar in bars:
+    for bar in data.values():
+        if isinstance(bar, str):
+            if bar.endswith('%'):
+                value = fast_float(re.split('%', bar)[0])
+                bars.append(value)
+            else:
+                value = fast_float(bar)
+                bars.append(value)
+        else:
+            bars.append(bar)
+
         if bar >= 0:
             colors.append(BAR_UP_COLOR)
         else:
