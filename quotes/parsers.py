@@ -47,11 +47,9 @@ def correl(ret_df_=None, save_path=None, title=None):
     im = Image.open(buf)
     im.save(f'{save_path}.png')
     buf.close()
-    pass
 
 
-def scatter_for_risk_premium(price_df: pd = None):
-    path = f'{PROJECT_HOME_DIR}/results/inspector/'
+def scatter_for_risk_premium(price_df: pd = None, save_path=''):
     price_df = price_df.iloc[-1]
     res = {}
     for i, value in enumerate(price_df):
@@ -88,9 +86,13 @@ def scatter_for_risk_premium(price_df: pd = None):
     plt.suptitle('Risk-Premium Analysis', fontsize=25)
     plt.legend(title='U Sharpe', loc='center left', bbox_to_anchor=(1.01, 0.5), borderaxespad=0)
 
-    filename_scatter = str(uuid.uuid4()).replace('-', '')
-    debug(f"scatter filename: {filename_scatter }")
-    plt.savefig(path + filename_scatter, facecolor='black', transparent=True, bbox_inches='tight')
+    buf = io.BytesIO()
+    plt.savefig(buf, format='png', facecolor='black', transparent=True, bbox_inches='tight')
+    buf.seek(0)
+    im = Image.open(buf)
+    im.save(f'{save_path}.png')
+    buf.close()
+    # plt.savefig(path + filename_scatter, facecolor='black', transparent=True, bbox_inches='tight')
 
 
 # ============================== GET Inspector ================================
@@ -136,15 +138,19 @@ def get_inspector_data(portfolio, quarter=63):
     portfolio_cap = 0.0
     portfolio_weights_pct = {}
     first_value = list(constituents.values())[0]
-    if first_value == 0:
+    if fast_int(first_value) == 0:
         for ticker in stocks:
             portfolio_weights_pct[ticker] = 1 / len(constituents)
     else:
-        for ticker in stocks:
-            portfolio_cap += df[ticker][-1] * constituents[ticker]
+        if first_value.endswith('%'):
+            for ticker in stocks:
+                portfolio_weights_pct[ticker] = fast_float(re.split('%', first_value)[0])
+        else:
+            for ticker in stocks:
+                portfolio_cap += df[ticker][-1] * fast_int(constituents[ticker])
 
-        for ticker in stocks:
-            portfolio_weights_pct[ticker] = (df[ticker][-1] * constituents[ticker]) / portfolio_cap
+            for ticker in stocks:
+                portfolio_weights_pct[ticker] = (df[ticker][-1] * fast_int(constituents[ticker])) / portfolio_cap
 
     angular_stocks = pd.DataFrame()  # для коррел матрицы
     ulcer = pd.DataFrame()  # init df для Ulcer
@@ -239,12 +245,14 @@ def get_inspector_data(portfolio, quarter=63):
     angular_stocks.dropna(inplace=True)
     filename_h4 = str(uuid.uuid4()).replace('-', '')
     debug(f"Divers filename: {filename_h4}")
-    correl(angular_stocks, save_path=path + filename_h4,
+    correl(angular_stocks, save_path=f'{path}{filename_h4}',
            title='PORTF vs. ')
 
     # расчет риск-премий
     # angular_stocks.to_csv(os.path.join(f'{PROJECT_HOME_DIR}/results/inspector/angular.csv'))
-    scatter_for_risk_premium(ulcer)
+    filename_h3 = str(uuid.uuid4()).replace('-', '')
+    debug(f"scatter filename: {filename_h3 }")
+    scatter_for_risk_premium(ulcer, save_path=f'{path}{filename_h3}')
     df.dropna(inplace=True)
     bench_df.dropna(inplace=True)
 
@@ -273,7 +281,12 @@ def get_inspector_data(portfolio, quarter=63):
     filename_h2 = str(uuid.uuid4()).replace('-', '')
     debug(f"M2 filename: {filename_h2}")
     create_custom_histogram(m2, "Размер премии (%) бенчмарков в сравнении с портфелем", path, filename_h2)
-    return path, filename_h1, filename_h2
+
+    result_files = [f'{path}{filename_h1}.png',
+                    f'{path}{filename_h2}.png',
+                    f'{path}{filename_h3}.png',
+                    f'{path}{filename_h4}.png']
+    return result_files
 
 
 # ============================== GET ADV ================================
