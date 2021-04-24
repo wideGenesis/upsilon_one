@@ -189,7 +189,7 @@ def get_inspector_data(portfolio, quarter=63):
         # квартальный диверс ратио по бенчам
         bench_df[f'{col}_dr_{quarter}'] = bench_df[f'{col}_volatility_{quarter}'] * 100/df[f'port_volatility_{quarter}']
 
-        # ретурны для угловой матрицы бенчей
+        # ретурны для correlation матрицы бенчей
         mask = ['SPY', 'QQQ']
         if col in mask:
             angular_stocks[col] = bench_df[col].pct_change()
