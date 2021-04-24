@@ -1,4 +1,5 @@
 import os
+import re
 from time import sleep
 from fastnumbers import *
 import csv
@@ -85,9 +86,16 @@ def risk_premium(pct_df: pd = None, period=21):
 
 def scatter_for_risk_premium(price_df: pd = None):
     price_df = price_df.iloc[-1]
-
-    price_df.to_csv(os.path.join(f'{PROJECT_HOME_DIR}/results/inspector/new.csv'))
-
+    res = {}
+    for i, value in enumerate(price_df):
+        symbol = re.split(' ', price_df.axes[0].array[i])[0]
+        if symbol in res:
+            res[symbol].append(value)
+        else:
+            res[symbol] = [value]
+    res_df = pd.DataFrame.from_dict(res, orient='index')
+    res_df.to_csv(os.path.join(f'{PROJECT_HOME_DIR}/results/inspector/new.csv'))
+    pass
     # df = pd.concat([premia_diff, premia_dev, dnside], axis=1, join="inner")
 
 #     df.columns = ['Premium', 'RP Ratio', 'Risk']
