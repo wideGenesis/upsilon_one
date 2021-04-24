@@ -29,7 +29,6 @@ from math import sqrt
 
 
 def correl(ret_df_=None, save_path=None, title=None):
-
     corr = ret_df_.corr()
     sns.set(rc={'figure.facecolor': 'black', 'xtick.color': 'white', 'ytick.color': 'white', 'text.color': 'white',
                 'axes.labelcolor': 'white'})
@@ -44,8 +43,10 @@ def correl(ret_df_=None, save_path=None, title=None):
 
 
 def risk_premium(pct_df: pd = None, period=21):
+    print(pct_df)
     premia_diff = pct_df.rolling(period, axis='rows').apply(lambda x: premium_rolling_calc(x, period)[0])
     premia_diff = premia_diff.iloc[-63:].mean()
+
     premia_dev = pct_df.rolling(period, axis='rows').apply(lambda x: premium_rolling_calc(x, period)[1])
     premia_dev = premia_dev.iloc[-63:].mean()
 
@@ -53,7 +54,7 @@ def risk_premium(pct_df: pd = None, period=21):
     dnside = dnside.iloc[-63:].mean()
 
     df = pd.concat([premia_diff, premia_dev, dnside], axis=1, join="inner")
-    # df.to_csv(os.path.join(f'{PROJECT_HOME_DIR}/results/inspector/premium.csv'))
+    df.to_csv(os.path.join(f'{PROJECT_HOME_DIR}/results/inspector/premium.csv'))
     df.columns = ['Premium', 'RP Ratio', 'Risk']
 
     sns.set(rc={'figure.facecolor': 'black', 'figure.edgecolor': 'black', 'xtick.color': 'white',
@@ -80,6 +81,42 @@ def risk_premium(pct_df: pd = None, period=21):
     plt.legend(title='RP Ratio', loc='center left', bbox_to_anchor=(1.01, 0.5), borderaxespad=0)
     plt.savefig(f'{PROJECT_HOME_DIR}/results/inspector/data.png',
                 facecolor='black', transparent=True, bbox_inches='tight')
+
+
+def scatter_for_risk_premium(price_df: pd = None):
+    price_df = price_df.iloc[-1]
+
+    price_df.to_csv(os.path.join(f'{PROJECT_HOME_DIR}/results/inspector/new.csv'))
+
+    # df = pd.concat([premia_diff, premia_dev, dnside], axis=1, join="inner")
+
+#     df.columns = ['Premium', 'RP Ratio', 'Risk']
+#
+#     sns.set(rc={'figure.facecolor': 'black', 'figure.edgecolor': 'black', 'xtick.color': 'white',
+#                 'ytick.color': 'white', 'text.color': 'white', 'axes.labelcolor': 'white',
+#                 'axes.facecolor': 'black', 'grid.color': '#17171a'})
+#     sns.set_context('paper', font_scale=1.1)
+#     palette = sns.color_palette("RdYlGn", as_cmap=True)
+#     sns.despine()
+#     ave_risk = df['Risk']
+#     ave_alpha = df['Premium']
+#     ave_premia = df['RP Ratio']
+#     vola = df['RP Ratio']
+#     plt.figure(figsize=(10, 6))
+#     sns.scatterplot(x=ave_risk, y=ave_alpha, size=ave_premia,
+#                     alpha=0.95, legend=True, sizes=(20, 500), hue=vola, markers=True, palette=palette)
+#
+#     for line in range(0, df.shape[0]):
+#         plt.text(df['Risk'][line], df['Premium'][line], df.index[line],
+#                  horizontalalignment='left', size='x-small', color='white', weight='semibold')
+#
+#     plt.xlabel("Ave. Monthly Risk (%)")
+#     plt.ylabel("Ave. Excess Return over Risk (%)")
+#     plt.suptitle('Risk-Premium Analysis', fontsize=25)
+#     plt.legend(title='RP Ratio', loc='center left', bbox_to_anchor=(1.01, 0.5), borderaxespad=0)
+#     plt.savefig(f'{PROJECT_HOME_DIR}/results/inspector/data.png',
+#                 facecolor='black', transparent=True, bbox_inches='tight')
+#
 
 
 def premium_rolling_calc(roll_df, period):
@@ -149,15 +186,26 @@ def get_inspector_data(portfolio, quarter=63):
             portfolio_weights_pct[ticker] = (df[ticker][-1] * constituents[ticker]) / portfolio_cap
 
     angular_stocks = pd.DataFrame()  # для коррел матрицы
+    ulcer = pd.DataFrame()  # init df для Ulcer
 
     df['portfolio_pct'] = 0
+    df['PORTF price'] = 0
     for col in stocks:
         df[col + ' returns'] = df[col].pct_change() * portfolio_weights_pct[col]
         df['portfolio_pct'] += df[col + ' returns']
 
-        angular_stocks[col] = df[col].pct_change() # ретурны для коррел матрицы конституентов
-        df.drop(columns={f'{col} returns', f'{col}'}, inplace=True)
+        # For Ulcer df - hlc3, не ретурны
+        ulcer[col + ' price'] = df[col] * portfolio_weights_pct[col]
+        # For Ulcer df - hlc3 * w для портфеля, не ретурны
+        df['PORTF price'] += ulcer[col + ' price']
 
+        # ретурны для коррел матрицы конституентов
+        angular_stocks[col] = df[col].pct_change()
+
+    # цена портфеля для Ulcer
+    ulcer['PORTF price'] = df['PORTF price']
+    df.drop(columns={'PORTF price'}, inplace=True)
+    
     # квартальный шарп порта
     df[f'port_sharpe_{quarter}'] = (df['portfolio_pct'].rolling(quarter).mean() /
                                     df['portfolio_pct'].rolling(quarter).std()) * sqrt(quarter)
@@ -170,22 +218,46 @@ def get_inspector_data(portfolio, quarter=63):
     # расчет бенчей
     for col in benches:
         bench_df[f'{col}_return'] = bench_df[col].pct_change()
+
         # квартал шарп по бенчам
         bench_df[f'{col}_sharpe_{quarter}'] = (bench_df[col].pct_change().rolling(quarter).mean() /
                                                bench_df[col].pct_change().rolling(quarter).std()) * sqrt(quarter)
         # квартальная вола по бенчам
         bench_df[f'{col}_volatility_{quarter}'] = bench_df[col].pct_change().rolling(quarter).std() * sqrt(quarter)
+
         # квартальный м2 по бенчам
         # bench_df[f'{col}_m2_{quarter}'] = bench_df[f'{col}_sharpe_{quarter}'] * df[f'port_volatility_{quarter}']
         bench_df[f'{col}_m2_{quarter}'] = df[f'port_sharpe_{quarter}'] * bench_df[f'{col}_volatility_{quarter}']
+
+        # For Ulcer цены бенчей
+        ulcer[col + ' price'] = bench_df[col]
+
         # квартальный диверс ратио по бенчам
         bench_df[f'{col}_dr_{quarter}'] = bench_df[f'{col}_volatility_{quarter}'] * 100/df[f'port_volatility_{quarter}']
+
+        # ретурны для угловой матрицы бенчей
         mask = ['SPY', 'QQQ']
         if col in mask:
-            angular_stocks[col] = bench_df[col].pct_change()  # ретурны для угловой матрицы бенчей
+            angular_stocks[col] = bench_df[col].pct_change()
         else:
             pass
         bench_df.drop(columns={f'{col}'}, inplace=True)
+
+    metrics = ulcer.columns.tolist()
+    print(metrics)
+    for col in metrics:
+        ulcer[f'{col}_up'] = 100.0 * (ulcer[col] - ulcer[col].rolling(21).min()) / ulcer[col].rolling(21).min()
+        ulcer[f'{col}_up'] = ulcer[f'{col}_up'].rolling(3).mean()
+        ulcer[f'{col}_up'] = ulcer[f'{col}_up'] + ulcer[f'{col}_up'].rolling(21).std()
+        ulcer[f'{col}_dn'] = 100.0 * (ulcer[col] - ulcer[col].rolling(21).max()) / ulcer[col].rolling(21).max()
+        ulcer[f'{col}_dn'] = abs(ulcer[f'{col}_dn'].rolling(3).mean())
+        ulcer[f'{col}_dn'] = ulcer[f'{col}_dn'] + ulcer[f'{col}_dn'].rolling(21).std()
+        ulcer[f'{col}_ratio'] = ulcer[f'{col}_up'] / ulcer[f'{col}_dn'].rolling(21).max()
+        ulcer[f'{col}_premia'] = ulcer[f'{col}_up'] - ulcer[f'{col}_dn']
+        ulcer[f'{col}_ratio_mean'] = ulcer[f'{col}_ratio'].iloc[-63:].mean()
+        ulcer.drop(columns={f'{col}', f'{col}_up'}, inplace=True)
+    ulcer.dropna(inplace=True)
+    # ulcer.to_csv(os.path.join(f'{PROJECT_HOME_DIR}/results/inspector/stocks.csv'))
 
     # расчеты для спай/тлт бенча
     bench_df[f'SPY_TLT_volatility_{quarter}'] =\
@@ -211,8 +283,9 @@ def get_inspector_data(portfolio, quarter=63):
            title='PORTF vs. ')
 
     # расчет риск-премий
-    # angular_stocks.to_csv(os.path.join(f'{PROJECT_HOME_DIR}/results/inspector/stocks.csv'))
+    # angular_stocks.to_csv(os.path.join(f'{PROJECT_HOME_DIR}/results/inspector/angular.csv'))
     risk_premium(angular_stocks)
+    scatter_for_risk_premium(ulcer)
     df.dropna(inplace=True)
     bench_df.dropna(inplace=True)
 
