@@ -43,61 +43,19 @@ def correl(ret_df_=None, save_path=None, title=None):
     g.savefig(save_path, facecolor='black', transparent=True)
 
 
-def risk_premium(pct_df: pd = None, period=21):
-    print(pct_df)
-    premia_diff = pct_df.rolling(period, axis='rows').apply(lambda x: premium_rolling_calc(x, period)[0])
-    premia_diff = premia_diff.iloc[-63:].mean()
-
-    premia_dev = pct_df.rolling(period, axis='rows').apply(lambda x: premium_rolling_calc(x, period)[1])
-    premia_dev = premia_dev.iloc[-63:].mean()
-
-    dnside = pct_df.rolling(period, axis='rows').apply(lambda x: premium_rolling_calc(x, period)[2])
-    dnside = dnside.iloc[-63:].mean()
-
-    df = pd.concat([premia_diff, premia_dev, dnside], axis=1, join="inner")
-    df.to_csv(os.path.join(f'{PROJECT_HOME_DIR}/results/inspector/premium.csv'))
-    df.columns = ['Premium', 'RP Ratio', 'Risk']
-
-    sns.set(rc={'figure.facecolor': 'black', 'figure.edgecolor': 'black', 'xtick.color': 'white',
-                'ytick.color': 'white', 'text.color': 'white', 'axes.labelcolor': 'white',
-                'axes.facecolor': 'black', 'grid.color': '#17171a'})
-    sns.set_context('paper', font_scale=1.1)
-    palette = sns.color_palette("RdYlGn", as_cmap=True)
-    sns.despine()
-    ave_risk = df['Risk']
-    ave_alpha = df['Premium']
-    ave_premia = df['RP Ratio']
-    vola = df['RP Ratio']
-    plt.figure(figsize=(10, 6))
-    sns.scatterplot(x=ave_risk, y=ave_alpha, size=ave_premia,
-                    alpha=0.95, legend=True, sizes=(20, 500), hue=vola, markers=True, palette=palette)
-
-    for line in range(0, df.shape[0]):
-        plt.text(df['Risk'][line], df['Premium'][line], df.index[line],
-                 horizontalalignment='left', size='x-small', color='white', weight='semibold')
-
-    plt.xlabel("Ave. Monthly Risk (%)")
-    plt.ylabel("Ave. Excess Return over Risk (%)")
-    plt.suptitle('Risk-Premium Analysis', fontsize=25)
-    plt.legend(title='RP Ratio', loc='center left', bbox_to_anchor=(1.01, 0.5), borderaxespad=0)
-    plt.savefig(f'{PROJECT_HOME_DIR}/results/inspector/data.png',
-                facecolor='black', transparent=True, bbox_inches='tight')
-
-
-def scatter_for_risk_premium(price_df: pd = None):
-    price_df = price_df.iloc[-1]
-    res = {}
-    for i, value in enumerate(price_df):
-        symbol = re.split(' ', price_df.axes[0].array[i])[0]
-        if symbol in res:
-            res[symbol].append(value)
-        else:
-            res[symbol] = [value]
-    res_df = pd.DataFrame.from_dict(res, orient='index')
-    res_df.to_csv(os.path.join(f'{PROJECT_HOME_DIR}/results/inspector/new.csv'))
-    pass
-    # df = pd.concat([premia_diff, premia_dev, dnside], axis=1, join="inner")
-
+# def risk_premium(pct_df: pd = None, period=21):
+#     print(pct_df)
+#     premia_diff = pct_df.rolling(period, axis='rows').apply(lambda x: premium_rolling_calc(x, period)[0])
+#     premia_diff = premia_diff.iloc[-63:].mean()
+#
+#     premia_dev = pct_df.rolling(period, axis='rows').apply(lambda x: premium_rolling_calc(x, period)[1])
+#     premia_dev = premia_dev.iloc[-63:].mean()
+#
+#     dnside = pct_df.rolling(period, axis='rows').apply(lambda x: premium_rolling_calc(x, period)[2])
+#     dnside = dnside.iloc[-63:].mean()
+#
+#     df = pd.concat([premia_diff, premia_dev, dnside], axis=1, join="inner")
+#     df.to_csv(os.path.join(f'{PROJECT_HOME_DIR}/results/inspector/premium.csv'))
 #     df.columns = ['Premium', 'RP Ratio', 'Risk']
 #
 #     sns.set(rc={'figure.facecolor': 'black', 'figure.edgecolor': 'black', 'xtick.color': 'white',
@@ -124,24 +82,67 @@ def scatter_for_risk_premium(price_df: pd = None):
 #     plt.legend(title='RP Ratio', loc='center left', bbox_to_anchor=(1.01, 0.5), borderaxespad=0)
 #     plt.savefig(f'{PROJECT_HOME_DIR}/results/inspector/data.png',
 #                 facecolor='black', transparent=True, bbox_inches='tight')
+
+
+def scatter_for_risk_premium(price_df: pd = None):
+    path = f'{PROJECT_HOME_DIR}/results/inspector/'
+    price_df = price_df.iloc[-1]
+    res = {}
+    for i, value in enumerate(price_df):
+        symbol = re.split(' ', price_df.axes[0].array[i])[0]
+        if symbol in res:
+            res[symbol].append(value)
+        else:
+            res[symbol] = [value]
+    df = pd.DataFrame.from_dict(res, orient='index')
+
+    df.columns = ['Risk', 'RP Ratio', 'Premium', 'Sharpe']
+
+    sns.set(rc={'figure.facecolor': 'black', 'figure.edgecolor': 'black', 'xtick.color': 'white',
+                'ytick.color': 'white', 'text.color': 'white', 'axes.labelcolor': 'white',
+                'axes.facecolor': 'black', 'grid.color': '#17171a'})
+    sns.set_context('paper', font_scale=1.1)
+    palette = sns.color_palette("RdYlGn", as_cmap=True)
+    sns.despine()
+    ave_risk = df['Risk']
+    ave_alpha = df['Premium']
+    ave_premia = df['RP Ratio']
+    sharpe_mean = df['Sharpe']
+
+    plt.figure(figsize=(10, 6))
+    sns.scatterplot(x=ave_risk, y=ave_alpha, hue=sharpe_mean, size=sharpe_mean, alpha=0.95,
+                        legend=True, sizes=(30, 300), markers=True, palette=palette)
+
+    for line in range(0, df.shape[0]):
+        plt.text(df['Risk'][line], df['Premium'][line], df.index[line],
+                 horizontalalignment='left', size='x-small', color='white', weight='semibold')
+
+    plt.xlabel("Monthly Risk (%)")
+    plt.ylabel("Excess Return over Risk (%)")
+    plt.suptitle('Risk-Premium Analysis', fontsize=25)
+    plt.legend(title='U Sharpe', loc='center left', bbox_to_anchor=(1.01, 0.5), borderaxespad=0)
+
+    filename_scatter = str(uuid.uuid4()).replace('-', '')
+    debug(f"scatter filename: {filename_scatter }")
+    plt.savefig(path + filename_scatter, facecolor='black', transparent=True, bbox_inches='tight')
+
 #
-
-
-def premium_rolling_calc(roll_df, period):
-    up_mask = roll_df.values > 0
-    dn_mask = roll_df.values <= 0
-    up_df = roll_df[up_mask]
-    dn_df = roll_df[dn_mask]
-    up_prob = len(up_df) / period
-    dn_prob = len(dn_df) / period
-    upside = up_df.mean() * 100 * up_prob
-    dnside = abs(dn_df.mean() * 100) * dn_prob
-    premia_diff = (upside - dnside)
-    premia_dev = (upside - dnside) / dnside
-    return premia_diff, premia_dev, dnside
+# def premium_rolling_calc(roll_df, period):
+#     up_mask = roll_df.values > 0
+#     dn_mask = roll_df.values <= 0
+#     up_df = roll_df[up_mask]
+#     dn_df = roll_df[dn_mask]
+#     up_prob = len(up_df) / period
+#     dn_prob = len(dn_df) / period
+#     upside = up_df.mean() * 100 * up_prob
+#     dnside = abs(dn_df.mean() * 100) * dn_prob
+#     premia_diff = (upside - dnside)
+#     premia_dev = (upside - dnside) / dnside
+#     return premia_diff, premia_dev, dnside
 
 
 # ============================== GET Inspector ================================
+
 def get_inspector_data(portfolio, quarter=63):
     path = f'{PROJECT_HOME_DIR}/results/inspector/'
     benchmarks = {'SPY': 1, 'QQQ': 1, 'ARKK': 1, 'TLT': 1, 'VLUE': 1, 'EEM': 1}
@@ -252,7 +253,7 @@ def get_inspector_data(portfolio, quarter=63):
         bench_df.drop(columns={f'{col}'}, inplace=True)
 
     metrics = ulcer.columns.tolist()
-    print(metrics)
+
     for col in metrics:
         ulcer[f'{col}_up'] = 100.0 * (ulcer[col] - ulcer[col].rolling(21).min()) / ulcer[col].rolling(21).min()
         ulcer[f'{col}_up'] = ulcer[f'{col}_up'].rolling(3).mean()
@@ -265,7 +266,6 @@ def get_inspector_data(portfolio, quarter=63):
         ulcer[f'{col}_ratio_mean'] = ulcer[f'{col}_ratio'].iloc[-63:].mean()
         ulcer.drop(columns={f'{col}', f'{col}_up'}, inplace=True)
     ulcer.dropna(inplace=True)
-    # ulcer.to_csv(os.path.join(f'{PROJECT_HOME_DIR}/results/inspector/stocks.csv'))
 
     # расчеты для спай/тлт бенча
     bench_df[f'SPY_TLT_volatility_{quarter}'] =\
@@ -292,12 +292,9 @@ def get_inspector_data(portfolio, quarter=63):
 
     # расчет риск-премий
     # angular_stocks.to_csv(os.path.join(f'{PROJECT_HOME_DIR}/results/inspector/angular.csv'))
-    risk_premium(angular_stocks)
     scatter_for_risk_premium(ulcer)
     df.dropna(inplace=True)
     bench_df.dropna(inplace=True)
-
-
 
     # сбор словарей для визуализаций
     mask_m2 = ['SPY_m2_63', 'QQQ_m2_63', 'ARKK_m2_63', 'VLUE_m2_63', 'EEM_m2_63', 'SPY_TLT_m2_63']
