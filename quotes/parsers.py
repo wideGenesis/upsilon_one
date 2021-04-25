@@ -103,8 +103,6 @@ def get_inspector_data(portfolio, quarter=63):
     constituents = {}
     constituents.update(portfolio)
     portfolio.update(benchmarks)
-    # debug(f' ### {portfolio} ###')
-    # debug(f' ### {constituents} ###')
     tickerlist = portfolio.keys()
     scrape_tickers = tickerlist
     tickers_data = None
@@ -165,21 +163,23 @@ def get_inspector_data(portfolio, quarter=63):
         ulcer[col + ' price'] = df[col] * portfolio_weights_pct[col]
         # For Ulcer df - hlc3 * w для портфеля, не ретурны
         df['PORTF price'] += ulcer[col + ' price']
-
         # ретурны для коррел матрицы конституентов
         angular_stocks[col] = df[col].pct_change()
 
     # цена портфеля для Ulcer
     ulcer['PORTF price'] = df['PORTF price']
     df.drop(columns={'PORTF price'}, inplace=True)
-    
+
     # квартальный шарп порта
-    df[f'port_sharpe_{quarter}'] = (df['portfolio_pct'].rolling(quarter).mean() /
-                                    df['portfolio_pct'].rolling(quarter).std()) * sqrt(quarter)
+    # df[f'port_sharpe_{quarter}'] = (df['portfolio_pct'].rolling(quarter).mean() /
+    #                                 df['portfolio_pct'].rolling(quarter).std()) * sqrt(quarter)
 
     df[f'port_volatility_{quarter}'] = df['portfolio_pct'].rolling(quarter).std() * sqrt(quarter)  # квартал вола порта
+
     # месячная аннуализированная/стандартная вола порта
-    df[f'port_volatility_21'] = df['portfolio_pct'].rolling(21).std() * sqrt(252)
+    # df[f'port_volatility_21'] = df['portfolio_pct'] * 100
+    # df[f'port_volatility_21'] = df[f'port_volatility_21'].rolling(21).std() * sqrt(252)
+    # print('port_volatility_21', df[f'port_volatility_21'])
     df.dropna(inplace=True)
 
     # расчет бенчей
@@ -187,14 +187,13 @@ def get_inspector_data(portfolio, quarter=63):
         bench_df[f'{col}_return'] = bench_df[col].pct_change()
 
         # квартал шарп по бенчам
-        bench_df[f'{col}_sharpe_{quarter}'] = (bench_df[col].pct_change().rolling(quarter).mean() /
-                                               bench_df[col].pct_change().rolling(quarter).std()) * sqrt(quarter)
+        # bench_df[f'{col}_sharpe_{quarter}'] = (bench_df[col].pct_change().rolling(quarter).mean() /
+        #                                        bench_df[col].pct_change().rolling(quarter).std()) * sqrt(quarter)
         # квартальная вола по бенчам
         bench_df[f'{col}_volatility_{quarter}'] = bench_df[col].pct_change().rolling(quarter).std() * sqrt(quarter)
 
         # квартальный м2 по бенчам
-        # bench_df[f'{col}_m2_{quarter}'] = bench_df[f'{col}_sharpe_{quarter}'] * df[f'port_volatility_{quarter}']
-        bench_df[f'{col}_m2_{quarter}'] = df[f'port_sharpe_{quarter}'] * bench_df[f'{col}_volatility_{quarter}']
+        # bench_df[f'{col}_m2_{quarter}'] = df[f'port_sharpe_{quarter}'] * bench_df[f'{col}_volatility_{quarter}']
 
         # For Ulcer цены бенчей
         ulcer[col + ' price'] = bench_df[col]
@@ -227,17 +226,17 @@ def get_inspector_data(portfolio, quarter=63):
     # расчеты для спай/тлт бенча
     bench_df[f'SPY_TLT_volatility_{quarter}'] =\
         0.6 * bench_df[f'SPY_volatility_{quarter}'] + 0.4 * bench_df[f'TLT_volatility_{quarter}']
-    bench_df[f'SPY_TLT_m2_{quarter}'] = df[f'port_sharpe_{quarter}'] * bench_df[f'SPY_TLT_volatility_{quarter}']
+    # bench_df[f'SPY_TLT_m2_{quarter}'] = df[f'port_sharpe_{quarter}'] * bench_df[f'SPY_TLT_volatility_{quarter}']
     bench_df[f'SPY_TLT_dr_{quarter}'] = bench_df[f'SPY_TLT_volatility_{quarter}'] * 100 / \
         df[f'port_volatility_{quarter}']
 
     # расчет беты для стресс-теста
-    bench_df[f'PORT_TO_SPY_beta_{quarter}'] = \
-        bench_df[f'SPY_return'].corr(df['portfolio_pct']) * df[f'port_volatility_{quarter}'] \
-        / bench_df[f'SPY_volatility_{quarter}']
-    # расчет 3,14 * месячной волы для стресс-теста
-    bench_df[f'PORT_WORST_21'] = df[f'port_volatility_21'] * 3.14
-
+    bench_df[f'PORT_TO_SPY_beta_{quarter}'] = bench_df[f'SPY_return'].corr(df['portfolio_pct']) * \
+                                              df[f'port_volatility_{quarter}'] / bench_df[f'SPY_volatility_{quarter}']
+    # # расчет 3,14 * месячной волы для стресс-теста
+    # bench_df[f'PORT_WORST_21'] = df[f'port_volatility_21'] * 3.14
+    # print(bench_df[f'PORT_WORST_21'])
+    print(bench_df[f'PORT_TO_SPY_beta_63'].tail(21))
     # расчет коррел конституентов
     angular_stocks.dropna(inplace=True)
     angular_stocks['PORTF'] = df['portfolio_pct']
@@ -257,9 +256,9 @@ def get_inspector_data(portfolio, quarter=63):
     bench_df.dropna(inplace=True)
 
     # сбор словарей для визуализаций
-    mask_m2 = ['SPY_m2_63', 'QQQ_m2_63', 'ARKK_m2_63', 'VLUE_m2_63', 'EEM_m2_63', 'SPY_TLT_m2_63']
+    # mask_m2 = ['SPY_m2_63', 'QQQ_m2_63', 'ARKK_m2_63', 'VLUE_m2_63', 'EEM_m2_63', 'SPY_TLT_m2_63']
     mask_dr = ['SPY_dr_63', 'QQQ_dr_63', 'ARKK_dr_63', 'VLUE_dr_63', 'EEM_dr_63', 'SPY_TLT_dr_63']
-    m2_cols = bench_df[mask_m2].columns.tolist()
+    # m2_cols = bench_df[mask_m2].columns.tolist()
     dr_cols = bench_df[mask_dr].columns.tolist()
     divers = {}
 
@@ -269,21 +268,21 @@ def get_inspector_data(portfolio, quarter=63):
         divers.update(temp)
 
     m2 = {}
-    for col in m2_cols:
-        name = str(col).replace('_m2_63', '')
-        temp2 = {f'{name}': bench_df[f'{col}'].iloc[-1]}
-        m2.update(temp2)
+    # for col in m2_cols:
+    #     name = str(col).replace('_m2_63', '')
+    #     temp2 = {f'{name}': bench_df[f'{col}'].iloc[-1]}
+    #     m2.update(temp2)
 
     filename_h1 = str(uuid.uuid4()).replace('-', '')
     debug(f"Divers filename: {filename_h1}")
     create_custom_histogram(divers, "Уровень диверсификации (%) против бенчмарков", path, filename_h1)
 
-    filename_h2 = str(uuid.uuid4()).replace('-', '')
-    debug(f"M2 filename: {filename_h2}")
-    create_custom_histogram(m2, "Размер премии (%) бенчмарков в сравнении с портфелем", path, filename_h2)
+    # filename_h2 = str(uuid.uuid4()).replace('-', '')
+    # debug(f"M2 filename: {filename_h2}")
+    # create_custom_histogram(m2, "Размер премии (%) бенчмарков в сравнении с портфелем", path, filename_h2)
 
     result_files = [f'{path}{filename_h1}.png',
-                    f'{path}{filename_h2}.png',
+                    # f'{path}{filename_h2}.png',
                     f'{path}{filename_h3}.png',
                     f'{path}{filename_h4}.png']
     return result_files
