@@ -1,4 +1,5 @@
 import asyncio
+import importlib
 import os
 import csv
 import datetime
@@ -965,7 +966,33 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
                 await shared.save_old_message(sender_id, msg)
             return
 
-        filenames = get_inspector_data(current_portfolio)
+        # Подгрузим динамически модуль - вдруг ценообразование изменилось?!
+        pricing = None
+        if "telegram.pricing" in sys.modules:
+            debug(f'module imported --- try reload')
+            pricing = importlib.reload(sys.modules["telegram.pricing"])
+        else:
+            debug(f'module NOT imported --- try first import')
+            pricing = importlib.import_module("telegram.pricing")
+
+        pricing_result = await pricing.check_request_amount(event.input_sender.user_id, client, len(current_portfolio))
+        if not pricing_result["result"]:
+            return
+
+        filenames = []
+        try:
+            filenames = get_inspector_data(current_portfolio)
+        except Exception as e:
+            debug(e, ERROR)
+            # вернем баланс в случае если инспектор отработал с ошибкой
+            if pricing_result['Paid'] > 0:
+                await sql.increment_paid_request_amount(event.input_sender.user_id, pricing_result['Paid'])
+            if pricing_result['Free'] > 0:
+                await sql.increment_free_request_amount(event.input_sender.user_id, pricing_result['Free'])
+            await shared.delete_old_message(client, sender_id)
+            await client.send_message(sender_id, message=f'Упс! Что-топошло не так. '
+                                                         f'Опиши баг в "Информация" -> "Сообщить об ошибке"')
+
         await shared.delete_old_message(client, sender_id)
         for filename in filenames:
             if os.path.exists(filename):
