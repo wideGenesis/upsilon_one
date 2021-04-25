@@ -168,12 +168,34 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
     elif event.data == b'kb_us_analysis_overview':
         await event.edit()
         await shared.delete_old_message(client, sender_id)
-        await client.send_file(entity, img_path + 'sectors.png')
-        await client.send_message(event.input_sender, 'Обзор рынка США\n /instruction02\n /instruction35\n')
-        await client.send_file(entity, img_path + 'treemap_1d.png')
-        await client.send_message(event.input_sender, 'Тепловая карта рынка США\n'
-                                                      '/instruction04',
-                                  buttons=buttons.keyboard_us_analysis_back)
+        # Подгрузим динамически модуль - вдруг ценообразование изменилось?!
+        pricing = None
+        if "telegram.pricing" in sys.modules:
+            debug(f'module imported --- try reload')
+            pricing = importlib.reload(sys.modules["telegram.pricing"])
+        else:
+            debug(f'module NOT imported --- try first import')
+            pricing = importlib.import_module("telegram.pricing")
+
+        pricing_result = await pricing.check_request_amount(event.input_sender.user_id, client)
+        if not pricing_result["result"]:
+            return
+        if os.path.exists(f'{img_path}sectors.png') and os.path.exists(f'{img_path}treemap_1d.png'):
+            await client.send_file(entity, f'{img_path}sectors.png')
+            await client.send_message(event.input_sender, 'Обзор рынка США\n /instruction02\n /instruction35\n')
+            await client.send_file(entity, f'{img_path}treemap_1d.png')
+            await client.send_message(event.input_sender, 'Тепловая карта рынка США\n'
+                                                          '/instruction04',
+                                      buttons=buttons.keyboard_us_analysis_back)
+        else:
+            # вернем баланс в случае если картинок нет. Вероятно это просто сбой, такого быть не должно
+            if pricing_result['Paid'] > 0:
+                await sql.increment_paid_request_amount(event.input_sender.user_id, pricing_result['Paid'])
+            if pricing_result['Free'] > 0:
+                await sql.increment_free_request_amount(event.input_sender.user_id, pricing_result['Free'])
+            await shared.delete_old_message(client, sender_id)
+            await client.send_message(sender_id, message=f'Упс! Что-топошло не так. '
+                                                         f'Опиши баг в "Информация" -> "Сообщить об ошибке"')
 
     elif event.data == b'kb_a1_coin_market':
         await event.edit()
@@ -992,6 +1014,7 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
             await shared.delete_old_message(client, sender_id)
             await client.send_message(sender_id, message=f'Упс! Что-топошло не так. '
                                                          f'Опиши баг в "Информация" -> "Сообщить об ошибке"')
+            return
 
         await shared.delete_old_message(client, sender_id)
         for filename in filenames:
