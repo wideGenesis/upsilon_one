@@ -10,6 +10,7 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 
 from bs4 import BeautifulSoup
+from pandas import DataFrame
 from selenium import webdriver
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.by import By
@@ -151,7 +152,7 @@ def get_inspector_data(portfolio, quarter=63):
                 portfolio_weights_pct[ticker] = (df[ticker][-1] * fast_int(constituents[ticker])) / portfolio_cap
 
     angular_stocks = pd.DataFrame()  # для коррел матрицы
-    ulcer = pd.DataFrame()  # init df для Ulcer
+    ulcer: DataFrame = pd.DataFrame()  # init df для Ulcer
 
     df['portfolio_pct'] = 0
     df['PORTF price'] = 0
@@ -236,7 +237,7 @@ def get_inspector_data(portfolio, quarter=63):
     # # расчет 3,14 * месячной волы для стресс-теста
     # bench_df[f'PORT_WORST_21'] = df[f'port_volatility_21'] * 3.14
     # print(bench_df[f'PORT_WORST_21'])
-    print(bench_df[f'PORT_TO_SPY_beta_63'].tail(21))
+
     # расчет коррел конституентов
     angular_stocks.dropna(inplace=True)
     angular_stocks['PORTF'] = df['portfolio_pct']
@@ -247,13 +248,27 @@ def get_inspector_data(portfolio, quarter=63):
     add_watermark(f'{path}{filename_h4}.png', f'{path}{filename_h4}.png', 100, wtermark_color=(255, 255, 255, 70))
 
     # расчет риск-премий
-    # angular_stocks.to_csv(os.path.join(f'{PROJECT_HOME_DIR}/results/inspector/angular.csv'))
     filename_h3 = str(uuid.uuid4()).replace('-', '')
     debug(f"scatter filename: {filename_h3 }")
     scatter_for_risk_premium(ulcer, save_path=f'{path}{filename_h3}')
     add_watermark(f'{path}{filename_h3}.png', f'{path}{filename_h3}.png', 100)
     df.dropna(inplace=True)
     bench_df.dropna(inplace=True)
+
+    # сбор словаря для интепритаций
+    # ulcer.to_csv(os.path.join(f'{PROJECT_HOME_DIR}/results/inspector/ulcer.csv'))
+    tests = ulcer.columns.tolist()
+    interpretations = {}
+    for col_u in tests:
+        mask = ['PORTF price_dn', 'PORTF price_premia', 'PORTF price_ratio_mean',
+                'SPY price_dn', 'SPY price_premia', 'SPY price_ratio_mean']
+        if col_u in mask:
+            interpretations.update({f'{col_u}': ulcer[f'{col_u}'].iloc[-1]})
+        else:
+            pass
+    interpretations.update({f'beta': bench_df[f'PORT_TO_SPY_beta_63'].iloc[-1]})
+    print(interpretations)
+    #
 
     # сбор словарей для визуализаций
     # mask_m2 = ['SPY_m2_63', 'QQQ_m2_63', 'ARKK_m2_63', 'VLUE_m2_63', 'EEM_m2_63', 'SPY_TLT_m2_63']
