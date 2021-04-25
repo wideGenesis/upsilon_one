@@ -29,9 +29,11 @@ import uuid
 import numpy as np
 from datetime import date, timedelta
 from math import sqrt
+from telegram.instructions import scenario1, scenario1_a, scenario2, scenario2_a, scenario3, scenario3_a,\
+    scenario4, scenario4_a
 
 
-def correl(ret_df_=None, save_path=None, title=None):
+def correl(ret_df_=None, save_path=None):
     corr = ret_df_.corr()
     sns.set(rc={'figure.facecolor': 'black', 'xtick.color': 'white', 'ytick.color': 'white', 'text.color': 'white',
                 'axes.labelcolor': 'white'})
@@ -75,7 +77,7 @@ def scatter_for_risk_premium(price_df: pd = None, save_path=''):
     sharpe_mean = round(df['Sharpe'], ndigits=2)
 
     plt.figure(figsize=(10, 6))
-    sns.scatterplot(x=ave_risk - 0.15, y=ave_alpha - 0.5, hue=sharpe_mean, size=sharpe_mean, alpha=0.55,
+    sns.scatterplot(x=ave_risk - 0.1, y=ave_alpha - 0.25, hue=sharpe_mean, size=sharpe_mean, alpha=0.55,
                     legend=True, sizes=(30, 300), markers=True, palette=palette)
 
     for line in range(0, df.shape[0]):
@@ -243,7 +245,7 @@ def get_inspector_data(portfolio, quarter=63):
     angular_stocks['PORTF'] = df['portfolio_pct']
     angular_stocks.dropna(inplace=True)
     filename_h4 = str(uuid.uuid4()).replace('-', '')
-    debug(f"Divers filename: {filename_h4}")
+    debug(f"Correl Matrix filename: {filename_h4}")
     correl(angular_stocks, save_path=f'{path}{filename_h4}')
     add_watermark(f'{path}{filename_h4}.png', f'{path}{filename_h4}.png', 100, wtermark_color=(255, 255, 255, 70))
 
@@ -257,18 +259,6 @@ def get_inspector_data(portfolio, quarter=63):
 
     # сбор словаря для интепритаций
     # ulcer.to_csv(os.path.join(f'{PROJECT_HOME_DIR}/results/inspector/ulcer.csv'))
-    tests = ulcer.columns.tolist()
-    interpretations = {}
-    for col_u in tests:
-        mask = ['PORTF price_dn', 'PORTF price_premia', 'PORTF price_ratio_mean',
-                'SPY price_dn', 'SPY price_premia', 'SPY price_ratio_mean']
-        if col_u in mask:
-            interpretations.update({f'{col_u}': ulcer[f'{col_u}'].iloc[-1]})
-        else:
-            pass
-    interpretations.update({f'beta': bench_df[f'PORT_TO_SPY_beta_63'].iloc[-1]})
-    print(interpretations)
-    #
 
     # сбор словарей для визуализаций
     # mask_m2 = ['SPY_m2_63', 'QQQ_m2_63', 'ARKK_m2_63', 'VLUE_m2_63', 'EEM_m2_63', 'SPY_TLT_m2_63']
@@ -295,6 +285,63 @@ def get_inspector_data(portfolio, quarter=63):
     # filename_h2 = str(uuid.uuid4()).replace('-', '')
     # debug(f"M2 filename: {filename_h2}")
     # create_custom_histogram(m2, "Размер премии (%) бенчмарков в сравнении с портфелем", path, filename_h2)
+
+    tests = ulcer.columns.tolist()
+    interpretations = {}
+    for col_u in tests:
+        mask = ['PORTF price_dn', 'PORTF price_premia', 'PORTF price_ratio_mean',
+                'SPY price_dn', 'SPY price_premia', 'SPY price_ratio_mean']
+        if col_u in mask:
+            interpretations.update({f'{col_u}': ulcer[f'{col_u}'].iloc[-1]})
+        else:
+            pass
+    interpretations.update({f'beta': round(bench_df[f'PORT_TO_SPY_beta_63'].iloc[-1], ndigits=2)})
+    interpretations.update({f'divers': divers['SPY_dr_63']})
+    print(interpretations)
+    beta = round(interpretations['beta'] * 10, ndigits=2)
+    ddr = interpretations['divers']
+    risk = interpretations['PORTF price_dn'] - interpretations['SPY price_dn']
+    prem = interpretations['PORTF price_premia'] - interpretations['SPY price_premia']
+    usharpe = interpretations['PORTF price_ratio_mean'] - interpretations['SPY price_ratio_mean']
+    if risk > 0 and prem > 0 and usharpe > 0:
+        msg = scenario1 + '\n' + \
+              f'__Стресс-тест:__ если SPY(широкий рынок) упадёт на 10%, то твой портфель упадет в среднем на {beta}%\n' \
+              f'__Диверсификация твоего портфеля составляет {ddr}%__ от уровня диверсификации SPY'
+    elif risk > 0 and prem > 0 and usharpe < 0:
+        msg = scenario1_a + '\n' + \
+              f'__Стресс-тест:__ если SPY(широкий рынок) упадёт на 10%, то твой портфель упадет в среднем на {beta}%\n' \
+              f'__Диверсификация твоего портфеля составляет {ddr}%__ от уровня диверсификации SPY'
+
+    elif risk < 0 and prem > 0 and usharpe > 0:
+        msg = scenario2 + '\n' + \
+              f'__Стресс-тест:__ если SPY(широкий рынок) упадёт на 10%, то твой портфель упадет в среднем на {beta}%\n' \
+              f'__Диверсификация твоего портфеля составляет {ddr}%__ от уровня диверсификации SPY'
+    elif risk < 0 and prem > 0 and usharpe < 0:
+        msg = scenario2_a + '\n' + \
+              f'__Стресс-тест:__ если SPY(широкий рынок) упадёт на 10%, то твой портфель упадет в среднем на {beta}%\n' \
+              f'__Диверсификация твоего портфеля составляет {ddr}%__ от уровня диверсификации SPY'
+
+    elif risk < 0 and prem < 0 and usharpe > 0:
+        msg = scenario3 + '\n' + \
+              f'__Стресс-тест:__ если SPY(широкий рынок) упадёт на 10%, то твой портфель упадет в среднем на {beta}%\n' \
+              f'__Диверсификация твоего портфеля составляет {ddr}%__ от уровня диверсификации SPY'
+    elif risk < 0 and prem < 0 and usharpe < 0:
+        msg = scenario3_a + '\n' + \
+              f'__Стресс-тест:__ если SPY(широкий рынок) упадёт на 10%, то твой портфель упадет в среднем на {beta}%\n' \
+              f'__Диверсификация твоего портфеля составляет {ddr}%__ от уровня диверсификации SPY'
+
+    elif risk > 0 and prem < 0 and usharpe > 0:
+        msg = scenario4 + '\n' + \
+              f'__Стресс-тест:__ если SPY(широкий рынок) упадёт на 10%, то твой портфель упадет в среднем на {beta}%\n' \
+              f'__Диверсификация твоего портфеля составляет {ddr}%__ от уровня диверсификации SPY'
+    elif risk > 0 and prem < 0 and usharpe < 0:
+        msg = scenario4_a + '\n' + \
+              f'__Стресс-тест:__ если SPY(широкий рынок) упадёт на 10%, то твой портфель упадет в среднем на {beta}%\n' \
+              f'__Диверсификация твоего портфеля составляет {ddr}%__ от уровня диверсификации SPY'
+    else:
+        msg = f'__Стресс-тест:__ если SPY(широкий рынок) упадёт на 10%, то твой портфель упадет в среднем на {beta}%\n' \
+              f'__Диверсификация твоего портфеля составляет {ddr}%__ от уровня диверсификации SPY'
+    print(msg)
 
     result_files = [f'{path}{filename_h1}.png',
                     # f'{path}{filename_h2}.png',

@@ -20,9 +20,7 @@ from quotes.stock_quotes_news import StockStat
 
 # ============================== Main  =============================
 def main():
-    x = get_inspector_data({'TOL': '11', 'TMHC': '20', 'PHM': '11', 'BLDR': '15',
-                            'MRNA': '4', 'QLD': '1', 'AGG': '10', 'AAPL': '10',
-                            'TRU': '6', 'PGTI': '32', 'PATK': '8', 'PCRX': '8', 'MSFT': '10', 'AMZN': '10', 'TSLA': '10'})
+    x = get_inspector_data({'GME': 0, 'AYX': 0})
 
     # {'TOL': 11, 'TMHC': 20, 'PHM': 11, 'TPH': 29, 'LEN': 6, 'THO': 5, 'BLDR': 15,
     #  'MRNA': 4, 'AGCO': 7, 'MOS': 27, 'NUS': 7, 'FORM': 18, 'ASH': 6, 'KHC': 12, 'BIG': 9,
@@ -35,6 +33,9 @@ def main():
     #  'MU': 0, 'GM': 0}
     # {'QQQ': 201, 'SPY': 23, 'XLV': 21, 'XLY': 28, 'GLD': 28, 'UUP': 1291, 'SHY': 371}
     # {'QQQ': 0, 'XLP': 0, 'GME': 0, 'AYX': 0}
+    # {'TOL': '11', 'TMHC': '20', 'PHM': '11', 'BLDR': '15',
+    #  'MRNA': '4', 'QLD': '1', 'AGG': '10', 'AAPL': '10',
+    #  'TRU': '6', 'PGTI': '32', 'PATK': '8', 'PCRX': '8', 'MSFT': '10', 'AMZN': '10', 'TSLA': '10'}
     exit()
 
     # x, y = get_ranking_data2("DOCN")
