@@ -1003,7 +1003,8 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
 
         filenames = []
         try:
-            filenames = get_inspector_data(current_portfolio)
+            call = get_inspector_data(current_portfolio)
+            filenames, msg = call[0], call[1]
         except Exception as e:
             debug(e, ERROR)
             # вернем баланс в случае если инспектор отработал с ошибкой
@@ -1012,7 +1013,7 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
             if pricing_result['Free'] > 0:
                 await sql.increment_free_request_amount(event.input_sender.user_id, pricing_result['Free'])
             await shared.delete_old_message(client, sender_id)
-            await client.send_message(sender_id, message=f'Упс! Что-топошло не так. '
+            await client.send_message(sender_id, message=f'Упс! Что-то пошло не так. '
                                                          f'Опиши баг в "Информация" -> "Сообщить об ошибке"')
             return
 
@@ -1021,6 +1022,7 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
             if os.path.exists(filename):
                 await client.send_file(event.input_sender, filename)
                 os.remove(filename)
+        await client.send_message(sender_id, message=msg)
 
         # После расчетов и показа всех картинок тоже нужно очистить всю память
         shared.clear_inspectors_data_by_user(sender_id)

@@ -334,7 +334,7 @@ def get_inspector_data(portfolio, quarter=63):
                     # f'{path}{filename_h2}.png',
                     f'{path}{filename_h3}.png',
                     f'{path}{filename_h4}.png']
-    return result_files
+    return result_files, msg
 
 
 # ============================== GET ADV ================================
