@@ -145,7 +145,7 @@ def get_inspector_data(portfolio, quarter=63):
     else:
         if first_value.endswith('%'):
             for ticker in stocks:
-                portfolio_weights_pct[ticker] = fast_float(re.split('%', constituents[ticker])[0])
+                portfolio_weights_pct[ticker] = fast_float(re.split('%', constituents[ticker])[0]) / 100
         else:
             for ticker in stocks:
                 portfolio_cap += df[ticker][-1] * fast_int(constituents[ticker])
