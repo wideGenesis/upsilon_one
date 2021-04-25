@@ -669,7 +669,7 @@ async def inspector_to_handler(event, client_):
                     message = f'По этому тикеру не достаточно данных для анализа.'
                     is_error = True
                 else:
-                    message = f'Ты ввёл тикер {stock} в размере {size} Long?'
+                    message = f'Ты ввёл тикер {stock} в размере {size}?'
             else:
                 message = f'{stock} {size} Нельзя вводить отрицательные проценты. Нажми кнопу исправить.'
                 is_error = True
@@ -678,10 +678,11 @@ async def inspector_to_handler(event, client_):
                 ticker_bars_amount = eod.get_bars_amount(stock, start_date, now)
                 if ticker_bars_amount < spy_bars_amount:
                     debug(f'spy_bars_amount={spy_bars_amount}  ticker_bars_amount={ticker_bars_amount}')
-                    message = f'По этому тикеру не достаточно данных для анализа.'
+                    message = f'По этому тикеру не достаточно данных для анализа. Сожалею, но портфель с этим ' \
+                              f'тикером проанализировать не смогу. Введи другой тикер!'
                     is_error = True
                 else:
-                    message = f'Ты ввёл тикер {stock} в размере {size} Long?'
+                    message = f'Ты ввёл тикер {stock} в размере {size}?'
             # elif size_value < 0:
             #     ticker_bars_amount = eod.get_bars_amount(stock, start_date, now)
             #     if ticker_bars_amount < spy_bars_amount:
