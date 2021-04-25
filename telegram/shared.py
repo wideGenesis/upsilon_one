@@ -19,8 +19,9 @@ class Worker(QObject):
             sleep(1)
             i += 1
             if i % 60 == 0:
-                debug(f"i = {i}")
                 inspector_scheduler()
+            if i % 600 == 0:
+                print_shared_maps()
 
 
 ORDER_MAP = {}
@@ -123,26 +124,33 @@ IN_INSPECTOR_FLOW_MAP = {}
 INSPECTOR_FLOW_START_TIME = {}
 
 
+def print_shared_maps():
+    global INSPECTOR_FLOW_START_TIME
+    global INSPECTOR_TICKER_MAP
+    global INSPECTOR_PORTFOLIO_MAP
+    global ORDER_MAP
+    global OLD_MESSAGE_MAP
+    global IS_OLD_MSG_POLL_MAP
+    debug(f"ORDER_MAP = {ORDER_MAP}")
+    debug(f"OLD_MESSAGE_MAP = {OLD_MESSAGE_MAP}")
+    debug(f"IS_OLD_MSG_POLL_MAP = {IS_OLD_MSG_POLL_MAP}")
+    debug(f"INSPECTOR_FLOW_START_TIME = {INSPECTOR_FLOW_START_TIME}")
+    debug(f"INSPECTOR_TICKER_MAP = {INSPECTOR_TICKER_MAP}")
+    debug(f"INSPECTOR_PORTFOLIO_MAP = {INSPECTOR_PORTFOLIO_MAP}")
+
+
 def inspector_scheduler():
     global INSPECTOR_FLOW_START_TIME
     global INSPECTOR_TICKER_MAP
     global INSPECTOR_PORTFOLIO_MAP
-    debug(f"INSPECTOR_FLOW_START_TIME = {INSPECTOR_FLOW_START_TIME}")
-    debug(f"INSPECTOR_TICKER_MAP = {INSPECTOR_TICKER_MAP}")
-    debug(f"INSPECTOR_PORTFOLIO_MAP = {INSPECTOR_PORTFOLIO_MAP}")
     now = datetime.datetime.now()
     need_clear = []
     for k in INSPECTOR_FLOW_START_TIME:
-        debug(f'1.1')
         td = (now - INSPECTOR_FLOW_START_TIME[k]).seconds
-        debug(f'1.2 td={td}')
-        if td >= 300:
-            debug(f'1.3')
+        if td >= 300: #TODO заменить на 30 мин
             if k in INSPECTOR_PORTFOLIO_MAP:
-                debug(f'1.4')
                 INSPECTOR_PORTFOLIO_MAP.pop(k)
             if k in INSPECTOR_TICKER_MAP:
-                debug(f'1.5')
                 INSPECTOR_TICKER_MAP.pop(k)
             need_clear.append(k)
     for user in need_clear:
