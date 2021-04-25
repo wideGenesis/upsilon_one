@@ -299,49 +299,35 @@ def get_inspector_data(portfolio, quarter=63):
     interpretations.update({f'divers': divers['SPY']})
     print(interpretations)
     beta = round(interpretations['beta'] * 10, ndigits=2)
+    if beta > 0:
+        sign = 'если SPY(широкий рынок) упадёт на 10%, то твой портфель упадёт в среднем на '
+    else:
+        sign = 'если SPY(широкий рынок) вырастет на 10%, то твой портфель упадёт в среднем на '
     ddr = round(interpretations['divers'], ndigits=2)
     risk = interpretations['PORTF price_dn'] - interpretations['SPY price_dn']
     prem = interpretations['PORTF price_premia'] - interpretations['SPY price_premia']
     usharpe = interpretations['PORTF price_ratio_mean'] - interpretations['SPY price_ratio_mean']
 
+    msg_stress = f'__Стресс-тест:__ {sign}{beta}%\n' \
+                 f'__Диверсификация твоего портфеля составляет {ddr}%__ от уровня диверсификации SPY'
     if risk > 0 and prem > 0 and usharpe > 0:
-        msg = scenario1 + '\n' + \
-              f'__Стресс-тест:__ если SPY(широкий рынок) упадёт на 10%, то твой портфель упадет в среднем на {beta}%\n' \
-              f'__Диверсификация твоего портфеля составляет {ddr}%__ от уровня диверсификации SPY'
+        msg = scenario1 + '\n' + msg_stress
     elif risk > 0 and prem > 0 and usharpe < 0:
-        msg = scenario1_a + '\n' + \
-              f'__Стресс-тест:__ если SPY(широкий рынок) упадёт на 10%, то твой портфель упадет в среднем на {beta}%\n' \
-              f'__Диверсификация твоего портфеля составляет {ddr}%__ от уровня диверсификации SPY'
-
+        msg = scenario1_a + '\n' + msg_stress
     elif risk < 0 and prem > 0 and usharpe > 0:
-        msg = scenario2 + '\n' + \
-              f'__Стресс-тест:__ если SPY(широкий рынок) упадёт на 10%, то твой портфель упадет в среднем на {beta}%\n' \
-              f'__Диверсификация твоего портфеля составляет {ddr}%__ от уровня диверсификации SPY'
+        msg = scenario2 + '\n' + msg_stress
     elif risk < 0 and prem > 0 and usharpe < 0:
-        msg = scenario2_a + '\n' + \
-              f'__Стресс-тест:__ если SPY(широкий рынок) упадёт на 10%, то твой портфель упадет в среднем на {beta}%\n' \
-              f'__Диверсификация твоего портфеля составляет {ddr}%__ от уровня диверсификации SPY'
-
+        msg = scenario2_a + '\n' + msg_stress
     elif risk < 0 and prem < 0 and usharpe > 0:
-        msg = scenario3 + '\n' + \
-              f'__Стресс-тест:__ если SPY(широкий рынок) упадёт на 10%, то твой портфель упадет в среднем на {beta}%\n' \
-              f'__Диверсификация твоего портфеля составляет {ddr}%__ от уровня диверсификации SPY'
+        msg = scenario3 + '\n' + msg_stress
     elif risk < 0 and prem < 0 and usharpe < 0:
-        msg = scenario3_a + '\n' + \
-              f'__Стресс-тест:__ если SPY(широкий рынок) упадёт на 10%, то твой портфель упадет в среднем на {beta}%\n' \
-              f'__Диверсификация твоего портфеля составляет {ddr}%__ от уровня диверсификации SPY'
-
+        msg = scenario3_a + '\n' + msg_stress
     elif risk > 0 and prem < 0 and usharpe > 0:
-        msg = scenario4 + '\n' + \
-              f'__Стресс-тест:__ если SPY(широкий рынок) упадёт на 10%, то твой портфель упадет в среднем на {beta}%\n' \
-              f'__Диверсификация твоего портфеля составляет {ddr}%__ от уровня диверсификации SPY'
+        msg = scenario4 + '\n' + msg_stress
     elif risk > 0 and prem < 0 and usharpe < 0:
-        msg = scenario4_a + '\n' + \
-              f'__Стресс-тест:__ если SPY(широкий рынок) упадёт на 10%, то твой портфель упадет в среднем на {beta}%\n' \
-              f'__Диверсификация твоего портфеля составляет {ddr}%__ от уровня диверсификации SPY'
+        msg = scenario4_a + '\n' + msg_stress
     else:
-        msg = f'__Стресс-тест:__ если SPY(широкий рынок) упадёт на 10%, то твой портфель упадет в среднем на {beta}%\n' \
-              f'__Диверсификация твоего портфеля составляет {ddr}%__ от уровня диверсификации SPY'
+        msg = msg_stress
     print(msg)
 
     result_files = [f'{path}{filename_h1}.png',
