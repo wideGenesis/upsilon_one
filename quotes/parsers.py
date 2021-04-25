@@ -308,8 +308,8 @@ def get_inspector_data(portfolio, quarter=63):
     prem = interpretations['PORTF price_premia'] - interpretations['SPY price_premia']
     usharpe = interpretations['PORTF price_ratio_mean'] - interpretations['SPY price_ratio_mean']
 
-    msg_stress = f'__Стресс-тест:__ {sign}{beta}%\n' \
-                 f'__Диверсификация твоего портфеля составляет {ddr}%__ от уровня диверсификации SPY'
+    msg_stress = f'\n🙈__Стресс-тест:__ {sign}{beta}%\n' \
+                 f'\n🧠__Диверсификация твоего портфеля составляет {ddr}%__ от уровня диверсификации SPY'
     if risk > 0 and prem > 0 and usharpe > 0:
         msg = scenario1 + '\n' + msg_stress
     elif risk > 0 and prem > 0 and usharpe < 0:

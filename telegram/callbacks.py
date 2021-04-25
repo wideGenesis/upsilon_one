@@ -863,15 +863,9 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
         await event.edit()
         shared.set_is_inspector_flow(sender_id, True)
         if old_msg_id is not None:
-            await client.edit_message(event.input_sender, old_msg_id, 'Введи тикер и количество акций в формате:\n'
-                                                                      'для длинной позиции (Long)\n!тикер 100\n'
-                                                                      '__Пример__: !NVDA 135\n\n'                                                                      
-                                                                      '__Введи тикер:__')
+            await client.edit_message(event.input_sender, old_msg_id, ins.inspector_input)
         else:
-            msg = await client.send_message(event.input_sender, 'Введи тикер и количество акций в формате:\n'
-                                                                'для длинной позиции (Long)\n!тикер 100\n'
-                                                                '__Пример__: !NVDA 135\n\n'                                                                
-                                                                '__Введи тикер__:')
+            msg = await client.send_message(event.input_sender, ins.inspector_input)
 
             await shared.save_old_message(sender_id, msg)
 
@@ -900,23 +894,9 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
         await event.edit()
         shared.set_is_inspector_flow(sender_id, True)
         if old_msg_id is not None:
-            await client.edit_message(event.input_sender, old_msg_id, 'Введи тикер и количество акций в формате:\n'
-                                                                      'для длинной позиции (Long)\n!тикер 100\n'
-                                                                      '__Пример__: !NVDA 135\n\n'
-                                                                      'для короткой позиции (Short)\n!тикер -100\n'
-                                                                      '__Пример__: !GOOG -21\n'
-                                                                      '❗ знак \"минус\" перед количеством акций '
-                                                                      'означает короткую позицию.\n\n'
-                                                                      '__Введи тикер:__')
+            await client.edit_message(event.input_sender, old_msg_id, ins.inspector_input)
         else:
-            msg = await client.send_message(event.input_sender, 'Введи тикер и количество акций в формате:\n'
-                                                                'для длинной позиции (Long)\n!тикер 100\n'
-                                                                '__Пример__: !NVDA 135\n\n'
-                                                                'для короткой позиции (Short)\n!тикер -100\n'
-                                                                '__Пример__: !GOOG -21\n'
-                                                                '❗ знак \"минус\" перед количеством акций '
-                                                                'означает короткую позицию.\n\n'
-                                                                '__Введи тикер__:')
+            msg = await client.send_message(event.input_sender, ins.inspector_input)
 
             await shared.save_old_message(sender_id, msg)
 
