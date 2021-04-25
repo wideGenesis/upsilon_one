@@ -865,20 +865,12 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
         if old_msg_id is not None:
             await client.edit_message(event.input_sender, old_msg_id, 'Введи тикер и количество акций в формате:\n'
                                                                       'для длинной позиции (Long)\n!тикер 100\n'
-                                                                      '__Пример__: !NVDA 135\n\n'
-                                                                      'для короткой позиции (Short)\n!тикер -100\n'
-                                                                      '__Пример__: !GOOG -21\n'
-                                                                      '❗ знак \"минус\" перед количеством акций '
-                                                                      'означает короткую позицию.\n\n'
+                                                                      '__Пример__: !NVDA 135\n\n'                                                                      
                                                                       '__Введи тикер:__')
         else:
             msg = await client.send_message(event.input_sender, 'Введи тикер и количество акций в формате:\n'
                                                                 'для длинной позиции (Long)\n!тикер 100\n'
-                                                                '__Пример__: !NVDA 135\n\n'
-                                                                'для короткой позиции (Short)\n!тикер -100\n'
-                                                                '__Пример__: !GOOG -21\n'
-                                                                '❗ знак \"минус\" перед количеством акций '
-                                                                'означает короткую позицию.\n\n'
+                                                                '__Пример__: !NVDA 135\n\n'                                                                
                                                                 '__Введи тикер__:')
 
             await shared.save_old_message(sender_id, msg)
@@ -950,17 +942,20 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
         if first_int is not None and first_int == 0:
             for k in current_portfolio:
                 if fast_int(current_portfolio[k]) != 0:
-                    message = f'Если портфель равновзвешенный, все веса в портфеле должны быть равны нулю!' \
+                    message = f'Если портфель равновзвешенный, то веса всех акций в портфеле должны быть равны нулю!' \
                           f'__Твой портфель сейчас выглядит так:__\n```{current_portfolio}```\n\n' \
-                          f'Необходимо поправить портфель и попробовать еще раз'
+                          f'Необходимо исправить веса, просто введя тикер с некорректным весом снова ' \
+                              f'и на этот раз ввести ему вес равный 0!' \
+
                     break
         elif first_int is not None and first_int != 0:
             for k in current_portfolio:
                 if fast_int(current_portfolio[k]) == 0 or current_portfolio[k].endswith('%'):
-                    message = f'Если веса активов в портфеле указаны в количестве, ' \
-                          f'то все веса должны быть указаны в количестве!' \
+                    message = f'Если веса активов в портфеле указаны в количестве акций, ' \
+                          f'то все веса должны быть указаны в количестве акций!' \
                           f'__Твой портфель сейчас выглядит так:__\n```{current_portfolio}```\n\n' \
-                          f'Необходимо поправить портфель и попробовать еще раз'
+                          f'Необходимо исправить веса, просто введя тикер с некорректным весом снова ' \
+                              f'и на этот раз ввести ему вес в количестве акций!'
                     break
         elif isinstance(first_value, str) and first_value.endswith('%'):
             total_weight = 0.0
@@ -969,14 +964,16 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
                     message = f'Если веса активов в портфеле указаны в процентах, ' \
                           f'то все веса должны быть указаны в процентах!' \
                           f'__Твой портфель сейчас выглядит так:__\n```{current_portfolio}```\n\n' \
-                          f'Необходимо поправить портфель и попробовать еще раз'
+                          f'Необходимо исправить веса, просто введя тикер с некорректным весом снова ' \
+                              f'и на этот раз ввести ему вес в % !'
                     break
                 else:
                     total_weight += fast_float(re.split('%', current_portfolio[k])[0], 0)
             if message is None and total_weight != 100.0:
-                message = f'Сумма весов в пртфеле не равна 100% !' \
+                message = f'Ошибочный ввод, сумма весов в портфеле не равна 100% !' \
                       f'__Твой портфель сейчас выглядит так:__\n```{current_portfolio}```\n\n' \
-                      f'Необходимо поправить портфель и попробовать еще раз'
+                      f'Необходимо исправить веса, просто введя тикер с некорректным весом снова ' \
+                          f'и на этот раз ввести ему правильный вес в% !'
 
         if message is not None:
             shared.set_is_inspector_flow(sender_id, True)

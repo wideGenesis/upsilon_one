@@ -47,16 +47,17 @@ async def check_request_amount(user_id, client, decrement_amount=1) -> Dict[str,
                 return result
             else:
                 debug("New user: Timeout 5 min!!")
-                await client.send_message(user_id, f'Чувак!\n '
-                                                   f'Новым пользователям можноделать запросы нечаще чем раз в 5 мин\n'
+                await client.send_message(user_id, f'😔\n '
+                                                   f'Сожалею, но новым пользователям можно делать запросы нечаще '
+                                                   f'чем раз в 5 мин\n'
                                                    f'Осталось {300-td}сек')
                 result = {"result": False, 'Free': 0, 'Paid': 0}
                 return result
         else:
             if (free_amount + paid_amount) < decrement_amount:
                 debug("User: Not enough balance!!")
-                await client.send_message(user_id, f'Чувак!\n '
-                                                   f'Для дальнейшего получения платных данных, '
+                await client.send_message(user_id, f'😔\n '
+                                                   f'Сожалею, но для дальнейшего получения платных данных, '
                                                    f'тебе необходимо пополнить баланс!!')
                 result = {"result": False, 'Free': 0, 'Paid': 0}
                 return result
@@ -78,8 +79,8 @@ async def check_request_amount(user_id, client, decrement_amount=1) -> Dict[str,
     else:
         if (free_amount + paid_amount) < decrement_amount:
             debug("User: Not enough balance!!")
-            await client.send_message(user_id, f'Чувак!\n '
-                                               f'Для дальнейшего получения платных данных, '
+            await client.send_message(user_id, f'😔\n '
+                                               f'Сожалею, но для дальнейшего получения платных данных, '
                                                f'тебе необходимо пополнить баланс!!')
             result = {"result": False, 'Free': 0, 'Paid': 0}
             return result

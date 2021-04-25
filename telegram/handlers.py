@@ -682,16 +682,17 @@ async def inspector_to_handler(event, client_):
                     is_error = True
                 else:
                     message = f'Ты ввёл тикер {stock} в размере {size} Long?'
-            elif size_value < 0:
-                ticker_bars_amount = eod.get_bars_amount(stock, start_date, now)
-                if ticker_bars_amount < spy_bars_amount:
-                    debug(f'spy_bars_amount={spy_bars_amount}  ticker_bars_amount={ticker_bars_amount}')
-                    msg = f'По этому тикеру не достаточно данных для анализа.'
-                    is_error = True
-                else:
-                    message = f'Ты ввёл тикер {stock} в размере {size} Short?'
+            # elif size_value < 0:
+            #     ticker_bars_amount = eod.get_bars_amount(stock, start_date, now)
+            #     if ticker_bars_amount < spy_bars_amount:
+            #         debug(f'spy_bars_amount={spy_bars_amount}  ticker_bars_amount={ticker_bars_amount}')
+            #         msg = f'По этому тикеру не достаточно данных для анализа.'
+            #         is_error = True
+            #     else:
+            #         message = f'Ты ввёл тикер {stock} в размере {size} Short?'
     else:
-        message = 'Ошибочный ввод: не соответствует формату. Нажми кнопку исправить'
+        message = 'Ошибочный ввод! Формат в котором ты ввёл позицию, не соответствует ожидаемому. ' \
+                  'Нажми кнопку исправить'
         is_error = True
 
     if not is_error:
