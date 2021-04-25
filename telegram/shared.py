@@ -147,7 +147,7 @@ def inspector_scheduler():
     need_clear = []
     for k in INSPECTOR_FLOW_START_TIME:
         td = (now - INSPECTOR_FLOW_START_TIME[k]).seconds
-        if td >= 300: #TODO заменить на 30 мин
+        if td >= 1800:
             if k in INSPECTOR_PORTFOLIO_MAP:
                 INSPECTOR_PORTFOLIO_MAP.pop(k)
             if k in INSPECTOR_TICKER_MAP:

@@ -639,7 +639,7 @@ async def inspector_to_handler(event, client_):
             msg = await client_.send_message(event.input_sender, message)
             await shared.save_old_message(sender_id, msg)
         return
-    regex = r"^\![a-zA-Z]{1,5} (([-]?\d{1,}[\%]?$)|(\d{1,}(?!\.$)\.?\d{1,2}\%$))"
+    regex = r"^\![a-zA-Z]{1,5} ((\d{1,}[\%]?$)|(\d{1,}(?!\.$)\.?\d{1,2}\%$))"
     parse = str(event.text)
     match = re.match(regex, parse)
     parse = re.split('!', parse)
