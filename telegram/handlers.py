@@ -654,44 +654,40 @@ async def inspector_to_handler(event, client_):
         is_percent = size.endswith('%')
         size_value = 0.0
         if is_percent:
-            size_value = fast_float(re.split('%', size)[0], None)
+            size_value = fast_float(re.split('%', size)[0], 0.0)
         else:
-            size_value = fast_int(size, None)
+            size_value = fast_int(size, 0)
 
         now = datetime.datetime.now()
         start_date = add_months(now, -13)
-        spy_bars_amount = qsql.get_bars_amount('SPY', start_date=start_date)
         is_error = False
-        if is_percent:
-            if size_value > 0.0:
-                ticker_bars_amount = eod.get_bars_amount(stock, start_date, now)
-                if ticker_bars_amount < spy_bars_amount:
-                    debug(f'spy_bars_amount={spy_bars_amount}  ticker_bars_amount={ticker_bars_amount}')
-                    message = f'По этому тикеру не достаточно данных для анализа.'
-                    is_error = True
-                else:
-                    message = f'Ты ввёл тикер {stock} в размере {size}?'
-            else:
-                message = f'{stock} {size} Нельзя вводить отрицательные проценты. Нажми кнопу исправить.'
+        spy_bars_amount = qsql.get_bars_amount('SPY', start_date=start_date)
+        ticker_bars_amount = 0
+        try:
+            ticker_bars_amount = eod.get_bars_amount(stock, start_date, now)
+        except Exception as e:
+            debug(e, ERROR)
+            message = f'Произошла ошибка. Необходимо повторить ввод'
+            debug(message)
+            is_error = True
+
+        if not is_error:
+            if ticker_bars_amount < spy_bars_amount:
+                debug(f'spy_bars_amount={spy_bars_amount}  ticker_bars_amount={ticker_bars_amount}')
+                message = f'По этому тикеру не достаточно данных для анализа. Сожалею, но портфель с этим ' \
+                          f'тикером проанализировать не смогу. Введи другой тикер!'
                 is_error = True
-        else:
-            if size_value >= 0:
-                ticker_bars_amount = eod.get_bars_amount(stock, start_date, now)
-                if ticker_bars_amount < spy_bars_amount:
-                    debug(f'spy_bars_amount={spy_bars_amount}  ticker_bars_amount={ticker_bars_amount}')
-                    message = f'По этому тикеру не достаточно данных для анализа. Сожалею, но портфель с этим ' \
-                              f'тикером проанализировать не смогу. Введи другой тикер!'
-                    is_error = True
+
+        if not is_error:
+            if is_percent:
+                if size_value > 0.0:
+                    message = f'Ты ввёл тикер {stock} в размере {size}%?'
                 else:
+                    message = f'{stock} {size} Нельзя вводить отрицательные проценты. Нажми кнопу исправить.'
+                    is_error = True
+            else:
+                if size_value >= 0:
                     message = f'Ты ввёл тикер {stock} в размере {size}?'
-            # elif size_value < 0:
-            #     ticker_bars_amount = eod.get_bars_amount(stock, start_date, now)
-            #     if ticker_bars_amount < spy_bars_amount:
-            #         debug(f'spy_bars_amount={spy_bars_amount}  ticker_bars_amount={ticker_bars_amount}')
-            #         msg = f'По этому тикеру не достаточно данных для анализа.'
-            #         is_error = True
-            #     else:
-            #         message = f'Ты ввёл тикер {stock} в размере {size} Short?'
     else:
         message = 'Ошибочный ввод! Формат в котором ты ввёл позицию, не соответствует ожидаемому. ' \
                   'Нажми кнопку исправить'
@@ -710,7 +706,4 @@ async def inspector_to_handler(event, client_):
     else:
         msg = await client_.send_message(event.input_sender, message, buttons=ibuttons)
         await shared.save_old_message(sender_id, msg)
-    #
-    # path = f'{PROJECT_HOME_DIR}/results/ticker_stat/'
-    # img_path = f'{path}{stock}.png'
 
