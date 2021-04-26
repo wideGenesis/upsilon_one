@@ -173,7 +173,7 @@ async def donate_menu(event, client):
 async def information_menu(event, client, engine=engine):
     # Если клиент не до конца прошел профалинг - сбрасываем результат прохождения
     sender_id = event.input_sender.user_id
-    shared.del_is_inspector_flow(sender_id.user_id)
+    shared.del_is_inspector_flow(sender_id)
     try:
         await client.delete_messages(sender_id, event.message.id)
     except Exception:

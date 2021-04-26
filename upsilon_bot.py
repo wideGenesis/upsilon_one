@@ -117,7 +117,7 @@ async def news_to(event):
 
 @client.on(events.NewMessage(pattern='!'))
 async def inspector_to(event):
-    # await acion_info(event)
+    await acion_info(event, 'cmd', f'Enter ticker for inspector')
     await handlers.inspector_to_handler(event, client)
 
 

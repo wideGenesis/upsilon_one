@@ -30,13 +30,13 @@ async def calc_save_balance(user_id, summ):
 
 
 async def check_request_amount(user_id, client, decrement_amount=1) -> Dict[str, Union[bool, int]]:
+    result = {"result": True, 'Free': 0, 'Paid': 0}
+    if user_id in OWNERS:
+        return result
     paid_amount, free_amount = await sql.get_request_amount(user_id)
     income_datetime = await sql.get_income_datetime(user_id)
     now = datetime.datetime.now()
     is_new_user = True if (now - income_datetime).days < 3 else False
-    result = {"result": True, 'Free': 0, 'Paid': 0}
-    # if user_id in OWNERS:
-    #     return result
     if is_new_user:
         if paid_amount == 0:
             last_request_datetime = await sql.get_last_request_datetime(user_id)

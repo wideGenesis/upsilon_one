@@ -31,6 +31,7 @@ from messages.message import *
 from payments.payagregator import PaymentAgregator
 from telethon import utils
 
+
 PAYMENT_AGGREGATOR = None
 PAYMENT_AGGREGATOR_TIMER = None
 
@@ -449,10 +450,7 @@ async def instructions_handler(event, client_):
     elif pattern == 'instruction35':
         await client_.send_message(event.input_sender, ins.instruction35, buttons=buttons.keyboard_0_back)
     elif pattern == 'instruction36':
-        await client_.send_file(event.input_sender, 'http://watchlister.ru/upsilon_files/inspector_01.mp4', video_note=True)
-        await client_.send_file(event.input_sender, 'http://watchlister.ru/upsilon_files/inspector_02.mp4', video_note=True)
         await client_.send_message(event.input_sender, ins.instruction36, buttons=buttons.keyboard_0_back)
-
 
 
 async def portfolio_candle_chart_handler(event, client_):
@@ -686,7 +684,7 @@ async def inspector_to_handler(event, client_):
         if not is_error:
             if is_percent:
                 if size_value > 0.0:
-                    message = f'Ты ввёл тикер {stock} в размере {size}%?'
+                    message = f'Ты ввёл тикер {stock} в размере {size}?'
                 else:
                     message = f'{stock} {size} Нельзя вводить отрицательные проценты. Нажми кнопу исправить.'
                     is_error = True
