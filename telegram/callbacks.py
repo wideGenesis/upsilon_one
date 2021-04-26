@@ -870,14 +870,31 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
             await shared.save_old_message(sender_id, msg)
 
     elif event.data == b'inspector_next_ok':
+        await event.edit()
         ticker, size = shared.get_inspector_ticker(sender_id)
+        current_portfolio = shared.get_inspector_portfolio(sender_id)
+        if current_portfolio is not None and len(current_portfolio) == 30:
+            if old_msg_id is not None:
+                await client.edit_message(event.input_sender, old_msg_id,
+                                          f'Размер портфеля не должен быть более 30 тикеров'
+                                          f'__Твой портфель сейчас выглядит так:__\n```{current_portfolio}```\n\n'
+                                          f'__Выбери действие:__',
+                                          buttons=buttons.inspector_ends)
+            else:
+                msg = await client.send_message(event.input_sender, old_msg_id,
+                                                f'Размер портфеля не должен быть более 30 тикеров'
+                                                f'__Твой портфель сейчас выглядит так:__\n```{current_portfolio}```\n\n'
+                                                f'__Выбери действие:__',
+                                                buttons=buttons.inspector_ends)
+                await shared.save_old_message(sender_id, msg)
+            return
+
         is_first_ticker = shared.update_inspector_portfolio(sender_id, ticker, size)
         if is_first_ticker:
             shared.set_inspector_time(sender_id)
         shared.set_is_inspector_flow(sender_id, True)
         current_portfolio = shared.get_inspector_portfolio(sender_id)
         debug(f'current_portfolio={current_portfolio}')
-        await event.edit()
         if old_msg_id is not None:
             await client.edit_message(event.input_sender, old_msg_id,
                                       f'__Твой портфель сейчас выглядит так:__\n```{current_portfolio}```\n\n'
