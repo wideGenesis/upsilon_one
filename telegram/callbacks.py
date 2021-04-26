@@ -1016,7 +1016,7 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
             if os.path.exists(filename):
                 await client.send_file(event.input_sender, filename)
                 os.remove(filename)
-        await client.send_message(sender_id, message=msg)
+        await client.send_message(sender_id, message=msg, buttons=buttons.keyboard_0_back)
 
         # После расчетов и показа всех картинок тоже нужно очистить всю память
         shared.clear_inspectors_data_by_user(sender_id)
