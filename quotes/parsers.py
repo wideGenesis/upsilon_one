@@ -236,6 +236,7 @@ def get_inspector_data(portfolio, quarter=63):
     # расчет беты для стресс-теста
     bench_df[f'PORT_TO_SPY_beta_{quarter}'] = bench_df[f'SPY_return'].corr(df['portfolio_pct']) * \
                                               df[f'port_volatility_{quarter}'] / bench_df[f'SPY_volatility_{quarter}']
+
     # # расчет 3,14 * месячной волы для стресс-теста
     # bench_df[f'PORT_WORST_21'] = df[f'port_volatility_21'] * 3.14
     # print(bench_df[f'PORT_WORST_21'])
