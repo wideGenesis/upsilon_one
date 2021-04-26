@@ -20,7 +20,7 @@ from quotes.stock_quotes_news import StockStat
 
 # ============================== Main  =============================
 def main():
-    x = get_inspector_data({'AYX': 0, 'GME': 0})
+    x = get_inspector_data({'TSLA': 0, 'AAPL': 0, 'AMZN': 0, 'GOOG': 0, 'NVDA': 0})
 
     # {'TOL': 11, 'TMHC': 20, 'PHM': 11, 'TPH': 29, 'LEN': 6, 'THO': 5, 'BLDR': 15,
     #  'MRNA': 4, 'AGCO': 7, 'MOS': 27, 'NUS': 7, 'FORM': 18, 'ASH': 6, 'KHC': 12, 'BIG': 9,

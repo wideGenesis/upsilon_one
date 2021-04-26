@@ -840,12 +840,12 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
         if old_msg_id is not None:
             await client.edit_message(event.input_sender, old_msg_id,
                                       'Инспектор портфеля\n\n'
-                                      '\U00002757 Как работает инспектор портфелей? - /instruction666',
+                                      '\U00002757 Как работает инспектор портфелей? - /instruction36',
                                       buttons=buttons.inspector_start)
         else:
             msg = await client.send_message(event.input_sender,
                                             'Инспектор портфеля\n\n'
-                                            '\U00002757 Как работает инспектор портфелей? - /instruction666',
+                                            '\U00002757 Как работает инспектор портфелей? - /instruction36',
                                             buttons=buttons.inspector_start)
             await shared.save_old_message(sender_id, msg)
 
