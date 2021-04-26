@@ -647,6 +647,7 @@ async def inspector_to_handler(event, client_):
     parse = re.split(' ', parse)
     stock = ''
     size = ''
+    message = ''
     if match is not None and len(parse) == 2 and len(parse[0]) <= 5:
         stock, size = parse[0], parse[1]
         stock = stock.upper()
