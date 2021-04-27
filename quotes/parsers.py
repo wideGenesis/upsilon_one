@@ -50,6 +50,7 @@ def correl(ret_df_=None, save_path=None):
     im = Image.open(buf)
     im.save(f'{save_path}.png')
     buf.close()
+    plt.close('all')
 
 
 def scatter_for_risk_premium(price_df: pd = None, save_path=''):
@@ -95,6 +96,7 @@ def scatter_for_risk_premium(price_df: pd = None, save_path=''):
     im = Image.open(buf)
     im.save(f'{save_path}.png')
     buf.close()
+    plt.close('all')
     # plt.savefig(path + filename_scatter, facecolor='black', transparent=True, bbox_inches='tight')
 
 
