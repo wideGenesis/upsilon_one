@@ -15,6 +15,7 @@ from telethon import errors as terr
 from charter.finance2 import create_revenue_histogram
 from quotes import sql_queries as qsql
 from quotes import eodhistoricaldata as eod
+from quotes import parsers as pars
 from telegram import sql_queries as sql
 from telegram import ai
 from telegram import shared
@@ -668,8 +669,9 @@ async def inspector_to_handler(event, client_):
         is_error = False
         spy_bars_amount = qsql.get_bars_amount('SPY', start_date=start_date)
         ticker_bars_amount = 0
+        ticker_data = None
         try:
-            ticker_bars_amount = eod.get_bars_amount(stock, start_date, now)
+            ticker_bars_amount = pars.get_bars_amount(stock, start_date)
         except Exception as e:
             debug(e, ERROR)
             message = f'Произошла ошибка. Необходимо повторить ввод'

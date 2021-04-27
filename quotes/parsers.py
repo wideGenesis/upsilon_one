@@ -1696,6 +1696,24 @@ def users_count():
         write = f.write(f'{int(users)}')
     debug(int(users))
 
+
+def get_bars_amount(tick, start_date):
+    ticker = tick.upper()
+    ticker_data = None
+    bars_amount = 0
+    try:
+        ticker_data = Ticker(ticker)
+    except Exception as e:
+        debug(e, ERROR)
+        return bars_amount
+    try:
+        bars = ticker_data.history(start=start_date)
+    except Exception as e:
+        debug(e, ERROR)
+        return bars_amount
+    bars_amount = len(bars)
+    return bars_amount
+
 # ============================== GET RANKING DATA ================================
 # def get_ranking_data(tick, ag=agents()):
 #     ticker = tick.upper()
