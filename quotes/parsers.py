@@ -300,7 +300,7 @@ def get_inspector_data(portfolio, quarter=63):
             pass
     interpretations.update({f'beta': round(bench_df[f'PORT_TO_SPY_beta_63'].iloc[-1], ndigits=2)})
     interpretations.update({f'divers': divers['SPY']})
-    print(interpretations)
+    debug(interpretations)
     beta = round(interpretations['beta'] * 10, ndigits=2)
     if beta > 0:
         sign = 'если SPY(широкий рынок) упадёт на 10%, то твой портфель упадёт в среднем на '
@@ -314,27 +314,26 @@ def get_inspector_data(portfolio, quarter=63):
     msg_stress = f'\n🙈__Стресс-тест:__ {sign}{beta}%\n' \
                  f'\n🧠__Диверсификация твоего портфеля составляет {ddr}%__ от уровня диверсификации SPY'
     if risk > 0 and prem > 0 and usharpe > 0:
-        msg = scenario1 + '\n' + msg_stress
+        msg = f'{scenario1}\n{msg_stress}'
     elif risk > 0 and prem > 0 and usharpe < 0:
-        msg = scenario1_a + '\n' + msg_stress
+        msg = f'{scenario1_a}\n{msg_stress}'
     elif risk < 0 and prem > 0 and usharpe > 0:
-        msg = scenario2 + '\n' + msg_stress
+        msg = f'{scenario2}\n{msg_stress}'
     elif risk < 0 and prem > 0 and usharpe < 0:
-        msg = scenario2_a + '\n' + msg_stress
+        msg = f'{scenario2_a}\n{msg_stress}'
     elif risk < 0 and prem < 0 and usharpe > 0:
-        msg = scenario3 + '\n' + msg_stress
+        msg = f'{scenario3}\n{msg_stress}'
     elif risk < 0 and prem < 0 and usharpe < 0:
-        msg = scenario3_a + '\n' + msg_stress
+        msg = f'{scenario3_a}\n{msg_stress}'
     elif risk > 0 and prem < 0 and usharpe > 0:
-        msg = scenario4 + '\n' + msg_stress
+        msg = f'{scenario4}\n{msg_stress}'
     elif risk > 0 and prem < 0 and usharpe < 0:
-        msg = scenario4_a + '\n' + msg_stress
+        msg = f'{scenario4_a}\n{msg_stress}'
     else:
         msg = msg_stress
-    print(msg)
+    debug(msg)
 
     result_files = [f'{path}{filename_h1}.png',
-                    # f'{path}{filename_h2}.png',
                     f'{path}{filename_h3}.png',
                     f'{path}{filename_h4}.png']
     return result_files, msg

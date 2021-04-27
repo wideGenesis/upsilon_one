@@ -8,6 +8,9 @@ import xml.etree.ElementTree as ET
 
 
 # +++++++++++++++++++++++++++++ FREE KASSA API ++++++++++++++++++++++++++++++++
+from project_shared import debug
+
+
 class FreeKassaApi:
     base_url = 'https://www.free-kassa.ru/api.php'
     base_form_url = 'http://www.free-kassa.ru/merchant/cash.php'
@@ -457,14 +460,14 @@ class FreeKassaAgregator():
     last_error = ""
 
     def get_status(self):
-        print("Call get status from FreeKassaAgregator")
+        debug("Call get status from FreeKassaAgregator")
         balance = self.fk_client.get_balance()
-        print("Response:" + balance.text)
+        debug("Response:" + balance.text)
         root = ET.XML(balance.text)
         answ = root.find("answer").text
-        print(answ)
+        debug(answ)
         self.last_error = root.find("desc").text
-        print(self.last_error)
+        debug(self.last_error)
         return answ
 
     def to_pay(self):
@@ -474,5 +477,5 @@ class FreeKassaAgregator():
         return self.last_error
 
     def get_payment_link(self, order_id, summ, email='', description='') -> str:
-        print("FreeKassaAgregator: get_payment_link")
+        debug("FreeKassaAgregator: get_payment_link")
         return self.fk_client.generate_payment_link(order_id, summ, email, description)

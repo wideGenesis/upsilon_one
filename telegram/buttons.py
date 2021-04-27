@@ -426,15 +426,26 @@ keyboard_subscription_professional = [
 ]
 
 
-def generate_payment_button(kbd_label=None, payment_link=None):
-    keyboard_subscr_start_inst = [
-        [
-            Button.url('\U0001F3E6  ' + kbd_label, payment_link)
-        ],
-        [
-            Button.inline('\U0001F519  ' + 'Назад', b'donate_back')
+def generate_payment_button(kbd_label=None, payment_link=None, order_type=None):
+    keyboard_subscr_start_inst = []
+    if order_type == 'donate':
+        keyboard_subscr_start_inst = [
+            [
+                Button.url('\U0001F3E6  ' + kbd_label, payment_link)
+            ],
+            [
+                Button.inline('\U0001F519  ' + 'Назад', b'donate_back')
+            ]
         ]
-    ]
+    elif order_type == 'replenishment':
+        keyboard_subscr_start_inst = [
+            [
+                Button.url('\U0001F3E6  ' + kbd_label, payment_link)
+            ],
+            [
+                Button.inline('\U0001F519  ' + 'Назад', b'payment_back')
+            ]
+        ]
     return keyboard_subscr_start_inst
 
 

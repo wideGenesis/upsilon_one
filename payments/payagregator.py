@@ -1,3 +1,4 @@
+from project_shared import debug
 from .fkagregator import FreeKassaAgregator
 
 
@@ -7,7 +8,7 @@ class PaymentAgregator():
 
     def creator(self, agregator: str):
         if agregator == 'Free Kassa':
-            print("Try create Free Kassa payment method")
+            debug("Try create Free Kassa payment method")
             self.payment_agregator = FreeKassaAgregator()
 
     def clear(self):
@@ -30,7 +31,7 @@ class PaymentAgregator():
             return self.payment_agregator.get_last_error()
 
     def get_payment_link(self, order_id, summ, email='', description='') -> str:
-        print("PaymentAgregator: get_payment_link")
+        debug("PaymentAgregator: get_payment_link")
         if self.payment_agregator is None:
             return "Can not get Status -> Payment Agregator not created"
         else:

@@ -48,14 +48,14 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
     elif event.data == b'kb0_my_portfolio':
         await event.edit()
         if old_msg_id is not None:
-            await client.edit_message(event.input_sender, old_msg_id, 'Мой портфель\n'
-                                                                      'Как купить портфель? - /instruction27\n'
-                                                                      'Минимальный депозит - /mindepo',
+            await client.edit_message(event.input_sender, old_msg_id, f'Мой портфель\n'
+                                                                      f'Как купить портфель? - /instruction27\n'
+                                                                      f'Минимальный депозит - /mindepo',
                                       buttons=buttons.keyboard_portfolio)
         else:
-            msg = await client.edit_message(event.input_sender, old_msg_id, 'Мой портфель\n'
-                                                                            'Как купить портфель? - /instruction27\n'
-                                                                            'Минимальный депозит - /mindepo',
+            msg = await client.edit_message(event.input_sender, old_msg_id, f'Мой портфель\n'
+                                                                            f'Как купить портфель? - /instruction27\n'
+                                                                            f'Минимальный депозит - /mindepo',
                                             buttons=buttons.keyboard_portfolio)
             await shared.save_old_message(sender_id, msg)
 
@@ -135,6 +135,18 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
 
     elif event.data == b'buy_requests300':
         await make_payment(event, client, 300.0, 'replenishment')
+
+    elif event.data == b'payment_back':
+        await event.edit()
+        if old_msg_id is not None:
+            await client.edit_message(event.input_sender, old_msg_id,
+                                      '🔋 - один запрос',
+                                      buttons=buttons.keyboard_buy_requests)
+        else:
+            msg = await client.send_message(event.input_sender,
+                                            '🔋 - один запрос',
+                                            buttons=buttons.keyboard_buy_requests)
+            await shared.save_old_message(sender_id, msg)
 
     elif event.data == b'main':
         await event.edit()
@@ -893,16 +905,22 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
         await event.edit()
         ticker, size = shared.get_inspector_ticker(sender_id)
         current_portfolio = shared.get_inspector_portfolio(sender_id)
-        if current_portfolio is not None and len(current_portfolio) == 30:
+        income_datetime = await sql.get_income_datetime(sender_id)
+        now = datetime.datetime.now()
+        is_new_user = True if (now - income_datetime).days < 3 else False
+        portfolio_size_limit = 30
+        if is_new_user:
+            portfolio_size_limit = 10
+        if current_portfolio is not None and len(current_portfolio) == portfolio_size_limit:
             if old_msg_id is not None:
                 await client.edit_message(event.input_sender, old_msg_id,
-                                          f'Размер портфеля не должен превышать 30 тикеров'
+                                          f'Размер портфеля не должен превышать {portfolio_size_limit} тикеров'
                                           f'__Твой портфель сейчас выглядит так:__\n```{current_portfolio}```\n\n'
                                           f'__Выбери действие:__',
                                           buttons=buttons.inspector_ends)
             else:
                 msg = await client.send_message(event.input_sender, old_msg_id,
-                                                f'Размер портфеля не должен превышать 30 тикеров'
+                                                f'Размер портфеля не должен превышать {portfolio_size_limit} тикеров'
                                                 f'__Твой портфель сейчас выглядит так:__\n```{current_portfolio}```\n\n'
                                                 f'__Выбери действие:__',
                                                 buttons=buttons.inspector_ends)
@@ -1401,7 +1419,7 @@ async def make_payment(event, client_, summ, order_type):
         debug(f"User_id={sender_id} -- OrderId:{order_id} -- Summa: {summ}")
         payment_link = PAYMENT_AGGREGATOR.get_payment_link(order_id, str(summ))
         debug(f'payment_link={payment_link}')
-        kbd_payment_button = buttons.generate_payment_button(f'Оплатить ( ${summ} )', payment_link)
+        kbd_payment_button = buttons.generate_payment_button(f'Оплатить ( ${summ} )', payment_link, order_type)
 
         instuction_link = ''
         if order_type == 'donate':
