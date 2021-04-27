@@ -1407,7 +1407,7 @@ async def make_payment(event, client_, summ, order_type):
         if order_type == 'donate':
             instuction_link = 'https://telegra.ph/Instrukciya-po-oplate-04-05'
         elif order_type == 'replenishment':
-            instuction_link = 'https://telegra.ph/Instrukciya-po-oplate-04-05'
+            instuction_link = 'https://telegra.ph/Instrukciya-po-pokupke-zaprosov-04-27'
 
         msg_id = None
         if old_msg_id is not None:
