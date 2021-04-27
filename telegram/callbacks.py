@@ -149,10 +149,15 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
     elif event.data == b'kb_a1_us_market':
         await event.edit()
         if old_msg_id is not None:
-            await client.edit_message(event.input_sender, old_msg_id, 'Анализ США',
+            await client.edit_message(event.input_sender, old_msg_id, 'Анализ США\n'
+                                                                      'При вызове \"Обзора рынка США\" '
+                                                                      'списывается 1 запрос🔋',
                                       buttons=buttons.keyboard_us_analysis)
         else:
-            msg = await client.send_message(event.input_sender, 'Анализ США', buttons=buttons.keyboard_us_analysis)
+            msg = await client.send_message(event.input_sender, 'Анализ США\n'
+                                                                      'При вызове \"Обзора рынка США\" '
+                                                                      'списывается 1 запрос🔋',
+                                            buttons=buttons.keyboard_us_analysis)
             await shared.save_old_message(sender_id, msg)
 
     elif event.data == b'kb_us_analysis_insideview':
@@ -711,9 +716,11 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
     elif event.data == b'kb_us_analysis_up':
         await event.edit()
         if old_msg_id is not None:
-            await client.edit_message(event.input_sender, old_msg_id, 'Анализ США', buttons=buttons.keyboard_a1)
+            await client.edit_message(event.input_sender, old_msg_id, 'Анализ США',
+                                      buttons=buttons.keyboard_a1)
         else:
-            msg = await client.send_message(event.input_sender, 'Анализ США', buttons=buttons.keyboard_a1)
+            msg = await client.send_message(event.input_sender, 'Анализ США',
+                                            buttons=buttons.keyboard_a1)
             await shared.save_old_message(sender_id, msg)
 
     elif event.data == b'kb_macro_up':
@@ -728,10 +735,15 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
     elif event.data == b'kb_us_market_up':
         await event.edit()
         if old_msg_id is not None:
-            await client.edit_message(event.input_sender, old_msg_id, 'Анализ США',
+            await client.edit_message(event.input_sender, old_msg_id, 'Анализ США\n'
+                                                                      'При вызове \"Обзора рынка США\" '
+                                                                      'списывается 1 запрос🔋',
                                       buttons=buttons.keyboard_us_analysis)
         else:
-            msg = await client.send_message(event.input_sender, 'Анализ США', buttons=buttons.keyboard_us_analysis)
+            msg = await client.send_message(event.input_sender, 'Анализ США\n'
+                                                                      'При вызове \"Обзора рынка США\" '
+                                                                      'списывается 1 запрос🔋',
+                                            buttons=buttons.keyboard_us_analysis)
             await shared.save_old_message(sender_id, msg)
 
     elif event.data == b'screener_back':
@@ -839,12 +851,20 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
         await event.edit()
         if old_msg_id is not None:
             await client.edit_message(event.input_sender, old_msg_id,
-                                      'Инспектор портфеля\n\n'
+                                      'Инспектор портфеля - аналитический тестер, '
+                                      'позволяющий определить эффективность портфеля\n\n'
+                                      'При использовании инспектора списываются запросы🔋'
+                                      'в количестве введенных тикеровю\n'
+                                      'Размер портфеля не должен превышать 30 тикеров\n\n'                                      
                                       '\U00002757 Как работает инспектор портфелей? - /instruction36',
                                       buttons=buttons.inspector_start)
         else:
             msg = await client.send_message(event.input_sender,
-                                            'Инспектор портфеля\n\n'
+                                            'Инспектор портфеля - аналитический тестер, '
+                                            'позволяющий определить эффективность портфеля\n'
+                                            'При использовании инспектора списываются запросы🔋'
+                                            'в количестве введенных тикеров\n'
+                                            'Размер портфеля не должен превышать 30 тикеров\n\n'                                      
                                             '\U00002757 Как работает инспектор портфелей? - /instruction36',
                                             buttons=buttons.inspector_start)
             await shared.save_old_message(sender_id, msg)
@@ -876,13 +896,13 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
         if current_portfolio is not None and len(current_portfolio) == 30:
             if old_msg_id is not None:
                 await client.edit_message(event.input_sender, old_msg_id,
-                                          f'Размер портфеля не должен быть более 30 тикеров'
+                                          f'Размер портфеля не должен превышать 30 тикеров'
                                           f'__Твой портфель сейчас выглядит так:__\n```{current_portfolio}```\n\n'
                                           f'__Выбери действие:__',
                                           buttons=buttons.inspector_ends)
             else:
                 msg = await client.send_message(event.input_sender, old_msg_id,
-                                                f'Размер портфеля не должен быть более 30 тикеров'
+                                                f'Размер портфеля не должен превышать 30 тикеров'
                                                 f'__Твой портфель сейчас выглядит так:__\n```{current_portfolio}```\n\n'
                                                 f'__Выбери действие:__',
                                                 buttons=buttons.inspector_ends)
