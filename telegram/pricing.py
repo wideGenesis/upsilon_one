@@ -31,9 +31,9 @@ async def calc_save_balance(user_id, summ):
 
 async def check_request_amount(user_id, client, decrement_amount=1) -> Dict[str, Union[bool, int]]:
     result = {"result": True, 'Free': 0, 'Paid': 0}
-    if str(user_id) in OWNERS:
-        debug(f'Welcome owner ;-)')
-        return result
+    # if str(user_id) in OWNERS:
+    #     debug(f'Welcome owner ;-)')
+    #     return result
     paid_amount, free_amount = await sql.get_request_amount(user_id)
     income_datetime = await sql.get_income_datetime(user_id)
     now = datetime.datetime.now()

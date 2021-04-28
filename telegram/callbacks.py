@@ -908,21 +908,23 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
         income_datetime = await sql.get_income_datetime(sender_id)
         now = datetime.datetime.now()
         is_new_user = True if (now - income_datetime).days < 3 else False
-        portfolio_size_limit = 30
+        paid_amount, free_amount = await sql.get_request_amount(sender_id)
+        portfolio_size_limit = 25
+        message = f'Размер портфеля не должен превышать {portfolio_size_limit} тикеров\n' \
+                  f'__Твой портфель сейчас выглядит так:__\n```{current_portfolio}```\n\n' \
+                  f'__Выбери действие:__'
         if is_new_user:
             portfolio_size_limit = 10
+        if paid_amount > 0:
+            portfolio_size_limit = 40
         if current_portfolio is not None and len(current_portfolio) == portfolio_size_limit:
             if old_msg_id is not None:
                 await client.edit_message(event.input_sender, old_msg_id,
-                                          f'Размер портфеля не должен превышать {portfolio_size_limit} тикеров'
-                                          f'__Твой портфель сейчас выглядит так:__\n```{current_portfolio}```\n\n'
-                                          f'__Выбери действие:__',
+                                          message,
                                           buttons=buttons.inspector_ends)
             else:
                 msg = await client.send_message(event.input_sender, old_msg_id,
-                                                f'Размер портфеля не должен превышать {portfolio_size_limit} тикеров'
-                                                f'__Твой портфель сейчас выглядит так:__\n```{current_portfolio}```\n\n'
-                                                f'__Выбери действие:__',
+                                                message,
                                                 buttons=buttons.inspector_ends)
                 await shared.save_old_message(sender_id, msg)
             return
@@ -1033,6 +1035,12 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
         if not pricing_result["result"]:
             return
 
+        await shared.delete_old_message(client, sender_id)
+        wait_message = await client.send_message(sender_id,
+                                                 message=f'Провожу анализ. Это может занять некоторое время.\n'
+                                                                    f'Дождись ответа, ничего не нажимая! ')
+        await shared.save_old_message(sender_id, wait_message)
+
         filenames = []
         try:
             call = get_inspector_data(current_portfolio)
@@ -1049,6 +1057,7 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
                                                          f'Опиши баг в "Информация" -> "Сообщить об ошибке"')
             return
 
+        # client.delete_messages(sender_id, message_id)
         await shared.delete_old_message(client, sender_id)
         for filename in filenames:
             if os.path.exists(filename):

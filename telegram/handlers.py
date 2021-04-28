@@ -92,7 +92,8 @@ class WebHandler:
                     # удаляем платежное сообщение в чате, чтобы клиент не нажимал на него еще
                     if sender_id is not None and message_id is not None:
                         try:
-                            await self.client.delete_messages(sender_id, message_id)
+                            await shared.delete_old_message(self.client, sender_id)
+                            # await self.client.delete_messages(sender_id, message_id)
                         except Exception as e:
                             debug(e, ERROR)
 
@@ -109,18 +110,25 @@ class WebHandler:
                     shared.print_order_map()
                     return web.Response(status=200)
                 elif order_type == 'donate':
-                    # удаляем платежное сообщение в чате, чтобы клиент не нажимал на него еще
-                    if sender_id is not None and message_id is not None:
-                        try:
-                            await self.client.delete_messages(sender_id, message_id)
-                        except Exception as e:
-                            debug(e, ERROR)
+                    debug("Send message \"donate is ok\"")
+                    debug(f'Before agregate payment: shared.ORDER_MAP=')
+                    shared.print_order_map()
+                    sender_id, message_id, order_type = value
+                    debug(f'Shared data by order_id: '
+                          f'sender_id:[{sender_id}], message_id:[{message_id}], order_type:[{order_type}]')
                     # сообщаем клиенту об успешном платеже
                     await self.client.send_message(sender_id,
                                                    'Оплата прошла успешно:\n'
                                                    + '__Ордер: ' + order_id + '__\n'
                                                    + '__Сумма: ' + summa + '__\n'
                                                    + '**Спасибо, что пользуешься моими услугами!**')
+                    # удаляем платежное сообщение в чате, чтобы клиент не нажимал на него еще
+                    if sender_id is not None and message_id is not None:
+                        try:
+                            await shared.delete_old_message(self.client, sender_id)
+                            # await self.client.delete_messages(sender_id, message_id)
+                        except Exception as e:
+                            debug(e, ERROR)
                     # удаляем данные о платеже из памяти и из базы, они нам больше не нужны
                     shared.pop_old_order(order_id)
                     await sql.delete_from_payment_message(order_id, self.engine)
