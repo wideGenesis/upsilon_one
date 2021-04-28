@@ -5,8 +5,8 @@ from quotes.parsers_env import chrome_init, agents, chrome_opt, firefox_init
 from quotes.parsers import *
 from quotes.get_universe import *
 from quotes.quote_loader import *
-from quotes.portfolios.portfolios_calc import *
-from quotes.portfolios.portfolios_save import *
+# from quotes.portfolios.portfolios_calc import *
+# from quotes.portfolios.portfolios_save import *
 import schedule
 from time import sleep
 from charter.charter import *
@@ -20,24 +20,18 @@ from quotes.stock_quotes_news import StockStat
 
 # ============================== Main  =============================
 def main():
-    x = get_inspector_data({'TOL': '11', 'TMHC': '20', 'PHM': '11', 'BLDR': '15',
-     'MRNA': '4', 'QLD': '1', 'AGG': '10', 'AAPL': '10',
-     'TRU': '6', 'PGTI': '32', 'PATK': '8', 'PCRX': '8', 'MSFT': '10', 'AMZN': '10', 'TSLA': '10'})
+    x = get_inspector_data({
+        'SPY': '11'})
 
-    # {'TOL': 11, 'TMHC': 20, 'PHM': 11, 'TPH': 29, 'LEN': 6, 'THO': 5, 'BLDR': 15,
-    #  'MRNA': 4, 'AGCO': 7, 'MOS': 27, 'NUS': 7, 'FORM': 18, 'ASH': 6, 'KHC': 12, 'BIG': 9,
-    #  'TRU': 6, 'PGTI': 32, 'PATK': 8, 'PCRX': 8}
-    # {'QQQ': 201, 'SPY': 23, 'XLV': 21, 'XLY': 28, 'GLD': 28, 'UUP': 1291, 'SHY': 371})
-    # {'QQQ': 0, 'MSFT': 0, 'AMZN': 0, 'TSLA': 0,
-    #  'QLD': 0, 'AGG': 0, 'AAPL': 0, 'VLUE': 0}
-    # {'AAPL': 0, 'MSFT': 0, 'AMZN': 0, 'TSLA': 0, 'FB': 0, 'GOOG': 0, 'IBM': 0,
-    #  'JPM': 0, 'UNH': 0, 'GS': 0, 'HD': 0, 'AMGN': 0, 'INTC': 0, 'T': 0,
-    #  'MU': 0, 'GM': 0}
-    # {'QQQ': 201, 'SPY': 23, 'XLV': 21, 'XLY': 28, 'GLD': 28, 'UUP': 1291, 'SHY': 371}
-    # {'QQQ': 0, 'XLP': 0, 'GME': 0, 'AYX': 0}
-    # {'TOL': '11', 'TMHC': '20', 'PHM': '11', 'BLDR': '15',
-    #  'MRNA': '4', 'QLD': '1', 'AGG': '10', 'AAPL': '10',
-    #  'TRU': '6', 'PGTI': '32', 'PATK': '8', 'PCRX': '8', 'MSFT': '10', 'AMZN': '10', 'TSLA': '10'}
+    # {
+    #     'TOL': '11', 'TMHC': '20', 'PHM': '11', 'BLDR': '15', 'MRNA': '4', 'QLD': '1', 'AGG': '10',
+    #     'TRU': '6', 'PGTI': '32', 'PATK': '8', 'PCRX': '8', 'MSFT': '10', 'AMZN': '10', 'TSLA': '10',
+    #     'XLV': '21', 'XLY': '28', 'GLD': '28', 'UUP': '1291', 'SHY': '371', 'VLUE': '10', 'FB': '10',
+    #     'JPM': '10', 'UNH': '20', 'GS': '20', 'HD': '20', 'AMGN': '20', 'INTC': '20', 'T': '20',
+    #     'MU': '20', 'GM': '20', 'AAPL': '10', 'GOOG': '10', 'IBM': '10', 'GME': '10', 'AYX': '10', 'PEP': '10',
+    #     'BA': '10', 'DIS': '10', 'CVX': '15', 'XOM': '55', 'AMD': '45', 'JNJ': '5', 'GILD': '8', 'XLU': '5',
+    #     'PINS': '10', 'SH': '5', 'SSO': '10', 'SPXL': '10', 'C': '56', 'BAC': '12', 'NVDA': '50'}
+
     exit()
 
     # x, y = get_ranking_data2("DOCN")

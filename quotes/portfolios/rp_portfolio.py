@@ -6,6 +6,7 @@ import seaborn as sns
 from quotes.sql_queries import *
 
 from mlfinlab.portfolio_optimization import RiskEstimators, HierarchicalRiskParity, HierarchicalEqualRiskContribution
+from mlfinlab import RiskEstimators, HierarchicalRiskParity, HierarchicalEqualRiskContribution
 from mlfinlab.codependence import get_dependence_matrix, get_distance_matrix
 
 """

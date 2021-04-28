@@ -33,14 +33,37 @@ from telegram.instructions import scenario1, scenario1_a, scenario2, scenario2_a
     scenario4, scenario4_a
 
 
+def value_at_risk(returns, sigma=1, confidence=0.95):
+    """
+    calculats the daily value-at-risk
+    (variance-covariance calculation with confidence n)
+    """
+    mu = returns.mean()
+    sigma *= returns.std()
+    if confidence > 1:
+        confidence = confidence/100
+    return norm.ppf(1-confidence, mu, sigma)
+
+
 def correl(ret_df_=None, save_path=None):
     corr = ret_df_.corr()
     sns.set(rc={'figure.facecolor': 'black', 'xtick.color': 'white', 'ytick.color': 'white', 'text.color': 'white',
                 'axes.labelcolor': 'white'})
-    sns.set_context('paper', font_scale=0.85)
+    if corr.shape[1] <= 20:
+        sns.set_context('paper', font_scale=0.80)
+        size = (10, 10)
+    elif corr.shape[1] <= 30:
+        sns.set_context('paper', font_scale=0.70)
+        size = (12, 12)
+    else:
+        sns.set_context('paper', font_scale=0.6)
+        size = (15, 15)
+
     g = sns.clustermap(corr, yticklabels=True, annot=True, cmap='RdYlGn', row_colors=None,
-                       col_colors=None, figsize=(10, 10))
-    plt.setp(g.ax_heatmap.yaxis.get_majorticklabels(), rotation=0)  # ytick rotate
+                       col_colors=None, figsize=size)
+    hm = g.ax_heatmap.get_position()
+    plt.setp(g.ax_heatmap.yaxis.get_majorticklabels(), rotation=1)
+    g.ax_heatmap.set_position([hm.x0, hm.y0, hm.width * 0.985, hm.height * 0.985])
     g.ax_row_dendrogram.set_visible(True)
     g.ax_col_dendrogram.set_visible(False)
     g.fig.suptitle(f'Матрица корреляций', fontsize=25)
@@ -69,7 +92,7 @@ def scatter_for_risk_premium(price_df: pd = None, save_path=''):
     sns.set(rc={'figure.facecolor': 'black', 'figure.edgecolor': 'black', 'xtick.color': 'white',
                 'ytick.color': 'white', 'text.color': 'white', 'axes.labelcolor': 'white',
                 'axes.facecolor': 'black', 'grid.color': '#17171a'})
-    sns.set_context('paper', font_scale=1.25)
+
     palette = sns.color_palette("hls", n_colors=len(df.index),  as_cmap=True)
     sns.despine()
     ave_risk = df['Risk']
@@ -77,7 +100,19 @@ def scatter_for_risk_premium(price_df: pd = None, save_path=''):
     ave_premia = df['RP Ratio']
     sharpe_mean = round(df['Sharpe'], ndigits=2)
 
-    plt.figure(figsize=(10, 6))
+    if df.shape[0] <= 20:
+        sns.set_context('paper', font_scale=1.25)
+        size = (9, 6)
+    elif df.shape[0] <= 30:
+        sns.set_context('paper', font_scale=0.95)
+        size = (10, 6)
+    elif df.shape[0] <= 40:
+        sns.set_context('paper', font_scale=0.75)
+        size = (10, 6)
+    else:
+        sns.set_context('paper', font_scale=0.65)
+        size = (11, 7)
+    plt.figure(figsize=size)
     sns.scatterplot(x=ave_risk - 0.1, y=ave_alpha - 0.25, hue=sharpe_mean, size=sharpe_mean, alpha=0.55,
                     legend=True, sizes=(30, 300), markers=True, palette=palette)
 
@@ -239,6 +274,7 @@ def get_inspector_data(portfolio, quarter=63):
     bench_df[f'PORT_TO_SPY_beta_{quarter}'] = bench_df[f'SPY_return'].corr(df['portfolio_pct']) * \
                                               df[f'port_volatility_{quarter}'] / bench_df[f'SPY_volatility_{quarter}']
 
+    bench_df[f'PORTF_VAR'] = value_at_risk(df['portfolio_pct'], sigma=4, confidence=0.99)
     # # расчет 3,14 * месячной волы для стресс-теста
     # bench_df[f'PORT_WORST_21'] = df[f'port_volatility_21'] * 3.14
     # print(bench_df[f'PORT_WORST_21'])
@@ -298,10 +334,12 @@ def get_inspector_data(portfolio, quarter=63):
             interpretations.update({f'{col_u}': ulcer[f'{col_u}'].iloc[-1]})
         else:
             pass
-    interpretations.update({f'beta': round(bench_df[f'PORT_TO_SPY_beta_63'].iloc[-1], ndigits=2)})
+    interpretations.update({f'beta': bench_df[f'PORT_TO_SPY_beta_63'].iloc[-1]})
+    interpretations.update({f'var99_4': bench_df[f'PORTF_VAR'].iloc[-1]})
     interpretations.update({f'divers': divers['SPY']})
     debug(interpretations)
     beta = round(interpretations['beta'] * 10, ndigits=2)
+    var99_4 = round(interpretations['var99_4'] * 100, ndigits=2)
     if beta > 0:
         sign = 'если SPY(широкий рынок) упадёт на 10%, то твой портфель упадёт в среднем на '
     else:
@@ -311,24 +349,32 @@ def get_inspector_data(portfolio, quarter=63):
     prem = interpretations['PORTF price_premia'] - interpretations['SPY price_premia']
     usharpe = interpretations['PORTF price_ratio_mean'] - interpretations['SPY price_ratio_mean']
 
-    msg_stress = f'\n🙈__Стресс-тест:__ {sign}{beta}%\n' \
+    port_risk = round(interpretations['PORTF price_dn'], ndigits=2)
+    port_prem = round(interpretations['PORTF price_premia'], ndigits=2)
+    port_usharpe = round(interpretations['PORTF price_ratio_mean'], ndigits=2)
+    premia_msg = f'Премия портфеля {port_prem}\n' \
+                 f'Месячный риск портфеля {port_risk}\n' \
+                 f'U Sharpe портфеля {port_usharpe}\n'
+
+    msg_stress = f'\n🙈__Стресс-тест №1:__ {sign}{beta}%\n' \
+                 f'\n🙉__Стресс-тест №2:__ в 99% случаев дневная просадка портфеля не превысит {var99_4}%\n' \
                  f'\n🧠__Диверсификация твоего портфеля составляет {ddr}%__ от уровня диверсификации SPY'
     if risk > 0 and prem > 0 and usharpe > 0:
-        msg = f'{scenario1}\n{msg_stress}'
+        msg = f'{premia_msg}\n{scenario1}\n{msg_stress}'
     elif risk > 0 and prem > 0 and usharpe < 0:
-        msg = f'{scenario1_a}\n{msg_stress}'
+        msg = f'{premia_msg}\n{scenario1}\n{msg_stress}'
     elif risk < 0 and prem > 0 and usharpe > 0:
-        msg = f'{scenario2}\n{msg_stress}'
+        msg = f'{premia_msg}\n{scenario1}\n{msg_stress}'
     elif risk < 0 and prem > 0 and usharpe < 0:
-        msg = f'{scenario2_a}\n{msg_stress}'
+        msg = f'{premia_msg}\n{scenario1}\n{msg_stress}'
     elif risk < 0 and prem < 0 and usharpe > 0:
-        msg = f'{scenario3}\n{msg_stress}'
+        msg = f'{premia_msg}\n{scenario1}\n{msg_stress}'
     elif risk < 0 and prem < 0 and usharpe < 0:
-        msg = f'{scenario3_a}\n{msg_stress}'
+        msg = f'{premia_msg}\n{scenario1}\n{msg_stress}'
     elif risk > 0 and prem < 0 and usharpe > 0:
-        msg = f'{scenario4}\n{msg_stress}'
+        msg = f'{premia_msg}\n{scenario1}\n{msg_stress}'
     elif risk > 0 and prem < 0 and usharpe < 0:
-        msg = f'{scenario4_a}\n{msg_stress}'
+        msg = f'{premia_msg}\n{scenario1}\n{msg_stress}'
     else:
         msg = msg_stress
     debug(msg)
