@@ -274,7 +274,7 @@ def get_inspector_data(portfolio, quarter=63):
     bench_df[f'PORT_TO_SPY_beta_{quarter}'] = bench_df[f'SPY_return'].corr(df['portfolio_pct']) * \
                                               df[f'port_volatility_{quarter}'] / bench_df[f'SPY_volatility_{quarter}']
 
-    bench_df[f'PORTF_VAR'] = value_at_risk(df['portfolio_pct'], sigma=4, confidence=0.99)
+    bench_df[f'PORTF_VAR'] = value_at_risk(df['portfolio_pct'], sigma=1, confidence=0.99)
     # # расчет 3,14 * месячной волы для стресс-теста
     # bench_df[f'PORT_WORST_21'] = df[f'port_volatility_21'] * 3.14
     # print(bench_df[f'PORT_WORST_21'])
@@ -339,9 +339,11 @@ def get_inspector_data(portfolio, quarter=63):
     interpretations.update({f'divers': divers['SPY']})
     debug(interpretations)
     beta = round(interpretations['beta'] * 10, ndigits=2)
-    var99_4 = round(interpretations['var99_4'] * 100, ndigits=2)
+    # var99_1 = round(interpretations['var99_4'] * 100, ndigits=2)
+    var99_2 = round(interpretations['var99_4'] * 2.71 * 100, ndigits=2)  # Euler's number
+    # var99_3 = round(interpretations['var99_4'] * 3.14 * 100, ndigits=2)  # Pi
     if beta > 0:
-        sign = 'если SPY(широкий рынок) упадёт на 10%, то твой портфель упадёт в среднем на '
+        sign = 'если SPY(широкий рынок) упадёт на -10%, то твой портфель упадёт в среднем на -'
     else:
         sign = 'если SPY(широкий рынок) вырастет на 10%, то твой портфель упадёт в среднем на '
     ddr = round(interpretations['divers'], ndigits=2)
@@ -357,7 +359,7 @@ def get_inspector_data(portfolio, quarter=63):
                  f'U Sharpe портфеля {port_usharpe}\n'
 
     msg_stress = f'\n🙈__Стресс-тест №1:__ {sign}{beta}%\n' \
-                 f'\n🙉__Стресс-тест №2:__ в 99% случаев дневная просадка портфеля не превысит {var99_4}%\n' \
+                 f'\n🙉__Стресс-тест №2:__ в 99% случаев дневная просадка портфеля не превысит {var99_2}%\n' \
                  f'\n🧠__Диверсификация твоего портфеля составляет {ddr}%__ от уровня диверсификации SPY'
     if risk > 0 and prem > 0 and usharpe > 0:
         msg = f'{premia_msg}\n{scenario1}\n{msg_stress}'
