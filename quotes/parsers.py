@@ -310,7 +310,6 @@ def get_inspector_data(portfolio, quarter=63):
         name = str(col).replace('_dr_63', '')
         temp = {f'{name}': bench_df[f'{col}'].iloc[-1]}
         divers.update(temp)
-
     m2 = {}
     # for col in m2_cols:
     #     name = str(col).replace('_m2_63', '')
