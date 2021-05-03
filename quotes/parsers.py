@@ -45,6 +45,16 @@ def value_at_risk(returns, sigma=1, confidence=0.95):
     return norm.ppf(1-confidence, mu, sigma)
 
 
+def angular_distance_correlation(returns_=None):
+    from scipy.cluster.hierarchy import ClusterWarning
+    from warnings import simplefilter
+    simplefilter("ignore", ClusterWarning)
+    import math_stat.codependence as codep
+    dist_matrix = codep.get_dependence_matrix(returns_, dependence_method='spearmans_rho')
+    angular_dist_matrix = codep.get_distance_matrix(dist_matrix, distance_metric='angular')
+    return angular_dist_matrix
+
+
 def correl(ret_df_=None, save_path=None):
     corr = ret_df_.corr()
     sns.set(rc={'figure.facecolor': 'black', 'xtick.color': 'white', 'ytick.color': 'white', 'text.color': 'white',
@@ -135,8 +145,19 @@ def scatter_for_risk_premium(price_df: pd = None, save_path=''):
     # plt.savefig(path + filename_scatter, facecolor='black', transparent=True, bbox_inches='tight')
 
 
-# ============================== GET Inspector ================================
+# ============================== GET Sonar ================================
+def get_sonar_data(ticker):
+    factors = ['SPY', 'QQQ', 'ARKK', 'VLUE', 'IWM', 'MGC', 'VEA', 'EEM']
+    # SPY = QUAL
+    # QQQ = GROWTH / MOM
+    # IWM, MGC = size
+    # VLUE
+    # VEA - Developed / EEM - Emerging
+    sectors = ['XLC', 'XLK', 'XLY', 'XLV', 'XLP', 'XLU', 'XLI', 'XLB', 'XLRE', 'XLF', 'XLE']
+    pass
 
+
+# ============================== GET Inspector ================================
 def get_inspector_data(portfolio, quarter=63):
     path = f'{PROJECT_HOME_DIR}/results/inspector/'
     benchmarks = {'SPY': 1, 'QQQ': 1, 'ARKK': 1, 'TLT': 1, 'VLUE': 1, 'EEM': 1}
@@ -152,7 +173,7 @@ def get_inspector_data(portfolio, quarter=63):
         debug(e, ERROR)
 
     now = datetime.datetime.now()
-    six_month_ago = add_months(now, -7)
+    six_month_ago = add_months(now, -12)
 
     df = tickers_data.history(start=six_month_ago)
     df['hlc3'] = (df['high'] + df['low'] + df['close']) / 3

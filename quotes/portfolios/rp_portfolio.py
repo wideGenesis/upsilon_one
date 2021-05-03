@@ -8,6 +8,10 @@ from quotes.sql_queries import *
 from mlfinlab.portfolio_optimization import RiskEstimators, HierarchicalRiskParity, HierarchicalEqualRiskContribution
 # from mlfinlab import RiskEstimators, HierarchicalRiskParity, HierarchicalEqualRiskContribution
 from mlfinlab.codependence import get_dependence_matrix, get_distance_matrix
+# from math_stat.finlab.portfolio_optimization.clustering import hrp as HierarchicalRiskParity
+# from math_stat.finlab.portfolio_optimization.clustering import herc as HierarchicalEqualRiskContribution
+# from math_stat.finlab.portfolio_optimization.estimators import risk_estimators as RiskEstimators
+# from math_stat.finlab.codependence import get_dependence_matrix, get_distance_matrix
 
 """
     etalon = RiskParityAllocator(closes=c_df, cov_method='empirical',

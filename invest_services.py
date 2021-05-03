@@ -21,7 +21,7 @@ from quotes.stock_quotes_news import StockStat
 # ============================== Main  =============================
 def main():
     x = get_inspector_data({
-        'QQQ': '0'})
+        'QQQ': '100%'})
 
     # {
     #     'TOL': '11', 'TMHC': '20', 'PHM': '11', 'BLDR': '15', 'MRNA': '4', 'QLD': '1', 'AGG': '10',
