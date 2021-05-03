@@ -18,7 +18,7 @@ if __name__ == '__main__':
     debug_init(file_name=log_file_name)
 
     debug(f"### Start wipe_free_request_amount_for_all. Added 25 free request  ###")
-    wipe_free_request_amount_for_all(25)
+    await wipe_free_request_amount_for_all(25)
     # ****************************************** СТАРЫЕ ПОРТФЕЛИ ******************************************
 
     debug(f"### Start eod_get_and_save_holdings ###")
