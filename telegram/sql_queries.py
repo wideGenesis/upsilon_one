@@ -301,7 +301,7 @@ async def increment_free_request_amount(user_id, amount):
             transaction.rollback()
 
 
-async def wipe_free_request_amount_for_all(amount):
+def wipe_free_request_amount_for_all(amount):
     debug(f'wipe_free_request_amount_for_all: amount:{amount}')
     with engine.connect() as connection:
         transaction = connection.begin()
