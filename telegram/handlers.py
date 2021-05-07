@@ -250,7 +250,6 @@ async def dialog_flow_handler(event, client_):
                                            f'{sender_id.user_id} - {usr_data}\n'
                                            f'{event.text}\n'
                                            f'{dialogflow_answer}')
-                # TODO Внимание! изменить айди чата при деплое
             except ValueError as e:
                 debug(e, 'Dialogflow response failure')
                 await client_.send_message(sender_id, fallback)
@@ -286,8 +285,9 @@ async def quotes_to_handler(event, client_, limit=20):
                                '\U00002757 Как построен рейтинг? - /instruction28' + '\n'
                                '\U00002757\U00002757 Как использовать рейтинг? - /instruction34')
     message1 = await client_.send_message(event.input_sender, message='Получаю описание \U000023F3')
-    message2 = await client_.send_message(event.input_sender, message='Провожу финансовый анализ \U000023F3')
-    message3 = await client_.send_message(event.input_sender, message='Провожу статистический анализ \U000023F3')
+    message1_a = await client_.send_message(event.input_sender, message='Определяю тип актива \U000023F3')
+    message2 = await client_.send_message(event.input_sender, message='Анализирую все найденные данные \U000023F3')
+    # message3 = await client_.send_message(event.input_sender, message='Провожу статистический анализ \U000023F3')
 
     path = f'{PROJECT_HOME_DIR}/results/ticker_stat/'
     img_path = f'{path}{stock}.png'
@@ -296,14 +296,33 @@ async def quotes_to_handler(event, client_, limit=20):
     ss.stock_download()
 
     sma_sig = ss.higher_sma8()
+    try:
+        stock_type = ss.stock_type()
+    except TypeError as type_err:
+        debug(type_err)
+        stock_type = 'Нет данных'
+    try:
+        n_var = ss.new_var()
+    except TypeError as var_err:
+        debug(var_err)
+        n_var = None
+    try:
+        mom_rank = ss.momentum_rank()
+    except TypeError as mom_err:
+        debug(mom_err)
+        mom_rank = None
 
     get = ss.stock_description_v3()
     if get[0] or get[1] or get[2] is not None:
         msg1 = get[0]
         msg2 = get[1]
         msg3 = get[2]
-        msg2 = msg2.replace('\n\n\n\n', '\n')
-        msg2 = msg2.replace('\n\n\n', '\n')
+        try:
+            msg2 = msg2.replace('\n\n\n\n', '\n')
+            msg2 = msg2.replace('\n\n\n', '\n')
+        except AttributeError as empty_err:
+            debug(empty_err)
+            msg2 = 'Нет данных для данного тикера'
     else:
         msg1 = 'Нет данных для данного тикера'
         msg2 = msg1
@@ -322,14 +341,16 @@ async def quotes_to_handler(event, client_, limit=20):
     if ss.returns is not None:
         ss.stock_snapshot()
         if msg3 is not None:
-            msg4 = ss.stock_stat_v3(rank_type=msg3['other'], rank=msg3['rank'], sma_sig=sma_sig)
+            # msg4 = ss.stock_stat_v3(rank_type=msg3['other'], rank=msg3['rank'], sma_sig=sma_sig)
+            msg4 = ss.stock_stat_v4(rank_type=msg3['other'], rank=msg3['rank'], sma_sig=sma_sig)  # TODO !!!!!!!!!
+
         else:
             msg4 = 'Нет данных для данного тикера'
     else:
         msg4 = 'Нет данных для данного тикера'
-    await client_.edit_message(message1, msg1)
-    await client_.edit_message(message2, '__Оценка Ипсилона:__ ' + '\n' + msg2)
-    await client_.edit_message(message3, msg4)
+    await client_.edit_message(message1, message=f'Описание:\n{msg1}')
+    await client_.edit_message(message1_a, message=f'Тип:\n{stock_type}')
+    await client_.edit_message(message2, message=f'Финансовый анализ:\n{msg2}')
 
     if os.path.exists(img_path):
         add_watermark(img_path, img_path, 64, wtermark_color=(217, 217, 217, 50))
@@ -343,6 +364,17 @@ async def quotes_to_handler(event, client_, limit=20):
     if os.path.exists(revenue_hist_path):
         await client_.send_file(event.input_sender, revenue_hist_path)
         os.remove(revenue_hist_path)
+
+    if n_var is not None:
+        if os.path.exists(n_var):
+            await client_.send_file(event.input_sender, n_var)
+            os.remove(n_var)
+    if mom_rank is not None:
+        if os.path.exists(mom_rank):
+            await client_.send_file(event.input_sender, mom_rank)
+            os.remove(mom_rank)
+
+    await client_.send_message(event.input_sender, message=f'{msg4}')
 
 
 async def news_to_handler(event, client_, limit=20):
