@@ -384,19 +384,19 @@ def get_inspector_data(portfolio, quarter=63):
     if risk > 0 and prem > 0 and usharpe > 0:
         msg = f'{premia_msg}\n{scenario1}\n{msg_stress}'
     elif risk > 0 and prem > 0 and usharpe < 0:
-        msg = f'{premia_msg}\n{scenario1}\n{msg_stress}'
+        msg = f'{premia_msg}\n{scenario1_a}\n{msg_stress}'
     elif risk < 0 and prem > 0 and usharpe > 0:
-        msg = f'{premia_msg}\n{scenario1}\n{msg_stress}'
+        msg = f'{premia_msg}\n{scenario2}\n{msg_stress}'
     elif risk < 0 and prem > 0 and usharpe < 0:
-        msg = f'{premia_msg}\n{scenario1}\n{msg_stress}'
+        msg = f'{premia_msg}\n{scenario2_a}\n{msg_stress}'
     elif risk < 0 and prem < 0 and usharpe > 0:
-        msg = f'{premia_msg}\n{scenario1}\n{msg_stress}'
+        msg = f'{premia_msg}\n{scenario3}\n{msg_stress}'
     elif risk < 0 and prem < 0 and usharpe < 0:
-        msg = f'{premia_msg}\n{scenario1}\n{msg_stress}'
+        msg = f'{premia_msg}\n{scenario3_a}\n{msg_stress}'
     elif risk > 0 and prem < 0 and usharpe > 0:
-        msg = f'{premia_msg}\n{scenario1}\n{msg_stress}'
+        msg = f'{premia_msg}\n{scenario4}\n{msg_stress}'
     elif risk > 0 and prem < 0 and usharpe < 0:
-        msg = f'{premia_msg}\n{scenario1}\n{msg_stress}'
+        msg = f'{premia_msg}\n{scenario4_a}\n{msg_stress}'
     else:
         msg = msg_stress
     debug(msg)
