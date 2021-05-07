@@ -1,4 +1,5 @@
 import datetime
+from datetime import date, timedelta
 import os
 import re
 from time import sleep
@@ -27,32 +28,51 @@ from PIL import Image
 from quotes.parsers_env import agents
 import uuid
 import numpy as np
-from datetime import date, timedelta
+
 from math import sqrt
 from telegram.instructions import scenario1, scenario1_a, scenario2, scenario2_a, scenario3, scenario3_a,\
     scenario4, scenario4_a
 
 
-def value_at_risk(returns, sigma=1, confidence=0.95):
-    """
-    calculats the daily value-at-risk
-    (variance-covariance calculation with confidence n)
-    """
-    mu = returns.mean()
-    sigma *= returns.std()
-    if confidence > 1:
-        confidence = confidence/100
-    return norm.ppf(1-confidence, mu, sigma)
+def new_var(returns, save_path=None):
+    returns = returns * 100
+    min_returns = abs(returns.rolling(21).min())
+    n_var = min_returns.iloc[-63:].mean() + min_returns.iloc[-63:].std()
+    n_var_euler = min_returns.iloc[-63:].mean() + 2.71 * min_returns.iloc[-63:].std()
 
+    new_var_array = []
+    new_var_array_e = []
+    num_days = int(10)
+    for x in range(1, num_days + 1):
+        new_var_array.append(np.round(n_var * np.sqrt(x), 2))
+        new_var_array_e.append(np.round(n_var_euler * np.sqrt(x), 2))
 
-def angular_distance_correlation(returns_=None):
-    from scipy.cluster.hierarchy import ClusterWarning
-    from warnings import simplefilter
-    simplefilter("ignore", ClusterWarning)
-    import math_stat.codependence as codep
-    dist_matrix = codep.get_dependence_matrix(returns_, dependence_method='spearmans_rho')
-    angular_dist_matrix = codep.get_distance_matrix(dist_matrix, distance_metric='angular')
-    return angular_dist_matrix
+    df = pd.DataFrame()
+    df['Expected Max Loss (Normal market)'] = new_var_array
+    df['Expected Tail Loss (Black Swan)'] = new_var_array_e
+
+    sns.set(rc={'figure.facecolor': 'black', 'figure.edgecolor': 'black', 'xtick.color': 'white',
+                'ytick.color': 'white', 'text.color': 'white', 'axes.labelcolor': 'white',
+                'axes.facecolor': 'black', 'grid.color': '#17171a'})
+    sns.despine()
+    sns.set_context('paper', font_scale=1.25)
+    plt.figure(figsize=(11, 7))
+    sns.lineplot(markers=True, dashes=False,
+                 palette="hls", alpha=.9,
+                 data=df,
+                 legend="brief")
+
+    plt.xlabel("Day #")
+    plt.ylabel("Loss (%)")
+    plt.suptitle('Ожидаемые дневные убытки портфеля за 10 дней', fontsize=25)
+
+    buf = io.BytesIO()
+    plt.savefig(buf, format='png', facecolor='black', transparent=True, bbox_inches='tight')
+    buf.seek(0)
+    im = Image.open(buf)
+    im.save(f'{save_path}.png')
+    buf.close()
+    plt.close('all')
 
 
 def correl(ret_df_=None, save_path=None):
@@ -130,7 +150,7 @@ def scatter_for_risk_premium(price_df: pd = None, save_path=''):
         plt.text(df['Risk'][line], df['Premium'][line], df.index[line],
                  horizontalalignment='left', size='x-small', color='white', weight='semibold')
 
-    plt.xlabel("Месячный риск (%)")
+    plt.xlabel("Текущий риск (%)")
     plt.ylabel("Дополнительная доходность за риск (%)")
     plt.suptitle('Анализ премий за риск', fontsize=25)
     plt.legend(title='U Sharpe', loc='center left', bbox_to_anchor=(1.01, 0.5), borderaxespad=0)
@@ -142,19 +162,6 @@ def scatter_for_risk_premium(price_df: pd = None, save_path=''):
     im.save(f'{save_path}.png')
     buf.close()
     plt.close('all')
-    # plt.savefig(path + filename_scatter, facecolor='black', transparent=True, bbox_inches='tight')
-
-
-# ============================== GET Sonar ================================
-def get_sonar_data(ticker):
-    factors = ['SPY', 'QQQ', 'ARKK', 'VLUE', 'IWM', 'MGC', 'VEA', 'EEM']
-    # SPY = QUAL
-    # QQQ = GROWTH / MOM
-    # IWM, MGC = size
-    # VLUE
-    # VEA - Developed / EEM - Emerging
-    sectors = ['XLC', 'XLK', 'XLY', 'XLV', 'XLP', 'XLU', 'XLI', 'XLB', 'XLRE', 'XLF', 'XLE']
-    pass
 
 
 # ============================== GET Inspector ================================
@@ -176,7 +183,8 @@ def get_inspector_data(portfolio, quarter=63):
     six_month_ago = add_months(now, -12)
 
     df = tickers_data.history(start=six_month_ago)
-    df['hlc3'] = (df['high'] + df['low'] + df['close']) / 3
+    # df['hlc3'] = (df['high'] + df['low'] + df['close']) / 3 # удалил из-за несовпадения в @QQQ и !QQQ 0
+    df['hlc3'] = df['close']
     df.drop(columns={'open', 'volume', 'adjclose', 'dividends', 'splits', 'high', 'low', 'close'}, errors='ignore',
             inplace=True)
     df.reset_index(level=df.index.names, inplace=True)
@@ -221,9 +229,12 @@ def get_inspector_data(portfolio, quarter=63):
         df['portfolio_pct'] += df[col + ' returns']
 
         # For Ulcer df - hlc3, не ретурны
-        ulcer[col + ' price'] = df[col] * portfolio_weights_pct[col]
+        ulcer[col + ' price'] = df[col]
+
         # For Ulcer df - hlc3 * w для портфеля, не ретурны
-        df['PORTF price'] += ulcer[col + ' price']
+        ulcer[col] = df[col] * portfolio_weights_pct[col]
+        df['PORTF price'] += ulcer[col]
+        ulcer.drop(columns={f'{col}'}, inplace=True)
         # ретурны для коррел матрицы конституентов
         angular_stocks[col] = df[col].pct_change()
 
@@ -231,30 +242,17 @@ def get_inspector_data(portfolio, quarter=63):
     ulcer['PORTF price'] = df['PORTF price']
     df.drop(columns={'PORTF price'}, inplace=True)
 
-    # квартальный шарп порта
-    # df[f'port_sharpe_{quarter}'] = (df['portfolio_pct'].rolling(quarter).mean() /
-    #                                 df['portfolio_pct'].rolling(quarter).std()) * sqrt(quarter)
+    # квартал вола порта
+    df[f'port_volatility_{quarter}'] = df['portfolio_pct'].rolling(quarter).std() * sqrt(quarter)
 
-    df[f'port_volatility_{quarter}'] = df['portfolio_pct'].rolling(quarter).std() * sqrt(quarter)  # квартал вола порта
-
-    # месячная аннуализированная/стандартная вола порта
-    # df[f'port_volatility_21'] = df['portfolio_pct'] * 100
-    # df[f'port_volatility_21'] = df[f'port_volatility_21'].rolling(21).std() * sqrt(252)
-    # print('port_volatility_21', df[f'port_volatility_21'])
     df.dropna(inplace=True)
 
     # расчет бенчей
     for col in benches:
         bench_df[f'{col}_return'] = bench_df[col].pct_change()
 
-        # квартал шарп по бенчам
-        # bench_df[f'{col}_sharpe_{quarter}'] = (bench_df[col].pct_change().rolling(quarter).mean() /
-        #                                        bench_df[col].pct_change().rolling(quarter).std()) * sqrt(quarter)
         # квартальная вола по бенчам
         bench_df[f'{col}_volatility_{quarter}'] = bench_df[col].pct_change().rolling(quarter).std() * sqrt(quarter)
-
-        # квартальный м2 по бенчам
-        # bench_df[f'{col}_m2_{quarter}'] = df[f'port_sharpe_{quarter}'] * bench_df[f'{col}_volatility_{quarter}']
 
         # For Ulcer цены бенчей
         ulcer[col + ' price'] = bench_df[col]
@@ -269,7 +267,6 @@ def get_inspector_data(portfolio, quarter=63):
         else:
             pass
         bench_df.drop(columns={f'{col}'}, inplace=True)
-
     metrics = ulcer.columns.tolist()
     for col in metrics:
         ulcer[f'{col}_up'] = 100.0 * (ulcer[col] - ulcer[col].rolling(21).min()) / ulcer[col].rolling(21).min()
@@ -280,6 +277,9 @@ def get_inspector_data(portfolio, quarter=63):
         ulcer[f'{col}_dn'] = ulcer[f'{col}_dn'] + ulcer[f'{col}_dn'].rolling(21).std()
         ulcer[f'{col}_ratio'] = ulcer[f'{col}_up'] / ulcer[f'{col}_dn'].rolling(21).max()
         ulcer[f'{col}_premia'] = ulcer[f'{col}_up'] - ulcer[f'{col}_dn']
+
+        ulcer[f'{col}_dn'] = ulcer[f'{col}_dn'].iloc[-63:].mean()
+        ulcer[f'{col}_premia'] = ulcer[f'{col}_premia'].iloc[-63:].mean()
         ulcer[f'{col}_ratio_mean'] = ulcer[f'{col}_ratio'].iloc[-63:].mean()
         ulcer.drop(columns={f'{col}', f'{col}_up'}, inplace=True)
     ulcer.dropna(inplace=True)
@@ -287,18 +287,25 @@ def get_inspector_data(portfolio, quarter=63):
     # расчеты для спай/тлт бенча
     bench_df[f'SPY_TLT_volatility_{quarter}'] =\
         0.6 * bench_df[f'SPY_volatility_{quarter}'] + 0.4 * bench_df[f'TLT_volatility_{quarter}']
-    # bench_df[f'SPY_TLT_m2_{quarter}'] = df[f'port_sharpe_{quarter}'] * bench_df[f'SPY_TLT_volatility_{quarter}']
+
     bench_df[f'SPY_TLT_dr_{quarter}'] = bench_df[f'SPY_TLT_volatility_{quarter}'] * 100 / \
         df[f'port_volatility_{quarter}']
 
     # расчет беты для стресс-теста
     bench_df[f'PORT_TO_SPY_beta_{quarter}'] = bench_df[f'SPY_return'].corr(df['portfolio_pct']) * \
                                               df[f'port_volatility_{quarter}'] / bench_df[f'SPY_volatility_{quarter}']
+    bench_df[f'PORT_TO_SPY_correl_{quarter}'] = bench_df[f'SPY_return'].corr(df['portfolio_pct'])
 
-    bench_df[f'PORTF_VAR'] = value_at_risk(df['portfolio_pct'], sigma=1, confidence=0.99)
-    # # расчет 3,14 * месячной волы для стресс-теста
-    # bench_df[f'PORT_WORST_21'] = df[f'port_volatility_21'] * 3.14
-    # print(bench_df[f'PORT_WORST_21'])
+    # PORTF new_VAR
+    returns = df['portfolio_pct'] * 100
+    min_returns = abs(returns.rolling(21).min())
+    n_var = min_returns.iloc[-63:].mean() + min_returns.iloc[-63:].std()
+    n_var_euler = min_returns.iloc[-63:].mean() + 2.71 * min_returns.iloc[-63:].std()
+
+    filename_h6 = str(uuid.uuid4()).replace('-', '')
+    debug(f"Tail loss filename: {filename_h6}")
+    new_var(df['portfolio_pct'], save_path=f'{path}{filename_h6}')
+    add_watermark(f'{path}{filename_h6}.png', f'{path}{filename_h6}.png', 90, wtermark_color=(255, 255, 255, 70))
 
     # расчет коррел конституентов
     angular_stocks.dropna(inplace=True)
@@ -321,9 +328,7 @@ def get_inspector_data(portfolio, quarter=63):
     # ulcer.to_csv(os.path.join(f'{PROJECT_HOME_DIR}/results/inspector/ulcer.csv'))
 
     # сбор словарей для визуализаций
-    # mask_m2 = ['SPY_m2_63', 'QQQ_m2_63', 'ARKK_m2_63', 'VLUE_m2_63', 'EEM_m2_63', 'SPY_TLT_m2_63']
     mask_dr = ['SPY_dr_63', 'QQQ_dr_63', 'ARKK_dr_63', 'VLUE_dr_63', 'EEM_dr_63', 'SPY_TLT_dr_63']
-    # m2_cols = bench_df[mask_m2].columns.tolist()
     dr_cols = bench_df[mask_dr].columns.tolist()
     divers = {}
 
@@ -331,19 +336,10 @@ def get_inspector_data(portfolio, quarter=63):
         name = str(col).replace('_dr_63', '')
         temp = {f'{name}': bench_df[f'{col}'].iloc[-1]}
         divers.update(temp)
-    m2 = {}
-    # for col in m2_cols:
-    #     name = str(col).replace('_m2_63', '')
-    #     temp2 = {f'{name}': bench_df[f'{col}'].iloc[-1]}
-    #     m2.update(temp2)
 
     filename_h1 = str(uuid.uuid4()).replace('-', '')
     debug(f"Divers filename: {filename_h1}")
     create_custom_histogram(divers, "Уровень диверсификации (%) против бенчмарков", path, filename_h1)
-
-    # filename_h2 = str(uuid.uuid4()).replace('-', '')
-    # debug(f"M2 filename: {filename_h2}")
-    # create_custom_histogram(m2, "Размер премии (%) бенчмарков в сравнении с портфелем", path, filename_h2)
 
     tests = ulcer.columns.tolist()
     interpretations = {}
@@ -355,55 +351,61 @@ def get_inspector_data(portfolio, quarter=63):
         else:
             pass
     interpretations.update({f'beta': bench_df[f'PORT_TO_SPY_beta_63'].iloc[-1]})
-    interpretations.update({f'var99_4': bench_df[f'PORTF_VAR'].iloc[-1]})
+    interpretations.update({f'correl': bench_df[f'PORT_TO_SPY_correl_63'].iloc[-1]})
     interpretations.update({f'divers': divers['SPY']})
-    debug(interpretations)
+    # debug(interpretations)
     beta = round(interpretations['beta'] * 10, ndigits=2)
-    # var99_1 = round(interpretations['var99_4'] * 100, ndigits=2)
-    var99_2 = round(interpretations['var99_4'] * 2.71 * 100, ndigits=2)  # Euler's number
-    # var99_3 = round(interpretations['var99_4'] * 3.14 * 100, ndigits=2)  # Pi
-    if beta > 0:
-        sign = 'если SPY(широкий рынок) упадёт на -10%, то твой портфель упадёт в среднем на -'
+    correl_ = interpretations['correl']
+
+    nvar99 = round(n_var, ndigits=2)
+    nvar99_e = round(n_var_euler, ndigits=2)
+    if correl_ >= 0.5:
+        sign = f'если SPY(широкий рынок) упадёт на -10%, то твой портфель упадёт в среднем на -{beta}%'
+    elif correl_ <= -0.5:
+        sign = f'если SPY(широкий рынок) вырастет на 10%, то твой портфель упадёт в среднем на -{beta}%'
     else:
-        sign = 'если SPY(широкий рынок) вырастет на 10%, то твой портфель упадёт в среднем на '
+        sign = f'не применим к твоему портфелю из-за отсутствия статистически значимой взаимосвязи'
     ddr = round(interpretations['divers'], ndigits=2)
     risk = interpretations['PORTF price_dn'] - interpretations['SPY price_dn']
     prem = interpretations['PORTF price_premia'] - interpretations['SPY price_premia']
     usharpe = interpretations['PORTF price_ratio_mean'] - interpretations['SPY price_ratio_mean']
-
     port_risk = round(interpretations['PORTF price_dn'], ndigits=2)
     port_prem = round(interpretations['PORTF price_premia'], ndigits=2)
     port_usharpe = round(interpretations['PORTF price_ratio_mean'], ndigits=2)
-    premia_msg = f'Премия портфеля {port_prem}\n' \
-                 f'Месячный риск портфеля {port_risk}\n' \
-                 f'U Sharpe портфеля {port_usharpe}\n'
+    premia_msg = f'Премия портфеля {port_prem}%\n' \
+                 f'Месячный риск портфеля {port_risk}%\n' \
+                 f'U Sharpe портфеля {port_usharpe}%\n'
 
-    msg_stress = f'\n🙈__Стресс-тест №1:__ {sign}{beta}%\n' \
-                 f'\n🙉__Стресс-тест №2:__ в 99% случаев дневная просадка портфеля не превысит {var99_2}%\n' \
+    msg_stress = f'\n🙈__Стресс-тест №1:__ {sign}\n' \
+                 f'\n🙉__Стресс-тест №2:__ в 99% случаев (при нормальном рынке) дневная просадка портфеля не ' \
+                 f'превысит -{nvar99}%\n' \
+                 f'\n🙊__Стресс-тест №3:__ в случае экстремальных условий (хвостовой риск) дневная просадка ' \
+                 f'портфеля не превысит -{nvar99_e}%\n' \
                  f'\n🧠__Диверсификация твоего портфеля составляет {ddr}%__ от уровня диверсификации SPY'
     if risk > 0 and prem > 0 and usharpe > 0:
         msg = f'{premia_msg}\n{scenario1}\n{msg_stress}'
     elif risk > 0 and prem > 0 and usharpe < 0:
-        msg = f'{premia_msg}\n{scenario1}\n{msg_stress}'
+        msg = f'{premia_msg}\n{scenario1_a}\n{msg_stress}'
     elif risk < 0 and prem > 0 and usharpe > 0:
-        msg = f'{premia_msg}\n{scenario1}\n{msg_stress}'
+        msg = f'{premia_msg}\n{scenario2}\n{msg_stress}'
     elif risk < 0 and prem > 0 and usharpe < 0:
-        msg = f'{premia_msg}\n{scenario1}\n{msg_stress}'
+        msg = f'{premia_msg}\n{scenario2_a}\n{msg_stress}'
     elif risk < 0 and prem < 0 and usharpe > 0:
-        msg = f'{premia_msg}\n{scenario1}\n{msg_stress}'
+        msg = f'{premia_msg}\n{scenario3}\n{msg_stress}'
     elif risk < 0 and prem < 0 and usharpe < 0:
-        msg = f'{premia_msg}\n{scenario1}\n{msg_stress}'
+        msg = f'{premia_msg}\n{scenario3_a}\n{msg_stress}'
     elif risk > 0 and prem < 0 and usharpe > 0:
-        msg = f'{premia_msg}\n{scenario1}\n{msg_stress}'
+        msg = f'{premia_msg}\n{scenario4}\n{msg_stress}'
     elif risk > 0 and prem < 0 and usharpe < 0:
-        msg = f'{premia_msg}\n{scenario1}\n{msg_stress}'
+        msg = f'{premia_msg}\n{scenario4_a}\n{msg_stress}'
     else:
         msg = msg_stress
     debug(msg)
 
     result_files = [f'{path}{filename_h1}.png',
                     f'{path}{filename_h3}.png',
-                    f'{path}{filename_h4}.png']
+                    f'{path}{filename_h4}.png',
+                    f'{path}{filename_h6}.png']
     return result_files, msg
 
 
@@ -1556,7 +1558,7 @@ def get_tw_charts(driver=None, img_out_path_=IMAGES_OUT_PATH):
             for k, v in treemaps.items():
                 im_path = os.path.join(img_out_path_, k + '.png')
                 driver.get(v)
-                sleep(15)
+                sleep(20)
                 elem = driver.find_element_by_class_name("chart-container-border")
                 webdriver.ActionChains(driver).move_to_element(elem).perform()
                 driver.execute_script("return arguments[0].scrollIntoView();", elem)
@@ -1570,7 +1572,7 @@ def get_tw_charts(driver=None, img_out_path_=IMAGES_OUT_PATH):
                 try:
                     close_button2 = driver.find_element_by_xpath("//button[@class='close-button-7uy97o5_']").click()
                     driver.execute_script("arguments[0].click();", close_button2)
-                    sleep(3)
+                    sleep(4)
                 except Exception as e2:
                     debug(e2)
                 try:
