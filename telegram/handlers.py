@@ -276,18 +276,12 @@ async def quotes_to_handler(event, client_, limit=20):
     # print(parse)
     stock = parse[1]
     stock = stock.upper()
-    await client_.send_message(event.input_sender, message='\U000026A0 \n__При использовании финансового анализа '
-                                                           'списывается 1 запрос🔋\n'
-                                                           'Выбирая отдельные акции '
-                                                           'следует придерживаться стратегии, учитывать возможные '
-                                                           'риски и последствия, а также придерживаться разумной '
-                                                           'диверсификации и аллокации__' + '\n\n' +
-                               '\U00002757 Как построен рейтинг? - /instruction28' + '\n'
-                               '\U00002757\U00002757 Как использовать рейтинг? - /instruction34')
+    await client_.send_message(event.input_sender, message=f'\U000026A0 \n__Будет использован 1 запрос🔋\n\n'
+                                                           f'\U00002757 О рейтингах Ипсилона? - /instruction28\n'
+                                                           f'\U00002757 Использование рейтингов - /instruction34')
     message1 = await client_.send_message(event.input_sender, message='Получаю описание \U000023F3')
-    message1_a = await client_.send_message(event.input_sender, message='Определяю тип актива \U000023F3')
+    message1_a = await client_.send_message(event.input_sender, message='Определяю тип \U000023F3')
     message2 = await client_.send_message(event.input_sender, message='Анализирую все найденные данные \U000023F3')
-    # message3 = await client_.send_message(event.input_sender, message='Провожу статистический анализ \U000023F3')
 
     path = f'{PROJECT_HOME_DIR}/results/ticker_stat/'
     img_path = f'{path}{stock}.png'
@@ -341,8 +335,7 @@ async def quotes_to_handler(event, client_, limit=20):
     if ss.returns is not None:
         ss.stock_snapshot()
         if msg3 is not None:
-            # msg4 = ss.stock_stat_v3(rank_type=msg3['other'], rank=msg3['rank'], sma_sig=sma_sig)
-            msg4 = ss.stock_stat_v4(rank_type=msg3['other'], rank=msg3['rank'], sma_sig=sma_sig)  # TODO !!!!!!!!!
+            msg4 = ss.stock_stat_v4(rank_type=msg3['other'], rank=msg3['rank'], sma_sig=sma_sig)
 
         else:
             msg4 = 'Нет данных для данного тикера'

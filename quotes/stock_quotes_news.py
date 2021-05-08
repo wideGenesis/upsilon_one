@@ -181,7 +181,7 @@ class StockStat:
             m50 = ((prices - prices.rolling(50).mean()) / prices.rolling(50).mean()) * 100
             m200 = ((prices - prices.rolling(200).mean()) / prices.rolling(200).mean()) * 100
 
-            # calc denominator as weighed rsi
+            # calc denominator as rsi
             delta = prices.diff()
             delta = delta[1:]
             up, down = delta.copy(), delta.copy()
@@ -248,227 +248,226 @@ class StockStat:
                                  title=f'{self.stock}',
                                  savefig=img)
 
-    def stock_stat_v3(self, rank_type=None, rank=None, sma_sig=None):
-        if self.returns is not None:
-            stats = qs.reports.metrics_v2(self.returns,
-                                          benchmark=self.benchmark,
-                                          mode=self.mode,
-                                          ticker_=self.stock,
-                                          display=self.display)
-            parse = json.loads(stats)
-            if float(parse[self.stock]['Sharpe']) > float(parse['Benchmark']['Sharpe']) and rank_type == 0 \
-                    and rank >= 11 and sma_sig:
-                sharpe = f'Соотношение доходности и риска у {self.stock} больше чем у индекса. ' \
-                         f'Upsilon-score максимален для компании этого типа. ' \
-                         f'\n\n{self.stock} - ⭐️⭐️⭐️⭐️⭐️'
-            elif float(parse[self.stock]['Sharpe']) > float(parse['Benchmark']['Sharpe']) and rank_type == 0 \
-                    and rank >= 11 and not sma_sig:
-                sharpe = f'Соотношение доходности и риска у {self.stock} больше чем у индекса. ' \
-                         f'Upsilon-score максимален для компании этого типа. ' \
-                         f'\n\n{self.stock} - ⭐️⭐️⭐️⭐️️'
-
-            elif float(parse[self.stock]['Sharpe']) > float(parse['Benchmark']['Sharpe']) and rank_type == 0 \
-                    and rank >= 8 and sma_sig:
-                sharpe = f'Соотношение доходности и риска у {self.stock} больше чем у индекса. ' \
-                         f'Upsilon-score достаточно высок для компании этого типа. ' \
-                         f'\n\n{self.stock} - ⭐️⭐️⭐️⭐️'
-            elif float(parse[self.stock]['Sharpe']) > float(parse['Benchmark']['Sharpe']) and rank_type == 0 \
-                    and rank >= 8 and not sma_sig:
-                sharpe = f'Соотношение доходности и риска у {self.stock} больше чем у индекса. ' \
-                         f'Upsilon-score достаточно высок для компании этого типа. ' \
-                         f'\n\n{self.stock} - ⭐️⭐️⭐️️'
-
-            elif float(parse[self.stock]['Sharpe']) > float(parse['Benchmark']['Sharpe']) and rank_type == 0 \
-                    and rank >= 6 and sma_sig:
-                sharpe = f'Соотношение доходности и риска у {self.stock} больше чем у индекса. ' \
-                         f'Upsilon-score умеренно высок для компании этого типа. ' \
-                         f'\n\n{self.stock} - ⭐️⭐️⭐️'
-            elif float(parse[self.stock]['Sharpe']) > float(parse['Benchmark']['Sharpe']) and rank_type == 0 \
-                    and rank >= 6 and not sma_sig:
-                sharpe = f'Соотношение доходности и риска у {self.stock} больше чем у индекса. ' \
-                         f'Upsilon-score умеренно высок для компании этого типа. ' \
-                         f'\n\n{self.stock} - ⭐️⭐️️'
-
-            elif float(parse[self.stock]['Sharpe']) > float(parse['Benchmark']['Sharpe']) and rank_type == 0 \
-                    and rank <= 5 and sma_sig:
-                sharpe = f'Соотношение доходности и риска у {self.stock} больше чем у индекса. ' \
-                         f'Но Upsilon-score низок для компании этого типа. ' \
-                         f'\n\n{self.stock} - ⭐️⭐️'
-            elif float(parse[self.stock]['Sharpe']) > float(parse['Benchmark']['Sharpe']) and rank_type == 0 \
-                    and rank <= 5 and not sma_sig:
-                sharpe = f'Соотношение доходности и риска у {self.stock} больше чем у индекса. ' \
-                         f'Но Upsilon-score низок для компании этого типа. ' \
-                         f'\n\n{self.stock} - ⭐️️'
-
-            elif float(parse[self.stock]['Sharpe']) <= float(parse['Benchmark']['Sharpe']) and rank_type == 0 \
-                    and rank >= 13 and sma_sig:
-                sharpe = f'Соотношение доходности и риска у {self.stock} меньше чем у индекса. ' \
-                         f'Но Upsilon-score максимален для компании этого типа. ' \
-                         f'\n\n{self.stock} - ⭐️⭐️⭐️⭐️⭐'
-            elif float(parse[self.stock]['Sharpe']) <= float(parse['Benchmark']['Sharpe']) and rank_type == 0 \
-                    and rank >= 13 and not sma_sig:
-                sharpe = f'Соотношение доходности и риска у {self.stock} меньше чем у индекса. ' \
-                         f'Но Upsilon-score максимален для компании этого типа. ' \
-                         f'\n\n{self.stock} - ⭐️⭐️⭐️⭐️'
-
-            elif float(parse[self.stock]['Sharpe']) <= float(parse['Benchmark']['Sharpe']) and rank_type == 0 \
-                    and rank >= 10 and sma_sig:
-                sharpe = f'Соотношение доходности и риска у {self.stock} меньше чем у индекса. ' \
-                         f'Но Upsilon-score достаточно высок для компании этого типа. ' \
-                         f'\n\n{self.stock} - ⭐️⭐️⭐️⭐️'
-            elif float(parse[self.stock]['Sharpe']) <= float(parse['Benchmark']['Sharpe']) and rank_type == 0 \
-                    and rank >= 10 and not sma_sig:
-                sharpe = f'Соотношение доходности и риска у {self.stock} меньше чем у индекса. ' \
-                         f'Но Upsilon-score достаточно высок для компании этого типа. ' \
-                         f'\n\n{self.stock} - ⭐️⭐️⭐️️'
-
-            elif float(parse[self.stock]['Sharpe']) <= float(parse['Benchmark']['Sharpe']) and rank_type == 0 \
-                    and rank >= 7 and sma_sig:
-                sharpe = f'Соотношение доходности и риска у {self.stock} меньше чем у индекса. ' \
-                         f'Upsilon-score умеренно высок для компании этого типа. ' \
-                         f'\n\n{self.stock} - ⭐️⭐️⭐️'
-            elif float(parse[self.stock]['Sharpe']) <= float(parse['Benchmark']['Sharpe']) and rank_type == 0 \
-                    and rank >= 7 and not sma_sig:
-                sharpe = f'Соотношение доходности и риска у {self.stock} меньше чем у индекса. ' \
-                         f'Upsilon-score умеренно высок для компании этого типа. ' \
-                         f'\n\n{self.stock} - ⭐️⭐️️'
-
-            elif float(parse[self.stock]['Sharpe']) <= float(parse['Benchmark']['Sharpe']) and rank_type == 0 \
-                    and rank >= 5 and sma_sig:
-                sharpe = f'Соотношение доходности и риска у {self.stock} меньше чем у индекса. ' \
-                         f'Upsilon-score низок для компании этого типа. ' \
-                         f'\n\n{self.stock} - ⭐️⭐️️'
-            elif float(parse[self.stock]['Sharpe']) <= float(parse['Benchmark']['Sharpe']) and rank_type == 0 \
-                    and rank >= 5 and not sma_sig:
-                sharpe = f'Соотношение доходности и риска у {self.stock} меньше чем у индекса. ' \
-                         f'Upsilon-score низок для компании этого типа. ' \
-                         f'\n\n{self.stock} - ⭐️️️'
-
-            elif float(parse[self.stock]['Sharpe']) <= float(parse['Benchmark']['Sharpe']) and rank_type == 0 \
-                    and rank <= 4 and sma_sig:
-                sharpe = f'Соотношение доходности и риска у {self.stock} меньше чем у индекса. ' \
-                         f'И Upsilon-score слишком низок для компании этого типа. Потенциальный риск не оправдан. ' \
-                         f'\n\n{self.stock} - ⭐️'
-            elif float(parse[self.stock]['Sharpe']) <= float(parse['Benchmark']['Sharpe']) and rank_type == 0 \
-                    and rank <= 4 and not sma_sig:
-                sharpe = f'Соотношение доходности и риска у {self.stock} меньше чем у индекса. ' \
-                         f'И Upsilon-score слишком низок для компании этого типа. Потенциальный риск не оправдан. ' \
-                         f'\n\n{self.stock} - ⛔️'
-
-            elif float(parse[self.stock]['Sharpe']) > float(parse['Benchmark']['Sharpe']) and rank_type == 1 \
-                    and rank >= 8 and sma_sig:
-                sharpe = f'Соотношение доходности и риска у {self.stock} больше чем у индекса. ' \
-                         f'Upsilon-score максимален для компании этого типа. ' \
-                         f'\n\n{self.stock} - ⭐️⭐️⭐️⭐️⭐️'
-            elif float(parse[self.stock]['Sharpe']) > float(parse['Benchmark']['Sharpe']) and rank_type == 1 \
-                    and rank >= 8 and not sma_sig:
-                sharpe = f'Соотношение доходности и риска у {self.stock} больше чем у индекса. ' \
-                         f'Upsilon-score максимален для компании этого типа. ' \
-                         f'\n\n{self.stock} - ⭐️⭐️⭐️⭐️️'
-
-            elif float(parse[self.stock]['Sharpe']) > float(parse['Benchmark']['Sharpe']) and rank_type == 1 \
-                    and rank >= 6 and sma_sig:
-                sharpe = f'Соотношение доходности и риска у {self.stock} больше чем у индекса. ' \
-                         f'Upsilon-score достаточно высок для компании этого типа. ' \
-                         f'\n\n{self.stock} - ⭐️⭐️⭐️⭐️'
-            elif float(parse[self.stock]['Sharpe']) > float(parse['Benchmark']['Sharpe']) and rank_type == 1 \
-                    and rank >= 6 and not sma_sig:
-                sharpe = f'Соотношение доходности и риска у {self.stock} больше чем у индекса. ' \
-                         f'Upsilon-score достаточно высок для компании этого типа. ' \
-                         f'\n\n{self.stock} - ⭐️⭐️⭐️️'
-
-            elif float(parse[self.stock]['Sharpe']) > float(parse['Benchmark']['Sharpe']) and rank_type == 1 \
-                    and rank >= 4 and sma_sig:
-                sharpe = f'Соотношение доходности и риска у {self.stock} больше чем у индекса. ' \
-                         f'Upsilon-score умеренно высок для компании этого типа. ' \
-                         f'\n\n{self.stock} - ⭐️⭐️⭐️'
-            elif float(parse[self.stock]['Sharpe']) > float(parse['Benchmark']['Sharpe']) and rank_type == 1 \
-                    and rank >= 4 and not sma_sig:
-                sharpe = f'Соотношение доходности и риска у {self.stock} больше чем у индекса. ' \
-                         f'Upsilon-score умеренно высок для компании этого типа. ' \
-                         f'\n\n{self.stock} - ⭐️⭐️️'
-
-            elif float(parse[self.stock]['Sharpe']) > float(parse['Benchmark']['Sharpe']) and rank_type == 1 \
-                    and rank <= 3 and sma_sig:
-                sharpe = f'Соотношение доходности и риска у {self.stock} больше чем у индекса. ' \
-                         f'Но Upsilon-score низок для компании этого типа. ' \
-                         f'\n\n{self.stock} - ⭐️⭐️'
-            elif float(parse[self.stock]['Sharpe']) > float(parse['Benchmark']['Sharpe']) and rank_type == 1 \
-                    and rank <= 3 and not sma_sig:
-                sharpe = f'Соотношение доходности и риска у {self.stock} больше чем у индекса. ' \
-                         f'Но Upsilon-score низок для компании этого типа. ' \
-                         f'\n\n{self.stock} - ⭐️️'
-
-            elif float(parse[self.stock]['Sharpe']) <= float(parse['Benchmark']['Sharpe']) and rank_type == 1 \
-                    and rank >= 10 and sma_sig:
-                sharpe = f'Соотношение доходности и риска у {self.stock} меньше чем у индекса. ' \
-                         f'Но Upsilon-score максимален для компании этого типа. ' \
-                         f'\n\n{self.stock} - ⭐️⭐️⭐️⭐️⭐️'
-            elif float(parse[self.stock]['Sharpe']) <= float(parse['Benchmark']['Sharpe']) and rank_type == 1 \
-                    and rank >= 10 and not sma_sig:
-                sharpe = f'Соотношение доходности и риска у {self.stock} меньше чем у индекса. ' \
-                         f'Но Upsilon-score максимален для компании этого типа. ' \
-                         f'\n\n{self.stock} - ⭐️⭐️⭐️⭐️️'
-
-            elif float(parse[self.stock]['Sharpe']) <= float(parse['Benchmark']['Sharpe']) and rank_type == 1 \
-                    and rank >= 8 and sma_sig:
-                sharpe = f'Соотношение доходности и риска у {self.stock} меньше чем у индекса. ' \
-                         f'Но Upsilon-score достаточно высок для компании этого типа. ' \
-                         f'\n\n{self.stock} - ⭐️⭐️⭐️⭐️'
-            elif float(parse[self.stock]['Sharpe']) <= float(parse['Benchmark']['Sharpe']) and rank_type == 1 \
-                    and rank >= 8 and not sma_sig:
-                sharpe = f'Соотношение доходности и риска у {self.stock} меньше чем у индекса. ' \
-                         f'Но Upsilon-score достаточно высок для компании этого типа. ' \
-                         f'\n\n{self.stock} - ⭐️⭐️⭐️️'
-
-            elif float(parse[self.stock]['Sharpe']) <= float(parse['Benchmark']['Sharpe']) and rank_type == 1 \
-                    and rank >= 6 and sma_sig:
-                sharpe = f'Соотношение доходности и риска у {self.stock} меньше чем у индекса. ' \
-                         f'Но Upsilon-score умеренно высок для компании этого типа. ' \
-                         f'\n\n{self.stock} - ⭐️⭐️⭐'
-            elif float(parse[self.stock]['Sharpe']) <= float(parse['Benchmark']['Sharpe']) and rank_type == 1 \
-                    and rank >= 6 and not sma_sig:
-                sharpe = f'Соотношение доходности и риска у {self.stock} меньше чем у индекса. ' \
-                         f'Но Upsilon-score умеренно высок для компании этого типа. ' \
-                         f'\n\n{self.stock} - ⭐️⭐️'
-
-            elif float(parse[self.stock]['Sharpe']) <= float(parse['Benchmark']['Sharpe']) and rank_type == 1 \
-                    and rank >= 4 and sma_sig:
-                sharpe = f'Соотношение доходности и риска у {self.stock} меньше чем у индекса. ' \
-                         f'Upsilon-score низок для компании этого типа. ' \
-                         f'\n\n{self.stock} - ⭐️⭐️'
-            elif float(parse[self.stock]['Sharpe']) <= float(parse['Benchmark']['Sharpe']) and rank_type == 1 \
-                    and rank >= 4 and not sma_sig:
-                sharpe = f'Соотношение доходности и риска у {self.stock} меньше чем у индекса. ' \
-                         f'Upsilon-score низок для компании этого типа. ' \
-                         f'\n\n{self.stock} - ⭐️'
-
-            elif float(parse[self.stock]['Sharpe']) <= float(parse['Benchmark']['Sharpe']) and rank_type == 1 \
-                    and rank <= 3 and sma_sig:
-                sharpe = f'Соотношение доходности и риска у {self.stock} меньше чем у индекса. ' \
-                         f'И Upsilon-score слишком низок для компании этого типа. Потенциальный риск не оправдан. ' \
-                         f'\n\n{self.stock} - ⭐'
-            elif float(parse[self.stock]['Sharpe']) <= float(parse['Benchmark']['Sharpe']) and rank_type == 1 \
-                    and rank <= 3 and not sma_sig:
-                sharpe = f'Соотношение доходности и риска у {self.stock} меньше чем у индекса. ' \
-                         f'И Upsilon-score слишком низок для компании этого типа. Потенциальный риск не оправдан. ' \
-                         f'\n\n{self.stock} - ⛔'
-
-            elif rank == 0:
-                sharpe = f'\U000026D4 отсутствуют данные для оценки {self.stock} или крайне плохое ведение бизнеса'
-            else:
-                sharpe = f'\U000026A0 противоречивые результаты анализа. Финансовая оценка не соответсвует ' \
-                         f'ценовой динамике акций {self.stock}'
-
-            msg = f'{self.stock} __проанализирована __\nс ' + parse[self.stock]['Start Period'] + ' по ' + \
-                  parse[self.stock]['End Period'] + '\n' + '\n' + '```Вывод: ```' + '\n' + sharpe + '\n' + '\n'
-            print(rank, rank_type)
-            return msg
+    # def stock_stat_v3(self, rank_type=None, rank=None, sma_sig=None):
+    #     if self.returns is not None:
+    #         stats = qs.reports.metrics_v2(self.returns,
+    #                                       benchmark=self.benchmark,
+    #                                       mode=self.mode,
+    #                                       ticker_=self.stock,
+    #                                       display=self.display)
+    #         parse = json.loads(stats)
+    #         if float(parse[self.stock]['Sharpe']) > float(parse['Benchmark']['Sharpe']) and rank_type == 0 \
+    #                 and rank >= 11 and sma_sig:
+    #             sharpe = f'Соотношение доходности и риска у {self.stock} больше чем у индекса. ' \
+    #                      f'Upsilon-score максимален для компании этого типа. ' \
+    #                      f'\n\n{self.stock} - ⭐️⭐️⭐️⭐️⭐️'
+    #         elif float(parse[self.stock]['Sharpe']) > float(parse['Benchmark']['Sharpe']) and rank_type == 0 \
+    #                 and rank >= 11 and not sma_sig:
+    #             sharpe = f'Соотношение доходности и риска у {self.stock} больше чем у индекса. ' \
+    #                      f'Upsilon-score максимален для компании этого типа. ' \
+    #                      f'\n\n{self.stock} - ⭐️⭐️⭐️⭐️️'
+    #
+    #         elif float(parse[self.stock]['Sharpe']) > float(parse['Benchmark']['Sharpe']) and rank_type == 0 \
+    #                 and rank >= 8 and sma_sig:
+    #             sharpe = f'Соотношение доходности и риска у {self.stock} больше чем у индекса. ' \
+    #                      f'Upsilon-score достаточно высок для компании этого типа. ' \
+    #                      f'\n\n{self.stock} - ⭐️⭐️⭐️⭐️'
+    #         elif float(parse[self.stock]['Sharpe']) > float(parse['Benchmark']['Sharpe']) and rank_type == 0 \
+    #                 and rank >= 8 and not sma_sig:
+    #             sharpe = f'Соотношение доходности и риска у {self.stock} больше чем у индекса. ' \
+    #                      f'Upsilon-score достаточно высок для компании этого типа. ' \
+    #                      f'\n\n{self.stock} - ⭐️⭐️⭐️️'
+    #
+    #         elif float(parse[self.stock]['Sharpe']) > float(parse['Benchmark']['Sharpe']) and rank_type == 0 \
+    #                 and rank >= 6 and sma_sig:
+    #             sharpe = f'Соотношение доходности и риска у {self.stock} больше чем у индекса. ' \
+    #                      f'Upsilon-score умеренно высок для компании этого типа. ' \
+    #                      f'\n\n{self.stock} - ⭐️⭐️⭐️'
+    #         elif float(parse[self.stock]['Sharpe']) > float(parse['Benchmark']['Sharpe']) and rank_type == 0 \
+    #                 and rank >= 6 and not sma_sig:
+    #             sharpe = f'Соотношение доходности и риска у {self.stock} больше чем у индекса. ' \
+    #                      f'Upsilon-score умеренно высок для компании этого типа. ' \
+    #                      f'\n\n{self.stock} - ⭐️⭐️️'
+    #
+    #         elif float(parse[self.stock]['Sharpe']) > float(parse['Benchmark']['Sharpe']) and rank_type == 0 \
+    #                 and rank <= 5 and sma_sig:
+    #             sharpe = f'Соотношение доходности и риска у {self.stock} больше чем у индекса. ' \
+    #                      f'Но Upsilon-score низок для компании этого типа. ' \
+    #                      f'\n\n{self.stock} - ⭐️⭐️'
+    #         elif float(parse[self.stock]['Sharpe']) > float(parse['Benchmark']['Sharpe']) and rank_type == 0 \
+    #                 and rank <= 5 and not sma_sig:
+    #             sharpe = f'Соотношение доходности и риска у {self.stock} больше чем у индекса. ' \
+    #                      f'Но Upsilon-score низок для компании этого типа. ' \
+    #                      f'\n\n{self.stock} - ⭐️️'
+    #
+    #         elif float(parse[self.stock]['Sharpe']) <= float(parse['Benchmark']['Sharpe']) and rank_type == 0 \
+    #                 and rank >= 13 and sma_sig:
+    #             sharpe = f'Соотношение доходности и риска у {self.stock} меньше чем у индекса. ' \
+    #                      f'Но Upsilon-score максимален для компании этого типа. ' \
+    #                      f'\n\n{self.stock} - ⭐️⭐️⭐️⭐️⭐'
+    #         elif float(parse[self.stock]['Sharpe']) <= float(parse['Benchmark']['Sharpe']) and rank_type == 0 \
+    #                 and rank >= 13 and not sma_sig:
+    #             sharpe = f'Соотношение доходности и риска у {self.stock} меньше чем у индекса. ' \
+    #                      f'Но Upsilon-score максимален для компании этого типа. ' \
+    #                      f'\n\n{self.stock} - ⭐️⭐️⭐️⭐️'
+    #
+    #         elif float(parse[self.stock]['Sharpe']) <= float(parse['Benchmark']['Sharpe']) and rank_type == 0 \
+    #                 and rank >= 10 and sma_sig:
+    #             sharpe = f'Соотношение доходности и риска у {self.stock} меньше чем у индекса. ' \
+    #                      f'Но Upsilon-score достаточно высок для компании этого типа. ' \
+    #                      f'\n\n{self.stock} - ⭐️⭐️⭐️⭐️'
+    #         elif float(parse[self.stock]['Sharpe']) <= float(parse['Benchmark']['Sharpe']) and rank_type == 0 \
+    #                 and rank >= 10 and not sma_sig:
+    #             sharpe = f'Соотношение доходности и риска у {self.stock} меньше чем у индекса. ' \
+    #                      f'Но Upsilon-score достаточно высок для компании этого типа. ' \
+    #                      f'\n\n{self.stock} - ⭐️⭐️⭐️️'
+    #
+    #         elif float(parse[self.stock]['Sharpe']) <= float(parse['Benchmark']['Sharpe']) and rank_type == 0 \
+    #                 and rank >= 7 and sma_sig:
+    #             sharpe = f'Соотношение доходности и риска у {self.stock} меньше чем у индекса. ' \
+    #                      f'Upsilon-score умеренно высок для компании этого типа. ' \
+    #                      f'\n\n{self.stock} - ⭐️⭐️⭐️'
+    #         elif float(parse[self.stock]['Sharpe']) <= float(parse['Benchmark']['Sharpe']) and rank_type == 0 \
+    #                 and rank >= 7 and not sma_sig:
+    #             sharpe = f'Соотношение доходности и риска у {self.stock} меньше чем у индекса. ' \
+    #                      f'Upsilon-score умеренно высок для компании этого типа. ' \
+    #                      f'\n\n{self.stock} - ⭐️⭐️️'
+    #
+    #         elif float(parse[self.stock]['Sharpe']) <= float(parse['Benchmark']['Sharpe']) and rank_type == 0 \
+    #                 and rank >= 5 and sma_sig:
+    #             sharpe = f'Соотношение доходности и риска у {self.stock} меньше чем у индекса. ' \
+    #                      f'Upsilon-score низок для компании этого типа. ' \
+    #                      f'\n\n{self.stock} - ⭐️⭐️️'
+    #         elif float(parse[self.stock]['Sharpe']) <= float(parse['Benchmark']['Sharpe']) and rank_type == 0 \
+    #                 and rank >= 5 and not sma_sig:
+    #             sharpe = f'Соотношение доходности и риска у {self.stock} меньше чем у индекса. ' \
+    #                      f'Upsilon-score низок для компании этого типа. ' \
+    #                      f'\n\n{self.stock} - ⭐️️️'
+    #
+    #         elif float(parse[self.stock]['Sharpe']) <= float(parse['Benchmark']['Sharpe']) and rank_type == 0 \
+    #                 and rank <= 4 and sma_sig:
+    #             sharpe = f'Соотношение доходности и риска у {self.stock} меньше чем у индекса. ' \
+    #                      f'И Upsilon-score слишком низок для компании этого типа. Потенциальный риск не оправдан. ' \
+    #                      f'\n\n{self.stock} - ⭐️'
+    #         elif float(parse[self.stock]['Sharpe']) <= float(parse['Benchmark']['Sharpe']) and rank_type == 0 \
+    #                 and rank <= 4 and not sma_sig:
+    #             sharpe = f'Соотношение доходности и риска у {self.stock} меньше чем у индекса. ' \
+    #                      f'И Upsilon-score слишком низок для компании этого типа. Потенциальный риск не оправдан. ' \
+    #                      f'\n\n{self.stock} - ⛔️'
+    #
+    #         elif float(parse[self.stock]['Sharpe']) > float(parse['Benchmark']['Sharpe']) and rank_type == 1 \
+    #                 and rank >= 8 and sma_sig:
+    #             sharpe = f'Соотношение доходности и риска у {self.stock} больше чем у индекса. ' \
+    #                      f'Upsilon-score максимален для компании этого типа. ' \
+    #                      f'\n\n{self.stock} - ⭐️⭐️⭐️⭐️⭐️'
+    #         elif float(parse[self.stock]['Sharpe']) > float(parse['Benchmark']['Sharpe']) and rank_type == 1 \
+    #                 and rank >= 8 and not sma_sig:
+    #             sharpe = f'Соотношение доходности и риска у {self.stock} больше чем у индекса. ' \
+    #                      f'Upsilon-score максимален для компании этого типа. ' \
+    #                      f'\n\n{self.stock} - ⭐️⭐️⭐️⭐️️'
+    #
+    #         elif float(parse[self.stock]['Sharpe']) > float(parse['Benchmark']['Sharpe']) and rank_type == 1 \
+    #                 and rank >= 6 and sma_sig:
+    #             sharpe = f'Соотношение доходности и риска у {self.stock} больше чем у индекса. ' \
+    #                      f'Upsilon-score достаточно высок для компании этого типа. ' \
+    #                      f'\n\n{self.stock} - ⭐️⭐️⭐️⭐️'
+    #         elif float(parse[self.stock]['Sharpe']) > float(parse['Benchmark']['Sharpe']) and rank_type == 1 \
+    #                 and rank >= 6 and not sma_sig:
+    #             sharpe = f'Соотношение доходности и риска у {self.stock} больше чем у индекса. ' \
+    #                      f'Upsilon-score достаточно высок для компании этого типа. ' \
+    #                      f'\n\n{self.stock} - ⭐️⭐️⭐️️'
+    #
+    #         elif float(parse[self.stock]['Sharpe']) > float(parse['Benchmark']['Sharpe']) and rank_type == 1 \
+    #                 and rank >= 4 and sma_sig:
+    #             sharpe = f'Соотношение доходности и риска у {self.stock} больше чем у индекса. ' \
+    #                      f'Upsilon-score умеренно высок для компании этого типа. ' \
+    #                      f'\n\n{self.stock} - ⭐️⭐️⭐️'
+    #         elif float(parse[self.stock]['Sharpe']) > float(parse['Benchmark']['Sharpe']) and rank_type == 1 \
+    #                 and rank >= 4 and not sma_sig:
+    #             sharpe = f'Соотношение доходности и риска у {self.stock} больше чем у индекса. ' \
+    #                      f'Upsilon-score умеренно высок для компании этого типа. ' \
+    #                      f'\n\n{self.stock} - ⭐️⭐️️'
+    #
+    #         elif float(parse[self.stock]['Sharpe']) > float(parse['Benchmark']['Sharpe']) and rank_type == 1 \
+    #                 and rank <= 3 and sma_sig:
+    #             sharpe = f'Соотношение доходности и риска у {self.stock} больше чем у индекса. ' \
+    #                      f'Но Upsilon-score низок для компании этого типа. ' \
+    #                      f'\n\n{self.stock} - ⭐️⭐️'
+    #         elif float(parse[self.stock]['Sharpe']) > float(parse['Benchmark']['Sharpe']) and rank_type == 1 \
+    #                 and rank <= 3 and not sma_sig:
+    #             sharpe = f'Соотношение доходности и риска у {self.stock} больше чем у индекса. ' \
+    #                      f'Но Upsilon-score низок для компании этого типа. ' \
+    #                      f'\n\n{self.stock} - ⭐️️'
+    #
+    #         elif float(parse[self.stock]['Sharpe']) <= float(parse['Benchmark']['Sharpe']) and rank_type == 1 \
+    #                 and rank >= 10 and sma_sig:
+    #             sharpe = f'Соотношение доходности и риска у {self.stock} меньше чем у индекса. ' \
+    #                      f'Но Upsilon-score максимален для компании этого типа. ' \
+    #                      f'\n\n{self.stock} - ⭐️⭐️⭐️⭐️⭐️'
+    #         elif float(parse[self.stock]['Sharpe']) <= float(parse['Benchmark']['Sharpe']) and rank_type == 1 \
+    #                 and rank >= 10 and not sma_sig:
+    #             sharpe = f'Соотношение доходности и риска у {self.stock} меньше чем у индекса. ' \
+    #                      f'Но Upsilon-score максимален для компании этого типа. ' \
+    #                      f'\n\n{self.stock} - ⭐️⭐️⭐️⭐️️'
+    #
+    #         elif float(parse[self.stock]['Sharpe']) <= float(parse['Benchmark']['Sharpe']) and rank_type == 1 \
+    #                 and rank >= 8 and sma_sig:
+    #             sharpe = f'Соотношение доходности и риска у {self.stock} меньше чем у индекса. ' \
+    #                      f'Но Upsilon-score достаточно высок для компании этого типа. ' \
+    #                      f'\n\n{self.stock} - ⭐️⭐️⭐️⭐️'
+    #         elif float(parse[self.stock]['Sharpe']) <= float(parse['Benchmark']['Sharpe']) and rank_type == 1 \
+    #                 and rank >= 8 and not sma_sig:
+    #             sharpe = f'Соотношение доходности и риска у {self.stock} меньше чем у индекса. ' \
+    #                      f'Но Upsilon-score достаточно высок для компании этого типа. ' \
+    #                      f'\n\n{self.stock} - ⭐️⭐️⭐️️'
+    #
+    #         elif float(parse[self.stock]['Sharpe']) <= float(parse['Benchmark']['Sharpe']) and rank_type == 1 \
+    #                 and rank >= 6 and sma_sig:
+    #             sharpe = f'Соотношение доходности и риска у {self.stock} меньше чем у индекса. ' \
+    #                      f'Но Upsilon-score умеренно высок для компании этого типа. ' \
+    #                      f'\n\n{self.stock} - ⭐️⭐️⭐'
+    #         elif float(parse[self.stock]['Sharpe']) <= float(parse['Benchmark']['Sharpe']) and rank_type == 1 \
+    #                 and rank >= 6 and not sma_sig:
+    #             sharpe = f'Соотношение доходности и риска у {self.stock} меньше чем у индекса. ' \
+    #                      f'Но Upsilon-score умеренно высок для компании этого типа. ' \
+    #                      f'\n\n{self.stock} - ⭐️⭐️'
+    #
+    #         elif float(parse[self.stock]['Sharpe']) <= float(parse['Benchmark']['Sharpe']) and rank_type == 1 \
+    #                 and rank >= 4 and sma_sig:
+    #             sharpe = f'Соотношение доходности и риска у {self.stock} меньше чем у индекса. ' \
+    #                      f'Upsilon-score низок для компании этого типа. ' \
+    #                      f'\n\n{self.stock} - ⭐️⭐️'
+    #         elif float(parse[self.stock]['Sharpe']) <= float(parse['Benchmark']['Sharpe']) and rank_type == 1 \
+    #                 and rank >= 4 and not sma_sig:
+    #             sharpe = f'Соотношение доходности и риска у {self.stock} меньше чем у индекса. ' \
+    #                      f'Upsilon-score низок для компании этого типа. ' \
+    #                      f'\n\n{self.stock} - ⭐️'
+    #
+    #         elif float(parse[self.stock]['Sharpe']) <= float(parse['Benchmark']['Sharpe']) and rank_type == 1 \
+    #                 and rank <= 3 and sma_sig:
+    #             sharpe = f'Соотношение доходности и риска у {self.stock} меньше чем у индекса. ' \
+    #                      f'И Upsilon-score слишком низок для компании этого типа. Потенциальный риск не оправдан. ' \
+    #                      f'\n\n{self.stock} - ⭐'
+    #         elif float(parse[self.stock]['Sharpe']) <= float(parse['Benchmark']['Sharpe']) and rank_type == 1 \
+    #                 and rank <= 3 and not sma_sig:
+    #             sharpe = f'Соотношение доходности и риска у {self.stock} меньше чем у индекса. ' \
+    #                      f'И Upsilon-score слишком низок для компании этого типа. Потенциальный риск не оправдан. ' \
+    #                      f'\n\n{self.stock} - ⛔'
+    #
+    #         elif rank == 0:
+    #             sharpe = f'\U000026D4 отсутствуют данные для оценки {self.stock} или крайне плохое ведение бизнеса'
+    #         else:
+    #             sharpe = f'\U000026A0 противоречивые результаты анализа. Финансовая оценка не соответсвует ' \
+    #                      f'ценовой динамике акций {self.stock}'
+    #
+    #         msg = f'{self.stock} __проанализирована __\nс ' + parse[self.stock]['Start Period'] + ' по ' + \
+    #               parse[self.stock]['End Period'] + '\n' + '\n' + '```Вывод: ```' + '\n' + sharpe + '\n' + '\n'
+    #         print(rank, rank_type)
+    #         return msg
 
     def stock_stat_v4(self, rank_type=None, rank=None, sma_sig=None):
         if self.mom_rank_dict is not None:
             ranking = 0
-            # rank_msg = ''
             d = OrderedDict(self.mom_rank_dict)
             temp = list(d.items())
             top10_percentile = temp[-3][1]
@@ -696,7 +695,6 @@ class StockStat:
                f"__Индустрия:__ {str(description['industry'])}\n" \
                f"__Страна:__ {str(description['country'])}\n \n" \
                f"__Капитализация:__ {str(mc)} Млрд\n" \
-               f"__Бета:__ {str(beta) }\n" \
                f"__Объём:__ {str(vol)} Млн\n" \
                f"__Средний объём (3м):__ {str(avol)} Млн\n" \
                f"__P/E:__ {str(pe)} \n" \
@@ -707,6 +705,7 @@ class StockStat:
                f"__Dividend Date:__ {str(dividendDate)}\n" \
                f"__Earnings Date:__ {str(earn)}\n"
         # f"__Тип:__ {str(description['quoteType'])}\n" \
+        # f"__Бета:__ {str(beta)}\n" \
 
         msg2 = ''
         if ("is_fin" in rank and rank["is_fin"]) or ("is_bagger" in rank and rank["is_bagger"]):
