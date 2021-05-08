@@ -64,7 +64,7 @@ def new_var(returns, save_path=None):
 
     plt.xlabel("Day #")
     plt.ylabel("Loss (%)")
-    plt.suptitle('Возможные максимальные убытки портфеля за следующие 10 дней', fontsize=25)
+    plt.suptitle('Возможные максимальные убытки портфеля за следующие 10 дней', fontsize=12)
 
     buf = io.BytesIO()
     plt.savefig(buf, format='png', facecolor='black', transparent=True, bbox_inches='tight')
@@ -81,13 +81,13 @@ def correl(ret_df_=None, save_path=None):
                 'axes.labelcolor': 'white'})
     if corr.shape[1] <= 20:
         sns.set_context('paper', font_scale=0.80)
-        size = (8, 8)
+        size = (7, 7)
     elif corr.shape[1] <= 30:
         sns.set_context('paper', font_scale=0.70)
-        size = (10, 10)
+        size = (9, 9)
     else:
         sns.set_context('paper', font_scale=0.6)
-        size = (12, 12)
+        size = (11, 11)
 
     g = sns.clustermap(corr, yticklabels=True, annot=True, cmap='RdYlGn', row_colors=None,
                        col_colors=None, figsize=size)
@@ -96,7 +96,7 @@ def correl(ret_df_=None, save_path=None):
     g.ax_heatmap.set_position([hm.x0, hm.y0, hm.width * 0.985, hm.height * 0.985])
     g.ax_row_dendrogram.set_visible(True)
     g.ax_col_dendrogram.set_visible(False)
-    g.fig.suptitle(f'Матрица корреляций', fontsize=25)
+    g.fig.suptitle(f'Матрица корреляций', fontsize=20)
     buf = io.BytesIO()
     plt.savefig(buf, format='png', facecolor='black', transparent=True)
     buf.seek(0)
@@ -132,10 +132,10 @@ def scatter_for_risk_premium(price_df: pd = None, save_path=''):
 
     if df.shape[0] <= 20:
         sns.set_context('paper', font_scale=1.25)
-        size = (9, 6)
+        size = (8, 5)
     elif df.shape[0] <= 30:
         sns.set_context('paper', font_scale=0.95)
-        size = (10, 6)
+        size = (9, 6)
     elif df.shape[0] <= 40:
         sns.set_context('paper', font_scale=0.75)
         size = (10, 6)
@@ -152,7 +152,7 @@ def scatter_for_risk_premium(price_df: pd = None, save_path=''):
 
     plt.xlabel("Текущий риск (%)")
     plt.ylabel("Дополнительная доходность за риск (%)")
-    plt.suptitle('Анализ премий за риск', fontsize=25)
+    plt.suptitle('Анализ премий за риск', fontsize=15)
     plt.legend(title='U Sharpe', loc='center left', bbox_to_anchor=(1.01, 0.5), borderaxespad=0)
 
     buf = io.BytesIO()
