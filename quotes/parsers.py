@@ -374,7 +374,7 @@ def get_inspector_data(portfolio, quarter=63):
     port_usharpe = round(interpretations['PORTF price_ratio_mean'], ndigits=2)
     premia_msg = f'Премия портфеля {port_prem}%\n' \
                  f'Месячный риск портфеля {port_risk}%\n' \
-                 f'U Sharpe портфеля {port_usharpe}%\n'
+                 f'U Sharpe портфеля {port_usharpe}\n'
 
     msg_stress = f'\n🙈__Стресс-тест №1:__ {sign}\n' \
                  f'\n🙉__Стресс-тест №2:__ в 99% случаев (при нормальном рынке) дневная просадка портфеля не ' \
