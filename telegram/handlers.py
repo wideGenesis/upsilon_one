@@ -276,7 +276,7 @@ async def quotes_to_handler(event, client_, limit=20):
     # print(parse)
     stock = parse[1]
     stock = stock.upper()
-    await client_.send_message(event.input_sender, message=f'\U000026A0 \n__Будет использован 1 запрос🔋\n\n'
+    await client_.send_message(event.input_sender, message=f'\U000026A0 \n__Будет использован 1 запрос__🔋\n\n'
                                                            f'\U00002757 О рейтингах Ипсилона? - /instruction28\n'
                                                            f'\U00002757 Использование рейтингов - /instruction34')
     message1 = await client_.send_message(event.input_sender, message='Получаю описание \U000023F3')

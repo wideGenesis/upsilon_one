@@ -142,7 +142,7 @@ class StockStat:
                     'axes.facecolor': 'black', 'grid.color': '#17171a'})
         sns.despine()
         sns.set_context('paper', font_scale=1.25)
-        plt.figure(figsize=(11, 7))
+        plt.figure(figsize=(7, 4))
         sns.lineplot(markers=True, dashes=False,
                      palette="hls", alpha=.9,
                      data=df,
@@ -214,7 +214,7 @@ class StockStat:
                     'axes.facecolor': 'black', 'grid.color': '#17171a'})
         sns.despine()
         sns.set_context('paper', font_scale=1)
-        plt.figure(figsize=(11, 7))
+        plt.figure(figsize=(9, 5))
 
         sns.scatterplot(
             palette="hls", alpha=.9,

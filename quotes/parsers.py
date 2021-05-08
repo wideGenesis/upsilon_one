@@ -56,7 +56,7 @@ def new_var(returns, save_path=None):
                 'axes.facecolor': 'black', 'grid.color': '#17171a'})
     sns.despine()
     sns.set_context('paper', font_scale=1.25)
-    plt.figure(figsize=(11, 7))
+    plt.figure(figsize=(7, 4))
     sns.lineplot(markers=True, dashes=False,
                  palette="hls", alpha=.9,
                  data=df,
@@ -64,7 +64,7 @@ def new_var(returns, save_path=None):
 
     plt.xlabel("Day #")
     plt.ylabel("Loss (%)")
-    plt.suptitle('Ожидаемые дневные убытки портфеля за 10 дней', fontsize=25)
+    plt.suptitle('Возможные максимальные убытки портфеля за следующие 10 дней', fontsize=25)
 
     buf = io.BytesIO()
     plt.savefig(buf, format='png', facecolor='black', transparent=True, bbox_inches='tight')
@@ -81,13 +81,13 @@ def correl(ret_df_=None, save_path=None):
                 'axes.labelcolor': 'white'})
     if corr.shape[1] <= 20:
         sns.set_context('paper', font_scale=0.80)
-        size = (10, 10)
+        size = (8, 8)
     elif corr.shape[1] <= 30:
         sns.set_context('paper', font_scale=0.70)
-        size = (12, 12)
+        size = (10, 10)
     else:
         sns.set_context('paper', font_scale=0.6)
-        size = (15, 15)
+        size = (12, 12)
 
     g = sns.clustermap(corr, yticklabels=True, annot=True, cmap='RdYlGn', row_colors=None,
                        col_colors=None, figsize=size)
