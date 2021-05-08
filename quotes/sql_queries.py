@@ -198,6 +198,44 @@ def get_closes_by_ticker_list(ticker_list, start_date=None, end_date=date.today(
     return closes
 
 
+def get_closes_by_ticker(ticker, start_date=None, end_date=date.today(),
+                         include_left_bound=True,
+                         include_right_bound=False,
+                         table_name=QUOTE_TABLE_NAME,
+                         engine=engine):
+    with engine.connect() as connection:
+        closes = None
+        if start_date is None:
+            td = timedelta(365)
+            start_date = end_date - td
+        query_string = f'SELECT q.dateTime, q.close FROM {table_name} q ' \
+                       f' WHERE q.ticker=\'{ticker}\' '
+        if start_date is not None:
+            if include_left_bound:
+                query_string += f' AND q.dateTime >= \'{str(start_date)}\' '
+            else:
+                query_string += f' AND q.dateTime > \'{str(start_date)}\' '
+        if end_date is not None:
+            if include_right_bound:
+                query_string += f' AND q.dateTime <= \'{str(end_date)}\' '
+            else:
+                query_string += f' AND q.dateTime < \'{str(end_date)}\' '
+        query_string += f' ORDER BY q.dateTime ASC'
+
+        q_result = connection.execute(query_string)
+        if q_result.rowcount > 0:
+            rows = q_result.fetchall()
+            c0 = []
+            c1 = []
+            for row in rows:
+                c0.append(row[0])
+                c1.append(row[1])
+            closes = pd.Series(c1, index=c0)
+        else:
+            debug(f"Closes by ticker is EMPTY!", WARNING)
+    return closes
+
+
 def get_ohlc_dict_by_port_id(port_id, start_date=None, end_date=date.today(),
                                  q_table_name=QUOTE_TABLE_NAME, u_table_name=UNIVERSE_TABLE_NAME,
                                  engine=engine):
@@ -737,7 +775,7 @@ def find_min_date_by_ticker(ticker, table_name=QUOTE_TABLE_NAME):
 def find_max_date_by_ticker(ticker, table_name=QUOTE_TABLE_NAME):
     with engine.connect() as connection:
         if is_table_exist(table_name):
-            if ticker_lookup(ticker):
+            if ticker_lookup(ticker, table_name):
                 sql_query = f'SELECT max(q.dateTime) FROM {table_name} q ' \
                             f'WHERE q.ticker=\'{ticker}\''
                 result = connection.execute(sql_query)

@@ -68,6 +68,7 @@ SQL_TABLE_NAMES:
   REQUEST_AMOUNT_TABLE_NAME: 'request_amount'
   INCOMING_USERS_TABLE_NAME: 'incoming_users'
   PAYMENT_HIST_TABLE_NAME: 'payment_hist'
+  BENCHMARKS_QUOTES_TABLE_NAME: 'benchmarks_quotes'
 
 DIALOGFLOW:
   PROJECT_ID: 'common-bot-1'
@@ -147,6 +148,28 @@ ETFs: [
     'SOXX',
     'TAN',
     'XLV'
+]
+
+BENCHMARKS: [
+    'XLC',
+    'XLK',
+    'XLY',
+    'XLV',
+    'XLP',
+    'XLU',
+    'XLI',
+    'XLB',
+    'XLRE',
+    'XLF',
+    'XLE',
+    'TLT',
+    'AGG',
+    'SHY',
+    'ARKK',
+    'QQQ',
+    'SPY',
+    'VLUE',
+    'EEM'
 ]
 
 VALID_EXCHANGE: [

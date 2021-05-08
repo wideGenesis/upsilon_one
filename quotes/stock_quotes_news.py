@@ -168,11 +168,17 @@ class StockStat:
     def momentum_rank(self):
         path = f'{PROJECT_HOME_DIR}/results/ticker_stat/'
         mom_rank = {}
-        sectors = [self.stock, 'XLC', 'XLK', 'XLY', 'XLV', 'XLP', 'XLU', 'XLI',
-                   'XLB', 'XLRE', 'XLF', 'XLE', 'TLT', 'AGG', 'SHY', 'ARKK', 'QQQ', 'SPY', 'VLUE', 'EEM']
+        sectors = [self.stock]
+        sectors.extend(BENCHMARKS)
         for t in sectors:
             try:
-                prices = qs.utils.download_weekly(t, period="1y", interval="1d")
+                if t in BENCHMARKS:
+                    prices = get_closes_by_ticker(t,
+                                                  include_left_bound=True,
+                                                  include_right_bound=True,
+                                                  table_name=BENCHMARKS_QUOTES_TABLE_NAME)
+                else:
+                    prices = qs.utils.download_weekly(t, period="1y", interval="1d")
             except ValueError as e11:
                 debug(e11)
                 return

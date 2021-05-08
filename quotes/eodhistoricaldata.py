@@ -288,7 +288,7 @@ def get_historical_prices(ticker, from_date, end_date, is_update=False):
     insert_quotes(ticker, prices, is_update)
 
 
-def get_historical_adjprices(ticker, from_date, end_date, is_update=False):
+def get_historical_adjprices(ticker, from_date, end_date, is_update=False, table_name=QUOTE_TABLE_NAME):
     # debug("#Start get Historical Prices")
     session = requests.Session()
     prices = {}
@@ -303,6 +303,7 @@ def get_historical_adjprices(ticker, from_date, end_date, is_update=False):
               'order':  'd',
               'fmt': 'json',
               'function': 'splitadjusted'}
+    request_result = ''
     try:
         request_result = session.get(url, params=params)
     except Exception as e:
@@ -321,7 +322,7 @@ def get_historical_adjprices(ticker, from_date, end_date, is_update=False):
                                    bar['volume'], 0)
         # if len(prices) == 0:
         #     debug(f'Prices ticker: [{ticker}] is EMPTY!', WARNING)
-    insert_quotes(ticker, prices, is_update)
+    insert_quotes(ticker, prices, is_update, table_name)
 
 
 def get_company_rank(ticker, exchange="US", sess=None):

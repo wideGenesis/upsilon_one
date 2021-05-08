@@ -218,10 +218,11 @@ def eod_update_universe_prices(universe=None):
     debug("Complete eod_update_universe_prices")
 
 
-def ohlc_data_updater(universe, is_update=False, sd=None, ed=None):
-    if not is_table_exist(QUOTE_TABLE_NAME):
+def ohlc_data_updater(universe, is_update=False, sd=None, ed=None, table_name=QUOTE_TABLE_NAME):
+    if not is_table_exist(table_name):
         debug("__Table is not exists__")
-        create_quotes_table()
+        debug(f"Try create table {table_name}")
+        create_quotes_table(table_name)
     t_len = len(universe)
     end_date = date.today()
     if ed is not None:
@@ -233,16 +234,16 @@ def ohlc_data_updater(universe, is_update=False, sd=None, ed=None):
         if sd is not None:
             start_date = sd
         else:
-            if ticker_lookup(ticker):
-                start_date = find_max_date_by_ticker(ticker) + timedelta(days=1)
+            if ticker_lookup(ticker, table_name):
+                start_date = find_max_date_by_ticker(ticker, table_name) + timedelta(days=1)
         if is_update:
             if ticker not in DELISTED_TICKERS and ticker not in RECENTLY_DELISTED:
-                download_quotes_to_db(ticker, start_date, end_date, is_update)
+                download_quotes_to_db(ticker, start_date, end_date, is_update, table_name)
         else:
             if ticker not in DELISTED_TICKERS:
-                download_quotes_to_db(ticker, start_date, end_date, is_update)
+                download_quotes_to_db(ticker, start_date, end_date, is_update, table_name)
             else:
-                get_historical_adjprices(ticker, start_date, end_date, is_update)
+                get_historical_adjprices(ticker, start_date, end_date, is_update, table_name)
         if not is_debug_init():
             print_progress_bar(count, t_len, prefix='Progress:', suffix=f'Complete:{ticker}:[{count}:{t_len}]   ',
                                length=50)
@@ -250,8 +251,6 @@ def ohlc_data_updater(universe, is_update=False, sd=None, ed=None):
             debug(f'Complete:{ticker}:[{count}:{t_len}]')
 
     debug("Complete ohlc_data_updater")
-
-
 
 
 def main():

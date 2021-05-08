@@ -156,7 +156,7 @@ def load_csv(ticker: str, data_dir) -> pd.DataFrame:
 
 # *************** Download to DataBase ***************
 # Скачиваем данные из яху (цены и дивиденды)
-def download_quotes_to_db(ticker, start_date, end_date, is_update):
+def download_quotes_to_db(ticker, start_date, end_date, is_update, table_name=QUOTE_TABLE_NAME):
     try:
         yf = YahooFinancials(ticker)
         data = yf.get_historical_price_data(dt_to_str(start_date), dt_to_str(end_date), 'daily')
@@ -188,7 +188,7 @@ def download_quotes_to_db(ticker, start_date, end_date, is_update):
     if len(prices) == 0:
         debug(f'None data by [{ticker}]')
     # print("PRICES:" + str(prices))
-    insert_quotes(ticker, prices, is_update)
+    insert_quotes(ticker, prices, is_update, table_name)
 
 
 # Скачиваем данные из яху (цены и дивиденды)
