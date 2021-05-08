@@ -186,8 +186,6 @@ class StockStat:
                 return
 
             # calc nom as weighed mom
-            debug(prices.shape[0])
-
             m20 = ((prices - prices.rolling(20).mean()) / prices.rolling(20).mean()) * 100
             m50 = ((prices - prices.rolling(50).mean()) / prices.rolling(50).mean()) * 100
             m200 = ((prices - prices.rolling(200).mean()) / prices.rolling(200).mean()) * 100
@@ -289,14 +287,27 @@ class StockStat:
                 ranking += 1
                 rank_msg = f'слабее, чем у индекса. {self.stock} технически слаба, но начались покупки'
 
+            elif self.mom_rank_dict['SPY'] > self.mom_rank_dict[self.stock] > 0 and not sma_sig:
+                ranking += 0
+                rank_msg = f'слабее, чем у индекса. {self.stock} технически слаба, признаков покупок нет'
+
+            elif self.mom_rank_dict['SPY'] > self.mom_rank_dict[self.stock] > 0 and sma_sig:
+                ranking += 0
+                rank_msg = f'отсутствует. {self.stock} технически чрезвычайно слаба, но начались покупки'
+
+            elif self.mom_rank_dict['SPY'] > self.mom_rank_dict[self.stock] < 0 and not sma_sig:
+                ranking += 0
+                rank_msg = f'отсутствует. {self.stock} технически чрезвычайно слаба, без признаков покупок'
+
             else:
-                ranking = 0
-                rank_msg = f'отсутствует. {self.stock} технически очень слаба, без признаков покупок'
+                ranking = -1
+                rank_msg = f'cff0e8e2e5f22120ddf2ee20d1eee7e4e0f2e5ebe820c8eff1e8ebeeede0\n' \
+                           f'Galactic Longitude - 21.84° Galactic Latitude - 13.77°'
 
             if sma_sig:
-                sma_sig_msg = f'✅ Институционалы покупают {self.stock} или как минимум не продают'
+                sma_sig_msg = f'✅ Институционалы покупали {self.stock} или как минимум не продают'
             else:
-                sma_sig_msg = f'⚠️ Институционалы продают {self.stock}'
+                sma_sig_msg = f'⚠️ Институционалы продавали {self.stock}'
 
             if rank_type == 0 and rank >= 11:
                 main_rank_text = '🟢 Финансовая оценка высшего уровня'
