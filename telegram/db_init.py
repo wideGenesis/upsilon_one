@@ -31,7 +31,7 @@ async def db_init_new_tables():
         debug('>> Try BENCHMARKS_QUOTES_TABLE_NAME')
         sql_q.create_quotes_table(BENCHMARKS_QUOTES_TABLE_NAME)
         await init_benchmark_quotes_table()
-        debug('## create_payment_history_table complete')
+        debug('## create BENCHMARKS_QUOTES_TABLE_NAME complete')
     debug('## DB create new tables complete')
 
 
