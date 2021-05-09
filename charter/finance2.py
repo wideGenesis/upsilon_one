@@ -271,6 +271,8 @@ def create_revenue_histogram(ticker, data, img_path):
         millidxs.append(millidx)
     millidx = max(millidxs)
     for k in data:
+        if k is None:
+            continue
         n = float(data[k])
         val = round(n / 10**(3 * millidx), 2)
         bars.append(val)
