@@ -1,5 +1,8 @@
+import asyncio
 import datetime
+import json
 import sys
+import requests
 from time import sleep
 from typing import Any
 from telethon import utils
@@ -7,9 +10,15 @@ from project_shared import *
 from telethon import functions, types
 from PyQt5.QtCore import QObject, QThread, pyqtSignal
 
+from telegram import sql_queries as sql_q
+
 
 class Worker(QObject):
     minute_signal = pyqtSignal()
+    client = None
+
+    def set_client(self, client):
+        self.client = client
 
     def run(self):
         start_thread_time = datetime.datetime.now()
@@ -22,6 +31,8 @@ class Worker(QObject):
                 inspector_scheduler()
             if i % 600 == 0:
                 print_shared_maps()
+            if i % 86400 == 0:
+                schedule_send_command('clear_order_map')
 
 
 ORDER_MAP = {}
@@ -124,6 +135,28 @@ IN_INSPECTOR_FLOW_MAP = {}
 INSPECTOR_FLOW_START_TIME = {}
 
 
+def schedule_send_command(cmd, recursion_count=0):
+    debug(f"schedule_send_command: cmd={cmd} recursion_count={recursion_count}")
+    if recursion_count == RECURSION_DEPTH:
+        debug(f"Can't schedule_send_command!!!", ERROR)
+        return -1
+    with requests.Session() as session:
+        url = f"http://127.0.0.1:8445/{COMMAND_TOKEN}/"
+        data = {'action': cmd, 'value': ''}
+        headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}
+        try:
+            request_result = session.post(url, data=json.dumps(data), headers=headers)
+        except Exception as e:
+            debug(f'Exception: {e}', WARNING)
+            sleep(0.9)
+            errCode = schedule_send_command(cmd=cmd, recursion_count=recursion_count + 1)
+            return errCode
+        if request_result.status_code == requests.codes.ok:
+            parsed_json = json.loads(request_result.text)
+            debug(parsed_json)
+            return 0
+
+
 def print_shared_maps():
     global INSPECTOR_FLOW_START_TIME
     global INSPECTOR_TICKER_MAP
@@ -155,6 +188,12 @@ def inspector_scheduler():
             need_clear.append(k)
     for user in need_clear:
         INSPECTOR_FLOW_START_TIME.pop(user)
+
+
+async def clear_order_map(client):
+    deleted_order = sql_q.clear_old_payment_message()
+    for order in deleted_order:
+        pop_old_order(order)
 
 
 def get_inspector_time(user_id):
@@ -189,10 +228,17 @@ async def save_old_message(user_id, msg):
 
 async def delete_old_message(client, user_id):
     global OLD_MESSAGE_MAP
+    is_message_deleted = False
     old_msg_id = OLD_MESSAGE_MAP.get(user_id, None)
     if old_msg_id is not None:
-        await client.delete_messages(user_id, old_msg_id)
         OLD_MESSAGE_MAP.pop(user_id)
+        try:
+            await client.delete_messages(user_id, old_msg_id)
+            is_message_deleted = True
+        except Exception as e:
+            debug(e, ERROR)
+            return is_message_deleted
+        return is_message_deleted
 
 
 def pop_old_msg_id(user_id):

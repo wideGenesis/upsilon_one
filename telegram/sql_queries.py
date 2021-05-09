@@ -1,6 +1,8 @@
+import datetime
 import json
 
 from project_shared import *
+from telegram import shared
 
 
 async def user_search(identifier, engine=None):
@@ -108,6 +110,35 @@ async def get_all_payment_message(engine=None):
         result = connection.execute("SELECT order_id, user_id, msg_id, create_dt FROM  payment_message_hist")
         rows = result.cursor.fetchall()
         return rows
+
+
+def clear_old_payment_message(engine=engine):
+    with engine.connect() as connection:
+        deleted_orders = {}
+        now = datetime.datetime.now()
+        try:
+            query_string = f'SELECT order_id, user_id, msg_id, create_dt ' \
+                           f'FROM payment_message_hist ' \
+                           f'ORDER by create_dt DESC'
+            q_result = connection.execute(query_string)
+            if q_result.rowcount > 0:
+                rows = q_result.fetchall()
+                for row in rows:
+                    dt = shared.int2datetime(row[3])
+                    if (now - dt).total_seconds() > 86400:
+                        try:
+                            del_query = f'DELETE from payment_message_hist ' \
+                                        f'WHERE order_id = \'{row[0]}\' ' \
+                                        f'AND user_id = \'{row[1]}\' ' \
+                                        f'AND msg_id = \'{row[2]}\' '
+                            connection.execute(del_query)
+                            connection.execute("commit")
+                            deleted_orders[row[0]] = (row[1], row[2])
+                        except Exception as e:
+                            debug(e, ERROR)
+        except Exception as e:
+            debug(e, ERROR)
+        return deleted_orders
 
 
 async def is_table_exist(table_name, engine=engine) -> bool:

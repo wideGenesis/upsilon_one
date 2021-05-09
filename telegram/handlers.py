@@ -177,6 +177,10 @@ class WebHandler:
                     res = await send_broadcast_poll(self.client)
                     if res:
                         return web.json_response(res_ack)
+            elif action == "clear_order_map":
+                debug(f"Try clear order map!!!!")
+                await shared.clear_order_map(self.client)
+                return web.json_response(res_ack)
             return web.json_response(res_nack)
 
 

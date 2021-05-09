@@ -237,7 +237,7 @@ def main():
 
     handlers.set_route(app, PAYMENT_TOKEN, COMMAND_TOKEN, PUBKEY, client, engine)
 
-    shared.create_subscribes(TARIFF_IMAGES)
+    # shared.create_subscribes(TARIFF_IMAGES)
 
     # Стартуем веб сервер с отдельным event loop
     debug("_____Running db init_____")
@@ -246,6 +246,7 @@ def main():
 
     thread = QThread()
     worker = shared.Worker()
+    worker.set_client(client)
     debug("_____Running worker_____")
     loop_worker = asyncio.get_event_loop()
     loop_worker.run_until_complete(run_worker(thread, worker))
