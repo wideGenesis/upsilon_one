@@ -10,6 +10,7 @@ from quotes.parsers import *
 from telegram import instructions as ins
 from collections import OrderedDict
 
+
 def sma(data, window):
     weights = np.repeat(1.0, window) / window
     sma8 = np.convolve(data, weights, 'valid')
@@ -97,7 +98,7 @@ class StockStat:
                 angular_d = angular_distance(asset_returns, factor_returns)
                 s_type.update({f'{factor}': angular_d})
             except ValueError as e11:
-                print(e11)
+                debug(e11, ERROR)
                 return '🛸 нет данных'
         min_angular = min(s_type, key=s_type.get)
         if min_angular == 'SPY' and min(s_type.values()) <= 0.45:
@@ -365,7 +366,7 @@ class StockStat:
                 abs_rank = f'🚨 отсутствуют данные для оценки {self.stock}'
 
             msg = f'```Вывод: ```\n\n{abs_rank}'
-            print(rank, rank_type, abs_rank)
+            debug(f'{rank}\n{rank_type}\n{abs_rank}')
             return msg
 
     def stock_description_v3(self):
@@ -455,7 +456,7 @@ class StockStat:
             else:
                 # print(rank)
                 msg2 += '\n' + ins.ranking_v3[k][v]
-        print('\n', msg1, '\n', msg2, '\n', msg3)  # TODO REMOVE!
+        # print('\n', msg1, '\n', msg2, '\n', msg3)  # TODO REMOVE!
         return msg1, msg2, msg3, revenue_data
 
     def stock_news(self):
