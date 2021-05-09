@@ -366,7 +366,8 @@ class StockStat:
                 abs_rank = f'🚨 отсутствуют данные для оценки {self.stock}'
 
             msg = f'```Вывод: ```\n\n{abs_rank}'
-            debug(f'{rank}\n{rank_type}\n{abs_rank}')
+            # debug(f'{rank}\n{rank_type}\n{abs_rank}')
+            debug(f'__stock_stat_v4 complete')
             return msg
 
     def stock_description_v3(self):
@@ -457,6 +458,7 @@ class StockStat:
                 # print(rank)
                 msg2 += '\n' + ins.ranking_v3[k][v]
         # print('\n', msg1, '\n', msg2, '\n', msg3)  # TODO REMOVE!
+        debug(f'__stock_description_v3 complete')
         return msg1, msg2, msg3, revenue_data
 
     def stock_news(self):
