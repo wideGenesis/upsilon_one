@@ -1,4 +1,6 @@
+from quotes import quote_loader as ql
 from telegram import sql_queries as sql
+from quotes import sql_queries as sql_q
 from project_shared import *
 
 
@@ -22,6 +24,13 @@ async def db_init_new_tables():
     if not ite:
         debug('>> Try create_payment_history_table')
         await sql.create_payment_history_table()
+        debug('## create_payment_history_table complete')
+
+    ite = sql_q.is_table_exist(BENCHMARKS_QUOTES_TABLE_NAME)
+    if not ite:
+        debug('>> Try BENCHMARKS_QUOTES_TABLE_NAME')
+        sql_q.create_quotes_table(BENCHMARKS_QUOTES_TABLE_NAME)
+        await init_benchmark_quotes_table()
         debug('## create_payment_history_table complete')
     debug('## DB create new tables complete')
 
@@ -57,3 +66,7 @@ async def init_incoming_users_table():
             transaction.rollback()
         transaction.commit()
     debug(f'__ init_incoming_users_table complete')
+
+
+async def init_benchmark_quotes_table():
+    ql.ohlc_data_updater(BENCHMARKS, table_name=BENCHMARKS_QUOTES_TABLE_NAME)

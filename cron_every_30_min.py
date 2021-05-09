@@ -3,6 +3,7 @@ import argparse
 from quotes.parsers_env import chrome_init, firefox_init
 from quotes.parsers import get_tw_charts, get_finviz_treemaps, get_coins360_treemaps, get_moex
 from charter.charter import *
+from quotes import quote_loader as ql
 
 
 if __name__ == '__main__':
@@ -20,5 +21,6 @@ if __name__ == '__main__':
     get_finviz_treemaps(driver=firefox_init(), img_out_path_=img_out_path)
     # get_finviz_treemaps(driver=chrome_init(), img_out_path_=img_out_path)
     get_coins360_treemaps(driver=chrome_init(), img_out_path_=img_out_path)
+    ql.ohlc_data_updater(BENCHMARKS, table_name=BENCHMARKS_QUOTES_TABLE_NAME, is_update=True)
     debug("%%%%%%%%%%%%%%%Complete Cron Every 30\n\n\n")
     debug_deinit()
