@@ -467,7 +467,7 @@ def nyse_nasdaq_stat(img_out_path_=IMAGES_OUT_PATH):
 
 # ============================== GET RANKING DATA III ================================
 def get_ranking_data3(tick, ag=agents()):
-    debug(f' ### {tick} ###')
+    debug(f'{tick}')
     ticker = tick.upper()
     err_info_result = {}
     err_rank_result = {"rank": None, "data": None}

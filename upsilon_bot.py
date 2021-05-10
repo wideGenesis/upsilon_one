@@ -106,6 +106,7 @@ async def dialog_flow(event):
 @client.on(events.NewMessage(pattern='[$#@]'))
 async def quotes_to(event):
     await acion_info(event, 'ticker data', f'Try get ticker data')
+    debug(f'--== {str(event.text)} ==--')
     await handlers.quotes_to_handler(event, client, limit=0)
 
 
