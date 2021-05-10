@@ -1,8 +1,11 @@
+import pandas as pd
+
 from quotes.yahoo_downloader import *
 from datetime import date, timedelta
 from quotes.sql_queries import *
 from project_shared import *
 from quotes.eodhistoricaldata import *
+from yahooquery import Ticker
 
 
 def update_universe_prices(exclude_sectors=EXCLUDE_SECTORS, not_exclude_tickers=NOT_EXCLUDE_TICKERS):
@@ -251,6 +254,25 @@ def ohlc_data_updater(universe, is_update=False, sd=None, ed=None, table_name=QU
             debug(f'Complete:{ticker}:[{count}:{t_len}]')
 
     debug("Complete ohlc_data_updater")
+
+
+def get_ohlc_data_by_ticker(tick, period="1y", interval="1d"):
+    closes_df = pd.DataFrame()
+    ticker = tick.upper()
+    if ticker is None or len(ticker) == 0:
+        debug(f'Ticker is none, or len = 0 -- [{ticker}]')
+        return closes_df
+
+    ticker_data = None
+    try:
+        ticker_data = Ticker(ticker)
+    except Exception as e:
+        debug(e, ERROR)
+        debug(f"Can't get ticker data -- [{ticker}]")
+        return closes_df
+    df = ticker_data.history(period=period, interval=interval)
+    closes_df = df.close
+    return closes_df
 
 
 def main():

@@ -20,7 +20,8 @@ from quotes.stock_quotes_news import StockStat
 
 # ============================== Main  =============================
 def main():
-    ohlc_data_updater(BENCHMARKS, table_name=BENCHMARKS_QUOTES_TABLE_NAME, is_update=True)
+    get_ohlc_data_by_ticker('aapl')
+    # ohlc_data_updater(BENCHMARKS, table_name=BENCHMARKS_QUOTES_TABLE_NAME, is_update=True)
     # stock_type(asset='gme')
     # x = get_inspector_data({
     #     'QQQ': '100%'})

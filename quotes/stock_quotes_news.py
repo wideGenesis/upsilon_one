@@ -179,7 +179,8 @@ class StockStat:
                                                   include_right_bound=True,
                                                   table_name=BENCHMARKS_QUOTES_TABLE_NAME)
                 else:
-                    prices = qs.utils.download_weekly(t, period="1y", interval="1d")
+                    # prices = qs.utils.download_weekly(t, period="1y", interval="1d")
+                    prices = get_ohlc_data_by_ticker(t)
                     if prices.shape[0] < 250:
                         return
             except ValueError as e11:
