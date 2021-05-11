@@ -486,6 +486,7 @@ def get_ranking_data3(tick, ag=agents()):
         return err_info_result, err_rank_result
 
     quoteType = None
+    get_ranking_data3.quoteType = None
     if ticker_data.quotes == 'No data found':
         debug(f"No data found -- [{ticker}]")
         return err_info_result, err_rank_result, revenue_data
@@ -498,6 +499,7 @@ def get_ranking_data3(tick, ag=agents()):
                 quoteType == 'ETF' or
                 (quoteType == 'EQUITY' and fullExchangeName == 'Other OTC')):
             debug(f"quoteType == {quoteType} -- [{ticker}]")
+            get_ranking_data3.quoteType = quoteType
             return err_info_result, err_rank_result, revenue_data
 
     rank_result = {}

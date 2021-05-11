@@ -31,7 +31,8 @@ class StockStat:
         'display',
         'sma_signal',
         'ticker_type',
-        'mom_rank_dict'
+        'mom_rank_dict',
+        'stock_descr_quote_type'
     ]
 
     def __init__(self,
@@ -45,7 +46,8 @@ class StockStat:
                  ticker_: str = None,
                  display: bool = False,
                  ticker_type: str = False,
-                 mom_rank_dict: dict = None
+                 mom_rank_dict: dict = None,
+                 stock_descr_quote_type = None
                  ):
         self.stock = stock
         self.returns = returns
@@ -58,6 +60,7 @@ class StockStat:
         self.display = display
         self.ticker_type = ticker_type
         self.mom_rank_dict = mom_rank_dict
+        self.stock_descr_quote_type = stock_descr_quote_type
 
     def stock_download(self):
         try:
@@ -381,6 +384,8 @@ class StockStat:
             msg1 = 'Ошибка, попробуйте позже...'
             return msg1, msg2, msg3
         if len(description) == 0 and rank['rank'] is None and rank['data'] is None:
+            quoteType = getattr(get_ranking_data3, 'quoteType', None) or None
+            self.stock_descr_quote_type = quoteType
             return msg1, msg2, msg3
         if description['marketCap'] is not None:
             mc = round(float(description['marketCap'] / 1000000000), 2)

@@ -326,10 +326,12 @@ async def quotes_to_handler(event, client_, limit=20):
         msg2 = msg1
         msg3 = get[2]
         # вернем баланс в случае если тикер не найден или это ETF
-        if pricing_result['Paid'] > 0:
-            await sql.increment_paid_request_amount(event.input_sender.user_id, pricing_result['Paid'])
-        if pricing_result['Free'] > 0:
-            await sql.increment_free_request_amount(event.input_sender.user_id, pricing_result['Free'])
+        if ss.stock_descr_quote_type != 'ETF':
+            if pricing_result['Paid'] > 0:
+                await sql.increment_paid_request_amount(event.input_sender.user_id, pricing_result['Paid'])
+            if pricing_result['Free'] > 0:
+                await sql.increment_free_request_amount(event.input_sender.user_id, pricing_result['Free'])
+            ss.stock_descr_quote_type = None
 
     revenue_data = None
     if len(get) == 4:
