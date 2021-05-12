@@ -276,6 +276,76 @@ def get_ohlc_data_by_ticker(tick, period="1y", interval="1d"):
     return closes_df
 
 
+def ohlc_data_updater_yq(universe, is_update=False, sd=None, ed=None, table_name=QUOTE_TABLE_NAME):
+    if not is_table_exist(table_name):
+        debug("__Table is not exists__")
+        debug(f"Try create table {table_name}")
+        create_quotes_table(table_name)
+    t_len = len(universe)
+    # end_date = date.today()
+    end_date = None
+    if ed is not None:
+        end_date = ed
+    if not is_debug_init():
+        print_progress_bar(0, t_len, prefix='Progress:', suffix='Complete', length=50)
+    for count, ticker in enumerate(universe, start=1):
+        start_date = datetime.datetime.strptime(DEFAULT_START_QUOTES_DATE, "%Y-%m-%d").date()
+        if sd is not None:
+            start_date = sd
+        else:
+            if ticker_lookup(ticker, table_name):
+                start_date = find_max_date_by_ticker(ticker, table_name) + timedelta(days=1)
+        if is_update:
+            if ticker not in DELISTED_TICKERS and ticker not in RECENTLY_DELISTED:
+                get_ohlc_data_by_ticker_to_db(ticker, start_date, end_date, is_update, table_name)
+                # download_quotes_to_db(ticker, start_date, end_date, is_update, table_name)
+        else:
+            if ticker not in DELISTED_TICKERS:
+                get_ohlc_data_by_ticker_to_db(ticker, start_date, end_date, is_update, table_name)
+                # download_quotes_to_db(ticker, start_date, end_date, is_update, table_name)
+            else:
+                get_historical_adjprices(ticker, start_date, end_date, is_update, table_name)
+        if not is_debug_init():
+            print_progress_bar(count, t_len, prefix='Progress:', suffix=f'Complete:{ticker}:[{count}:{t_len}]   ',
+                               length=50)
+        else:
+            debug(f'Complete:{ticker}:[{count}:{t_len}]')
+
+    debug("Complete ohlc_data_updater")
+
+
+def get_ohlc_data_by_ticker_to_db(tick, start_date, end_date, is_update, table_name):
+    closes_df = pd.DataFrame()
+    ticker = tick.upper()
+    if ticker is None or len(ticker) == 0:
+        debug(f'Ticker is none, or len = 0 -- [{ticker}]')
+        return closes_df
+
+    ticker_data = None
+    try:
+        ticker_data = Ticker(ticker)
+    except Exception as e:
+        debug(e, ERROR)
+        debug(f"Can't get ticker data -- [{ticker}]")
+        return closes_df
+    df = ticker_data.history(start=start_date, end=end_date)
+    df.reset_index(inplace=True, level=['symbol'])
+    dct = df.to_dict('index')
+    prices = {}
+    for index in dct:
+        value = [round(dct[index]['open'], 2),
+                 round(dct[index]['high'], 2),
+                 round(dct[index]['low'], 2),
+                 round(dct[index]['close'], 2),
+                 round(dct[index]['adjclose'], 2),
+                 round(dct[index]['volume'], 2),
+                 round(dct[index].get('dividends', 0.0), 2)]
+        prices[index] = value
+    insert_quotes(ticker, prices, is_update, table_name)
+
+
+# o, h, l, c, ac, v, d
+# datetime.date(2018, 6, 19): {'symbol': 'XLC', 'open': 49.70000076293945, 'volume': 16600, 'low': 49.58000183105469, 'close': 49.959999084472656, 'high': 50.060001373291016, 'adjclose': 48.73029708862305, 'dividends': 0.0}
 def main():
     td = timedelta(days=4)
     ed = date.today()
