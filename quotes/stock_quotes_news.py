@@ -1,6 +1,7 @@
 from dataclasses import dataclass
 from math_stat.fin_stat import angular_distance
 import pandas as pd
+import datetime
 import json
 import finviz
 from finvizfinance.news import News
@@ -15,6 +16,15 @@ def sma(data, window):
     weights = np.repeat(1.0, window) / window
     sma8 = np.convolve(data, weights, 'valid')
     return sma8
+
+
+def resampler(data):
+    logic = {'Close': 'last'}
+    offset = pd.Timedelta(days=-6)
+    # data.resample(resample_to='W', loffset=offset).apply(logic)
+    data.resample('W-MON').apply(logic)
+
+    return data
 
 
 @dataclass
@@ -79,7 +89,12 @@ class StockStat:
 
     def higher_sma8(self):
         try:
+            weekly_returns = get_ohlc_data_by_ticker(self.stock, period="1y", interval="w")
+            # asset_returns = get_ohlc_data_by_ticker(self.stock, period="1y", interval="1d")
+            # asset_returns = resampler(asset_returns)
+            # print('resample', asset_returns)
             weekly_returns = qs.utils.download_weekly(self.stock)
+            # print('utils', weekly_returns)
         except ValueError as e11:
             return e11
         if weekly_returns.empty:
