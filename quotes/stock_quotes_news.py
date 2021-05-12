@@ -79,7 +79,7 @@ class StockStat:
         try:
             # returns = qs.utils.download_returns(self.stock)
             # print(returns)
-            price = get_ohlc_data_by_ticker(self.stock, period="2y", interval="1d")
+            price = get_ohlc_data_by_ticker(self.stock, period="1y", interval="1d")
             returns = price.pct_change()
             returns.dropna(inplace=True)
         except ValueError as e11:
@@ -233,7 +233,7 @@ class StockStat:
                                                   table_name=BENCHMARKS_QUOTES_TABLE_NAME)
                 else:
                     # prices = qs.utils.download_weekly(t, period="1y", interval="1d")
-                    prices = get_ohlc_data_by_ticker(t)
+                    prices = self.prices
                     if prices.shape[0] < 250:
                         return
             except ValueError as e11:
@@ -308,7 +308,7 @@ class StockStat:
     def stock_snapshot(self):
         if self.returns is not None:
             img = f'results/ticker_stat/{self.stock}.png'
-            qs.plots.snapshot_v2(self.returns[-335:],
+            qs.plots.snapshot_v2(self.returns[-240:],
                                  title=f'{self.stock}',
                                  savefig=img)
 
