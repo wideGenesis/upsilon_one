@@ -94,8 +94,10 @@ class StockStat:
         try:
             weekly_returns = get_ohlc_data_by_ticker(self.stock, period="1y", interval="1wk")
             weekly_ret = self.prices
-            weekly_ret = weekly_ret.resample('W')
-            print(weekly_ret)
+            # weekly_ret = weekly_ret.to_frame()
+
+            # weekly_ret = weekly_ret.resample('W')
+            # print(weekly_ret)
         except ValueError as e11:
             return e11
         if weekly_returns.empty:
