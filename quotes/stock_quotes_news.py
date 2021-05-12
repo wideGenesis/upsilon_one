@@ -93,11 +93,9 @@ class StockStat:
     def higher_sma8(self):
         try:
             weekly_returns = get_ohlc_data_by_ticker(self.stock, period="1y", interval="1wk")
-            # asset_returns = get_ohlc_data_by_ticker(self.stock, period="1y", interval="1d")
-            # asset_returns = resampler(asset_returns)
-            # print('resample', asset_returns)
-            # weekly_returns = qs.utils.download_weekly(self.stock)
-            # print('utils', weekly_returns)
+            weekly_ret = self.prices
+            weekly_ret = weekly_ret.resample('W')
+            print(weekly_ret)
         except ValueError as e11:
             return e11
         if weekly_returns.empty:
