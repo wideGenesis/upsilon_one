@@ -271,6 +271,7 @@ def get_ohlc_data_by_ticker(tick, period="1y", interval="1d"):
         debug(f"Can't get ticker data -- [{ticker}]")
         return closes_df
     df = ticker_data.history(period=period, interval=interval)
+    df.reset_index(inplace=True, level=['symbol'])
     closes_df = df.get("close") if df.get("close") is not None else pd.DataFrame()
     return closes_df
 
