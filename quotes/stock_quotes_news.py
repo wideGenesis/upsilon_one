@@ -91,18 +91,45 @@ class StockStat:
 
     def stock_type(self):
         s_type = {}
-        asset_returns = qs.utils.download_returns(self.stock, period='1y')
+        asset_returns = get_ohlc_data_by_ticker(self.stock, period="1y", interval="1d")
+        asset_returns = asset_returns.pct_change()
         asset_returns.dropna(inplace=True)
+        asset_returns = asset_returns[-240:]
         factors = ['SPY', 'QQQ', 'ARKK', 'VLUE']
         for factor in factors:
             try:
-                factor_returns = qs.utils.download_returns(factor, period='1y')
-                factor_returns.dropna(inplace=True)
-                angular_d = angular_distance(asset_returns, factor_returns)
-                s_type.update({f'{factor}': angular_d})
+                if factor in BENCHMARKS:
+                    prices = get_closes_by_ticker(factor,
+                                                  include_left_bound=True,
+                                                  include_right_bound=True,
+                                                  table_name=BENCHMARKS_QUOTES_TABLE_NAME)
+
+                    factor_returns = prices.pct_change()
+                    factor_returns.dropna(inplace=True)
+                    factor_returns = factor_returns[-240:]
+                    angular_d = angular_distance(asset_returns, factor_returns)
+                    s_type.update({f'{factor}': angular_d})
+
+                else:
+                    prices = get_ohlc_data_by_ticker(factor)
+                    factor_returns = prices.pct_change()
+                    factor_returns.dropna(inplace=True)
+                    angular_d = angular_distance(asset_returns, factor_returns)
+                    s_type.update({f'{factor}': angular_d})
+                    if prices.shape[0] < 250:
+                        return
             except ValueError as e11:
-                debug(e11, ERROR)
+                debug(e11)
                 return '🛸 нет данных'
+        # for factor in factors:
+        #     try:
+        #         factor_returns = qs.utils.download_returns(factor, period='1y')
+        #         factor_returns.dropna(inplace=True)
+        #         angular_d = angular_distance(asset_returns, factor_returns)
+        #         s_type.update({f'{factor}': angular_d})
+        #     except ValueError as e11:
+        #         debug(e11, ERROR)
+        #         return '🛸 нет данных'
         min_angular = min(s_type, key=s_type.get)
         if min_angular == 'SPY' and min(s_type.values()) <= 0.45:
             msg_type = '⚖ Quality - стабильные и \"качественные\" компании\n'
