@@ -31,6 +31,7 @@ def resampler(data):
 class StockStat:
     __slots__ = [
         'stock',
+        'prices',
         'returns',
         'limit_',
         'title',
@@ -47,6 +48,7 @@ class StockStat:
 
     def __init__(self,
                  stock: str = None,
+                 prices: pd = None,
                  returns: pd = None,
                  sma_signal: bool = None,
                  limit_: int = None,
@@ -60,6 +62,7 @@ class StockStat:
                  stock_descr_quote_type = None
                  ):
         self.stock = stock
+        self.prices = prices
         self.returns = returns
         self.sma_signal = sma_signal
         self.limit_ = limit_
@@ -74,18 +77,18 @@ class StockStat:
 
     def stock_download(self):
         try:
-            returns = qs.utils.download_returns(self.stock)
-            print(returns)
-            asset_returns = get_ohlc_data_by_ticker(self.stock, period="2y", interval="1d")
-            asset_returns = asset_returns.pct_change()
-            asset_returns.dropna(inplace=True)
-            print(asset_returns)
+            # returns = qs.utils.download_returns(self.stock)
+            # print(returns)
+            price = get_ohlc_data_by_ticker(self.stock, period="2y", interval="1d")
+            returns = price.pct_change()
+            returns.dropna(inplace=True)
         except ValueError as e11:
             return e11
         if returns.empty:
             self.returns = None
         else:
             self.returns = returns
+            self.prices = price[1:]
 
     def higher_sma8(self):
         try:
@@ -93,7 +96,7 @@ class StockStat:
             # asset_returns = get_ohlc_data_by_ticker(self.stock, period="1y", interval="1d")
             # asset_returns = resampler(asset_returns)
             # print('resample', asset_returns)
-            weekly_returns = qs.utils.download_weekly(self.stock)
+            # weekly_returns = qs.utils.download_weekly(self.stock)
             # print('utils', weekly_returns)
         except ValueError as e11:
             return e11
@@ -111,10 +114,10 @@ class StockStat:
 
     def stock_type(self):
         s_type = {}
-        asset_returns = get_ohlc_data_by_ticker(self.stock, period="1y", interval="1d")
-        asset_returns = asset_returns.pct_change()
-        asset_returns.dropna(inplace=True)
-        asset_returns = asset_returns[-240:]
+        # asset_returns = get_ohlc_data_by_ticker(self.stock, period="1y", interval="1d")
+        # asset_returns = asset_returns.pct_change()
+        # asset_returns.dropna(inplace=True)
+        asset_returns = self.returns[-240:]
         factors = ['SPY', 'QQQ', 'ARKK', 'VLUE']
         for factor in factors:
             try:

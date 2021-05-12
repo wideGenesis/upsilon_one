@@ -199,8 +199,8 @@ def snapshot_v2(returns, grayscale=False, figsize=(10, 8),
     if subtitle:
         axes[0].set_title(" \n \n %s - %s" % (
             # ticker,
-            returns.index.date[:1][0].strftime('%e %b \'%y'),
-            returns.index.date[-1:][0].strftime('%e %b \'%y')
+            returns.index[:1][0].strftime('%e %b \'%y'),
+            returns.index[-1:][0].strftime('%e %b \'%y')
         ), fontsize=12, color='white')
 
     axes[0].set_ylabel('Cumulative Return', fontname=fontname,
