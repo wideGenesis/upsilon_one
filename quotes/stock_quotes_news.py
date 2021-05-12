@@ -65,6 +65,11 @@ class StockStat:
     def stock_download(self):
         try:
             returns = qs.utils.download_returns(self.stock)
+            print(returns)
+            asset_returns = get_ohlc_data_by_ticker(self.stock, period="2y", interval="1d")
+            asset_returns = asset_returns.pct_change()
+            asset_returns.dropna(inplace=True)
+            print(asset_returns)
         except ValueError as e11:
             return e11
         if returns.empty:
