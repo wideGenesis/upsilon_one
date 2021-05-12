@@ -89,7 +89,7 @@ class StockStat:
 
     def higher_sma8(self):
         try:
-            weekly_returns = get_ohlc_data_by_ticker(self.stock, period="1y", interval="w")
+            weekly_returns = get_ohlc_data_by_ticker(self.stock, period="1y", interval="1wk")
             # asset_returns = get_ohlc_data_by_ticker(self.stock, period="1y", interval="1d")
             # asset_returns = resampler(asset_returns)
             # print('resample', asset_returns)
