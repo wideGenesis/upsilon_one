@@ -3,6 +3,9 @@ import sys
 from time import sleep
 import csv
 from datetime import datetime
+
+import telethon
+
 from telegram import sql_queries as sql
 from telethon.tl.custom import Button
 from telegram import buttons, buttons
@@ -80,8 +83,11 @@ async def tools_menu(event, client):
             await shared.save_old_message(sender_id, menu_msg)
             shared.set_old_msg_poll(sender_id, False)
         else:
-            menu_msg = await client.edit_message(event.input_sender, old_msg_id, '📁 Главное меню',
-                                                 buttons=buttons.keyboard_0)
+            try:
+                await client.edit_message(event.input_sender, old_msg_id, '📁 Главное меню',
+                                          buttons=buttons.keyboard_0)
+            except telethon.errors.rpcerrorlist.MessageNotModifiedError as e:
+                debug(f'Двойное нажатие кнопки Главное меню: {e}', ERROR)
     else:
         menu_msg = await client.send_message(event.input_sender, '📁 Главное меню', buttons=buttons.keyboard_0)
         await shared.save_old_message(sender_id, menu_msg)
@@ -148,13 +154,16 @@ async def profile_menu(event, client, engine=None):
             await shared.save_old_message(sender_id.user_id, menu_msg)
             shared.set_old_msg_poll(sender_id.user_id, False)
         else:
-            await client.edit_message(event.input_sender, old_msg_id,
-                                      f'\U0001F464 : {user_profile[3]}\n'
-                                      f'Имя: {user_profile[5]}\n\n'
-                                      f'Твой уровень риска: __{profile_score_str}__\n\n'
-                                      f'Оплаченных запросов: __{paid_amount}__ 🔋\n'
-                                      f'--------------------------------------------------------\n\n'
-                                      f'Пользователей бота: __{count}__', buttons=keyboard_profile)
+            try:
+                await client.edit_message(event.input_sender, old_msg_id,
+                                          f'\U0001F464 : {user_profile[3]}\n'
+                                          f'Имя: {user_profile[5]}\n\n'
+                                          f'Твой уровень риска: __{profile_score_str}__\n\n'
+                                          f'Оплаченных запросов: __{paid_amount}__ 🔋\n'
+                                          f'--------------------------------------------------------\n\n'
+                                          f'Пользователей бота: __{count}__', buttons=keyboard_profile)
+            except telethon.errors.rpcerrorlist.MessageNotModifiedError as e:
+                debug(f'Двойное нажатие кнопки Профиль: {e}', ERROR)
     else:
         menu_msg = await client.send_message(event.input_sender,
                                              f'\U0001F464 : {user_profile[3]}\n'
@@ -191,7 +200,11 @@ async def information_menu(event, client, engine=engine):
             await shared.save_old_message(sender_id, menu_msg)
             shared.set_old_msg_poll(sender_id, False)
         else:
-            await client.edit_message(event.input_sender, old_msg_id, '🛎 Информация', buttons=buttons.keyboard_info)
+            try:
+                await client.edit_message(event.input_sender, old_msg_id, '🛎 Информация',
+                                          buttons=buttons.keyboard_info)
+            except telethon.errors.rpcerrorlist.MessageNotModifiedError as e:
+                debug(f'Двойное нажатие кнопки Информация: {e}', ERROR)
     else:
         menu_msg = await client.send_message(event.input_sender, '🛎 Информация', buttons=buttons.keyboard_info)
         await shared.save_old_message(sender_id, menu_msg)
