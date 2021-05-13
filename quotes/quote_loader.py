@@ -277,6 +277,7 @@ def get_ohlc_data_by_ticker(tick, period="1y", interval="1d"):
 
 
 def ohlc_data_updater_yq(universe, is_update=False, sd=None, ed=None, table_name=QUOTE_TABLE_NAME):
+    debug("__ Start ohlc_data_updater_yq", micro=True)
     if not is_table_exist(table_name):
         debug("__Table is not exists__")
         debug(f"Try create table {table_name}")
@@ -311,7 +312,7 @@ def ohlc_data_updater_yq(universe, is_update=False, sd=None, ed=None, table_name
         else:
             debug(f'Complete:{ticker}:[{count}:{t_len}]')
 
-    debug("Complete ohlc_data_updater")
+    debug("%%% Complete ohlc_data_updater_yq", micro=True)
 
 
 def get_ohlc_data_by_ticker_to_db(tick, start_date, end_date, is_update, table_name):
@@ -330,6 +331,7 @@ def get_ohlc_data_by_ticker_to_db(tick, start_date, end_date, is_update, table_n
         return closes_df
     df = ticker_data.history(start=start_date, end=end_date)
     df.reset_index(inplace=True, level=['symbol'])
+    df = df[~df.index.duplicated(keep='last')]
     dct = df.to_dict('index')
     prices = {}
     for index in dct:
