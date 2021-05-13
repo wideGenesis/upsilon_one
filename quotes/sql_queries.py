@@ -107,6 +107,35 @@ def insert_quotes(ticker, quotes, is_update=True, table_name=QUOTE_TABLE_NAME, e
             transaction.rollback()
 
 
+def update_benchmark_quotes(ticker, quotes, table_name=BENCHMARKS_QUOTES_TABLE_NAME, engine=engine):
+    with engine.connect() as connection:
+        transaction = connection.begin()
+        try:
+            values_amount = 0
+            insert_query = f'INSERT INTO {table_name} ' \
+                           f'(ticker, dateTime, open, high, low, close, adj_close, volume, dividend) ' \
+                           f'VALUES '
+            for count, qdate in enumerate(quotes, start=1):
+                o, h, l, c, ac, v, d = quotes[qdate]
+                del_query = f'DELETE from {table_name} ' \
+                            f'WHERE ticker=\'{ticker}\' AND dateTime=\'{qdate}\''
+                connection.execute(del_query)
+                insert_query += f'(\'{ticker}\', \'{str(qdate)}\', ' \
+                                f'\'{str(o)}\', \'{str(h)}\', \'{str(l)}\', \'{str(c)}\', \'{str(ac)}\', ' \
+                                f'\'{str(v)}\', \'{str(d)}\')'
+                if count == len(quotes):
+                    insert_query += ";"
+                else:
+                    insert_query += ", "
+                values_amount += 1
+            if values_amount > 0:
+                connection.execute(insert_query)
+                transaction.commit()
+        except Exception as e:
+            debug(e, ERROR)
+            transaction.rollback()
+
+
 def get_closes_universe_df(q_table_name=QUOTE_TABLE_NAME, u_table_name=UNIVERSE_TABLE_NAME, cap_filter=0, etf_list=None,
                            start_date=None, end_date=date.today(), engine=engine):
     with engine.connect() as connection:
