@@ -295,7 +295,7 @@ def ohlc_data_updater_yq(universe, is_update=False, sd=None, ed=None, table_name
             start_date = sd
         else:
             if ticker_lookup(ticker, table_name):
-                start_date = find_max_date_by_ticker(ticker, table_name) + timedelta(days=1)
+                start_date = find_max_date_by_ticker(ticker, table_name)
         if is_update:
             if ticker not in DELISTED_TICKERS and ticker not in RECENTLY_DELISTED:
                 get_ohlc_data_by_ticker_to_db(ticker, start_date, end_date, is_update, table_name)
@@ -346,8 +346,6 @@ def get_ohlc_data_by_ticker_to_db(tick, start_date, end_date, is_update, table_n
     insert_quotes(ticker, prices, is_update, table_name)
 
 
-# o, h, l, c, ac, v, d
-# datetime.date(2018, 6, 19): {'symbol': 'XLC', 'open': 49.70000076293945, 'volume': 16600, 'low': 49.58000183105469, 'close': 49.959999084472656, 'high': 50.060001373291016, 'adjclose': 48.73029708862305, 'dividends': 0.0}
 def main():
     td = timedelta(days=4)
     ed = date.today()
