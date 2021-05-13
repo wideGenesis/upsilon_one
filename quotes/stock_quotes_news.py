@@ -93,8 +93,8 @@ class StockStat:
     def higher_sma8(self):
         try:
             weekly_returns = get_ohlc_data_by_ticker(self.stock, period="1y", interval="1wk")
-            weekly_returns.to_csv(os.path.join(f'{PROJECT_HOME_DIR}/results/inspector/111.csv'))
-            weekly_ret = self.prices
+            # weekly_returns.to_csv(os.path.join(f'{PROJECT_HOME_DIR}/results/inspector/111.csv'))
+            # weekly_ret = self.prices
             # weekly_ret = weekly_ret.to_frame()
             # weekly_ret = weekly_ret.resample('W')
             # print(weekly_ret)
@@ -103,7 +103,7 @@ class StockStat:
         if weekly_returns.empty:
             self.sma_signal = None
         else:
-            sma8 = sma(weekly_returns, 8)
+            sma8 = sma(weekly_returns[-2], 8)
             sma8 = sma8.tolist()
             last_close = weekly_returns.iloc[-2]
             if last_close > sma8[-2:-1]:
