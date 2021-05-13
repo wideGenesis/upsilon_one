@@ -93,6 +93,7 @@ class StockStat:
     def higher_sma8(self):
         try:
             weekly_returns = get_ohlc_data_by_ticker(self.stock, period="1y", interval="1wk")
+            weekly_returns.to_csv(os.path.join(f'{PROJECT_HOME_DIR}/results/inspector/111.csv'))
             weekly_ret = self.prices
             # weekly_ret = weekly_ret.to_frame()
             # weekly_ret = weekly_ret.resample('W')
