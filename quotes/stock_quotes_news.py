@@ -97,7 +97,7 @@ class StockStat:
             # weekly_ret = self.prices
             # weekly_ret = weekly_ret.to_frame()
             # weekly_ret = weekly_ret.resample('W')
-            # print(weekly_ret)
+
         except ValueError as e11:
             return e11
         if weekly_returns.empty:
@@ -114,9 +114,7 @@ class StockStat:
 
     def stock_type(self):
         s_type = {}
-        # asset_returns = get_ohlc_data_by_ticker(self.stock, period="1y", interval="1d")
-        # asset_returns = asset_returns.pct_change()
-        # asset_returns.dropna(inplace=True)
+
         asset_returns = self.returns[-240:]
         factors = ['SPY', 'QQQ', 'ARKK', 'VLUE']
         for factor in factors:
@@ -144,15 +142,7 @@ class StockStat:
             except ValueError as e11:
                 debug(e11)
                 return '🛸 нет данных'
-        # for factor in factors:
-        #     try:
-        #         factor_returns = qs.utils.download_returns(factor, period='1y')
-        #         factor_returns.dropna(inplace=True)
-        #         angular_d = angular_distance(asset_returns, factor_returns)
-        #         s_type.update({f'{factor}': angular_d})
-        #     except ValueError as e11:
-        #         debug(e11, ERROR)
-        #         return '🛸 нет данных'
+
         min_angular = min(s_type, key=s_type.get)
         if min_angular == 'SPY' and min(s_type.values()) <= 0.45:
             msg_type = '⚖ Quality - стабильные и \"качественные\" компании\n'
@@ -232,7 +222,6 @@ class StockStat:
                                                   include_right_bound=True,
                                                   table_name=BENCHMARKS_QUOTES_TABLE_NAME)
                 else:
-                    # prices = qs.utils.download_weekly(t, period="1y", interval="1d")
                     prices = self.prices
                     if prices.shape[0] < 250:
                         return
