@@ -22,6 +22,16 @@
 # что бы запустить что-то в 2:10 по NYT надо запускать в 7:10 по времени инстанса
 # 10 7 * * * /home/upsilonsfather/projects/ups_one/cron_scheduler.sh "EVERYDAY"
 #
+# Start on_market_open  (каждый день в 9:31)
+# на инстансе +5часов по отношению к New York Time ориентируемся при запуске на NYT
+# что бы запустить что-то в 9:31 по NYT надо запускать в 14:31 по времени инстанса
+# 31 14 * * * /home/upsilonsfather/projects/ups_one/cron_scheduler.sh "ON_MARKET_OPEN"
+#
+# Start after market close  (каждый день в 17:20)
+# на инстансе +5часов по отношению к New York Time ориентируемся при запуске на NYT
+# что бы запустить что-то в 17:20 по NYT надо запускать в 22:20 по времени инстанса
+# 20 22 * * * /home/upsilonsfather/projects/ups_one/cron_scheduler.sh "AFTER_MARKET_CLOSE"
+#
 # Start monday  (каждый понедельник в 3:13)
 # на инстансе +5часов по отношению к New York Time ориентируемся при запуске на NYT
 # что бы запустить что-то в 3:00 по NYT надо запускать в 8:00 по времени инстанса
@@ -90,6 +100,14 @@ elif [ "$1" == 'FIRST_DAY_OF_MONTH' ]
 then
   echo "#Every $1 [$(date +'%Y-%m-%d %H:%M:%S')]"  >> $LOGDIR/$LOG_FILE_NAME
   python3 $BASEDIR/cron_calc_portfolios_allocation.py --fname=$LOG_FILE_NAME >> $LOGDIR/$LOG_FILE_NAME   2>&1 &
+elif [ "$1" == 'ON_MARKET_OPEN' ]
+then
+  echo "#Every $1 [$(date +'%Y-%m-%d %H:%M:%S')]"  >> $LOGDIR/$LOG_FILE_NAME
+  python3 $BASEDIR/cron_on_market_open.py --fname=$LOG_FILE_NAME >> $LOGDIR/$LOG_FILE_NAME   2>&1 &
+elif [ "$1" == 'AFTER_MARKET_CLOSE' ]
+then
+  echo "#Every $1 [$(date +'%Y-%m-%d %H:%M:%S')]"  >> $LOGDIR/$LOG_FILE_NAME
+  python3 $BASEDIR/cron_after_market_close.py --fname=$LOG_FILE_NAME >> $LOGDIR/$LOG_FILE_NAME   2>&1 &
 fi
 deactivate
 

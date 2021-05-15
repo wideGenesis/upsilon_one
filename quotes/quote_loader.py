@@ -299,11 +299,13 @@ def ohlc_data_updater_yq(universe, is_update=False, sd=None, ed=None, table_name
                 start_date = find_max_date_by_ticker(ticker, table_name)
         if is_update:
             if ticker not in DELISTED_TICKERS and ticker not in RECENTLY_DELISTED:
-                get_ohlc_data_by_ticker_to_db(ticker, start_date, end_date, is_update, table_name)
+                prices = get_ohlc_data_by_ticker_yq(ticker, start_date, end_date)
+                insert_quotes(ticker, prices, is_update, table_name)
                 # download_quotes_to_db(ticker, start_date, end_date, is_update, table_name)
         else:
             if ticker not in DELISTED_TICKERS:
-                get_ohlc_data_by_ticker_to_db(ticker, start_date, end_date, is_update, table_name)
+                prices = get_ohlc_data_by_ticker_yq(ticker, start_date, end_date)
+                insert_quotes(ticker, prices, is_update, table_name)
                 # download_quotes_to_db(ticker, start_date, end_date, is_update, table_name)
             else:
                 get_historical_adjprices(ticker, start_date, end_date, is_update, table_name)
@@ -316,7 +318,28 @@ def ohlc_data_updater_yq(universe, is_update=False, sd=None, ed=None, table_name
     debug("%%% Complete ohlc_data_updater_yq", micro=True)
 
 
-def get_ohlc_data_by_ticker_to_db(tick, start_date, end_date, is_update, table_name):
+def update_db_last_ohlc_data(ticker_list, sd=None, table_name=BENCHMARKS_QUOTES_TABLE_NAME):
+    debug("__ Start update_db_last_ohlc_data", micro=True)
+    t_len = len(ticker_list)
+    end_date = None
+    if not is_debug_init():
+        print_progress_bar(0, t_len, prefix='Progress:', suffix='Complete', length=50)
+    for count, ticker in enumerate(ticker_list, start=1):
+        start_date = datetime.datetime.now()
+        if sd is not None:
+            start_date = sd
+        if ticker not in DELISTED_TICKERS and ticker not in RECENTLY_DELISTED:
+            prices = get_ohlc_data_by_ticker_yq(ticker, start_date, end_date)
+            update_benchmark_quotes(ticker, prices)
+        if not is_debug_init():
+            print_progress_bar(count, t_len, prefix='Progress:', suffix=f'Complete:{ticker}:[{count}:{t_len}]   ',
+                               length=50)
+        else:
+            debug(f'Complete:{ticker}:[{count}:{t_len}]')
+    debug("%%% Complete update_db_last_ohlc_data", micro=True)
+
+
+def get_ohlc_data_by_ticker_yq(tick, start_date, end_date):
     closes_df = pd.DataFrame()
     ticker = tick.upper()
     if ticker is None or len(ticker) == 0:
@@ -344,7 +367,7 @@ def get_ohlc_data_by_ticker_to_db(tick, start_date, end_date, is_update, table_n
                  round(dct[index]['volume'], 2),
                  round(dct[index].get('dividends', 0.0), 2)]
         prices[index] = value
-    insert_quotes(ticker, prices, is_update, table_name)
+    return prices
 
 
 def main():
