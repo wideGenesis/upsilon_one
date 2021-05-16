@@ -468,6 +468,7 @@ async def get_last_request_datetime(user_id, engine=engine):
             result = connection.execute(query_string)
             if result.rowcount > 0:
                 last_request = str(result.fetchone()[0])
+                debug(f'last_request={last_request}')
                 if last_request != 'NULL' and last_request is not None:
                     last_request_datetime = datetime.datetime.fromisoformat(last_request)
             return last_request_datetime
