@@ -374,6 +374,7 @@ async def quotes_to_handler(event, client_, limit=20):
             os.remove(mom_rank)
 
     await client_.send_message(event.input_sender, message=f'{msg4}')
+    debug(f"%%% Complete quotes_to_handler")
 
 
 async def news_to_handler(event, client_, limit=20):

@@ -422,7 +422,7 @@ async def append_new_user(user_id):
                 connection.execute(f"INSERT INTO {INCOMING_USERS_TABLE_NAME}(user_id, income_datetime)  "
                                    f"VALUES( \'{user_id}\', \'{now}\')")
                 connection.execute(f"INSERT INTO {REQUEST_AMOUNT_TABLE_NAME}(user_id, paid_amount, free_amount)  "
-                                   f"VALUES( \'{user_id}\', \'0\', \'25\')")
+                                   f"VALUES( \'{user_id}\', \'0\', \'{MONTH_FREE_REQUEST_LIMIT}\')")
             except Exception as e:
                 debug(e, ERROR)
                 transaction.rollback()
@@ -468,7 +468,7 @@ async def get_last_request_datetime(user_id, engine=engine):
             result = connection.execute(query_string)
             if result.rowcount > 0:
                 last_request = str(result.fetchone()[0])
-                if last_request != 'NULL':
+                if last_request != 'NULL' and last_request is not None:
                     last_request_datetime = datetime.datetime.fromisoformat(last_request)
             return last_request_datetime
         except Exception as e:

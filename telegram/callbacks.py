@@ -909,14 +909,14 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
         now = datetime.datetime.now()
         is_new_user = True if (now - income_datetime).days < 3 else False
         paid_amount, free_amount = await sql.get_request_amount(sender_id)
-        portfolio_size_limit = 25
+        portfolio_size_limit = PORTFOLIO_FREE_SIZE_LIMIT
         message = f'Размер портфеля не должен превышать {portfolio_size_limit} тикеров\n' \
                   f'__Твой портфель сейчас выглядит так:__\n```{current_portfolio}```\n\n' \
                   f'__Выбери действие:__'
         if is_new_user:
-            portfolio_size_limit = 10
+            portfolio_size_limit = PORTFOLIO_NEW_USER_SIZE_LIMIT
         if paid_amount > 0:
-            portfolio_size_limit = 40
+            portfolio_size_limit = PORTFOLIO_VIP_USER_SIZE_LIMIT
         if current_portfolio is not None and len(current_portfolio) == portfolio_size_limit:
             if old_msg_id is not None:
                 await client.edit_message(event.input_sender, old_msg_id,
@@ -1038,7 +1038,7 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
         await shared.delete_old_message(client, sender_id)
         wait_message = await client.send_message(sender_id,
                                                  message=f'Провожу анализ. Это может занять некоторое время.\n'
-                                                                    f'Дождись ответа, ничего не нажимая! ')
+                                                         f'Дождись ответа, ничего не нажимая! ')
         await shared.save_old_message(sender_id, wait_message)
 
         filenames = []
