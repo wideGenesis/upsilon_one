@@ -580,16 +580,20 @@ async def send_broadcast_message(clnt, engine, msg):
     msg_id = save_message(msg, '', fdt, SIMPLE_MESSAGE_TYPE)
     sent_users_dict = {}
     fail_users_dict = {}
+    sent_count = 0
+    fail_count = 0
     for count, user_id in enumerate(users, start=1):
         try:
             await clnt.send_message(user_id, msg)
             dt = datetime.datetime.now()
-            sm_log_file.write(f'{count}:[{dt.strftime("%H:%M:%S")}]:{user_id}\n')
+            sent_count += 1
+            sm_log_file.write(f'[{sent_count}/{fail_count}/{count}]:[{dt.strftime("%H:%M:%S")}]:{user_id}\n')
             sent_users_dict[user_id] = dt.strftime("%Y-%m-%d %H:%M:%S")
         except Exception as e:
             debug(e, ERROR)
             dt = datetime.datetime.now()
-            fm_log_file.write(f'{count}:[{dt.strftime("%H:%M:%S")}]:{user_id}\n')
+            fail_count += 1
+            fm_log_file.write(f'[{sent_count}/{fail_count}/{count}]:[{dt.strftime("%H:%M:%S")}]:{user_id}\n')
             fail_users_dict[user_id] = dt.strftime("%Y-%m-%d %H:%M:%S")
     update_mailing_lists(msg_id, sent_users_dict, fail_users_dict, {})
     fdt = datetime.datetime.now()
