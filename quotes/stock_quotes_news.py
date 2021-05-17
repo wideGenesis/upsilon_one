@@ -161,6 +161,8 @@ class StockStat:
 
     def new_var(self):
         path = f'{PROJECT_HOME_DIR}/results/ticker_stat/'
+        if self.returns is None or self.returns.empty:
+            return
         try:
             returns = self.returns * 100
         except TypeError as e13a:
@@ -223,7 +225,7 @@ class StockStat:
                                                   table_name=BENCHMARKS_QUOTES_TABLE_NAME)
                 else:
                     prices = self.prices
-                    if prices.shape[0] < 250:
+                    if prices is None or prices.emty or prices.shape[0] < 250:
                         return
             except ValueError as e11:
                 debug(e11)

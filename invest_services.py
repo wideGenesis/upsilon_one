@@ -20,6 +20,8 @@ from quotes.stock_quotes_news import StockStat
 
 # ============================== Main  =============================
 def main():
+    get_ohlc_data_by_ticker('HYDR')
+    exit()
     start_date = datetime.datetime.now()-timedelta(days=1)
     update_db_last_ohlc_data(BENCHMARKS, start_date)
     exit()
