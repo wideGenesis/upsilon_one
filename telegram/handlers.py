@@ -592,6 +592,9 @@ async def send_broadcast_message(clnt, engine, msg):
             fm_log_file.write(f'[{dt.strftime("%H:%M:%S")}]:{user_id}\n')
             fail_users_dict[user_id] = dt.strftime("%Y-%m-%d %H:%M:%S")
     update_mailing_lists(msg_id, sent_users_dict, fail_users_dict, {})
+    fdt = datetime.datetime.now()
+    sm_log_file.write(f'[{fdt.strftime("%H:%M:%S")}]:%%%%%%%%%% Complete send new message %%%%%%%%%%\n')
+    fm_log_file.write(f'[{fdt.strftime("%H:%M:%S")}]:%%%%%%%%%% Complete send new message %%%%%%%%%%\n')
     sm_log_file.close()
     fm_log_file.close()
     return True
