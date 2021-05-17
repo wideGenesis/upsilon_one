@@ -225,7 +225,7 @@ class StockStat:
                                                   table_name=BENCHMARKS_QUOTES_TABLE_NAME)
                 else:
                     prices = self.prices
-                    if prices is None or prices.emty or prices.shape[0] < 250:
+                    if prices is None or prices.empty or prices.shape[0] < 250:
                         return
             except ValueError as e11:
                 debug(e11)
