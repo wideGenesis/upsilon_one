@@ -267,9 +267,12 @@ keyboard_screener = [
     [
         Button.inline('\U0001F4B9  ' + 'Финансовый анализ', b'financial_analysis')
     ],
-    # [
-    #     Button.inline('\U0001F3C6  ' + 'Скринер лучших акций', b'sc1')
-    # ],
+    [
+        Button.inline('🎩  ' + 'TOP-50 акций гуру', b'top_gurus')
+    ],
+    [
+        Button.inline('🐹  ' + 'TOP-50 лучших cheap-акицй', b'top_cheap')
+    ],
     [
         Button.inline('\U0001F9E8  ' + 'Новости по компаниям', b'ticker_news')
     ],

@@ -1,0 +1,51 @@
+Ticker,Company,Sector,Daily SL %
+GOOG,Alphabet Inc.,Communication Services,5.51
+GOOGL,Alphabet Inc.,Communication Services,5.71
+BRK-B,Berkshire Hathaway Inc.,Financial,3.84
+FB,"Facebook, Inc.",Communication Services,6.64
+AMZN,"Amazon.com, Inc.",Consumer Cyclical,6.29
+BAC,Bank of America Corporation,Financial,5.99
+WFC,Wells Fargo & Company,Financial,7.31
+UPS,"United Parcel Service, Inc.",Industrials,5.55
+FCX,Freeport-McMoRan Inc.,Basic Materials,14.95
+UNH,UnitedHealth Group Incorporated,Healthcare,4.38
+MS,Morgan Stanley,Financial,7.01
+CAT,Caterpillar Inc.,Industrials,6.39
+NVDA,NVIDIA Corporation,Technology,9.93
+SCHW,The Charles Schwab Corporation,Financial,7.72
+HD,"The Home Depot, Inc.",Consumer Cyclical,5.83
+ORCL,Oracle Corporation,Technology,4.88
+GS,"The Goldman Sachs Group, Inc.",Financial,6.75
+C,Citigroup Inc.,Financial,6.11
+XOM,Exxon Mobil Corporation,Energy,7.45
+FDX,FedEx Corporation,Industrials,6.31
+V,Visa Inc.,Financial,4.59
+LRCX,Lam Research Corporation,Technology,11.2
+ACN,Accenture plc,Technology,4.27
+DHR,Danaher Corporation,Healthcare,5.04
+TXN,Texas Instruments Incorporated,Technology,7.02
+LOW,"Lowe's Companies, Inc.",Consumer Cyclical,7.3
+USB,U.S. Bancorp,Financial,6.31
+BLK,"BlackRock, Inc.",Financial,5.6
+LIN,Linde plc,Basic Materials,4.12
+LB,"L Brands, Inc.",Consumer Cyclical,10.52
+PNC,"The PNC Financial Services Group, Inc.",Financial,7.13
+TFC,Truist Financial Corporation,Financial,6.75
+TGT,Target Corporation,Consumer Defensive,5.63
+RTX,Raytheon Technologies Corporation,Industrials,5.57
+EL,The Estee Lauder Companies Inc.,Consumer Defensive,5.64
+TMUS,"T-Mobile US, Inc.",Communication Services,6.21
+UNP,Union Pacific Corporation,Industrials,4.82
+HCA,"HCA Healthcare, Inc.",Healthcare,6.2
+PM,Philip Morris International Inc.,Consumer Defensive,3.94
+DFS,Discover Financial Services,Financial,8.01
+SIVB,SVB Financial Group,Financial,10.39
+ABBV,AbbVie Inc.,Healthcare,4.59
+ALGN,"Align Technology, Inc.",Healthcare,9.83
+MET,"MetLife, Inc.",Financial,5.89
+CARR,Carrier Global Corporation,Industrials,6.68
+ETN,Eaton Corporation plc,Industrials,5.14
+MDT,Medtronic plc,Healthcare,3.86
+KO,The Coca-Cola Company,Consumer Defensive,3.4
+JCI,Johnson Controls International plc,Industrials,6.14
+MCD,McDonald's Corporation,Consumer Cyclical,3.46
