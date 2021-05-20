@@ -165,7 +165,10 @@ class GuruRocketScreener:
         except Exception as e0:
             print(e0, 'Posting to telegraph failed')
 
-
+# for filename in filenames:
+#     if os.path.exists(filename):
+#         await client.send_file(event.input_sender, filename)
+#         os.remove(filename)
 
 
 

@@ -271,7 +271,7 @@ keyboard_screener = [
         Button.inline('🎩  ' + 'TOP-50 акций гуру', b'top_gurus')
     ],
     [
-        Button.inline('🐹  ' + 'TOP-50 лучших cheap-акицй', b'top_cheap')
+        Button.inline('🐹  ' + 'TOP-50 лучших cheap-акций', b'top_cheap')
     ],
     [
         Button.inline('\U0001F9E8  ' + 'Новости по компаниям', b'ticker_news')
