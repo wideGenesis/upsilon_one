@@ -58,7 +58,7 @@ class GuruRocketScreener:
                  custom=None,
                  guru_filename: str = 'guru_stocks.csv',
                  rocket_filename: str = 'rocket_stocks.csv',
-                 path: str = '/home/gene/projects/upsilon_one/logs/',
+                 path: str = None,
                  tlgph_guru_fname: str = '/file/85198326b0ef5ebda6a17.png',
                  tlgph_rock_fname: str = '/file/ae6c623cb2013a4dcb0f8.jpg',
                  ):
@@ -136,7 +136,7 @@ class GuruRocketScreener:
             img_filename = self.tlgph_guru_fname
             text = 'Ипсилон анализирует последние сделки самых прибыльных гуру фондового рынка и затем выбирает ' \
                    'наиболее перспективные и значимые компании. Лучшим вариантом портфеля будет: ' \
-                   '15-20 акций из списка. Стоп-лоссы использовать не обязательно!'
+                   '15-20 акций из списка. Стоп-лоссы использовать не обязательно!\n'
             msg = self.get_picks()
         else:
             title = 'Дешевые акции с высоким потенциалом роста'
@@ -154,7 +154,7 @@ class GuruRocketScreener:
                 content=None,
                 html_content=f'<img src={img_filename}/>'
                              f'<p>{text}</p>'
-                             f'<p><b>Ticker | Company | Sector | Daily SL %</b></p><ul>{msg}</ul>',
+                             f'<br><p><b>\nTicker | Company | Sector | Daily SL %</b></p><ul>{msg}</ul>',
                 author_name='@UpsilonBot',
                 author_url=None,
                 return_content=True
@@ -165,39 +165,51 @@ class GuruRocketScreener:
         except Exception as e0:
             print(e0, 'Posting to telegraph failed')
 
-# for filename in filenames:
-#     if os.path.exists(filename):
-#         await client.send_file(event.input_sender, filename)
-#         os.remove(filename)
+    def edit_page(self, link=None, msg=None, img_path=None):
+        today = date.today()
+        telegraph = Telegraph(access_token=self.access_token)
+        if self.guru:
+            title = 'Консолидированные длинные позиции Гуру'
+            img_filename = self.tlgph_guru_fname
+            text = 'Ипсилон анализирует последние сделки самых прибыльных гуру фондового рынка и затем выбирает ' \
+                   'наиболее перспективные и значимые компании. Лучшим вариантом портфеля будет: ' \
+                   '15-20 акций из списка. Стоп-лоссы использовать не обязательно!\n'
+            msg = self.get_picks()
+        else:
+            title = 'Дешевые акции с высоким потенциалом роста'
+            img_filename = self.tlgph_rock_fname
+            text = 'Ипсилон анализирует упоминания тикеров в социальных сетях и выбирает самые недорогие, ' \
+                   'но потенциально прибыльные акции. Cheap-тикеры выбираются без учета фундаментального анализа, ' \
+                   'а исключительно статистически, поэтому следует с осторожностью инвестировать в данные акции.\n' \
+                   'Лучшим вариантом портфеля будет: 15-20 акций из списка. Рекомендуется использовать стоп-лоссы, ' \
+                   'величина которых указанна напротив каждого тикера. Если какая-то акция не \'стрельнула\', ' \
+                   'ее нужно продать, а не надеться рост!\n'
+            msg = self.get_picks()
+
+        try:
+            edit = telegraph.create_page(
+                f'{link}'
+                f'{title} по состоянию на {today}',
+                content=None,
+                html_content=f'<img src={img_filename}/>'
+                             f'<p>{text}</p>'
+                             f'<br><p><b>\nTicker | Company | Sector | Daily SL %</b></p><ul>{msg}</ul>',
+                author_name='@UpsilonBot',
+                author_url=None,
+                return_content=True
+
+            )
+            print(edit, 'Posting has been completed')
+            return edit
+        except Exception as e0:
+            print(e0, 'Posting to telegraph failed')
+
+
+# start = GuruRocketScreener(guru=False, path='')
+# start.publish_to_telegraph()
+
+# start.edit_page(link='Konsolidirovannye-dlinnye-pozicii-Guru-po-sostoyaniyu-na-2021-05-20-05-20')
+# start.edit_page(link='Deshevye-loterejnye-akcii-na-2021-05-20-05-20')
 
 
 
-start = GuruRocketScreener()
-start.publish_to_telegraph()
-
-
-    # def edit_page(msg=None, img_path=None):
-    #
-    #     today = date.today()
-    #     telegraph = Telegraph(access_token='dde4d5a2f8e0e12e98fa5e9d524a5a91129855fbb37cbb45879871051a29')
-    #     try:
-    #         edit = telegraph.edit_page(
-    #             'Deshevye-loterejnye-akcii-na-2021-05-20-05-20',
-    #             f'Дешевые акции с высоким потенциалом роста на {today}',
-    #             content=None,
-    #             html_content=f'<img src={rocket}/>'
-    #                          f'<p><b>Ticker | Company | Sector | Daily SL %</b></p><ul>{msg}</ul>',
-    #             author_name='Upsilon',
-    #             author_url=None,
-    #             return_content=False
-    #         )
-    #         print('Edit has been completed')
-    #     except Exception as e1:
-    #         print(e1, 'Editing failed')
-
-
-# {'short_name': 'Upsilon',
-#  'author_name': 'Upsilon',
-#  'author_url': '',
-#  'access_token': 'dde4d5a2f8e0e12e98fa5e9d524a5a91129855fbb37cbb45879871051a29',
-#  'auth_url': 'https://edit.telegra.ph/auth/XQIVHpdI9UYy4xhBdrFkYbiS5jAXzntwdaqSzDAGxw'}
