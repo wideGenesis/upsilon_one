@@ -688,6 +688,18 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
         await shared.delete_old_message(client, sender_id)
         await client.send_message(event.input_sender, message=ins.instruction21,
                                   buttons=buttons.keyboard_screener_back)
+    elif event.data == b'top_gurus':
+        await event.edit()
+        await shared.delete_old_message(client, sender_id)
+        await client.send_message(event.input_sender,
+                                  message='https://telegra.ph/Konsolidirovannye-dlinnye-pozicii-Guru-po-sostoyaniyu-na-2021-05-20-05-20Konsolidirovannye-dlinnye-pozicii-Guru-po-sostoyaniyu-n-05-20-3',
+                                  buttons=buttons.keyboard_screener_back)
+    elif event.data == b'top_cheap':
+        await event.edit()
+        await shared.delete_old_message(client, sender_id)
+        await client.send_message(event.input_sender,
+                                  message='https://telegra.ph/Deshevye-loterejnye-akcii-na-2021-05-20-05-20Deshevye-akcii-s-vysokim-potencialom-rosta-po-sostoyaniyu-na-2021-05-20-05-20-2',
+                                  buttons=buttons.keyboard_screener_back)
 
     elif event.data == b'ticker_news':
         await event.edit()

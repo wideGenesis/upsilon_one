@@ -284,3 +284,10 @@ PORTFOLIOS:
   PASSIVE_MID: ['SPY', 'QQQ', 'XLY', 'XLV', 'DBC', 'GLD', 'TLT', 'IEF']
   PASSIVE_HIGH: ['SPY', 'QQQ', 'XLY', 'XLV', 'TLT', 'IEF']
 #'https://www.portfoliovisualizer.com/backtest-portfolio?s=y&timePeriod=4&startYear=2007&firstMonth=1&endYear=2021&lastMonth=12&calendarAligned=true&includeYTD=false&initialAmount=10000&annualOperation=0&annualAdjustment=0&inflationAdjusted=true&annualPercentage=0.0&frequency=4&rebalanceType=1&absoluteDeviation=5.0&relativeDeviation=25.0&reinvestDividends=true&showYield=false&showFactors=false&factorModel=3&benchmark=-1&benchmarkSymbol=SPY&portfolioNames=false&portfolioName1=Portfolio+1&portfolioName2=Portfolio+2&portfolioName3=Portfolio+3&symbol1=SPY&allocation1_2=5&allocation1_3=5&symbol2=XLY&allocation2_1=2.5&allocation2_2=10&allocation2_3=10&symbol3=XLV&allocation3_1=2.5&allocation3_2=10&allocation3_3=10&symbol6=IEF&allocation6_1=10&allocation6_2=7.5&allocation6_3=5&symbol7=DBC&allocation7_1=7.5&allocation7_2=2.5&symbol10=TLT&allocation10_1=30&allocation10_2=20&allocation10_3=20&symbol11=GLD&allocation11_1=7.5&allocation11_2=5&symbol13=QQQ&allocation13_1=40&allocation13_2=40&allocation13_3=50'
+
+
+# {'short_name': 'Upsilon',
+#  'author_name': 'Upsilon',
+#  'author_url': '',
+#  'access_token': 'dde4d5a2f8e0e12e98fa5e9d524a5a91129855fbb37cbb45879871051a29',
+#  'auth_url': 'https://edit.telegra.ph/auth/XQIVHpdI9UYy4xhBdrFkYbiS5jAXzntwdaqSzDAGxw'}
