@@ -14,6 +14,7 @@ from telegram import buttons
 from telegram import sql_queries as sql
 from telegram import menu
 from telegram import shared
+from telethon import types
 from payments.payagregator import PaymentAgregator
 from project_shared import *
 from telegram import instructions as ins
@@ -90,19 +91,23 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
             await shared.save_old_message(sender_id, msg)
 
     elif event.data == b'donate2':
-        await make_payment(event, client, 2.0, 'donate')
+        await make_payment(event, client, 0, 2.0, 'donate')
 
     elif event.data == b'donate5':
-        await make_payment(event, client, 5.0, 'donate')
+        await make_payment(event, client, 0, 5.0, 'donate')
 
     elif event.data == b'donate10':
-        await make_payment(event, client, 10.0, 'donate')
+        await make_payment(event, client, 0, 10.0, 'donate')
 
     elif event.data == b'donate50':
-        await make_payment(event, client, 50.0, 'donate')
+        await make_payment(event, client, 0, 50.0, 'donate')
 
     elif event.data == b'donate100':
-        await make_payment(event, client, 100.0, 'donate')
+        await make_payment(event, client, 0, 100.0, 'donate')
+
+    # ############# INLINE DONATE KBD
+    elif event.data == b'inline_donate':
+        await send_invoice(client, event)
 
     elif event.data == b'donate_back':
         await event.edit()
@@ -113,28 +118,32 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
             await shared.save_old_message(sender_id, msg)
 
     elif event.data == b'buy_requests5':
-        await make_payment(event, client, 5.0, 'replenishment')
+        await make_payment(event, client, 33, 5.0, 'replenishment')
 
     elif event.data == b'buy_requests10':
-        await make_payment(event, client, 10.0, 'replenishment')
+        await make_payment(event, client, 67, 10.0, 'replenishment')
 
     elif event.data == b'buy_requests20':
-        await make_payment(event, client, 20.0, 'replenishment')
+        await make_payment(event, client, 143, 20.0, 'replenishment')
 
     elif event.data == b'buy_requests50':
-        await make_payment(event, client, 50.0, 'replenishment')
+        await make_payment(event, client, 417, 50.0, 'replenishment')
 
     elif event.data == b'buy_requests100':
-        await make_payment(event, client, 100.0, 'replenishment')
+        await make_payment(event, client, 1000, 100.0, 'replenishment')
 
     elif event.data == b'buy_requests150':
-        await make_payment(event, client, 150.0, 'replenishment')
+        await make_payment(event, client, 1875, 150.0, 'replenishment')
 
     elif event.data == b'buy_requests200':
-        await make_payment(event, client, 200.0, 'replenishment')
+        await make_payment(event, client, 3333, 200.0, 'replenishment')
 
     elif event.data == b'buy_requests300':
-        await make_payment(event, client, 300.0, 'replenishment')
+        await make_payment(event, client, 7500, 300.0, 'replenishment')
+
+    # ############# INLINE PAYMENT KBD
+    elif event.data == b'inline_payment':
+        await send_invoice(client, event)
 
     elif event.data == b'payment_back':
         await event.edit()
@@ -1379,7 +1388,67 @@ async def my_strategies_dynamic_menu(event, client, sender_id, old_msg_id):
         await shared.save_old_message(sender_id, msg)
 
 
-async def make_payment(event, client_, summ, order_type):
+provider_token = '381764678:TEST:25868'
+
+
+# let's put it in one function for more easier way
+def generate_invoice(price_label: str, price_amount: int, currency: str, title: str,
+                     description: str, payload: str, start_param: str) -> types.InputMediaInvoice:
+    price = types.LabeledPrice(label=price_label, amount=price_amount)  # label - just a text, amount=10000 means 100.00
+    invoice = types.Invoice(
+        currency=currency,  # currency like USD
+        prices=[price],  # there could be a couple of prices.
+        test=True,  # if you're working with test token, else set test=False.
+        # More info at https://core.telegram.org/bots/payments
+
+        # params for requesting specific fields
+        name_requested=False,
+        phone_requested=False,
+        email_requested=True,
+        shipping_address_requested=False,
+
+        # if price changes depending on shipping
+        flexible=False,
+
+        # send data to provider
+        phone_to_provider=False,
+        email_to_provider=False
+    )
+    return types.InputMediaInvoice(
+        title=title,
+        description=description,
+        invoice=invoice,
+        payload=payload.encode('UTF-8'),  # payload, which will be sent to next 2 handlers
+        provider=provider_token,
+
+        provider_data=types.DataJSON('{"need_email": true,'
+                                     '"send_email_to_provider": true,'
+                                     '"provider_data":{'
+                                     '"receipt": {'
+                                     '"items": ['
+                                     '{'
+                                     '"description": "description A",'
+                                     '"quantity": "1.00",'
+                                     '"amount": {'
+                                     '"value": "100.00",'
+                                     '"currency": "RUB"'
+                                     '},'
+                                     '"vat_code": 1'
+                                     '}'
+                                     ']}'
+                                     '}}'),
+        # data about the invoice, which will be shared with the payment provider. A detailed description of
+        # required fields should be provided by the payment provider.
+
+        start_param=start_param,
+        # Unique deep-linking parameter. May also be used in UpdateBotPrecheckoutQuery
+        # see: https://core.telegram.org/bots#deep-linking
+        # it may be the empty string if not needed
+
+    )
+
+
+async def make_payment(event, client_, request_amount, summ, order_type):
     if summ is None or summ <= 0.0:
         debug(f'Упс. Нажали донат {summ}. Но что-топошло не так')
         return
@@ -1427,7 +1496,8 @@ async def make_payment(event, client_, summ, order_type):
         debug(f"User_id={sender_id} -- OrderId:{order_id} -- Summa: {summ}")
         payment_link = PAYMENT_AGGREGATOR.get_payment_link(order_id, str(summ))
         debug(f'payment_link={payment_link}')
-        kbd_payment_button = buttons.generate_payment_button(f'Оплатить ( ${summ} )', payment_link, order_type)
+
+        kbd_payment_button = buttons.generate_payment_button(summ, payment_link, order_type)
 
         instuction_link = ''
         if order_type == 'donate':
@@ -1453,10 +1523,50 @@ async def make_payment(event, client_, summ, order_type):
             msg_id = utils.get_message_id(paymsg)
 
         shared.set_order_data(order_id, sender_id, msg_id, order_type)
+        make_payment.order_type = order_type
+        make_payment.order_id = order_id
+        debug(f'>>>>request_amount = {request_amount}')
+        make_payment.request_amount = request_amount
+        make_payment.summ = summ
         dt_int = shared.datetime2int(datetime.datetime.now())
         await sql.insert_into_payment_message(order_id, sender_id, msg_id, dt_int, engine)
 
 
+async def send_invoice(client, event):
+    sender_id = event.original_update.user_id
+    order_type = getattr(make_payment, 'order_type', None) or None
+    order_id = getattr(make_payment, 'order_id', None) or None
+    summ = getattr(make_payment, 'summ', None) or None
+    request_amount = getattr(make_payment, 'request_amount', None)
+    debug(f'make_payment.order_type ={order_type}')
+    debug(f'make_payment.order_id ={order_id}')
+    debug(f'make_payment.summ ={summ}')
+    debug(f'make_payment.request_amount ={request_amount}')
+    summa = fast_int(summ*1000)
+    payload = {'s_i': sender_id,
+               'o_t': order_type,
+               'o_i': order_id,
+               'r_a': request_amount,
+               's': summ}
+    imi = None
+    if order_type == 'replenishment':
+        imi = generate_invoice(price_label=f'Pay{summ}$',
+                               price_amount=summa,
+                               currency='RUB',
+                               title=f'Покупка {request_amount} запросв',
+                               description='Тут надо придумать какое-то описание оплаты',
+                               payload=json.dumps(payload),
+                               start_param='123e')
+    elif order_type == 'donate':
+        imi = generate_invoice(price_label=f'Pay{summ}$',
+                               price_amount=summa,
+                               currency='RUB',
+                               title=f'Пожертвование!',
+                               description='На поддержку перспективного, быстро развивающегося и вообще классного бота!',
+                               payload=json.dumps(payload),
+                               start_param='123e')
+
+    await client.send_message(event.chat_id, '', file=imi)
 
 # elif event.data == b'a1a4':
 #     await event.edit()

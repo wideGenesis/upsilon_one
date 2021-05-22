@@ -11,7 +11,7 @@ import rsa
 import asyncio
 from sqlalchemy import create_engine
 from alchemysession import AlchemySessionContainer
-from telethon import events, TelegramClient
+from telethon import events, TelegramClient, types, functions
 from aiohttp import web
 from telegram import menu
 from telegram import sql_queries as sql
@@ -189,6 +189,65 @@ async def acion_info(event, action_type, action):
                 usr_data += f'{sender.last_name}'
             debug(f' -- {action} -- {sender.id} - ( {usr_data} )')
         await sql.save_action_data(sender.id, action_type, action)
+
+
+# ############################################ STRIPE PAYMENTS ##################################
+# That event is handled when customer enters his card/etc, on final pre-checkout
+# If we don't `SetBotPrecheckoutResultsRequest`, money won't be charged from buyer, and nothing will happen next.
+@client.on(events.Raw(types.UpdateBotPrecheckoutQuery))
+async def payment_pre_checkout_handler(event: types.UpdateBotPrecheckoutQuery):
+    payload_json = event.payload.decode('UTF-8')
+    payload = json.loads(payload_json)
+    if payload['o_t'] == 'replenishment':
+        await client(
+            functions.messages.SetBotPrecheckoutResultsRequest(
+                query_id=event.query_id,
+                success=True,
+                error=None
+            )
+        )
+        await client.send_message(payload['s_i'],
+                                  f'Оплата прошла успешно:\n'
+                                  f'__Ордер: {payload["o_i"]} __\n'
+                                  f'__Сумма: {payload["s"]} __\n'
+                                  f'**Спасибо, что пользуешься моими услугами!**')
+    elif payload['o_t'] == 'donate':
+        await client(
+            functions.messages.SetBotPrecheckoutResultsRequest(
+                query_id=event.query_id,
+                success=True,
+                error=None
+            )
+        )
+        await client.send_message(payload['s_i'],
+                                  f'Оплата прошла успешно:\n'
+                                  f'__Ордер: {payload["o_i"]} __\n'
+                                  f'__Сумма: {payload["s"]} __\n'
+                                  f'**Спасибо, что поддерживаешь меня!**')
+    else:
+        # for example, something went wrong (whatever reason). We can tell customer about that:
+        await client(
+            functions.messages.SetBotPrecheckoutResultsRequest(
+                query_id=event.query_id,
+                success=False,
+                error='Something went wrong'
+            )
+        )
+
+    raise events.StopPropagation
+
+
+# That event is handled at the end, when customer payed.
+@client.on(events.Raw(types.UpdateNewMessage))
+async def payment_received_handler(event):
+    if isinstance(event.message.action, types.MessageActionPaymentSentMe):
+        payment: types.MessageActionPaymentSentMe = event.message.action
+        # do something after payment was recieved
+        if payment.payload.decode('UTF-8') == 'product A':
+            await client.send_message(event.message.from_id, 'Thank you for buying product A!')
+        elif payment.payload.decode('UTF-8') == 'product B':
+            await client.send_message(event.message.from_id, 'Thank you for buying product B!')
+        raise events.StopPropagation
 
 
 # ============================== Main  =============================
