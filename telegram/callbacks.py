@@ -1565,8 +1565,9 @@ async def send_invoice(client, event):
         imi = generate_invoice(price_label=f'Pay{summ}$',
                                price_amount=summa,
                                currency='RUB',
-                               title=f'Покупка {request_amount} запросв',
-                               description='Тут надо придумать какое-то описание оплаты',
+                               title=f'Покупка {request_amount} запросов',
+                               description='Покупая запросы, вы приобретаете доступ к внутренней базе данных '
+                                           'Ипсилона и приоритет в доступе к любым текущим и будущим данным бота.',
                                payload=json.dumps(payload),
                                start_param='123e')
     elif order_type == 'donate':
@@ -1574,7 +1575,8 @@ async def send_invoice(client, event):
                                price_amount=summa,
                                currency='RUB',
                                title=f'Пожертвование!',
-                               description='На поддержку перспективного, быстро развивающегося и вообще классного бота!',
+                               description='На поддержку перспективного, быстро развивающегося и вообще '
+                                           'классного бота!',
                                payload=json.dumps(payload),
                                start_param='123e')
 
