@@ -37,6 +37,12 @@
 # что бы запустить что-то в 3:00 по NYT надо запускать в 8:00 по времени инстанса
 # 13 8 * * MON /home/upsilonsfather/projects/ups_one/cron_scheduler.sh "MONDAY"
 #
+# Start saturday  (каждую субботу в 9:22 по МСК)
+# на инстансе +5часов по отношению к New York Time ориентируемся при запуске на NYT
+# что бы запустить что-то в 3:00 по NYT надо запускать в 8:00 по времени инстанса
+# Туту запускаем каждую субботу ориентируясь на 9 часов 22 мин по МСК
+# 22 5 * * SAT /home/upsilonsfather/projects/ups_one/cron_scheduler.sh "SATURDAY"
+#
 # Start wednesday  (каждую среду в 3:10)
 # на инстансе +5часов по отношению к New York Time ориентируемся при запуске на NYT
 # что бы запустить что-то в 3:00 по NYT надо запускать в 8:00 по времени инстанса
@@ -92,6 +98,10 @@ elif [ "$1" == 'WEDNESDAY' ]
 then
   echo "#Every $1 [$(date +'%Y-%m-%d %H:%M:%S')]"  >> $LOGDIR/$LOG_FILE_NAME
   python3 $BASEDIR/cron_every_wednesday.py --fname=$LOG_FILE_NAME >> $LOGDIR/$LOG_FILE_NAME  2>&1 &
+elif [ "$1" == 'SATURDAY' ]
+then
+  echo "#Every $1 [$(date +'%Y-%m-%d %H:%M:%S')]"  >> $LOGDIR/$LOG_FILE_NAME
+  python3 $BASEDIR/cron_every_saturday.py --fname=$LOG_FILE_NAME >> $LOGDIR/$LOG_FILE_NAME  2>&1 &
 elif [ "$1" == 'EVERYDAY' ]
 then
   echo "#Every $1 [$(date +'%Y-%m-%d %H:%M:%S')]"  >> $LOGDIR/$LOG_FILE_NAME

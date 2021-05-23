@@ -60,8 +60,8 @@ class GuruRocketScreener:
                  guru_filename: str = 'guru_stocks.csv',
                  rocket_filename: str = 'rocket_stocks.csv',
                  path: str = f'{PROJECT_HOME_DIR}/results/gururocketscreener/',
-                 tlgph_guru_fname: str = f'results/gururocketscreener/guru.png',
-                 tlgph_rock_fname: str = f'results/gururocketscreener/rocket.jpg',
+                 tlgph_guru_fname: str = '/file/85198326b0ef5ebda6a17.png',
+                 tlgph_rock_fname: str = '/file/ae6c623cb2013a4dcb0f8.jpg',
                  ):
         if custom is None:
             custom = ['1', '2', '3', '6', '43', '44', '46', '49', '59', '65']
