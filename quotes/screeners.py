@@ -4,6 +4,7 @@ import pandas as pd
 from telegraph import Telegraph, upload_file
 from datetime import date
 from csv import reader
+from project_shared import *
 
 
 def percent_to_float(x):
@@ -29,7 +30,7 @@ def cap_norm(x):
 def img_to_telegraph(path=None):
     telegraph = Telegraph(access_token=None)
     uploading = upload_file(f'{path}')
-    print(uploading)
+    debug(uploading)
     return uploading
 
 
@@ -58,9 +59,9 @@ class GuruRocketScreener:
                  custom=None,
                  guru_filename: str = 'guru_stocks.csv',
                  rocket_filename: str = 'rocket_stocks.csv',
-                 path: str = None,
-                 tlgph_guru_fname: str = '/file/85198326b0ef5ebda6a17.png',
-                 tlgph_rock_fname: str = '/file/ae6c623cb2013a4dcb0f8.jpg',
+                 path: str = f'{PROJECT_HOME_DIR}/results/gururocketscreener/',
+                 tlgph_guru_fname: str = f'results/gururocketscreener/guru.png',
+                 tlgph_rock_fname: str = f'results/gururocketscreener/rocket.jpg',
                  ):
         if custom is None:
             custom = ['1', '2', '3', '6', '43', '44', '46', '49', '59', '65']
@@ -126,7 +127,7 @@ class GuruRocketScreener:
         telegraph = Telegraph()
         acc = telegraph.create_account(short_name=self.short_name, author_name=self.author_name,
                                        author_url=self.author_url)
-        print(acc)
+        debug(acc)
 
     def publish_to_telegraph(self):
         today = date.today()
@@ -160,10 +161,12 @@ class GuruRocketScreener:
                 return_content=True
 
             )
-            print(posting, 'Posting has been completed')
+            debug(posting)
+            debug('Posting has been completed')
             return posting
         except Exception as e0:
-            print(e0, 'Posting to telegraph failed')
+            debug(e0)
+            debug('Posting to telegraph failed')
 
     def edit_page(self, link=None, msg=None, img_path=None):
         today = date.today()
@@ -199,10 +202,12 @@ class GuruRocketScreener:
                 return_content=True
 
             )
-            print(edit, 'Posting has been completed')
+            debug(edit)
+            debug('Posting has been completed')
             return edit
         except Exception as e0:
-            print(e0, 'Posting to telegraph failed')
+            debug(e0)
+            debug('Posting to telegraph failed')
 
 
 # start = GuruRocketScreener(guru=False, path='')

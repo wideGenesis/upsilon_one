@@ -691,14 +691,20 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
     elif event.data == b'top_gurus':
         await event.edit()
         await shared.delete_old_message(client, sender_id)
+        guru_link_file = f'{PROJECT_HOME_DIR}/results/gururocketscreener/guru.lnk'
+        with open(guru_link_file, 'r') as f:
+            guru_link = f.read()
         await client.send_message(event.input_sender,
-                                  message='https://telegra.ph/Konsolidirovannye-dlinnye-pozicii-Guru-po-sostoyaniyu-na-2021-05-20-05-20Konsolidirovannye-dlinnye-pozicii-Guru-po-sostoyaniyu-n-05-20-3',
+                                  message=guru_link,
                                   buttons=buttons.keyboard_screener_back)
     elif event.data == b'top_cheap':
         await event.edit()
         await shared.delete_old_message(client, sender_id)
+        rocket_link_file = f'{PROJECT_HOME_DIR}/results/gururocketscreener/rocket.lnk'
+        with open(rocket_link_file, 'r') as f:
+            rocket_link = f.read()
         await client.send_message(event.input_sender,
-                                  message='https://telegra.ph/Deshevye-loterejnye-akcii-na-2021-05-20-05-20Deshevye-akcii-s-vysokim-potencialom-rosta-po-sostoyaniyu-na-2021-05-20-05-20-2',
+                                  message=rocket_link,
                                   buttons=buttons.keyboard_screener_back)
 
     elif event.data == b'ticker_news':
