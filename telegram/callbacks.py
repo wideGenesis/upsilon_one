@@ -1545,7 +1545,10 @@ async def make_payment(event, client_, request_amount, summ, order_type):
 
 
 async def send_invoice(client, event):
+    await event.edit()
     sender_id = event.original_update.user_id
+    old_msg_id = await shared.get_old_msg_id(sender_id)
+    await shared.delete_old_message(client, sender_id)
     order_type = getattr(make_payment, 'order_type', None) or None
     order_id = getattr(make_payment, 'order_id', None) or None
     summ = getattr(make_payment, 'summ', None) or None
@@ -1562,7 +1565,7 @@ async def send_invoice(client, event):
                's': summ}
     imi = None
     if order_type == 'replenishment':
-        imi = generate_invoice(price_label=f'Pay{summ}$',
+        imi = generate_invoice(price_label=f'{request_amount} запросов',
                                price_amount=summa,
                                currency='RUB',
                                title=f'Покупка {request_amount} запросов',
@@ -1571,7 +1574,7 @@ async def send_invoice(client, event):
                                payload=json.dumps(payload),
                                start_param='123e')
     elif order_type == 'donate':
-        imi = generate_invoice(price_label=f'Pay{summ}$',
+        imi = generate_invoice(price_label=f'Пожертвование',
                                price_amount=summa,
                                currency='RUB',
                                title=f'Пожертвование!',
