@@ -5,8 +5,10 @@ from datetime import date, timedelta
 from project_shared import *
 
 
-def create_chart_img(ticker, start_date=None, end_date=date.today(),
+def create_chart_img(ticker, start_date=None, end_date=None,
                      chart_type='Candlestic', chart_path=CHARTER_IMAGES_PATH):
+    if end_date is None:
+        end_date = date.today()
     ticker_quotes = None
     ticker_quotes = get_year_data_by_ticker(ticker, start_date=start_date, end_date=end_date)
     if ticker_quotes is not None:
@@ -15,12 +17,15 @@ def create_chart_img(ticker, start_date=None, end_date=date.today(),
         debug("WARNING: Can't create chart!")
 
 
-def get_year_data_by_ticker(ticker, start_date=None, end_date=date.today()):
+def get_year_data_by_ticker(ticker, start_date=None, end_date=None):
     if sql.is_table_exist(QUOTE_TABLE_NAME):
         quotes = None
         if start_date is None:
             td = timedelta(365)
             start_date = end_date - td
+        if end_date is None:
+            end_date = date.today()
+
         if sql.ticker_lookup(ticker):
             quotes = sql.get_quotes_by_ticker(ticker=ticker, start_date=start_date, end_date=end_date)
         else:
@@ -32,11 +37,14 @@ def get_year_data_by_ticker(ticker, start_date=None, end_date=date.today()):
     return quotes
 
 
-def get_ytd_data_by_ticker(ticker, start_date=None, end_date=date.today()):
+def get_ytd_data_by_ticker(ticker, start_date=None, end_date=None):
     if sql.is_table_exist(QUOTE_TABLE_NAME):
         quotes = None
         if start_date is None:
             start_date = date(end_date.year, 1, 1)
+        if end_date is None:
+            end_date = date.today()
+
         if sql.ticker_lookup(ticker):
             quotes = sql.get_quotes_by_ticker(ticker=ticker, start_date=start_date, end_date=end_date)
         else:
@@ -83,10 +91,12 @@ def create_portfolio_pie_image(weights, title, filename):
 
 
 def create_candle_portfolio_img(port_id, compare_ticker=None,
-                                start_date=None, end_date=date.today(),
+                                start_date=None, end_date=None,
                                 chart_type='Candlestic', chart_path=CHARTER_IMAGES_PATH):
     port_quotes = None
     compare_ticker_quotes = None
+    if end_date is None:
+        end_date = date.today()
     port_quotes = psql.get_portfolio_bars(port_id, start_date, end_date)
     compare_ticker_quotes = get_ytd_data_by_ticker(compare_ticker, start_date, end_date)
     fin.create_chart(port_id, port_quotes, compare_ticker, compare_ticker_quotes, chart_type, chart_path)

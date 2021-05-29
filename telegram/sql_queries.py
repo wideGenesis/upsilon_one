@@ -160,8 +160,10 @@ async def get_all_users(engine=None):
             if q_result.rowcount > 0:
                 rows = q_result.fetchall()
                 for row in rows:
-                    if row[0] not in EXCLUDE_USERS:
+                    if str(row[0]) not in EXCLUDE_USERS:
                         users.append(row[0])
+                    else:
+                        debug(f'Exclude user: {row[0]}')
         except Exception as e:
             debug(e, ERROR)
     return users

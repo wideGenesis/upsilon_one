@@ -12,3 +12,6 @@ if __name__ == '__main__':
     debug(f"### Start cron on market open scheduler ###")
 
     ohlc_data_updater_yq(BENCHMARKS, table_name=BENCHMARKS_QUOTES_TABLE_NAME, is_update=True)
+
+    debug("%%%%%%%%%%%%%%%Complete on market open \n\n\n")
+    debug_deinit()

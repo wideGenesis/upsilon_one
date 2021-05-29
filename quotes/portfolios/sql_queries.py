@@ -94,9 +94,11 @@ def create_portfolio_returns_table(table_name=PORTFOLIO_RETURNS_TABLE_NAME, engi
             transaction.commit()
 
 
-def append_portfolio_returns(port_id, ret, ret_date=date.today(),
+def append_portfolio_returns(port_id, ret, ret_date=None,
                              table_name=PORTFOLIO_RETURNS_TABLE_NAME, engine=engine):
     with engine.connect() as connection:
+        if ret_date is None:
+            ret_date = date.today()
         if is_table_exist(table_name):
             transaction = connection.begin()
             ins_query = f'INSERT INTO {table_name} (port_id, rdate, ret) ' \
@@ -124,9 +126,11 @@ def insert_portfolio_returns(port_id, returns, table_name=PORTFOLIO_RETURNS_TABL
             transaction.commit()
 
 
-def get_portfolio_returns(port_id, start_date=None, end_date=date.today(),
+def get_portfolio_returns(port_id, start_date=None, end_date=None,
                           table_name=PORTFOLIO_RETURNS_TABLE_NAME, engine=engine):
     with engine.connect() as connection:
+        if end_date is None:
+            end_date = date.today()
         if is_table_exist(table_name):
             query_string = f'SELECT rdate, ret FROM {table_name} ' \
                            f' WHERE port_id=\'{port_id}\' '
@@ -139,10 +143,12 @@ def get_portfolio_returns(port_id, start_date=None, end_date=date.today(),
             return q_result.fetchall() if q_result.rowcount > 0 else None
 
 
-def get_portfolio_returns_df(port_id, start_date=None, end_date=date.today(),
+def get_portfolio_returns_df(port_id, start_date=None, end_date=None,
                              table_name=PORTFOLIO_RETURNS_TABLE_NAME, engine=engine):
     with engine.connect() as connection:
         portfolio_returns = pd.Series()
+        if end_date is None:
+            end_date = date.today()
         if is_table_exist(table_name):
             query_string = f'SELECT rdate, ret FROM {table_name} ' \
                            f' WHERE port_id=\'{port_id}\' '
@@ -233,9 +239,11 @@ def insert_portfolio_bars(port_id, bar_list, table_name=PORTFOLIO_BARS_TABLE_NAM
             transaction.commit()
 
 
-def append_portfolio_bar(port_id, bopen, bhigh, blow, bclose, bar_date=date.today(),
+def append_portfolio_bar(port_id, bopen, bhigh, blow, bclose, bar_date=None,
                          table_name=PORTFOLIO_BARS_TABLE_NAME, engine=engine):
     with engine.connect() as connection:
+        if bar_date is None:
+            bar_date = date.today()
         if is_table_exist(table_name):
             transaction = connection.begin()
             ins_query = f'INSERT INTO {table_name} (port_id, bdate, open, high, low, close) ' \
@@ -244,9 +252,11 @@ def append_portfolio_bar(port_id, bopen, bhigh, blow, bclose, bar_date=date.toda
             transaction.commit()
 
 
-def get_portfolio_bars(port_id, start_date=None, end_date=date.today(),
+def get_portfolio_bars(port_id, start_date=None, end_date=None,
                        table_name=PORTFOLIO_BARS_TABLE_NAME, engine=engine):
     with engine.connect() as connection:
+        if end_date is None:
+            end_date = date.today()
         if is_table_exist(table_name):
             query_string = f'SELECT bdate, open, high, low, close FROM {table_name} ' \
                            f' WHERE port_id=\'{port_id}\' '
@@ -302,9 +312,11 @@ def create_hist_port_allocation_table(table_name=HIST_PORT_ALLOCATION_TABLE_NAME
             transaction.commit()
 
 
-def update_hist_port_allocation(port_id, weights, allo_date=date.today(), overwrite=False,
+def update_hist_port_allocation(port_id, weights, allo_date=None, overwrite=False,
                                 table_name=HIST_PORT_ALLOCATION_TABLE_NAME, engine=engine,
                                 recursion_count=0):
+    if allo_date is None:
+        allo_date = date.today()
     if recursion_count == RECURSION_DEPTH:
         return -1
     with engine.connect() as connection:

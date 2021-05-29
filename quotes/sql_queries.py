@@ -137,10 +137,12 @@ def update_benchmark_quotes(ticker, quotes, table_name=BENCHMARKS_QUOTES_TABLE_N
 
 
 def get_closes_universe_df(q_table_name=QUOTE_TABLE_NAME, u_table_name=UNIVERSE_TABLE_NAME, cap_filter=0, etf_list=None,
-                           start_date=None, end_date=date.today(), engine=engine):
+                           start_date=None, end_date=None, engine=engine):
     with engine.connect() as connection:
         closes = None
         dat = {}
+        if end_date is None:
+            end_date = date.today()
         if etf_list is not None:
             for ticker in etf_list:
                 query_string = f'SELECT q.dateTime, q.close FROM {q_table_name} q ' \
@@ -190,7 +192,7 @@ def get_closes_universe_df(q_table_name=QUOTE_TABLE_NAME, u_table_name=UNIVERSE_
     return closes, tickers
 
 
-def get_closes_by_ticker_list(ticker_list, start_date=None, end_date=date.today(),
+def get_closes_by_ticker_list(ticker_list, start_date=None, end_date=None,
                               q_table_name=QUOTE_TABLE_NAME, u_table_name=UNIVERSE_TABLE_NAME,
                               engine=engine):
     with engine.connect() as connection:
@@ -199,6 +201,8 @@ def get_closes_by_ticker_list(ticker_list, start_date=None, end_date=date.today(
         if start_date is None:
             td = timedelta(365)
             start_date = end_date - td
+        if end_date is None:
+            end_date = date.today()
 
         for ticker in ticker_list:
             # query_string = f'SELECT q.dateTime, q.close FROM {q_table_name} q, {u_table_name} u' \
@@ -227,7 +231,7 @@ def get_closes_by_ticker_list(ticker_list, start_date=None, end_date=date.today(
     return closes
 
 
-def get_closes_by_ticker(ticker, start_date=None, end_date=date.today(),
+def get_closes_by_ticker(ticker, start_date=None, end_date=None,
                          include_left_bound=True,
                          include_right_bound=False,
                          table_name=QUOTE_TABLE_NAME,
@@ -237,6 +241,8 @@ def get_closes_by_ticker(ticker, start_date=None, end_date=date.today(),
         if start_date is None:
             td = timedelta(365)
             start_date = end_date - td
+        if end_date is None:
+            end_date = date.today()
         query_string = f'SELECT q.dateTime, q.close FROM {table_name} q ' \
                        f' WHERE q.ticker=\'{ticker}\' '
         if start_date is not None:
@@ -251,6 +257,7 @@ def get_closes_by_ticker(ticker, start_date=None, end_date=date.today(),
                 query_string += f' AND q.dateTime < \'{str(end_date)}\' '
         query_string += f' ORDER BY q.dateTime ASC'
 
+        debug(f'QUERY_STRING: {query_string}')
         q_result = connection.execute(query_string)
         if q_result.rowcount > 0:
             rows = q_result.fetchall()
@@ -262,10 +269,12 @@ def get_closes_by_ticker(ticker, start_date=None, end_date=date.today(),
             closes = pd.Series(c1, index=c0)
         else:
             debug(f"Closes by ticker is EMPTY!", WARNING)
+    debug(f'Closes first elem: {closes.axes[0][0]}')
+    debug(f'Closes last elem: {closes.axes[0][-1]}')
     return closes
 
 
-def get_ohlc_dict_by_port_id(port_id, start_date=None, end_date=date.today(),
+def get_ohlc_dict_by_port_id(port_id, start_date=None, end_date=None,
                                  q_table_name=QUOTE_TABLE_NAME, u_table_name=UNIVERSE_TABLE_NAME,
                                  engine=engine):
     with engine.connect() as connection:
@@ -274,6 +283,9 @@ def get_ohlc_dict_by_port_id(port_id, start_date=None, end_date=date.today(),
         if start_date is None:
             td = timedelta(365)
             start_date = end_date - td
+        if end_date is None:
+            end_date = date.today()
+
         query_string = f'SELECT q.ticker, q.dateTime, q.open, q.high, q.low, q.close, w.weight, q.adj_close ' \
                        f'FROM {q_table_name} q, {u_table_name} u, {weight_table} w' \
                        f' WHERE q.ticker=u.ticker ' \
@@ -297,11 +309,14 @@ def get_ohlc_dict_by_port_id(port_id, start_date=None, end_date=date.today(),
     return ohlc
 
 
-def get_ohlc_dict_by_ticker(ticker, start_date=None, end_date=date.today(),
+def get_ohlc_dict_by_ticker(ticker, start_date=None, end_date=None,
                             q_table_name=QUOTE_TABLE_NAME, u_table_name=UNIVERSE_TABLE_NAME,
                             engine=engine):
     with engine.connect() as connection:
         ohlc = {}
+        if end_date is None:
+            end_date = date.today()
+
         query_string = f'SELECT q.dateTime, q.open, q.high, q.low, q.close, q.adj_close ' \
                        f'FROM {q_table_name} q ' \
                        f'WHERE q.ticker=\'{ticker}\' '
@@ -320,11 +335,13 @@ def get_ohlc_dict_by_ticker(ticker, start_date=None, end_date=date.today(),
     return ohlc
 
 
-def get_bars_amount(ticker, start_date=None, end_date=date.today(),
+def get_bars_amount(ticker, start_date=None, end_date=None,
                             q_table_name=QUOTE_TABLE_NAME,
                             engine=engine):
     with engine.connect() as connection:
         bars_amount = 0
+        if end_date is None:
+            end_date = date.today()
         query_string = f'SELECT COUNT(*) ' \
                        f'FROM {q_table_name} q ' \
                        f'WHERE q.ticker=\'{ticker}\' '
@@ -338,7 +355,7 @@ def get_bars_amount(ticker, start_date=None, end_date=date.today(),
     return bars_amount
 
 
-def get_ohlc_dict_by_port_id_h(port_id, start_date=None, end_date=date.today(),
+def get_ohlc_dict_by_port_id_h(port_id, start_date=None, end_date=None,
                                  q_table_name=QUOTE_TABLE_NAME, u_table_name=UNIVERSE_TABLE_NAME,
                                  engine=engine):
     with engine.connect() as connection:
@@ -347,6 +364,9 @@ def get_ohlc_dict_by_port_id_h(port_id, start_date=None, end_date=date.today(),
         if start_date is None:
             td = timedelta(365)
             start_date = end_date - td
+        if end_date is None:
+            end_date = date.today()
+
         query_string = f'SELECT q.ticker, q.dateTime, q.open, q.high, q.low, q.close, w.weight, q.adj_close ' \
                        f'FROM {q_table_name} q, {weight_table} w' \
                        f' WHERE q.ticker=w.ticker ' \
@@ -369,7 +389,7 @@ def get_ohlc_dict_by_port_id_h(port_id, start_date=None, end_date=date.today(),
     return ohlc
 
 
-def get_ohlc_dict_by_port_id_w(port_id, start_date=None, end_date=date.today(),
+def get_ohlc_dict_by_port_id_w(port_id, start_date=None, end_date=None,
                                q_table_name=QUOTE_TABLE_NAME, engine=engine):
     with engine.connect() as connection:
         res = {}
@@ -377,6 +397,8 @@ def get_ohlc_dict_by_port_id_w(port_id, start_date=None, end_date=date.today(),
         if start_date is None:
             ytd = timedelta(365)
             start_date = end_date - ytd
+        if end_date is None:
+            end_date = date.today()
         curr_date = start_date
         count = 0
         while curr_date < end_date:
@@ -493,9 +515,11 @@ def get_closes_by_ticker_list_ti(ticker_list, time_interval=365,
     return closes
 
 
-def get_close_ticker_by_date(ticker, tdate=date.today(), q_table_name=QUOTE_TABLE_NAME, engine=engine):
+def get_close_ticker_by_date(ticker, tdate=None, q_table_name=QUOTE_TABLE_NAME, engine=engine):
     with engine.connect() as connection:
         pclose = None
+        if tdate is None:
+            tdate = date.today()
         if ticker_lookup(ticker):
             query_string = f'SELECT close FROM {q_table_name} ' \
                            f'WHERE ticker=\'{ticker}\' AND dateTime<=\'{str(tdate)}\' ' \
@@ -915,10 +939,12 @@ def get_universe_by_date(universe_date, cap_filter=0, u_table_name=HIST_UNIVERSE
 
 
 def get_closes_universe_by_date_df(universe_date, q_table_name=QUOTE_TABLE_NAME, u_table_name=HIST_UNIVERSE_TABLE_NAME,
-                                   cap_filter=0, etf_list=None, start_date=None, end_date=date.today(), engine=engine):
+                                   cap_filter=0, etf_list=None, start_date=None, end_date=None, engine=engine):
     with engine.connect() as connection:
         closes = None
         dat = {}
+        if end_date is None:
+            end_date = date.today()
         universe = get_universe_by_date(universe_date, cap_filter, u_table_name, engine)
         # debug(f"Universe size: {len(universe)}")
         for ticker, mkt_cap in universe.items():

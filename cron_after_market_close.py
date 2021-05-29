@@ -13,3 +13,6 @@ if __name__ == '__main__':
 
     start_date = datetime.datetime.now()-timedelta(days=1)
     update_db_last_ohlc_data(BENCHMARKS, start_date)
+
+    debug("%%%%%%%%%%%%%%%Complete after market close \n\n\n")
+    debug_deinit()
