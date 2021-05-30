@@ -1564,7 +1564,7 @@ async def send_invoice(client, event):
     debug(f'make_payment.order_id ={order_id}')
     debug(f'make_payment.summ ={summ}')
     debug(f'make_payment.request_amount ={request_amount}')
-    summa = fast_int(summ*100)
+    summa = fast_int(summ*100*73.18)
     payload = {'s_i': sender_id,
                'o_t': order_type,
                'o_i': order_id,
@@ -1574,7 +1574,7 @@ async def send_invoice(client, event):
     if order_type == 'replenishment':
         imi = generate_invoice(price_label=f'{request_amount} запросов',
                                price_amount=summa,
-                               currency='USD',
+                               currency='RUB',
                                title=f'Покупка {request_amount} запросов',
                                description='Покупая запросы, вы приобретаете доступ к внутренней базе данных '
                                            'Ипсилона и приоритет в доступе к любым текущим и будущим данным бота.',
@@ -1583,7 +1583,7 @@ async def send_invoice(client, event):
     elif order_type == 'donate':
         imi = generate_invoice(price_label=f'Пожертвование',
                                price_amount=summa,
-                               currency='USD',
+                               currency='RUB',
                                title=f'Пожертвование!',
                                description='На поддержку перспективного, быстро развивающегося и вообще '
                                            'классного бота!',
