@@ -125,18 +125,18 @@ class StockStat:
                                                   include_left_bound=True,
                                                   include_right_bound=True,
                                                   table_name=BENCHMARKS_QUOTES_TABLE_NAME)
-                    debug(f'{factor} Prices last element: {prices.axes[0][-1]}')
+                    # debug(f'{factor} Prices last element: {prices.axes[0][-1]}')
                     factor_returns = prices.pct_change()
-                    debug(f"After pct_change: factor_returns first elem = {factor_returns.axes[0][0]} - {factor_returns[0]}")
-                    debug(f"After pct_change: factor_returns last elem = {factor_returns.axes[0][-1]} - {factor_returns[-1]}")
+                    # debug(f"After pct_change: factor_returns first elem = {factor_returns.axes[0][0]} - {factor_returns[0]}")
+                    # debug(f"After pct_change: factor_returns last elem = {factor_returns.axes[0][-1]} - {factor_returns[-1]}")
                     factor_returns.dropna(inplace=True)
-                    debug(f"After dropna: factor_returns first elem = {factor_returns.axes[0][0]} - {factor_returns[0]}")
-                    debug(f"After dropna: factor_returns last elem = {factor_returns.axes[0][-1]} - {factor_returns[-1]}")
+                    # debug(f"After dropna: factor_returns first elem = {factor_returns.axes[0][0]} - {factor_returns[0]}")
+                    # debug(f"After dropna: factor_returns last elem = {factor_returns.axes[0][-1]} - {factor_returns[-1]}")
                     factor_returns = factor_returns[-240:]
-                    debug(f">>> asset_returns first elem = {asset_returns.axes[0][0]} - {asset_returns[0]}")
-                    debug(f">>> asset_returns last elem = {asset_returns.axes[0][-1]} - {asset_returns[-1]}")
-                    debug(f"^^^ factor_returns first elem = {factor_returns.axes[0][0]} - {factor_returns[0]}")
-                    debug(f"^^^ factor_returns last elem = {factor_returns.axes[0][-1]} - {factor_returns[-1]}")
+                    # debug(f">>> asset_returns first elem = {asset_returns.axes[0][0]} - {asset_returns[0]}")
+                    # debug(f">>> asset_returns last elem = {asset_returns.axes[0][-1]} - {asset_returns[-1]}")
+                    # debug(f"^^^ factor_returns first elem = {factor_returns.axes[0][0]} - {factor_returns[0]}")
+                    # debug(f"^^^ factor_returns last elem = {factor_returns.axes[0][-1]} - {factor_returns[-1]}")
                     angular_d = angular_distance(asset_returns, factor_returns)
                     s_type.update({f'{factor}': angular_d})
 
@@ -242,7 +242,7 @@ class StockStat:
             except ValueError as e11:
                 debug(e11)
                 return
-            debug(f'{t} Prices last element: {prices.axes[0][-1]}')
+            # debug(f'{t} Prices last element: {prices.axes[0][-1]}')
 
             # calc nom as weighed mom
             m20 = ((prices - prices.rolling(20).mean()) / prices.rolling(20).mean()) * 100
@@ -271,7 +271,7 @@ class StockStat:
         mom_rank = {k: v for k, v in sorted(mom_rank.items(), key=lambda item: item[1])}
         self.mom_rank_dict = mom_rank
 
-        debug(f'mom_rank: {mom_rank}')
+        # debug(f'mom_rank: {mom_rank}')
 
         sns.set(rc={'figure.facecolor': 'black', 'figure.edgecolor': 'black', 'xtick.color': 'white',
                     'ytick.color': 'white', 'text.color': 'white', 'axes.labelcolor': 'white',

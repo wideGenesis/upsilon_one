@@ -1406,7 +1406,8 @@ async def my_strategies_dynamic_menu(event, client, sender_id, old_msg_id):
         await shared.save_old_message(sender_id, msg)
 
 
-provider_token = '381764678:TEST:25868'
+# provider_token = '381764678:TEST:25868'  # ЮКасса Тест
+provider_token = '390540012:LIVE:17289' #ЮКасса реал
 
 
 # let's put it in one function for more easier way
@@ -1563,7 +1564,7 @@ async def send_invoice(client, event):
     debug(f'make_payment.order_id ={order_id}')
     debug(f'make_payment.summ ={summ}')
     debug(f'make_payment.request_amount ={request_amount}')
-    summa = fast_int(summ*1000)
+    summa = fast_int(summ*100)
     payload = {'s_i': sender_id,
                'o_t': order_type,
                'o_i': order_id,
@@ -1573,7 +1574,7 @@ async def send_invoice(client, event):
     if order_type == 'replenishment':
         imi = generate_invoice(price_label=f'{request_amount} запросов',
                                price_amount=summa,
-                               currency='RUB',
+                               currency='USD',
                                title=f'Покупка {request_amount} запросов',
                                description='Покупая запросы, вы приобретаете доступ к внутренней базе данных '
                                            'Ипсилона и приоритет в доступе к любым текущим и будущим данным бота.',
@@ -1582,7 +1583,7 @@ async def send_invoice(client, event):
     elif order_type == 'donate':
         imi = generate_invoice(price_label=f'Пожертвование',
                                price_amount=summa,
-                               currency='RUB',
+                               currency='USD',
                                title=f'Пожертвование!',
                                description='На поддержку перспективного, быстро развивающегося и вообще '
                                            'классного бота!',

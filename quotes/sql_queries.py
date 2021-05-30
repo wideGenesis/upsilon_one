@@ -257,7 +257,7 @@ def get_closes_by_ticker(ticker, start_date=None, end_date=None,
                 query_string += f' AND q.dateTime < \'{str(end_date)}\' '
         query_string += f' ORDER BY q.dateTime ASC'
 
-        debug(f'QUERY_STRING: {query_string}')
+        # debug(f'QUERY_STRING: {query_string}')
         q_result = connection.execute(query_string)
         if q_result.rowcount > 0:
             rows = q_result.fetchall()
@@ -269,8 +269,8 @@ def get_closes_by_ticker(ticker, start_date=None, end_date=None,
             closes = pd.Series(c1, index=c0)
         else:
             debug(f"Closes by ticker is EMPTY!", WARNING)
-    debug(f'Closes first elem: {closes.axes[0][0]}')
-    debug(f'Closes last elem: {closes.axes[0][-1]}')
+    # debug(f'Closes first elem: {closes.axes[0][0]}')
+    # debug(f'Closes last elem: {closes.axes[0][-1]}')
     return closes
 
 
