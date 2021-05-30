@@ -8,7 +8,12 @@ from project_shared import *
 
 
 def percent_to_float(x):
-    return float(x.strip('%'))
+    try:
+        return float(x.strip('%'))
+    except ValueError as ve:
+        debug(ve, ERROR)
+        debug(f'x = {x}')
+        return 0.01
 
 
 def cap_norm(x):
