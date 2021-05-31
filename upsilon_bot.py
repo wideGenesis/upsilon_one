@@ -25,6 +25,7 @@ from tcp_client_server.libserver import *
 import concurrent.futures
 from messages.message import *
 from PyQt5.QtCore import QObject, QThread, pyqtSignal, QTimer
+from pprint import pprint
 
 # ============================== Environment Setup ======================
 from telegram.db_init import db_init_new_tables
@@ -240,9 +241,13 @@ async def payment_pre_checkout_handler(event: types.UpdateBotPrecheckoutQuery):
 @client.on(events.Raw(types.UpdateNewMessage))
 async def payment_received_handler(event):
     if isinstance(event.message.action, types.MessageActionPaymentSentMe):
+        pprint(vars(event))
+        debug('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~')
         payment: types.MessageActionPaymentSentMe = event.message.action
         # do something after payment was recieved
-        payload_json = event.payload.decode('UTF-8')
+        pprint(vars(event))
+        debug('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~')
+        payload_json = payment.payload.decode('UTF-8')
         payload = json.loads(payload_json)
         if payload['o_t'] == 'replenishment':
             debug("!!!!!!!!!!!!!! Tis is replenishment !!!!!!!!!!!!!!!!!!!")
