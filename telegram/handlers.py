@@ -184,8 +184,8 @@ class WebHandler:
             return web.json_response(res_nack)
 
 
-def set_route(app, payment_token, command_tiken, pubkey, client, engine):
-    web_handler = WebHandler(payment_token, command_tiken, pubkey, client, engine)
+def set_route(app, payment_token, command_token, pubkey, client, engine):
+    web_handler = WebHandler(payment_token, command_token, pubkey, client, engine)
     app.router.add_post("/{token}/", web_handler.success_payment_handler)
 
 

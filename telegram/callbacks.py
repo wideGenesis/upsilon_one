@@ -24,14 +24,13 @@ from messages.message import *
 from telethon.tl.types import InputMediaPoll, Poll, PollAnswer, DocumentAttributeFilename, DocumentAttributeVideo
 from quotes.parsers import *
 from PyQt5.QtCore import QObject, QThread, pyqtSignal, QTimer
-# from yookassa import Configuration, Payment
+from yookassa import Configuration, Payment
 
 PAYMENT_AGGREGATOR = None
 PAYMENT_AGGREGATOR_TIMER = None
 
-# Configuration.account_id = '807745'
-# Configuration.secret_key = 'live_IItTY7Ne5L2sKqEPqfgPD9an-9jrZgxQPR6xkwUvZiI'
-
+Configuration.account_id = '807745'
+Configuration.secret_key = 'live_IItTY7Ne5L2sKqEPqfgPD9an-9jrZgxQPR6xkwUvZiI'
 
 # ============================== Callbacks =======================
 async def callback_handler(event, client, img_path=None, yahoo_path=None, engine=None):
@@ -1444,22 +1443,25 @@ def generate_invoice(price_label: str, price_amount: int, currency: str, title: 
         payload=payload.encode('UTF-8'),  # payload, which will be sent to next 2 handlers
         provider=provider_token,
 
-        provider_data=types.DataJSON('{"need_email": true,'
-                                     '"send_email_to_provider": true,'
-                                     '"provider_data":{'
-                                     '"receipt": {'
-                                     '"items": ['
-                                     '{'
-                                     f'"description": "{description}",'
-                                     '"quantity": "1.00",'
-                                     '"amount": {'
-                                     f'"value": "{float(price_amount/100)}",'
-                                     '"currency": "RUB"'
-                                     '},'
-                                     '"vat_code": 1'
-                                     '}'
-                                     ']}'
-                                     '}}'),
+        provider_data=types.DataJSON('{'
+                                        '"need_email": true,'
+                                        '"send_email_to_provider": true,'
+                                        '"provider_data":{'
+                                            '"receipt": {'
+                                                '"items": ['
+                                                    '{'
+                                                        f'"description": "{description}",'
+                                                        '"quantity": "1.00",'
+                                                        '"amount": {'
+                                                            f'"value": "{float(price_amount/100)}",'
+                                                            '"currency": "RUB"'
+                                                        '},'
+                                                        '"vat_code": 1'
+                                                    '}'
+                                                ']'
+                                            '}'
+                                        '}'
+                                     '}'),
         # data about the invoice, which will be shared with the payment provider. A detailed description of
         # required fields should be provided by the payment provider.
 
@@ -1469,30 +1471,6 @@ def generate_invoice(price_label: str, price_amount: int, currency: str, title: 
         # it may be the empty string if not needed
 
     )
-
-
-# async def make_payment_yookassa(event, client_, request_amount, summ, order_type):
-#     if summ is None or summ <= 0.0:
-#         debug(f'Упс. Нажали донат {summ}. Но что-топошло не так')
-#         return
-#
-#     await event.edit()
-#     sender_id = event.original_update.user_id
-#     old_msg_id = await shared.get_old_msg_id(sender_id)
-#     order_id = str(uuid.uuid4()).replace('-', '')
-#     payment = Payment.create({
-#         "amount": {
-#             "value": "100.00",
-#             "currency": "RUB"
-#         },
-#         "confirmation": {
-#             "type": "redirect",
-#             "return_url": "https://www.merchant-website.com/return_url"
-#         },
-#         "capture": True,
-#         "description": "Заказ №1"
-#     }, order_id)
-
 
 
 async def make_payment(event, client_, request_amount, summ, order_type):

@@ -191,7 +191,6 @@ async def acion_info(event, action_type, action):
         await sql.save_action_data(sender.id, action_type, action)
 
 
-# ############################################ STRIPE PAYMENTS ##################################
 # That event is handled when customer enters his card/etc, on final pre-checkout
 # If we don't `SetBotPrecheckoutResultsRequest`, money won't be charged from buyer, and nothing will happen next.
 @client.on(events.Raw(types.UpdateBotPrecheckoutQuery))
@@ -243,10 +242,12 @@ async def payment_received_handler(event):
     if isinstance(event.message.action, types.MessageActionPaymentSentMe):
         payment: types.MessageActionPaymentSentMe = event.message.action
         # do something after payment was recieved
-        if payment.payload.decode('UTF-8') == 'product A':
-            await client.send_message(event.message.from_id, 'Thank you for buying product A!')
-        elif payment.payload.decode('UTF-8') == 'product B':
-            await client.send_message(event.message.from_id, 'Thank you for buying product B!')
+        payload_json = event.payload.decode('UTF-8')
+        payload = json.loads(payload_json)
+        if payload['o_t'] == 'replenishment':
+            debug("!!!!!!!!!!!!!! Tis is replenishment !!!!!!!!!!!!!!!!!!!")
+        elif payload['o_t'] == 'donate':
+            debug("~~~~~~~~~~~~~~~~~~~~~~~~~~~ Tis is donate ~~~~~~~~~~~~~~~~~~~~~~~~~~~")
         raise events.StopPropagation
 
 
