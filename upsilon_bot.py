@@ -9,6 +9,9 @@ import selectors
 import traceback
 import rsa
 import asyncio
+import importlib
+from fastnumbers import *
+
 from sqlalchemy import create_engine
 from alchemysession import AlchemySessionContainer
 from telethon import events, TelegramClient, types, functions
@@ -198,7 +201,7 @@ async def acion_info(event, action_type, action):
 async def payment_pre_checkout_handler(event: types.UpdateBotPrecheckoutQuery):
     payload_json = event.payload.decode('UTF-8')
     payload = json.loads(payload_json)
-    if payload['o_t'] == 'replenishment':
+    if payload['o_t'] == 'replenishment' or payload['o_t'] == 'donate':
         await client(
             functions.messages.SetBotPrecheckoutResultsRequest(
                 query_id=event.query_id,
@@ -206,24 +209,6 @@ async def payment_pre_checkout_handler(event: types.UpdateBotPrecheckoutQuery):
                 error=None
             )
         )
-        await client.send_message(payload['s_i'],
-                                  f'Оплата прошла успешно:\n'
-                                  f'__Ордер: {payload["o_i"]} __\n'
-                                  f'__Сумма: {payload["s"]} __\n'
-                                  f'**Спасибо, что пользуешься моими услугами!**')
-    elif payload['o_t'] == 'donate':
-        await client(
-            functions.messages.SetBotPrecheckoutResultsRequest(
-                query_id=event.query_id,
-                success=True,
-                error=None
-            )
-        )
-        await client.send_message(payload['s_i'],
-                                  f'Оплата прошла успешно:\n'
-                                  f'__Ордер: {payload["o_i"]} __\n'
-                                  f'__Сумма: {payload["s"]} __\n'
-                                  f'**Спасибо, что поддерживаешь меня!**')
     else:
         # for example, something went wrong (whatever reason). We can tell customer about that:
         await client(
@@ -241,18 +226,39 @@ async def payment_pre_checkout_handler(event: types.UpdateBotPrecheckoutQuery):
 @client.on(events.Raw(types.UpdateNewMessage))
 async def payment_received_handler(event):
     if isinstance(event.message.action, types.MessageActionPaymentSentMe):
-        pprint(vars(event))
-        debug('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~')
         payment: types.MessageActionPaymentSentMe = event.message.action
         # do something after payment was recieved
-        pprint(vars(event))
-        debug('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~')
         payload_json = payment.payload.decode('UTF-8')
         payload = json.loads(payload_json)
         if payload['o_t'] == 'replenishment':
+            # Подгрузим динамически модуль - вдруг ценообразование изменилось?!
+            pricing = None
+            if "telegram.pricing" in sys.modules:
+                debug(f'module imported --- try reload')
+                pricing = importlib.reload(sys.modules["telegram.pricing"])
+            else:
+                debug(f'module NOT imported --- try first import')
+                pricing = importlib.import_module("telegram.pricing")
+
+            # расчитываем и сохраняем количество доступных запросов
+            summ = fast_float(payload["s"], 0)
+            await pricing.calc_save_balance(payload["s_i"], summ)
+            await sql.save_payment_data(payload["s_i"], payload["o_i"], summ)
+
+            await client.send_message(payload['s_i'],
+                                      f'Оплата прошла успешно:\n'
+                                      f'**Покупка {payload["r_a"]} запросов**\n'
+                                      f'__Ордер: {payload["o_i"]} __\n'
+                                      f'__Сумма: {payload["s"]}$ __\n'
+                                      f'**Спасибо, что пользуешься моими услугами!**')
             debug("!!!!!!!!!!!!!! Tis is replenishment !!!!!!!!!!!!!!!!!!!")
         elif payload['o_t'] == 'donate':
-            debug("~~~~~~~~~~~~~~~~~~~~~~~~~~~ Tis is donate ~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+            await client.send_message(payload['s_i'],
+                                      f'Оплата прошла успешно:\n'
+                                      f'**Пожертвование**\n'
+                                      f'__Ордер: {payload["o_i"]} __\n'
+                                      f'__Сумма: {payload["s"]}$ __\n'
+                                      f'**Спасибо, что пользуешься моими услугами!**')
         raise events.StopPropagation
 
 
