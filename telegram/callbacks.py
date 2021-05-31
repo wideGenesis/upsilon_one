@@ -24,9 +24,13 @@ from messages.message import *
 from telethon.tl.types import InputMediaPoll, Poll, PollAnswer, DocumentAttributeFilename, DocumentAttributeVideo
 from quotes.parsers import *
 from PyQt5.QtCore import QObject, QThread, pyqtSignal, QTimer
+# from yookassa import Configuration, Payment
 
 PAYMENT_AGGREGATOR = None
 PAYMENT_AGGREGATOR_TIMER = None
+
+# Configuration.account_id = '807745'
+# Configuration.secret_key = 'live_IItTY7Ne5L2sKqEPqfgPD9an-9jrZgxQPR6xkwUvZiI'
 
 
 # ============================== Callbacks =======================
@@ -1446,10 +1450,10 @@ def generate_invoice(price_label: str, price_amount: int, currency: str, title: 
                                      '"receipt": {'
                                      '"items": ['
                                      '{'
-                                     '"description": "description A",'
+                                     f'"description": "{description}",'
                                      '"quantity": "1.00",'
                                      '"amount": {'
-                                     '"value": "100.00",'
+                                     f'"value": "{float(price_amount/100)}",'
                                      '"currency": "RUB"'
                                      '},'
                                      '"vat_code": 1'
@@ -1465,6 +1469,30 @@ def generate_invoice(price_label: str, price_amount: int, currency: str, title: 
         # it may be the empty string if not needed
 
     )
+
+
+# async def make_payment_yookassa(event, client_, request_amount, summ, order_type):
+#     if summ is None or summ <= 0.0:
+#         debug(f'Упс. Нажали донат {summ}. Но что-топошло не так')
+#         return
+#
+#     await event.edit()
+#     sender_id = event.original_update.user_id
+#     old_msg_id = await shared.get_old_msg_id(sender_id)
+#     order_id = str(uuid.uuid4()).replace('-', '')
+#     payment = Payment.create({
+#         "amount": {
+#             "value": "100.00",
+#             "currency": "RUB"
+#         },
+#         "confirmation": {
+#             "type": "redirect",
+#             "return_url": "https://www.merchant-website.com/return_url"
+#         },
+#         "capture": True,
+#         "description": "Заказ №1"
+#     }, order_id)
+
 
 
 async def make_payment(event, client_, request_amount, summ, order_type):
