@@ -429,32 +429,52 @@ keyboard_subscription_professional = [
 ]
 
 
-def generate_payment_button(summ=None, payment_link=None, order_type=None):
+def generate_payment_button(summ=None, payment_link=None, order_type=None, sender_id=None):
     keyboard_subscr_start_inst = []
     if order_type == 'donate':
-        keyboard_subscr_start_inst = [
-            [
-                Button.url(f'\U0001F3E6  Оплатить картой через сайт( ${summ} )', payment_link)
-            ],
-            [
-                Button.inline(f'\U0001F3E6  Оплатить картой через телеграмм ( ${summ} )', b'inline_donate')
-            ],
-            [
-                Button.inline(f'\U0001F519  Назад', b'donate_back')
+        if str(sender_id) in OWNERS:
+            keyboard_subscr_start_inst = [
+                [
+                    Button.url(f'\U0001F3E6  Оплатить картой через сайт( ${summ} )', payment_link)
+                ],
+                [
+                    Button.inline(f'\U0001F3E6  Оплатить картой через телеграмм ( ${summ} )', b'inline_donate')
+                ],
+                [
+                    Button.inline(f'\U0001F519  Назад', b'donate_back')
+                ]
             ]
-        ]
+        else:
+            keyboard_subscr_start_inst = [
+                [
+                    Button.url(f'\U0001F3E6  Оплатить картой через сайт( ${summ} )', payment_link)
+                ],
+                [
+                    Button.inline(f'\U0001F519  Назад', b'donate_back')
+                ]
+            ]
     elif order_type == 'replenishment':
-        keyboard_subscr_start_inst = [
-            [
-                Button.url(f'\U0001F3E6  Оплатить картой через сайт ( ${summ} )', payment_link)
-            ],
-            [
-                Button.inline(f'\U0001F3E6  Оплатить картой через телеграмм ( ${summ} )', b'inline_payment')
-            ],
-            [
-                Button.inline(f'\U0001F519  Назад', b'payment_back')
+        if str(sender_id) in OWNERS:
+            keyboard_subscr_start_inst = [
+                [
+                    Button.url(f'\U0001F3E6  Оплатить картой через сайт ( ${summ} )', payment_link)
+                ],
+                [
+                    Button.inline(f'\U0001F3E6  Оплатить картой через телеграмм ( ${summ} )', b'inline_payment')
+                ],
+                [
+                    Button.inline(f'\U0001F519  Назад', b'payment_back')
+                ]
             ]
-        ]
+        else:
+            keyboard_subscr_start_inst = [
+                [
+                    Button.url(f'\U0001F3E6  Оплатить картой через сайт ( ${summ} )', payment_link)
+                ],
+                [
+                    Button.inline(f'\U0001F519  Назад', b'payment_back')
+                ]
+            ]
     return keyboard_subscr_start_inst
 
 

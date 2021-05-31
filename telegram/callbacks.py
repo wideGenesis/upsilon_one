@@ -1516,7 +1516,7 @@ async def make_payment(event, client_, request_amount, summ, order_type):
         payment_link = PAYMENT_AGGREGATOR.get_payment_link(order_id, str(summ))
         debug(f'payment_link={payment_link}')
 
-        kbd_payment_button = buttons.generate_payment_button(summ, payment_link, order_type)
+        kbd_payment_button = buttons.generate_payment_button(summ, payment_link, order_type, sender_id)
 
         instuction_link = ''
         if order_type == 'donate':
