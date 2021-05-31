@@ -24,13 +24,13 @@ from messages.message import *
 from telethon.tl.types import InputMediaPoll, Poll, PollAnswer, DocumentAttributeFilename, DocumentAttributeVideo
 from quotes.parsers import *
 from PyQt5.QtCore import QObject, QThread, pyqtSignal, QTimer
-from yookassa import Configuration, Payment
+# from yookassa import Configuration, Payment
 
 PAYMENT_AGGREGATOR = None
 PAYMENT_AGGREGATOR_TIMER = None
 
-Configuration.account_id = '807745'
-Configuration.secret_key = 'live_IItTY7Ne5L2sKqEPqfgPD9an-9jrZgxQPR6xkwUvZiI'
+# Configuration.account_id = '807745'
+# Configuration.secret_key = 'live_IItTY7Ne5L2sKqEPqfgPD9an-9jrZgxQPR6xkwUvZiI'
 
 # ============================== Callbacks =======================
 async def callback_handler(event, client, img_path=None, yahoo_path=None, engine=None):
