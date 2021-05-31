@@ -1483,79 +1483,31 @@ async def make_payment(event, client_, request_amount, summ, order_type):
     sender_id = event.original_update.user_id
     old_msg_id = await shared.get_old_msg_id(sender_id)
 
-    global PAYMENT_AGGREGATOR
-    if PAYMENT_AGGREGATOR is None:
-        PAYMENT_AGGREGATOR = PaymentAgregator()
-        PAYMENT_AGGREGATOR.creator('Free Kassa')
-    aggregator_status = None
-    global PAYMENT_AGGREGATOR_TIMER
-    if PAYMENT_AGGREGATOR_TIMER is not None:
-        delta = time.time() - PAYMENT_AGGREGATOR_TIMER
-        if delta > 10:
-            aggregator_status = PAYMENT_AGGREGATOR.get_status()
-            PAYMENT_AGGREGATOR_TIMER = time.time()
-        else:
-            if old_msg_id is not None:
-                await client_.edit_message(event.input_sender, old_msg_id,
-                                           f'Много платежных запросов. Ожидаю 10 сек.. ')
-            else:
-                paymsg = await client_.edit_message(event.input_sender, old_msg_id,
-                                                    f'Много платежных запросов. Ожидаю 10 сек.. ')
-                await shared.save_old_message(sender_id, paymsg)
-            old_msg_id = await shared.get_old_msg_id(sender_id)
-            for i in range(9, 0, -1):
-                time.sleep(1)
-                await client_.edit_message(event.input_sender, old_msg_id,
-                                           f'Много платежных запросов. Ожидаю {i} сек.. ')
-            aggregator_status = PAYMENT_AGGREGATOR.get_status()
+    order_id = str(uuid.uuid4()).replace('-', '')
+
+    debug(f"User_id={sender_id} -- OrderId:{order_id} -- Summa: {summ}")
+
+    kbd_payment_button = buttons.generate_payment_button(summ, order_type, sender_id)
+
+    msg_id = None
+    if old_msg_id is not None:
+        msg_id = old_msg_id
+        await client_.edit_message(event.input_sender, old_msg_id,
+                                   'Для оплаты нажми кнопку', buttons=kbd_payment_button)
     else:
-        PAYMENT_AGGREGATOR_TIMER = time.time()
-        aggregator_status = PAYMENT_AGGREGATOR.get_status()
-    debug(aggregator_status)
-    if aggregator_status == 'error':
-        debug(f"Error description: {PAYMENT_AGGREGATOR.get_last_error()}")
-        await client_.send_message(event.input_sender, 'Упс. Что-то пошло не так.')
-        await event.edit()
-    else:
-        order_id = str(uuid.uuid4()).replace('-', '')
+        paymsg = await client_.edit_message(event.input_sender, old_msg_id,
+                                            'Для оплаты нажми кнопку', buttons=kbd_payment_button)
+        await shared.save_old_message(sender_id, paymsg)
+        msg_id = utils.get_message_id(paymsg)
 
-        debug(f"User_id={sender_id} -- OrderId:{order_id} -- Summa: {summ}")
-        payment_link = PAYMENT_AGGREGATOR.get_payment_link(order_id, str(summ))
-        debug(f'payment_link={payment_link}')
-
-        kbd_payment_button = buttons.generate_payment_button(summ, payment_link, order_type, sender_id)
-
-        instuction_link = ''
-        if order_type == 'donate':
-            instuction_link = 'https://telegra.ph/Instrukciya-po-oplate-04-05'
-        elif order_type == 'replenishment':
-            instuction_link = 'https://telegra.ph/Instrukciya-po-pokupke-zaprosov-04-27'
-
-        msg_id = None
-        if old_msg_id is not None:
-            msg_id = old_msg_id
-            await client_.edit_message(event.input_sender, old_msg_id,
-                                       f'Для оплаты нажми кнопку Оплатить\n '
-                                       f'(Инструкция по оплате [тут]({instuction_link})! )',
-                                       link_preview=True,
-                                       buttons=kbd_payment_button)
-        else:
-            paymsg = await client_.send_message(event.input_sender,
-                                                f'Для оплаты нажми кнопку Оплатить\n '
-                                                f'(Инструкция по оплате [тут]({instuction_link})! )',
-                                                link_preview=True,
-                                                buttons=kbd_payment_button)
-            await shared.save_old_message(sender_id, paymsg)
-            msg_id = utils.get_message_id(paymsg)
-
-        shared.set_order_data(order_id, sender_id, msg_id, order_type)
-        make_payment.order_type = order_type
-        make_payment.order_id = order_id
-        debug(f'>>>>request_amount = {request_amount}')
-        make_payment.request_amount = request_amount
-        make_payment.summ = summ
-        dt_int = shared.datetime2int(datetime.datetime.now())
-        await sql.insert_into_payment_message(order_id, sender_id, msg_id, dt_int, engine)
+    shared.set_order_data(order_id, sender_id, msg_id, order_type)
+    make_payment.order_type = order_type
+    make_payment.order_id = order_id
+    debug(f'>>>>request_amount = {request_amount}')
+    make_payment.request_amount = request_amount
+    make_payment.summ = summ
+    dt_int = shared.datetime2int(datetime.datetime.now())
+    await sql.insert_into_payment_message(order_id, sender_id, msg_id, dt_int, engine)
 
 
 async def send_invoice(client, event):
