@@ -238,11 +238,11 @@ def get_closes_by_ticker(ticker, start_date=None, end_date=None,
                          engine=engine):
     with engine.connect() as connection:
         closes = None
+        if end_date is None:
+            end_date = date.today()
         if start_date is None:
             td = timedelta(365)
             start_date = end_date - td
-        if end_date is None:
-            end_date = date.today()
         query_string = f'SELECT q.dateTime, q.close FROM {table_name} q ' \
                        f' WHERE q.ticker=\'{ticker}\' '
         if start_date is not None:
