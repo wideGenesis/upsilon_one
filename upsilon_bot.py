@@ -260,6 +260,11 @@ async def payment_received_handler(event):
                                       f'__Сумма: {payload["s"]}$ __\n'
                                       f'**Спасибо, что пользуешься моими услугами!**')
             debug("!!!!!!!!!!!!!! Tis is donate !!!!!!!!!!!!!!!!!!!")
+        msg_for_me = f'Ура! Прошла оплата!!!!\n ' \
+                     f'user_id: {payload["s_i"]}\n' \
+                     f'payment_type: {payload["o_t"]}\n' \
+                     f'__Сумма: {payload["s"]}$ __'
+        await client.send_message('341503812', msg_for_me)
         raise events.StopPropagation
 
 
