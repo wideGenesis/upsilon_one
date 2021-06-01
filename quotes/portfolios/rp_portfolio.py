@@ -65,7 +65,7 @@ class RiskParityAllocator:
                  closes: pd = None,
                  returns: pd = None,
 
-                 dependence_method: str = 'distance_correlation',
+                 dependence_method: str = 'spearmans_rho',
                  distance_metric: str = 'angular',
                  angular_distance: bool = True,
 
