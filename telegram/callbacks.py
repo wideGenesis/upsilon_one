@@ -15,7 +15,6 @@ from telegram import sql_queries as sql
 from telegram import menu
 from telegram import shared
 from telethon import types
-from payments.payagregator import PaymentAgregator
 from project_shared import *
 from telegram import instructions as ins
 from quotes.stock_quotes_news import fin_news
@@ -24,13 +23,6 @@ from messages.message import *
 from telethon.tl.types import InputMediaPoll, Poll, PollAnswer, DocumentAttributeFilename, DocumentAttributeVideo
 from quotes.parsers import *
 from PyQt5.QtCore import QObject, QThread, pyqtSignal, QTimer
-# from yookassa import Configuration, Payment
-
-PAYMENT_AGGREGATOR = None
-PAYMENT_AGGREGATOR_TIMER = None
-
-# Configuration.account_id = '807745'
-# Configuration.secret_key = 'live_IItTY7Ne5L2sKqEPqfgPD9an-9jrZgxQPR6xkwUvZiI'
 
 
 # ============================== Callbacks =======================
@@ -1101,97 +1093,6 @@ async def callback_handler(event, client, img_path=None, yahoo_path=None, engine
         shared.del_is_inspector_flow(sender_id)
         shared.del_inspector_time(sender_id)
 
-    # ============================== Subscriptions =============================
-    elif event.data == b'z1':
-        await event.edit()
-        await client.send_message(event.input_sender, 'Уровень подписок', buttons=buttons.keyboard_core_subscriptions)
-    elif event.data == b'kcs0':
-        await event.edit()
-        await client.send_file(event.input_sender, shared.SUBSCRIBES[shared.TARIFF_COMPARE_ID].get_img_path())
-    elif event.data == b'kcs1':
-        await event.edit()
-        await client.send_file(event.input_sender, shared.SUBSCRIBES[shared.TARIFF_START_ID].get_img_path())
-        await client.send_message(event.input_sender, shared.SUBSCRIBES[shared.TARIFF_START_ID].get_describe(),
-                                  buttons=buttons.keyboard_subscription_start)
-    elif event.data == b'kcs2':
-        await client.send_file(event.input_sender, shared.SUBSCRIBES[shared.TARIFF_BASE_ID].get_img_path())
-        await client.send_message(event.input_sender, shared.SUBSCRIBES[shared.TARIFF_BASE_ID].get_describe(),
-                                  buttons=buttons.keyboard_subscription_base)
-    elif event.data == b'kcs3':
-        await client.send_file(event.input_sender, shared.SUBSCRIBES[shared.TARIFF_ADVANCED_ID].get_img_path())
-        await client.send_message(event.input_sender, shared.SUBSCRIBES[shared.TARIFF_ADVANCED_ID].get_describe(),
-                                  buttons=buttons.keyboard_subscription_advanced)
-    elif event.data == b'kcs4':
-        await client.send_file(event.input_sender, shared.SUBSCRIBES[shared.TARIFF_PROFESSIONAL_ID].get_img_path())
-        await client.send_message(event.input_sender, shared.SUBSCRIBES[shared.TARIFF_PROFESSIONAL_ID].get_describe(),
-                                  buttons=buttons.keyboard_subscription_professional)
-    elif event.data == b'kcs-1':
-        await menu.profile_menu(event, client, engine)
-    #   TODO добавить описание подписок
-    #   TODO добавить таблицу сравнения подписок
-    elif event.data == b'kss1' or event.data == b'kss2' or event.data == b'kss3' or event.data == b'kss4':
-        global PAYMENT_AGGREGATOR
-        if PAYMENT_AGGREGATOR is None:
-            PAYMENT_AGGREGATOR = PaymentAgregator()
-            PAYMENT_AGGREGATOR.creator('Free Kassa')
-        aggregator_status = None
-        global PAYMENT_AGGREGATOR_TIMER
-        if PAYMENT_AGGREGATOR_TIMER is not None:
-            delta = time.time() - PAYMENT_AGGREGATOR_TIMER
-            if delta >= 10:
-                aggregator_status = PAYMENT_AGGREGATOR.get_status()
-                PAYMENT_AGGREGATOR_TIMER = time.time()
-            else:
-                time.sleep(10 - delta)
-                aggregator_status = PAYMENT_AGGREGATOR.get_status()
-        else:
-            PAYMENT_AGGREGATOR_TIMER = time.time()
-            aggregator_status = PAYMENT_AGGREGATOR.get_status()
-        # debug(aggregator_status)
-        if aggregator_status == 'error':
-            # debug("Error description:" + PAYMENT_AGGREGATOR.get_last_error())
-            await client.send_message(event.input_sender, 'Упс. Что-то пошло не так.',
-                                      buttons=buttons.keyboard_subscription_start)
-            await event.edit()
-        else:
-            # debug("user_id=" + str(sender_id.user_id))
-            order_id = str(uuid.uuid4()).replace('-', '')
-            debug("OrderId:" + order_id)
-            summa = ""
-            kbd_label = ""
-            if event.data == b'kss1':
-                summa = str(shared.SUBSCRIBES[shared.TARIFF_START_ID].get_cost())
-                kbd_label = "Оплатить ($" + str(shared.SUBSCRIBES[shared.TARIFF_START_ID].get_cost()) + ')'
-            elif event.data == b'kss2':
-                summa = str(shared.SUBSCRIBES[shared.TARIFF_BASE_ID].get_cost())
-                kbd_label = "Оплатить ($" + str(shared.SUBSCRIBES[shared.TARIFF_BASE_ID].get_cost()) + ')'
-            elif event.data == b'kss3':
-                summa = str(shared.SUBSCRIBES[shared.TARIFF_ADVANCED_ID].get_cost())
-                kbd_label = "Оплатить ($" + str(shared.SUBSCRIBES[shared.TARIFF_ADVANCED_ID].get_cost()) + ')'
-            elif event.data == b'kss2':
-                summa = str(shared.SUBSCRIBES[shared.TARIFF_PROFESSIONAL_ID].get_cost())
-                kbd_label = "Оплатить ($" + str(shared.SUBSCRIBES[shared.TARIFF_PROFESSIONAL_ID].get_cost()) + ')'
-
-            debug("Summa:" + summa)
-            payment_link = PAYMENT_AGGREGATOR.get_payment_link(order_id, summa)
-            debug(payment_link)
-            kbd_payment_button = buttons.generate_payment_button(kbd_label, payment_link)
-
-            paymsg = await client.send_message(event.input_sender,
-                                               'Для оплаты тарифа ' \
-                                               + shared.SUBSCRIBES[shared.TARIFF_START_ID].get_name() \
-                                               + 'нажми кнопку Оплатить\n'
-                                                 '(Инструкция по оплате [тут](https://telegra.ph/Rrrtt-10-13)! )',
-                                               link_preview=True,
-                                               buttons=kbd_payment_button)
-            await event.edit()
-            msg_id = utils.get_message_id(paymsg)
-            order_type = 'subscription'
-            shared.set_order_data(order_id, sender_id, msg_id, order_type)
-            dt = datetime.now()
-            dt_int = shared.datetime2int(dt)
-            await sql.insert_into_payment_message(order_id, sender_id, msg_id, dt_int, engine)
-
 
 async def send_next_profiler_question(client, user_id, curr_num):
     _poll_id = None
@@ -1485,29 +1386,21 @@ async def make_payment(event, client_, request_amount, summ, order_type):
 
     order_id = str(uuid.uuid4()).replace('-', '')
 
-    debug(f"User_id={sender_id} -- OrderId:{order_id} -- Summa: {summ}")
+    debug(f"User_id={sender_id} -- OrderId:{order_id} -- Summa: {summ} -- request_amount = {request_amount}")
 
     kbd_payment_button = buttons.generate_payment_button(summ, order_type, sender_id)
 
-    msg_id = None
     if old_msg_id is not None:
-        msg_id = old_msg_id
         await client_.edit_message(event.input_sender, old_msg_id,
                                    'Для оплаты нажми кнопку', buttons=kbd_payment_button)
     else:
-        paymsg = await client_.edit_message(event.input_sender, old_msg_id,
+        paymsg = await client_.send_message(event.input_sender,
                                             'Для оплаты нажми кнопку', buttons=kbd_payment_button)
         await shared.save_old_message(sender_id, paymsg)
-        msg_id = utils.get_message_id(paymsg)
-
-    shared.set_order_data(order_id, sender_id, msg_id, order_type)
     make_payment.order_type = order_type
     make_payment.order_id = order_id
-    debug(f'>>>>request_amount = {request_amount}')
     make_payment.request_amount = request_amount
     make_payment.summ = summ
-    dt_int = shared.datetime2int(datetime.datetime.now())
-    await sql.insert_into_payment_message(order_id, sender_id, msg_id, dt_int, engine)
 
 
 async def send_invoice(client, event):

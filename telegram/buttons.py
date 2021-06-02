@@ -376,59 +376,6 @@ keyboard_buy_requests = [
 ]
 
 
-# ============================== Кнопки подписок =============================
-keyboard_core_subscriptions = [
-    [
-        Button.inline('\U0001F46E  ' + 'Сравнение тарифов', b'kcs0')
-    ],
-    [
-        Button.inline('\U0001F3E6  ' + 'Старт', b'kcs1')
-    ],
-    [
-        Button.inline('\U0001F321	  ' + 'Базовый', b'kcs2')
-    ],
-    [
-        Button.inline('\U0001F525  ' + 'Продвинутый', b'kcs3')
-    ],
-    [
-        Button.inline('\U0001F3E2  ' + 'Профессиональный', b'kcs4')
-    ],
-    [
-        Button.inline('\U0001F519  ' + 'Назад', b'kcs-1')
-    ]
-]
-
-keyboard_subscription_back = [
-    [
-        Button.inline('\U0001F519  ' + 'Назад', b'kcs-1')
-    ]
-]
-
-keyboard_subscription_start = [
-    [
-        Button.inline('\U0001F3E6  ' + '$15', b'kss1')
-    ]
-]
-
-keyboard_subscription_base = [
-    [
-        Button.inline('\U0001F3E6  ' + '$25', b'kss2')
-    ]
-]
-
-keyboard_subscription_advanced = [
-    [
-        Button.inline('\U0001F3E6  ' + '$30', b'kss3')
-    ]
-]
-
-keyboard_subscription_professional = [
-    [
-        Button.inline('\U0001F3E6  ' + '$40', b'kss4')
-    ]
-]
-
-
 def generate_payment_button(summ=None, order_type=None, sender_id=None):
     keyboard_subscr_start_inst = []
     if order_type == 'donate':
