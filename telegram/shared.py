@@ -155,16 +155,22 @@ INSPECTOR_FLOW_START_TIME = {}
 
 
 def print_shared_maps():
+    debug("_______________________________________________________")
+    global OLD_MESSAGE_MAP
+    global IS_OLD_MSG_POLL_MAP
     global INSPECTOR_FLOW_START_TIME
     global INSPECTOR_TICKER_MAP
     global INSPECTOR_PORTFOLIO_MAP
-    global OLD_MESSAGE_MAP
-    global IS_OLD_MSG_POLL_MAP
-    debug(f"OLD_MESSAGE_MAP = {OLD_MESSAGE_MAP}")
-    debug(f"IS_OLD_MSG_POLL_MAP = {IS_OLD_MSG_POLL_MAP}")
-    debug(f"INSPECTOR_FLOW_START_TIME = {INSPECTOR_FLOW_START_TIME}")
-    debug(f"INSPECTOR_TICKER_MAP = {INSPECTOR_TICKER_MAP}")
-    debug(f"INSPECTOR_PORTFOLIO_MAP = {INSPECTOR_PORTFOLIO_MAP}")
+    if len(OLD_MESSAGE_MAP) > 0:
+        debug(f"OLD_MESSAGE_MAP = {OLD_MESSAGE_MAP}")
+    if len(IS_OLD_MSG_POLL_MAP) > 0:
+        debug(f"IS_OLD_MSG_POLL_MAP = {IS_OLD_MSG_POLL_MAP}")
+    if len(INSPECTOR_FLOW_START_TIME) > 0:
+        debug(f"INSPECTOR_FLOW_START_TIME = {INSPECTOR_FLOW_START_TIME}")
+    if len(INSPECTOR_TICKER_MAP) > 0:
+        debug(f"INSPECTOR_TICKER_MAP = {INSPECTOR_TICKER_MAP}")
+    if len(INSPECTOR_PORTFOLIO_MAP) > 0:
+        debug(f"INSPECTOR_PORTFOLIO_MAP = {INSPECTOR_PORTFOLIO_MAP}")
 
 
 def inspector_scheduler():
