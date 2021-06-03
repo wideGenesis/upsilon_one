@@ -1,5 +1,6 @@
 import pandas as pd
 
+from fastnumbers import *
 from quotes.yahoo_downloader import *
 from datetime import date, timedelta
 from quotes.sql_queries import *
@@ -371,6 +372,25 @@ def get_ohlc_data_by_ticker_yq(tick, start_date, end_date):
                  round(dct[index].get('dividends', 0.0), 2)]
         prices[index] = value
     return prices
+
+
+def get_last_currency_price_yq(cur):
+    last_price = 0.0
+    currency = cur.upper()
+    if currency is None or len(currency) == 0:
+        debug(f'Currency is none, or len = 0 -- [{currency}]')
+        return last_price
+
+    currency_data = None
+    try:
+        currency_data = Ticker(currency)
+    except Exception as e:
+        debug(e, ERROR)
+        debug(f"Can't get currency data -- [{currency}]")
+        return last_price
+    regular_market_price = currency_data.price[currency].get('regularMarketPrice', None)
+    last_price = fast_float(regular_market_price, 0.0)
+    return last_price
 
 
 def main():

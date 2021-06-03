@@ -22,6 +22,7 @@ from quotes.parsers import nyse_nasdaq_stat
 from messages.message import *
 from telethon.tl.types import InputMediaPoll, Poll, PollAnswer, DocumentAttributeFilename, DocumentAttributeVideo
 from quotes.parsers import *
+from quotes import sql_queries as sql_q
 from PyQt5.QtCore import QObject, QThread, pyqtSignal, QTimer
 
 
@@ -1416,7 +1417,10 @@ async def send_invoice(client, event):
     debug(f'make_payment.order_id ={order_id}')
     debug(f'make_payment.summ ={summ}')
     debug(f'make_payment.request_amount ={request_amount}')
-    summa = fast_int(summ*100*73.18)
+    currency = 'RUB=X'
+    last_currency_price = fast_float(sql_q.get_last_currency_price(currency), 73.0)
+    debug(f'RUB=X last_price ={last_currency_price}')
+    summa = fast_int(summ*100*last_currency_price)
     payload = {'s_i': sender_id,
                'o_t': order_type,
                'o_i': order_id,

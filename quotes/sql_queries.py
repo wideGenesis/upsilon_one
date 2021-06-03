@@ -969,3 +969,70 @@ def get_closes_universe_by_date_df(universe_date, q_table_name=QUOTE_TABLE_NAME,
         closes = pd.DataFrame(dat)
     return closes, universe
 
+
+def create_currency_price_table(table_name=CURRENCY_PRICE_TABLE_NAME, engine=engine):
+    with engine.connect() as connection:
+        if not is_table_exist(table_name):
+            transaction = connection.begin()
+            try:
+                create_query = f'CREATE TABLE {table_name} ' \
+                               f'(currency VARCHAR(12) NOT NULL, ' \
+                               f'last_price DOUBLE NOT NULL, ' \
+                               f'PRIMARY KEY(currency, last_price)' \
+                               f')'
+                connection.execute(create_query)
+            except Exception as e:
+                debug(e, ERROR)
+                transaction.rollback()
+            transaction.commit()
+
+
+def currency_lookup(currency, table_name=CURRENCY_PRICE_TABLE_NAME, engine=engine) -> bool:
+    with engine.connect() as connection:
+        try:
+            query_string = f'SELECT * FROM {table_name} WHERE currency = \'{currency}\' LIMIT 1'
+            result = connection.execute(query_string)
+            return True if result.rowcount > 0 else False
+        except:
+            return False
+
+
+def update_last_currency_price(currency, last_price, table_name=CURRENCY_PRICE_TABLE_NAME, engine=engine):
+    with engine.connect() as connection:
+        if is_table_exist(table_name):
+            transaction = connection.begin()
+            try:
+                if not currency_lookup(currency):
+                    insert_query = f'INSERT INTO {table_name} (currency, last_price) ' \
+                                   f'VALUES (\'{str(currency)}\', \'{last_price}\')'
+                    connection.execute(insert_query)
+                else:
+                    upd_query = f'UPDATE {table_name} SET ' \
+                                f'last_price=\'{last_price}\' ' \
+                                f'WHERE currency=\'{currency}\''
+                    connection.execute(upd_query)
+            except Exception as e:
+                debug(e, "ERROR")
+                transaction.rollback()
+            transaction.commit()
+            return
+        else:
+            debug(f'Can\'t find table: {table_name}!')
+
+
+def get_last_currency_price(currency, table_name=CURRENCY_PRICE_TABLE_NAME):
+    with engine.connect() as connection:
+        if is_table_exist(table_name):
+            if currency_lookup(currency):
+                sql_query = f'SELECT last_price FROM {table_name} q ' \
+                            f'WHERE currency=\'{currency}\''
+                result = connection.execute(sql_query)
+                if result.rowcount > 0:
+                    md = result.cursor.fetchone()[0]
+                    return md
+                else:
+                    return 0.0
+        else:
+            debug(f'Can\'t find table: {table_name}!')
+            return 0.0
+

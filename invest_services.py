@@ -20,6 +20,9 @@ from quotes.stock_quotes_news import StockStat
 
 # ============================== Main  =============================
 def main():
+    last_usd_price = get_last_currency_price_yq('RUB=X')
+    pass
+    exit()
     get_ohlc_data_by_ticker('HYDR')
     exit()
     start_date = datetime.datetime.now()-timedelta(days=1)
