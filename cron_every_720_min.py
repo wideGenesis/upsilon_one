@@ -21,5 +21,6 @@ if __name__ == '__main__':
     currency = 'RUB=X'
     last_usd_price = ql.get_last_currency_price_yq(currency)
     sql_q.update_last_currency_price(currency, last_usd_price)
+    debug(f'{currency} LAST_PRICE == {last_usd_price}')
     debug("%%%%%%%%%%%%%%%Complete cron every 720\n\n\n")
     debug_deinit()
