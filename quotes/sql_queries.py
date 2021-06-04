@@ -198,11 +198,11 @@ def get_closes_by_ticker_list(ticker_list, start_date=None, end_date=None,
     with engine.connect() as connection:
         closes = None
         dat = {}
+        if end_date is None:
+            end_date = date.today()
         if start_date is None:
             td = timedelta(365)
             start_date = end_date - td
-        if end_date is None:
-            end_date = date.today()
 
         for ticker in ticker_list:
             # query_string = f'SELECT q.dateTime, q.close FROM {q_table_name} q, {u_table_name} u' \
@@ -280,11 +280,11 @@ def get_ohlc_dict_by_port_id(port_id, start_date=None, end_date=None,
     with engine.connect() as connection:
         weight_table = PORTFOLIO_ALLOCATION_TABLE_NAME
         ohlc = {}
+        if end_date is None:
+            end_date = date.today()
         if start_date is None:
             td = timedelta(365)
             start_date = end_date - td
-        if end_date is None:
-            end_date = date.today()
 
         query_string = f'SELECT q.ticker, q.dateTime, q.open, q.high, q.low, q.close, w.weight, q.adj_close ' \
                        f'FROM {q_table_name} q, {u_table_name} u, {weight_table} w' \
@@ -361,11 +361,11 @@ def get_ohlc_dict_by_port_id_h(port_id, start_date=None, end_date=None,
     with engine.connect() as connection:
         weight_table = PORTFOLIO_ALLOCATION_TABLE_NAME
         ohlc = {}
+        if end_date is None:
+            end_date = date.today()
         if start_date is None:
             td = timedelta(365)
             start_date = end_date - td
-        if end_date is None:
-            end_date = date.today()
 
         query_string = f'SELECT q.ticker, q.dateTime, q.open, q.high, q.low, q.close, w.weight, q.adj_close ' \
                        f'FROM {q_table_name} q, {weight_table} w' \
@@ -394,11 +394,11 @@ def get_ohlc_dict_by_port_id_w(port_id, start_date=None, end_date=None,
     with engine.connect() as connection:
         res = {}
         td = timedelta(days=1)
+        if end_date is None:
+            end_date = date.today()
         if start_date is None:
             ytd = timedelta(365)
             start_date = end_date - ytd
-        if end_date is None:
-            end_date = date.today()
         curr_date = start_date
         count = 0
         while curr_date < end_date:

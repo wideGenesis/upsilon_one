@@ -2,10 +2,12 @@ from project_shared import *
 from quotes.portfolios.sql_queries import *
 
 
-def save_portfolio_weights(name="portfolio", portfolio_weights=None, allocation_date=date.today()):
+def save_portfolio_weights(name="portfolio", portfolio_weights=None, allocation_date=None):
     # ===== Сохраним текущую аллокацию =====
     # Для справки: она всегда перезаписывается, то есть старая аллокация всегда удаляется, а новая пишетя
     # Таким образом в таблице всегда одна - текущая аллокация
+    if allocation_date is None:
+        allocation_date = date.today()
     if not is_table_exist(PORTFOLIO_ALLOCATION_TABLE_NAME):
         create_portfolio_allocation_table()
     update_portfolio_allocation(port_id=name, weights=portfolio_weights)
