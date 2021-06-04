@@ -48,11 +48,15 @@ async def check_request_amount(user_id, client, decrement_amount=1) -> Dict[str,
                 result = {"result": True, 'Free': 0, 'Paid': 0}
                 return result
             else:
-                debug("New user: Timeout 5 min!!")
+                minutes = (NEW_USER_FREE_REQUEST_PERIOD - td) % 60
+                secs = (NEW_USER_FREE_REQUEST_PERIOD-td) - ((NEW_USER_FREE_REQUEST_PERIOD-td) % 60*60)
+                need_wait = f'{minutes} мин. {secs} сек.'
+                debug(f"New user: Timeout {NEW_USER_FREE_REQUEST_PERIOD / 60} min!!"
+                      f"Осталось {need_wait}")
                 await client.send_message(user_id, f'😔\n '
                                                    f'Сожалею, но новым пользователям можно делать запросы нечаще '
                                                    f'чем раз в 5 мин\n'
-                                                   f'Осталось {NEW_USER_FREE_REQUEST_PERIOD-td}сек')
+                                                   f'Осталось {need_wait}')
                 result = {"result": False, 'Free': 0, 'Paid': 0}
                 return result
         else:
