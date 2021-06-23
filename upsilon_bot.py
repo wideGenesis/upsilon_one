@@ -55,40 +55,40 @@ async def start(event):
     await menu.start_menu(event, client, engine=engine)
 
 
-@client.on(events.NewMessage(pattern='Главное меню|\U0001F4C1 Главное меню|📁 Главное меню'))
+@client.on(events.NewMessage(pattern='Main menu|\U0001F4C1 Main menu|📁 Main menu'))
 async def tools(event):
-    await acion_info(event, 'main menu', f'Главное меню')
+    await acion_info(event, 'main menu', f'Main menu')
     await menu.tools_menu(event, client)
 
 
-@client.on(events.NewMessage(pattern='menu|Menu|Меню|меню'))
+@client.on(events.NewMessage(pattern='menu|Menu'))
 async def meta_tools(event):
-    await acion_info(event, 'cmd', f'Меню')
+    await acion_info(event, 'cmd', f'Menu')
     await menu.meta_menu(event, client)
 
 
-@client.on(events.NewMessage(pattern='Профиль|профиль|Profile|profile|👤 Профиль|\U0001F464 Профиль'))
+@client.on(events.NewMessage(pattern='Profile|profile|👤 Profile|\U0001F464 Profile'))
 async def profile(event):
-    await acion_info(event, 'main menu', f'Профиль')
+    await acion_info(event, 'main menu', f'Profile')
     await menu.profile_menu(event, client, engine=engine)
 
 
-@client.on(events.NewMessage(pattern='Помощь|инструкции|Инструкции|помощь|help|Help|/help'))
+@client.on(events.NewMessage(pattern='Instructions|помощь|help|Help|/help'))
 async def helper(event):
-    await acion_info(event, 'main menu', f'Помощь')
+    await acion_info(event, 'main menu', f'Help')
     await menu.information_menu(event, client, engine=engine)
 
 
-@client.on(events.NewMessage(pattern='Информация|инфомация|инфо|Инфо|🛎 Информация|\U0001F6CE Информация'))
+@client.on(events.NewMessage(pattern='Information|information|Info|info|🛎 Information|\U0001F6CE Information'))
 async def information(event):
-    await acion_info(event, 'main menu', f'Информация')
+    await acion_info(event, 'main menu', f'Information')
     await menu.information_menu(event, client, engine=engine)
 
 
 # ============================== Commands ===============================
-@client.on(events.NewMessage(pattern='портфель|портфели|Портфель|Портфели|portfolio|portfolios'))
+@client.on(events.NewMessage(pattern='Portfolio|portfolio|portfolios'))
 async def portfolios(event):
-    await acion_info(event, 'cmd', f'Портфель')
+    await acion_info(event, 'cmd', f'Portfolio')
     await handlers.portfolios_cmd(client, event)
 
 
@@ -165,10 +165,10 @@ async def instructions(event):
 #     await handlers.portfolio_candle_chart_handler(event, client)
 
 
-@client.on(events.NewMessage(pattern='Анкета регистрации управляющего'))
-async def instructions(event):
-    await acion_info(event, 'cmd', f'Анкета регистрации управляющего')
-    await handlers.managers_form_handler(event, client)
+# @client.on(events.NewMessage(pattern='Анкета регистрации управляющего'))
+# async def instructions(event):
+#     await acion_info(event, 'cmd', f'Анкета регистрации управляющего')
+#     await handlers.managers_form_handler(event, client)
 
 
 @client.on(events.NewMessage(pattern='/(support|adv|bug)'))
@@ -244,7 +244,7 @@ async def payment_received_handler(event):
             summ = fast_float(payload["s"], 0)
             await pricing.calc_save_balance(payload["s_i"], summ)
             await sql.save_payment_data(payload["s_i"], payload["o_i"], summ)
-
+# TODO !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
             await client.send_message(payload['s_i'],
                                       f'Оплата прошла успешно:\n'
                                       f'**Покупка {payload["r_a"]} запросов**\n'

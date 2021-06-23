@@ -44,10 +44,10 @@ async def start_menu(event, client, engine=None):
                                       buttons=buttons.keyboard_forw2)
         else:
             #  Если не дошел до профайла даже, то презу показать надо
-            await client.send_message(event.input_sender, '👤 Профиль')
+            await client.send_message(event.input_sender, '👤 Profile')
             await callbacks.send_next_profiler_question(client, sender_id, 0)
     else:
-        # Если юзер уже прошел профайлинг, то ему не надо показывать презу и опрос - сразу главное меню
+        # Если юзер уже прошел профайлинг, то ему не надо показывать презу и опрос - сразу Main menu
         await tools_menu(event, client)
     # Сохраним данные о новом пользователе (функция сохранит и распечатает, только если пользователь ранее не числился)
     await sql.append_new_user(sender_id)
@@ -79,26 +79,26 @@ async def tools_menu(event, client):
         is_poll = await shared.is_old_msg_poll(sender_id)
         if is_poll:
             await shared.delete_old_message(client, sender_id)
-            menu_msg = await client.send_message(event.input_sender, '📁 Главное меню', buttons=buttons.keyboard_0)
+            menu_msg = await client.send_message(event.input_sender, '📁 Main menu', buttons=buttons.keyboard_0)
             await shared.save_old_message(sender_id, menu_msg)
             shared.set_old_msg_poll(sender_id, False)
         else:
             try:
-                await client.edit_message(event.input_sender, old_msg_id, '📁 Главное меню',
+                await client.edit_message(event.input_sender, old_msg_id, '📁 Main menu',
                                           buttons=buttons.keyboard_0)
             except telethon.errors.rpcerrorlist.MessageNotModifiedError as e:
-                debug(f'Двойное нажатие кнопки Главное меню: {e}', ERROR)
+                debug(f'Double click for Main menu: {e}', ERROR)
     else:
-        menu_msg = await client.send_message(event.input_sender, '📁 Главное меню', buttons=buttons.keyboard_0)
+        menu_msg = await client.send_message(event.input_sender, '📁 Main menu', buttons=buttons.keyboard_0)
         await shared.save_old_message(sender_id, menu_msg)
 
 
 async def profile_menu(event, client, engine=None):
     keyboard_profile = [
-        [Button.inline('🔋	  ' + 'Купить запросы❗', b'requests_store')],
-        [Button.inline('\U0001F91D	  ' + 'Пригласить друга', b'invite_friends')],
-        [Button.inline('🔃	  ' + 'Сбросить профиль риска', b'risk_reset')],
-        [Button.inline('\U0001F519    ' + 'В главное меню', b'main')]
+        [Button.inline('🔋	  ' + 'Buy requests❗', b'requests_store')],
+        [Button.inline('\U0001F91D	  ' + 'To invite a friend', b'invite_friends')],
+        [Button.inline('🔃	  ' + 'Reset Risk Profile', b'risk_reset')],
+        [Button.inline('\U0001F519    ' + 'Back to Main menu', b'main')]
     ]
 
     sender_id = event.input_sender
@@ -123,17 +123,17 @@ async def profile_menu(event, client, engine=None):
     final_profile_score = get_final_score(sender_id.user_id)
     if isinstance(final_profile_score, int):
         if final_profile_score <= -9:
-            profile_score_str = "Полное отвержение риска"
+            profile_score_str = "Total risk aversion"
         elif -9 < final_profile_score <= -4:
-            profile_score_str = "Сильное отвержение риска"
+            profile_score_str = "Strong risk aversion"
         elif -4 < final_profile_score <= 1:
-            profile_score_str = "Умеренное принятие риска"
+            profile_score_str = "Moderate risk aversion"
         elif 1 < final_profile_score < 6:
-            profile_score_str = "Разумное принятие риска"
+            profile_score_str = "Reasonable risk taking"
         elif 6 <= final_profile_score < 10:
-            profile_score_str = "Уверенное принятие риска"
+            profile_score_str = "Confident risk taking"
         elif final_profile_score >= 10:
-            profile_score_str = "Полное принятие риска"
+            profile_score_str = "Total risk acceptance"
     else:
         profile_score_str = final_profile_score
 
@@ -146,32 +146,32 @@ async def profile_menu(event, client, engine=None):
             await shared.delete_old_message(client, sender_id.user_id)
             menu_msg = await client.send_message(event.input_sender,
                                                  f'\U0001F464 : {user_profile[3]}\n'
-                                                 f'Имя: {user_profile[5]}\n\n'
-                                                 f'Твой уровень риска: __{profile_score_str}__\n\n'
-                                                 f'Оплаченных запросов: __{paid_amount}__ 🔋\n'
+                                                 f'Name: {user_profile[5]}\n\n'
+                                                 f'Your level of risk: __{profile_score_str}__\n\n'
+                                                 f'Paid requests: __{paid_amount}__ 🔋\n'
                                                  f'--------------------------------------------------------\n\n'
-                                                 f'Пользователей бота: __{count}__', buttons=keyboard_profile)
+                                                 f'Bot users: __{count}__', buttons=keyboard_profile)
             await shared.save_old_message(sender_id.user_id, menu_msg)
             shared.set_old_msg_poll(sender_id.user_id, False)
         else:
             try:
                 await client.edit_message(event.input_sender, old_msg_id,
                                           f'\U0001F464 : {user_profile[3]}\n'
-                                          f'Имя: {user_profile[5]}\n\n'
-                                          f'Твой уровень риска: __{profile_score_str}__\n\n'
-                                          f'Оплаченных запросов: __{paid_amount}__ 🔋\n'
+                                          f'Name: {user_profile[5]}\n\n'
+                                          f'Your level of risk: __{profile_score_str}__\n\n'
+                                          f'Paid requests: __{paid_amount}__ 🔋\n'
                                           f'--------------------------------------------------------\n\n'
-                                          f'Пользователей бота: __{count}__', buttons=keyboard_profile)
+                                          f'Bot users: __{count}__', buttons=keyboard_profile)
             except telethon.errors.rpcerrorlist.MessageNotModifiedError as e:
-                debug(f'Двойное нажатие кнопки Профиль: {e}', ERROR)
+                debug(f'Двойное нажатие кнопки Profile: {e}', ERROR)
     else:
         menu_msg = await client.send_message(event.input_sender,
                                              f'\U0001F464 : {user_profile[3]}\n'
-                                             f'Имя: {user_profile[5]}\n\n'
-                                             f'Твой уровень риска: __{profile_score_str}__\n\n'
-                                             f'Оплаченных запросов: __{paid_amount}__ 🔋\n'
+                                             f'Name: {user_profile[5]}\n\n'
+                                             f'Your level of risk: __{profile_score_str}__\n\n'
+                                             f'Paid requests: __{paid_amount}__ 🔋\n'
                                              f'--------------------------------------------------------\n\n'
-                                             f'Пользователей бота: __{count}__', buttons=keyboard_profile)
+                                             f'Bot users: __{count}__', buttons=keyboard_profile)
         await shared.save_old_message(sender_id.user_id, menu_msg)
 
 
@@ -196,16 +196,16 @@ async def information_menu(event, client, engine=engine):
         is_poll = await shared.is_old_msg_poll(sender_id)
         if is_poll:
             await shared.delete_old_message(client, sender_id)
-            menu_msg = await client.send_message(event.input_sender, '🛎 Информация', buttons=buttons.keyboard_info)
+            menu_msg = await client.send_message(event.input_sender, '🛎 Information', buttons=buttons.keyboard_info)
             await shared.save_old_message(sender_id, menu_msg)
             shared.set_old_msg_poll(sender_id, False)
         else:
             try:
-                await client.edit_message(event.input_sender, old_msg_id, '🛎 Информация',
+                await client.edit_message(event.input_sender, old_msg_id, '🛎 Information',
                                           buttons=buttons.keyboard_info)
             except telethon.errors.rpcerrorlist.MessageNotModifiedError as e:
-                debug(f'Двойное нажатие кнопки Информация: {e}', ERROR)
+                debug(f'Двойное нажатие кнопки Information: {e}', ERROR)
     else:
-        menu_msg = await client.send_message(event.input_sender, '🛎 Информация', buttons=buttons.keyboard_info)
+        menu_msg = await client.send_message(event.input_sender, '🛎 Information', buttons=buttons.keyboard_info)
         await shared.save_old_message(sender_id, menu_msg)
 
