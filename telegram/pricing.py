@@ -37,21 +37,26 @@ async def check_request_amount(user_id, client, decrement_amount=1) -> Dict[str,
     paid_amount, free_amount = await sql.get_request_amount(user_id)
     income_datetime = await sql.get_income_datetime(user_id)
     now = datetime.datetime.now()
-    is_new_user = True if (now - income_datetime).days < 3 else False
+    is_new_user = True if (now - income_datetime).days < NEW_USER_TRIAL_PERIOD else False
     if is_new_user:
         if paid_amount == 0:
             last_request_datetime = await sql.get_last_request_datetime(user_id)
-            td = (now - last_request_datetime).seconds if last_request_datetime is not None else 500
-            if td > 300:
+            td = (now - last_request_datetime).seconds if last_request_datetime is not None \
+                else (NEW_USER_FREE_REQUEST_PERIOD + 100)
+            if td > NEW_USER_FREE_REQUEST_PERIOD:
                 await sql.set_last_request_datetime(user_id)
                 result = {"result": True, 'Free': 0, 'Paid': 0}
                 return result
             else:
-                debug("New user: Timeout 5 min!!")
+                minutes = int((NEW_USER_FREE_REQUEST_PERIOD - td) / 60)
+                secs = (NEW_USER_FREE_REQUEST_PERIOD-td) - (minutes*60)
+                need_wait = f'{minutes} мин. {secs} сек.'
+                debug(f"New user: Timeout {NEW_USER_FREE_REQUEST_PERIOD / 60} min!!"
+                      f"Осталось {need_wait}")
                 await client.send_message(user_id, f'😔\n '
                                                    f'Сожалею, но новым пользователям можно делать запросы нечаще '
-                                                   f'чем раз в 5 мин\n'
-                                                   f'Осталось {300-td}сек')
+                                                   f'чем раз в {int(NEW_USER_FREE_REQUEST_PERIOD / 60)} мин\n'
+                                                   f'Осталось {need_wait}')
                 result = {"result": False, 'Free': 0, 'Paid': 0}
                 return result
         else:

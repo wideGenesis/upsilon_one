@@ -20,11 +20,11 @@ def create_chart_img(ticker, start_date=None, end_date=None,
 def get_year_data_by_ticker(ticker, start_date=None, end_date=None):
     if sql.is_table_exist(QUOTE_TABLE_NAME):
         quotes = None
+        if end_date is None:
+            end_date = date.today()
         if start_date is None:
             td = timedelta(365)
             start_date = end_date - td
-        if end_date is None:
-            end_date = date.today()
 
         if sql.ticker_lookup(ticker):
             quotes = sql.get_quotes_by_ticker(ticker=ticker, start_date=start_date, end_date=end_date)
@@ -40,10 +40,10 @@ def get_year_data_by_ticker(ticker, start_date=None, end_date=None):
 def get_ytd_data_by_ticker(ticker, start_date=None, end_date=None):
     if sql.is_table_exist(QUOTE_TABLE_NAME):
         quotes = None
-        if start_date is None:
-            start_date = date(end_date.year, 1, 1)
         if end_date is None:
             end_date = date.today()
+        if start_date is None:
+            start_date = date(end_date.year, 1, 1)
 
         if sql.ticker_lookup(ticker):
             quotes = sql.get_quotes_by_ticker(ticker=ticker, start_date=start_date, end_date=end_date)

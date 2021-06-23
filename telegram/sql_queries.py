@@ -78,69 +78,6 @@ def risk_data_lookup(user_id, engine=engine) -> bool:
             return False
 
 
-async def create_payment_message_table(engine=None):
-    with engine.connect() as connection:
-        is_exist = await is_table_exist('payment_message_hist', engine)
-        if not is_exist:
-            connection.execute("CREATE TABLE payment_message_hist ("
-                               "order_id VARCHAR(255) NOT NULL, "
-                               "user_id BIGINT NOT NULL, "
-                               "msg_id BIGINT NOT NULL, "
-                               "create_dt BIGINT NOT NULL, "
-                               "PRIMARY KEY(order_id, user_id, msg_id)"
-                               ")")
-            connection.execute("commit")
-
-
-async def delete_from_payment_message(order_id, engine=None):
-    with engine.connect() as connection:
-        connection.execute("DELETE from payment_message_hist WHERE order_id = %s", order_id)
-        connection.execute("commit")
-
-
-async def insert_into_payment_message(order_id, sender_id, msg_id, dt_int, engine=None):
-    with engine.connect() as connection:
-        connection.execute("INSERT INTO payment_message_hist(order_id, user_id, msg_id, create_dt) "
-                           "VALUES( %s, %s, %s, %s )", [order_id, sender_id, msg_id, dt_int])
-        connection.execute("commit")
-
-
-async def get_all_payment_message(engine=None):
-    with engine.connect() as connection:
-        result = connection.execute("SELECT order_id, user_id, msg_id, create_dt FROM  payment_message_hist")
-        rows = result.cursor.fetchall()
-        return rows
-
-
-def clear_old_payment_message(engine=engine):
-    with engine.connect() as connection:
-        deleted_orders = {}
-        now = datetime.datetime.now()
-        try:
-            query_string = f'SELECT order_id, user_id, msg_id, create_dt ' \
-                           f'FROM payment_message_hist ' \
-                           f'ORDER by create_dt DESC'
-            q_result = connection.execute(query_string)
-            if q_result.rowcount > 0:
-                rows = q_result.fetchall()
-                for row in rows:
-                    dt = shared.int2datetime(row[3])
-                    if (now - dt).total_seconds() > 86400:
-                        try:
-                            del_query = f'DELETE from payment_message_hist ' \
-                                        f'WHERE order_id = \'{row[0]}\' ' \
-                                        f'AND user_id = \'{row[1]}\' ' \
-                                        f'AND msg_id = \'{row[2]}\' '
-                            connection.execute(del_query)
-                            connection.execute("commit")
-                            deleted_orders[row[0]] = (row[1], row[2])
-                        except Exception as e:
-                            debug(e, ERROR)
-        except Exception as e:
-            debug(e, ERROR)
-        return deleted_orders
-
-
 async def is_table_exist(table_name, engine=engine) -> bool:
     with engine.connect() as connection:
         try:

@@ -49,99 +49,7 @@ class WebHandler:
     # ============================== Payment request handler ======================
     # process only requests with correct payment token
     async def success_payment_handler(self, request):
-        if request.match_info.get("token") == self.payment_token:
-            request_json = await request.json()
-            # debug("JSON:" + str(request_json))
-            order_id = str(request_json['order_id'])
-            summa = str(request_json['summa'])
-            data = ":" + order_id + ":" + summa + ":"
-            sign = base64.b64decode(str(request_json['sign']))
-
-            if self.pubkey is None:
-                return web.Response(status=403)
-
-            try:
-                rsa.verify(data.encode(), sign, self.pubkey)
-            except:
-                debug("Verification failed")
-                return web.Response(status=403)
-
-            value = shared.get_order_data(order_id)
-            if value is not None:
-                debug("Send message \"payment is ok\"")
-                debug(f'Before agregate payment: shared.ORDER_MAP=')
-                shared.print_order_map()
-                sender_id, message_id, order_type = value
-                debug(f'Shared data by order_id: '
-                      f'sender_id:[{sender_id}], message_id:[{message_id}], order_type:[{order_type}]')
-                if order_type == 'subscription' or order_type == 'replenishment':
-                    # Подгрузим динамически модуль - вдруг ценообразование изменилось?!
-                    pricing = None
-                    if "telegram.pricing" in sys.modules:
-                        debug(f'module imported --- try reload')
-                        pricing = importlib.reload(sys.modules["telegram.pricing"])
-                    else:
-                        debug(f'module NOT imported --- try first import')
-                        pricing = importlib.import_module("telegram.pricing")
-
-                    # расчитываем и сохраняем количество доступных запросов
-                    summ = fast_float(summa, 0)
-                    await pricing.calc_save_balance(sender_id, summ)
-                    await sql.save_payment_data(sender_id, order_id, summ)
-
-                    # удаляем платежное сообщение в чате, чтобы клиент не нажимал на него еще
-                    if sender_id is not None and message_id is not None:
-                        try:
-                            await shared.delete_old_message(self.client, sender_id)
-                            # await self.client.delete_messages(sender_id, message_id)
-                        except Exception as e:
-                            debug(e, ERROR)
-
-                    # сообщаем клиенту об успешном платеже
-                    await self.client.send_message(sender_id,
-                                                   'Оплата прошла успешно:\n'
-                                                   + '__Ордер: ' + order_id + '__\n'
-                                                   + '__Сумма: ' + summa + '__\n'
-                                                   + '**Спасибо, что пользуетесь моими услугами!**')
-                    # удаляем данные о платеже из памяти и из базы, они нам больше не нужны
-                    shared.pop_old_order(order_id)
-                    await sql.delete_from_payment_message(order_id, self.engine)
-                    debug(f'After agregate payment: shared.ORDER_MAP=')
-                    shared.print_order_map()
-                    return web.Response(status=200)
-                elif order_type == 'donate':
-                    debug("Send message \"donate is ok\"")
-                    debug(f'Before agregate payment: shared.ORDER_MAP=')
-                    shared.print_order_map()
-                    sender_id, message_id, order_type = value
-                    debug(f'Shared data by order_id: '
-                          f'sender_id:[{sender_id}], message_id:[{message_id}], order_type:[{order_type}]')
-                    # сообщаем клиенту об успешном платеже
-                    await self.client.send_message(sender_id,
-                                                   'Оплата прошла успешно:\n'
-                                                   + '__Ордер: ' + order_id + '__\n'
-                                                   + '__Сумма: ' + summa + '__\n'
-                                                   + '**Спасибо, что пользуешься моими услугами!**')
-                    # удаляем платежное сообщение в чате, чтобы клиент не нажимал на него еще
-                    if sender_id is not None and message_id is not None:
-                        try:
-                            await shared.delete_old_message(self.client, sender_id)
-                            # await self.client.delete_messages(sender_id, message_id)
-                        except Exception as e:
-                            debug(e, ERROR)
-                    # удаляем данные о платеже из памяти и из базы, они нам больше не нужны
-                    shared.pop_old_order(order_id)
-                    await sql.delete_from_payment_message(order_id, self.engine)
-                    if not is_table_exist(DONATE_DATA_TABLE_NAME):
-                        await sql.create_donate_data_table(self.engine)
-                    await sql.save_donate_data(sender_id, fast_float(summa))
-                    debug(f'After agregate payment: shared.ORDER_MAP=')
-                    shared.print_order_map()
-                    return web.Response(status=200)
-            else:
-                debug("Global SenderID is None")
-                return web.Response(status=403)
-        elif request.match_info.get("token") == self.command_token:
+        if request.match_info.get("token") == self.command_token:
             debug(f'Received cmd token!')
             res_ack = {'result': 'ACK'}
             res_nack = {'result': 'NACK'}
@@ -177,10 +85,6 @@ class WebHandler:
                     res = await send_broadcast_poll(self.client)
                     if res:
                         return web.json_response(res_ack)
-            elif action == "clear_order_map":
-                debug(f"Try clear order map!!!!")
-                await shared.clear_order_map(self.client)
-                return web.json_response(res_ack)
             return web.json_response(res_nack)
 
 

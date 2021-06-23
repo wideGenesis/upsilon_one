@@ -32,6 +32,13 @@ async def db_init_new_tables():
         sql_q.create_quotes_table(BENCHMARKS_QUOTES_TABLE_NAME)
         await init_benchmark_quotes_table()
         debug('## create BENCHMARKS_QUOTES_TABLE_NAME complete')
+
+    ite = sql_q.is_table_exist(CURRENCY_PRICE_TABLE_NAME)
+    if not ite:
+        debug('>> Try CURRENCY_PRICE_TABLE_NAME')
+        sql_q.create_currency_price_table(CURRENCY_PRICE_TABLE_NAME)
+        await init_currency_price_table()
+        debug('## create CURRENCY_PRICE_TABLE_NAME complete')
     debug('## DB create new tables complete')
 
 
@@ -70,3 +77,9 @@ async def init_incoming_users_table():
 
 async def init_benchmark_quotes_table():
     ql.ohlc_data_updater(BENCHMARKS, table_name=BENCHMARKS_QUOTES_TABLE_NAME)
+
+
+async def init_currency_price_table():
+    currency = 'RUB=X'
+    last_usd_price = ql.get_last_currency_price_yq(currency)
+    sql_q.update_last_currency_price(currency, last_usd_price)

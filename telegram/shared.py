@@ -9,7 +9,6 @@ from telethon import utils
 from project_shared import *
 from telethon import functions, types
 from PyQt5.QtCore import QObject, QThread, pyqtSignal
-
 from telegram import sql_queries as sql_q
 
 
@@ -31,11 +30,8 @@ class Worker(QObject):
                 inspector_scheduler()
             if i % 600 == 0:
                 print_shared_maps()
-            if i % 86400 == 0:
-                schedule_send_command('clear_order_map')
 
 
-ORDER_MAP = {}
 OLD_MESSAGE_MAP = {}
 ANSWERS_MAP = [
     # Ваша цель:
@@ -135,41 +131,46 @@ IN_INSPECTOR_FLOW_MAP = {}
 INSPECTOR_FLOW_START_TIME = {}
 
 
-def schedule_send_command(cmd, recursion_count=0):
-    debug(f"schedule_send_command: cmd={cmd} recursion_count={recursion_count}")
-    if recursion_count == RECURSION_DEPTH:
-        debug(f"Can't schedule_send_command!!!", ERROR)
-        return -1
-    with requests.Session() as session:
-        url = f"http://127.0.0.1:8445/{COMMAND_TOKEN}/"
-        data = {'action': cmd, 'value': ''}
-        headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}
-        try:
-            request_result = session.post(url, data=json.dumps(data), headers=headers)
-        except Exception as e:
-            debug(f'Exception: {e}', WARNING)
-            sleep(0.9)
-            errCode = schedule_send_command(cmd=cmd, recursion_count=recursion_count + 1)
-            return errCode
-        if request_result.status_code == requests.codes.ok:
-            parsed_json = json.loads(request_result.text)
-            debug(parsed_json)
-            return 0
+# Оставляю как пример как шедулером засылать команды боту
+# def schedule_send_command(cmd, recursion_count=0):
+#     debug(f"schedule_send_command: cmd={cmd} recursion_count={recursion_count}")
+#     if recursion_count == RECURSION_DEPTH:
+#         debug(f"Can't schedule_send_command!!!", ERROR)
+#         return -1
+#     with requests.Session() as session:
+#         url = f"http://127.0.0.1:8445/{COMMAND_TOKEN}/"
+#         data = {'action': cmd, 'value': ''}
+#         headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}
+#         try:
+#             request_result = session.post(url, data=json.dumps(data), headers=headers)
+#         except Exception as e:
+#             debug(f'Exception: {e}', WARNING)
+#             sleep(0.9)
+#             errCode = schedule_send_command(cmd=cmd, recursion_count=recursion_count + 1)
+#             return errCode
+#         if request_result.status_code == requests.codes.ok:
+#             parsed_json = json.loads(request_result.text)
+#             debug(parsed_json)
+#             return 0
 
 
 def print_shared_maps():
+    debug("_______________________________________________________")
+    global OLD_MESSAGE_MAP
+    global IS_OLD_MSG_POLL_MAP
     global INSPECTOR_FLOW_START_TIME
     global INSPECTOR_TICKER_MAP
     global INSPECTOR_PORTFOLIO_MAP
-    global ORDER_MAP
-    global OLD_MESSAGE_MAP
-    global IS_OLD_MSG_POLL_MAP
-    debug(f"ORDER_MAP = {ORDER_MAP}")
-    debug(f"OLD_MESSAGE_MAP = {OLD_MESSAGE_MAP}")
-    debug(f"IS_OLD_MSG_POLL_MAP = {IS_OLD_MSG_POLL_MAP}")
-    debug(f"INSPECTOR_FLOW_START_TIME = {INSPECTOR_FLOW_START_TIME}")
-    debug(f"INSPECTOR_TICKER_MAP = {INSPECTOR_TICKER_MAP}")
-    debug(f"INSPECTOR_PORTFOLIO_MAP = {INSPECTOR_PORTFOLIO_MAP}")
+    if len(OLD_MESSAGE_MAP) > 0:
+        debug(f"OLD_MESSAGE_MAP = {OLD_MESSAGE_MAP}")
+    if len(IS_OLD_MSG_POLL_MAP) > 0:
+        debug(f"IS_OLD_MSG_POLL_MAP = {IS_OLD_MSG_POLL_MAP}")
+    if len(INSPECTOR_FLOW_START_TIME) > 0:
+        debug(f"INSPECTOR_FLOW_START_TIME = {INSPECTOR_FLOW_START_TIME}")
+    if len(INSPECTOR_TICKER_MAP) > 0:
+        debug(f"INSPECTOR_TICKER_MAP = {INSPECTOR_TICKER_MAP}")
+    if len(INSPECTOR_PORTFOLIO_MAP) > 0:
+        debug(f"INSPECTOR_PORTFOLIO_MAP = {INSPECTOR_PORTFOLIO_MAP}")
 
 
 def inspector_scheduler():
@@ -188,12 +189,6 @@ def inspector_scheduler():
             need_clear.append(k)
     for user in need_clear:
         INSPECTOR_FLOW_START_TIME.pop(user)
-
-
-async def clear_order_map(client):
-    deleted_order = sql_q.clear_old_payment_message()
-    for order in deleted_order:
-        pop_old_order(order)
 
 
 def get_inspector_time(user_id):
@@ -274,28 +269,6 @@ def pop_old_msg_poll(user_id):
         IS_OLD_MSG_POLL_MAP.pop(user_id)
 
 
-def set_order_data(order_id, sender_id, msg_id, order_type):
-    global ORDER_MAP
-    ORDER_MAP[order_id] = (sender_id, msg_id, order_type)
-
-
-def get_order_data(order_id):
-    global ORDER_MAP
-    if order_id in ORDER_MAP:
-        return ORDER_MAP.get(order_id)
-
-
-def print_order_map():
-    global ORDER_MAP
-    debug(f'ORDER_MAP={ORDER_MAP}')
-
-
-def pop_old_order(order_id):
-    global ORDER_MAP
-    if order_id in ORDER_MAP:
-        ORDER_MAP.pop(order_id)
-
-
 def set_inspector_ticker(user_id, ticker, size):
     global INSPECTOR_TICKER_MAP
     INSPECTOR_TICKER_MAP[user_id] = (ticker, size)
@@ -345,92 +318,3 @@ def del_is_inspector_flow(user_id):
     global IN_INSPECTOR_FLOW_MAP
     if user_id in IN_INSPECTOR_FLOW_MAP:
         IN_INSPECTOR_FLOW_MAP.pop(user_id)
-
-
-class Subscribe(object):
-    def __init__(self, name="", level="Free", cost=0.0, describe="", duration=30.0, img_path=""):
-        self.name = name
-        self.level = level
-        self.cost = cost
-        self.describe = describe
-        self.duration = duration
-        self.img_path = img_path
-
-    def get_name(self) -> str:
-        return self.name
-
-    def get_level(self) -> str:
-        return self.level
-
-    def get_cost(self) -> float:
-        return self.cost
-
-    def get_describe(self) -> str:
-        return self.describe
-
-    def get_duration(self) -> float:
-        return self.duration
-
-    def get_img_path(self) -> str:
-        return self.img_path
-
-    def __str__(self) -> str:
-        return "Name: " + self.name + '\n' \
-               + "Cost: " + str(self.cost) + '\n' \
-               + "Duration: " + str(self.duration) + '\n' \
-               + "Describe: " + self.describe + '\n' \
-               + "Image path: " + self.img_path + '\n'
-
-
-TARIFF_START_ID = 0
-TARIFF_BASE_ID = 1
-TARIFF_ADVANCED_ID = 2
-TARIFF_PROFESSIONAL_ID = 3
-TARIFF_COMPARE_ID = 4
-
-SUBSCRIBES = {}
-
-
-def create_subscribes(tariff_img_path):
-    # Тариф Старт
-    imgpath = tariff_img_path + '/tariff_start.jpg'
-    tstart = Subscribe(name="Старт",
-                       level="Start",
-                       cost=15.00,
-                       describe="Тут большое описание тарифа Старт. В нем доступны такие то функции. и т.д. и т.п.",
-                       img_path=imgpath)
-    # Тариф Базовый
-    imgpath = tariff_img_path + '/tariff_base.png'
-    tbase = Subscribe(name="Базовый",
-                      level="Base",
-                      cost=25.00,
-                      describe="Тут большое описание тарифа Базовый. В нем доступны такие то функции. и т.д. и т.п.",
-                      img_path=imgpath)
-    # Тариф Продвинутый
-    imgpath = tariff_img_path + '/tariff_advanced.png'
-    tadv = Subscribe(name="Продвинутый",
-                     level="Advanced",
-                     cost=30.00,
-                     describe="Тут большое описание тарифа Продвинутый. В нем доступны такие то функции. и т.д. и т.п.",
-                     img_path=imgpath)
-    # Тариф Профессиональный
-    imgpath = tariff_img_path + '/tariff_professional.jpg'
-    tprof = Subscribe(name="Профессиональный",
-                      level="Professional",
-                      cost=40.00,
-                      describe="Тут большое описание тарифа Профессиональный. В нем доступны такие то функции. и т.д. "
-                               "и т.п.",
-                      img_path=imgpath)
-
-    SUBSCRIBES[TARIFF_START_ID] = tstart
-    SUBSCRIBES[TARIFF_BASE_ID] = tbase
-    SUBSCRIBES[TARIFF_ADVANCED_ID] = tadv
-    SUBSCRIBES[TARIFF_PROFESSIONAL_ID] = tprof
-
-    # Таблица сравнения тарифов
-    imgpath = tariff_img_path + '/tariff_compare.jpg'
-    tcompare = Subscribe(name="Сравнение тарифов",
-                         cost=0.0,
-                         describe="Тут можно текстом описать чемже отличаются тарифы ",
-                         img_path=imgpath)
-    SUBSCRIBES[TARIFF_COMPARE_ID] = tprof

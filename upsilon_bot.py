@@ -260,6 +260,11 @@ async def payment_received_handler(event):
                                       f'__Сумма: {payload["s"]}$ __\n'
                                       f'**Спасибо, что пользуешься моими услугами!**')
             debug("!!!!!!!!!!!!!! Tis is donate !!!!!!!!!!!!!!!!!!!")
+        msg_for_me = f'Ура! Прошла оплата!!!!\n ' \
+                     f'user_id: {payload["s_i"]}\n' \
+                     f'payment_type: {payload["o_t"]}\n' \
+                     f'__Сумма: {payload["s"]}$ __'
+        await client.send_message('341503812', msg_for_me)
         raise events.StopPropagation
 
 
@@ -273,18 +278,6 @@ async def webserver_starter():
 
 
 async def init_db():
-    # Создаем таблицу с данными по платежным сообщениям
-    # Таблица будет создаваться только если ее нет
-    await sql.create_payment_message_table(engine)
-
-    # Забираем данные из таблицы по платежным сообщениям
-    # Если бот перезапускался, то будем знать какие сообщения
-    # нужно удалить из истории
-    rows = await sql.get_all_payment_message(engine)
-    # print("rows=" + str(rows))
-    for row in rows:
-        shared.set_order_data(row[0], row[1], row[2], row[3])
-
     # должно стать обычной практикой - при релизе руками создавать все новые таблицы
     # что бы избежать ошибок отсутствия нужных таблиц
     # проинициализировать таблицы, если это нужно

@@ -376,6 +376,7 @@ keyboard_buy_requests = [
 ]
 
 
+<<<<<<< HEAD
 # ============================== Кнопки подписок =============================
 # keyboard_core_subscriptions = [
 #     [
@@ -429,6 +430,8 @@ keyboard_subscription_professional = [
 ]
 
 
+=======
+>>>>>>> 0bb16c110e946b22ebceaa3aef662cb41961d974
 def generate_payment_button(summ=None, order_type=None, sender_id=None):
     keyboard_subscr_start_inst = []
     if order_type == 'donate':
